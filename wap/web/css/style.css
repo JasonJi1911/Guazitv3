@@ -1,0 +1,84 @@
+@charset "utf-8";
+*{margin:0;padding:0;list-style-type:none;}
+a,img{border:0;}
+a, a:link, a:visited, a:active, a:hover {  text-decoration: none;}
+/*body{font:12px/180% PingFang,Arial, Helvetica, sans-serif, "新宋体";}*/
+ul, ol {  margin: 0;  padding-left: 0;  list-style: none;  }
+/* flexslider */
+.flexslider{margin:0px;position:relative;width:100%;overflow:hidden;zoom:1;}
+.flex-viewport{max-height:2000px;-webkit-transition:all 1s ease;-moz-transition:all 1s ease;transition:all 1s ease;}
+.flexslider .slides{zoom:1;}
+.flex-direction-nav a{width:60px;height:90px;line-height:99em;overflow:hidden;margin:-60px 0 0;display:block;position:absolute;top:50%;z-index:10;cursor:pointer;opacity:0;filter:alpha(opacity=0);-webkit-transition:all .3s ease;}
+.flex-direction-nav .flex-next{background-position:0 -90px;right:0;}
+.flex-direction-nav .flex-prev{left:0;}
+.flexslider:hover .flex-next{opacity:0.8;filter:alpha(opacity=25);}
+.flexslider:hover .flex-prev{opacity:0.8;filter:alpha(opacity=25);}
+.flexslider:hover .flex-next:hover, .flexslider:hover .flex-prev:hover{opacity:1;filter:alpha(opacity=50);}
+.flex-control-nav{width:100%;position:absolute;bottom:10px;text-align:center;}
+.flex-control-nav li{margin:0 5px;display:inline-block;zoom:1;*display:inline;}
+.flex-control-paging li a{background:#ccc;display:block;overflow:hidden;text-indent:-99em;width:0.1rem;
+    height:0.1rem;cursor:pointer; border-radius: 0.05rem}
+.flex-control-paging li a.flex-active{background:#ff9966;}
+
+.entry {
+    width: 2.6rem;
+    text-align: center;
+    display: block;
+    margin: 0 auto;
+    overflow: hidden;
+}
+.entry ul {
+    box-sizing: content-box !important;
+    -webkit-box-sizing:content-box !important;
+    width: 2.4rem;
+    border: 1px solid #22B48D;
+    height: .6rem;
+    line-height: .6rem;
+    border-radius: .6rem;
+    margin: .15rem 0;
+    overflow: hidden;
+}
+
+.entry ul li {
+    float: left;
+    width: 1.2rem;
+    vertical-align: middle;
+}
+
+
+.entry ul li a {
+    font-size: .28rem;
+    display: block;
+    width: 1.2rem;
+    height: .6rem;
+    line-height: .6rem;
+    float: left;
+    text-align: center;
+    /* border-radius: .65rem; */
+}
+
+.entry a.active{
+    background: #22B48D;
+    color: #fff;
+}
+
+.slides img{
+    width: 100%;
+}
+.record{
+    font-size: .24rem;
+    padding:.2rem .3rem;
+    display: block;
+    line-height: .24rem;
+}
+.record span{
+    color: #2ca2db;
+   
+}
+.record img{
+    width: .24rem;
+    height: .24rem;
+    vertical-align: top;
+    margin-right: .1rem;
+    margin-top: -.03rem;
+}

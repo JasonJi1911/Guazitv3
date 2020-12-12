@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title class="title"></title>
+    <link rel="stylesheet" href="/css/share/style.css">
+    <link rel="stylesheet" href="/css/share/mescroll.min.css">
+</head>
+<body>
+<section class="shares" id="j-wrap">
+    <article class="banner" style="height: 28%;">
+        <img src="/images/banner-share2.jpg" alt="banner" class="b-img">
+    </article>
+
+    <article class="nums">
+        <div class="n-row">
+            <div class="n-block">
+                <span class="n-nu j-totalCli">0</span>
+                <span class="n-ti">总点击</span>
+            </div>
+            <div class="n-block">
+                <span class="n-nu j-totalVol">0</span>
+                <span class="n-ti voucher_text"></span>
+            </div>
+        </div>
+        <div class="n-row">
+            <div class="n-block">
+                <span class="n-nu j-dayCli">0</span>
+                <span class="n-ti">今日被点击</span>
+            </div>
+            <div class="n-block">
+                <span class="n-nu j-dayVol">0</span>
+                <span class="n-ti voucher_text"></span>
+            </div>
+        </div>
+    </article>
+
+    <menu class="menu">
+        <button class="j-btn menu-btn active">分享</button>
+        <button class="j-btn menu-btn">我的奖励</button>
+    </menu>
+
+    <article class="shaer j-list">
+        <div class="s-top">
+            <p class="s-top-title">通过以下方式立即分享</p>
+            <div class="s-top-icons">
+                <button class="s-top-btn j-inviWechat">
+                    <img class="s-top-icon" src="/images/pay_weixin.png" alt="微信群">
+                    <span class="s-top-text">微信群</span>
+                </button>
+                <button class="s-top-btn j-inviFd" onclick="decoObject.share(123)">
+                    <div class="s-top-iwrap">
+                        <img class="s-top-icona" src="/images/icon-wechat-friends.png" alt="朋友圈">
+                    </div>
+                    <span class="s-top-text">朋友圈</span>
+                </button>
+            </div>
+        </div>
+        <div class="s-wrap">
+            <ul class="s-list" id="j-listpb"></ul>
+        </div>
+        <footer class="footer">*本活动最终解释权归<font class="siteName"></font>所有</footer>
+    </article>
+
+    <article class="reward j-list" id="j-main">
+        <ul class="r-list j-clist">
+        </ul>
+        <div class="m-cDefa">
+            <img class="m-cImg" src="/images/icon-default.png">
+            <p class="m-cText">快去分享吧</p>
+        </div>
+    </article>
+</section>
+</body>
+<script src="http://admin.beiwo-xiaoshuo.com/js/jquery.min.js"></script>
+<script>
+    window.onload = function () {
+
+        // 获取参数
+        function getParam(param)
+        {
+            var reg = new RegExp("(^|&)"+ param +"=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);//search,查询？后面的参数，并匹配正则
+            if(r!=null)return  unescape(r[2]); return null;
+        }
+        var token = getParam("token");
+
+        $('.menu .menu-btn').click(function () {
+            $('.menu .menu-btn').removeClass('active')
+            $(this).addClass('active')
+            var index = $('.menu button').index(this);
+            if (index == 0) {
+                $('.shaer').show();
+                $('.reward').hide();
+            } else {
+                $('.shaer').hide();
+                $('.reward').show();
+            }
+        })
+
+        // 获取活动数据
+        $.get('/site/share', {token:token}, function(s) {
+            if (s.errno == 0) {
+                var data = s.error;
+
+                // 页面标题
+                $('.title').text(data.activity.name);
+                $('.voucher_text').text('获得'+data.unit);
+                $('.siteName').text(data.siteName);
+
+                // 点击数据
+                $('.j-totalCli').text(data.total.total_count);
+                $('.j-totalVol').text(data.total.total_voucher);
+                $('.j-dayCli').text(data.day.total_count);
+                $('.j-dayVol').text(data.day.total_voucher);
+
+                // 轮播数据
+                $('#j-listpb').append(data.play_html);
+
+                // 保存分享参数
+                var wechatShare = getShare(1, data);  // 微信
+                var friendShare = getShare(2, data);  // 朋友圈
+
+                var u = navigator.userAgent;
+                if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {//安卓手机
+
+                    $('.j-inviWechat').attr('onclick', "decoObject.share('"+wechatShare+"')");
+                    $('.j-inviFd').attr('onclick', "decoObject.share('"+friendShare+"')");
+
+                } else {//苹果手机
+
+                    $('.j-inviWechat').click(function(){
+                        window.webkit.messageHandlers.share.postMessage(wechatShare);
+                    });
+
+                    $('.j-inviFd').click(function(){friendShare
+                        window.webkit.messageHandlers.share.postMessage(friendShare);
+                    });
+
+                }
+
+            } else {
+            }
+        })
+
+        $.get('/site/reward-list', {token:token}, function(s) {
+            if (s.errno == 0) {
+                var data = s.error;
+                if (data.count > 0) {
+                    $('.m-cDefa').hide();
+                }
+                $('#j-main ul').append(data.list);
+            } else {
+            }
+        })
+
+    }
+
+    function getShare(type, data) {
+        var info = {};
+        info.type = type;
+        info.title = data.activity.title;
+        info.desc = data.activity.desc;
+        info.image = data.image;
+        info.url = data.url;
+        return JSON.stringify(info);
+    }
+
+</script>
+</html>

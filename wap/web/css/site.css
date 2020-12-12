@@ -1,0 +1,198 @@
+.header .title:afterarticle, aside, blockquote, body, dd, div, dl, dt, fieldset, figcaption, figure, form, h1, h2, h3, h4, h5, h6, header, input, li, menu, nav, ol, p, pre, section, td, textarea, th, ul {
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    list-style: none
+}
+
+article, aside, blockquote, body, dd, div, dl, dt, fieldset, figcaption, figure, form, h1, h2, h3, h4, h5, h6, header, menu, nav, ol, p, pre, section, td, th, ul {
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none
+}
+
+body, h1, h2, h3, h4, h5, h6 {
+    font-family: unset;
+}
+html {
+    font-family: sans-serif;
+    -webkit-text-size-adjust: none;
+    font-size: 50px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font: .14rem "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
+    color: #494949;
+    background: #fafafa;
+    min-width: 3.2rem;
+    line-height: 1
+}
+ul {
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    list-style: none
+}
+
+@media screen and (min-width: 768px){
+    body,html{
+        max-width: 414px;
+        margin: 0 auto;
+        position: relative;
+    }
+    body .footer{
+        border:none;
+        display: inherit;
+    }
+    body .footer ul {
+        /* display: table-row; */
+        max-width: 414px;
+        display:flex;
+        justify-content: space-around;
+        margin: 0 auto;
+        background: #fff;
+        border-top: 1px solid #ddd;
+    }
+
+    body .footer li {
+        /* display: table-cell; */
+        text-align: center;
+    }
+}
+
+.sq-bookshelf-book-grid{
+    position: relative;
+}
+.sq-bookshelf-book-cover-delete-btn{
+    z-index: 10;
+}
+article, footer, header, menu, nav, section {
+    display: block
+}
+
+body{
+    font-family: 'PingFang'
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0px;
+    font-size: 100%;
+    font-weight: normal;
+}
+
+ol, ul {
+    list-style: none
+}
+
+a {
+    text-decoration: none;
+    color: #333
+}
+
+p {
+    margin: 0px;
+}
+
+.mark, mark {
+    background-color: unset;
+    padding: 0rem;
+}
+
+address, dl {
+    margin: 0px;
+}
+
+dd, dt {
+    line-height: unset;
+}
+
+em, i {
+    font-style: normal
+}
+
+button, input, select, textarea {
+    font-family: inherit;
+    font-size: 100%;
+    vertical-align: middle;
+    outline: 0;
+    border: 0
+}
+
+
+
+@font-face {
+    font-family: 'iconfont';  /* project id 640414 */
+    src: url('//at.alicdn.com/t/font_640414_al67g22cgfu.eot');
+    src: url('//at.alicdn.com/t/font_640414_al67g22cgfu.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_640414_al67g22cgfu.woff2') format('woff2'),
+    url('//at.alicdn.com/t/font_640414_al67g22cgfu.woff') format('woff'),
+    url('//at.alicdn.com/t/font_640414_al67g22cgfu.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_640414_al67g22cgfu.svg#iconfont') format('svg');
+}
+
+body {
+    background: #fff
+}
+
+
+@-webkit-keyframes refreshing {
+    from {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg)
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg)
+    }
+}
+
+@keyframes refreshing {
+    from {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg)
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg)
+    }
+}
+
+@-webkit-keyframes ani-async-image-switch-start {
+    from {
+        opacity: 1
+    }
+    to {
+        opacity: .1
+    }
+}
+
+@keyframes ani-async-image-switch-start {
+    from {
+        opacity: 1
+    }
+    to {
+        opacity: .1
+    }
+}
+
+@-webkit-keyframes ani-async-image-switch-end {
+    from {
+        opacity: .1
+    }
+    to {
+        opacity: 1
+    }
+}
+
+@keyframes ani-async-image-switch-end {
+    from {
+        opacity: .1
+    }
+    to {
+        opacity: 1
+    }
+}
