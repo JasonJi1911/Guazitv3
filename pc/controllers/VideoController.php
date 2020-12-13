@@ -43,6 +43,31 @@ class VideoController extends BaseController
     }
 
     /**
+     * 视频首页
+     */
+    public function actionNewindex()
+    {
+        //获取频道信息
+        $channel_id = Yii::$app->request->get('channel_id', 0);
+
+        //请求首页信息
+        $data = Yii::$app->api->get('/video/index', ['channel_id' => $channel_id]);
+
+        //请求频道、搜索信息
+        $channels = Yii::$app->api->get('/video/channels');
+
+        if(!$data) {
+            return $this->redirect('/site/error');
+        }
+
+        return $this->render('newIndex',[
+            'data'          => $data,
+            'channels'      => $channels,
+            'channel_id'    => $channel_id
+        ]);
+    }
+
+    /**
      * 视频详情播放页
      */
     public function actionDetail()
