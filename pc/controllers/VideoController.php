@@ -71,6 +71,36 @@ class VideoController extends BaseController
         ]);
     }
 
+
+    /**
+     * 视频类目页
+     */
+    public function actionChannel()
+    {
+        //获取频道信息
+        $channel_id = Yii::$app->request->get('channel_id', 0);
+
+        //请求首页信息
+        $data = Yii::$app->api->get('/video/index', ['channel_id' => $channel_id]);
+
+        //请求频道、搜索信息
+        $channels = Yii::$app->api->get('/video/channels');
+
+        //获取热搜
+        $hotWord = Yii::$app->api->get('/search/hot-word');
+
+        if(!$data) {
+            return $this->redirect('/site/error');
+        }
+
+        return $this->render('channel',[
+            'data'          => $data,
+            'channels'      => $channels,
+            'channel_id'    => $channel_id,
+            'hotWord'       => $hotWord
+        ]);
+    }
+
     /**
      * 视频详情播放页
      */
