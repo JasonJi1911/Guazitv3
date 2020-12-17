@@ -2,6 +2,170 @@
 use yii\helpers\Url;
 
 $this->title = '瓜子视频-澳新华人在线视频分享网站';
+
+$js = <<<SCRIPT
+$(function(){
+	$(window).resize(function(event) {
+		var _width = $(window).width();
+		if(_width > 1796){
+			var swiper = new Swiper('.qy-mod-wrap-side .swiper-container', {
+				  slidesPerView: 6,
+				  slidesPerColumn: 2,
+				  navigation: {
+				  nextEl: '.qy-mod-wrap-side .swiper-button-next',
+				  prevEl: '.qy-mod-wrap-side .swiper-button-prev',
+				},
+			});
+		}
+		else if(_width < 1795){
+			var swiper = new Swiper('.qy-mod-wrap-side .swiper-container', {
+				  slidesPerView: 5,
+				  slidesPerColumn: 2,
+				  navigation: {
+				  nextEl: '.qy-mod-wrap-side .swiper-button-next',
+				  prevEl: '.qy-mod-wrap-side .swiper-button-prev',
+				},
+			});
+		}
+		else if(_width < 1366){
+			var swiper = new Swiper('.qy-mod-wrap-side .swiper-container', {
+				  slidesPerView: 4,
+				  slidesPerColumn: 2,
+				  navigation: {
+				  nextEl: '.qy-mod-wrap-side .swiper-button-next',
+				  prevEl: '.qy-mod-wrap-side .swiper-button-prev',
+				},
+			});
+		}
+	}).resize();
+	
+	$('.slider-for').slick({
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false,
+        fade: true,
+        asNavFor: '.slider-nav',
+        autoplay:true
+    });
+	
+    $('.slider-nav').slick({
+        slidesToShow: 10,
+        slidesToScroll: 1,
+        asNavFor: '.slider-for',
+        dots: false,
+        focusOnSelect: true,
+        arrows:false,
+        vertical:true,
+        autoplay:true
+    });
+	
+    $('.qy20-h-carousel__voice-off').click(function(event) {
+        $(this).hide();
+        $('.qy20-h-carousel__voice-on').show();
+    });
+    $('.qy20-h-carousel__voice-on').click(function(event) {
+        $(this).hide();
+        $('.qy20-h-carousel__voice-off').show();
+    });
+    $('.moreBtn').hover(function() {
+        $('.qy20-more-pop').show();
+    });
+    $('.qy20-more-pop').mouseleave(function(event) {
+        $('.qy20-more-pop').hide();
+    });	
+	
+    $('.qy-mod-li').each(function() {
+        $(this).find('.qy-mod-link-wrap').hover(function() {
+
+            $('.qy-mod-li').find('.qy-video-card-small').removeClass('card-hover')
+            var card = $(this).parents('.qy-mod-li').find('.qy-video-card-small')
+            card.toggleClass('card-hover');
+            return false;
+        });
+    });
+	
+    $('.qy-mod-li').mouseleave(function(event) {
+        $('.qy-mod-li').find('.qy-video-card-small').removeClass('card-hover')
+    });
+	
+    $('.backToTop').click(function() {
+        $('html,body').stop(true, false).animate({
+            scrollTop: 0
+        })
+    });
+	
+    $('.panel-item').hover(function() {
+        $('.panel-item').removeClass('slick-current');
+        $(this).addClass('slick-current');
+        var _index = $(this).attr('data-slick-index');
+        $('.slider-for .slick-slide').removeClass('slick-current slick-active');
+        $('.slider-for .slick-slide').attr('aria-hidden','true');
+        $('.slider-for .slick-slide').css('opacity','0');
+        $('.slider-for .slick-slide').eq(_index).addClass('slick-current slick-active');
+        $('.slider-for .slick-slide').eq(_index).attr('aria-hidden','false');
+        $('.slider-for .slick-slide').eq(_index).css('opacity','1');
+    });
+	
+	$('.qy20-nav-channel').each(function(index, el) {
+        	$(this).find('.nav-name').hover(function() {
+        		$('.qy-nav-panel-popup').hide();
+        		$(this).parents('.qy20-nav-channel').find('.qy-nav-panel-popup').show();
+        	});
+        });
+        $('.qy-nav-panel-popup').mouseleave(function(event) {
+        	$('.qy-nav-panel-popup').hide();
+	});
+	
+	$("#det-nav:first").sticky({
+		topSpacing: 400,
+		zIndex:2,
+		stopper: ".qy-footer"
+	});
+	
+	$('#det-nav:first a').on('click', function () {
+	  var scrollAnchor = $(this).attr('src'),
+		scrollPoint = $($(this).attr('href')).offset().top;
+
+		  $('body,html').animate({
+			  scrollTop: scrollPoint
+		  }, 500);
+
+		  return false;
+
+	});
+	  
+	$(window).scroll(function(){
+		
+		var y = $(window).scrollTop();
+		$('#det-nav:first a[href^=#]').each(function (event) {
+			 if (y >= $($(this).attr('href')).offset().top - 60) {
+				 $('#det-nav:first a').not(this).removeClass('active');
+				 $(this).addClass('active');
+			 }
+		 });
+	 
+		if( y + $(window).height() == $(document).height()) {
+			 $('#det-nav:first a').removeClass('active');
+			 $('#det-nav:first a:last').addClass('active');
+		}
+
+	});
+	
+	$("img").delayLoading({
+		defaultImg: "images/loading.jpg",           // 预加载前显示的图片
+		errorImg: "",                        // 读取图片错误时替换图片(默认：与defaultImg一样)
+		imgSrcAttr: "originalSrc",           // 记录图片路径的属性(默认：originalSrc，页面img的src属性也要替换为originalSrc)
+		beforehand: 0,                       // 预先提前多少像素加载图片(默认：0)
+		event: "scroll",                     // 触发加载图片事件(默认：scroll)
+		duration: "normal",                  // 三种预定淡出(入)速度之一的字符串("slow", "normal", or "fast")或表示动画时长的毫秒数值(如：1000),默认:"normal"
+		container: window,                   // 对象加载的位置容器(默认：window)
+		success: function (imgObj) { },      // 加载图片成功后的回调函数(默认：不执行任何操作)
+		error: function (imgObj) { }         // 加载图片失败后的回调函数(默认：不执行任何操作)
+	});
+});
+SCRIPT;
+
+$this->registerJs($js);
 ?>
 <script src="/js/jquery.js"></script>
 <header class="qy-header home2020 qy-header--absolute ">
@@ -159,7 +323,7 @@ $this->title = '瓜子视频-澳新华人在线视频分享网站';
                                                 <li class="header-vippop-wrap"><a href="" class="header-vippop-item J-pop-item T-pop-item"><i class="qy20-header-icon qy20-header-svg qy20-header-welfare-g"><svg aria-hidden="true" class="qy20-header-symbol"><use xlink:href="#qy20-header-welfare-g">
                                                                     <svg id="qy20-header-welfare-g" title="做任务领奖励" viewBox="0 0 1024 1024"><path d="M921.6 0v766.464c0 29.184-22.938 52.736-51.2 52.736H0V52.736C0 23.552 22.938 0 51.2 0h870.4zM155.648 409.6H102.4v307.2h256V447.078a102.349 102.349 0 0 1-1.74-1.024 273.613 273.613 0 0 1-30.926 26.01 200.653 200.653 0 0 1-87.756 37.53l-12.135 1.69a42.291 42.291 0 0 1-8.14.716c-22.221-1.69-41.114-15.82-47.565-35.635-3.84-7.987-10.957-27.443-14.439-66.765zm497.664 59.034l-1.843 5.017c-8.909 26.522-31.744 41.78-56.576 37.683a248.115 248.115 0 0 1-96-35.942 297.677 297.677 0 0 1-36.506-29.338l-1.587.922V716.8h358.4V409.6H663.706c-2.56 30.618-7.066 48.947-10.445 59.034zm-412.62-173.108l-.462 3.38c-1.433 11.98-2.56 28.108-2.816 48.742l-.05 10.752c0 26.266 1.382 45.824 3.225 59.392l.717 4.864 1.28-.358c9.01-3.072 17.664-7.168 25.907-12.442l8.14-5.632c11.777-8.602 22.477-18.227 32.052-29.082a103.066 103.066 0 0 1 0-33.894 187.904 187.904 0 0 0-23.655-22.016l-9.779-7.168a161.024 161.024 0 0 0-30.31-15.104l-4.199-1.434zm337.1-1.433l-1.229.41c-12.032 4.095-23.398 10.086-34.048 18.124-11.776 8.55-22.477 18.176-32.051 29.03a103.066 103.066 0 0 1 0 33.895c7.322 8.09 15.36 15.514 23.706 22.067l9.779 7.168c9.42 6.042 19.61 11.11 30.361 15.104l3.738 1.28.512-3.481a434.176 434.176 0 0 0 3.072-47.616l.256-11.674c0-26.266-1.382-45.824-3.226-59.392l-.768-4.915zM358.4 102.4h-256v204.8h51.2l1.894.051c2.51-30.669 6.964-48.998 10.394-59.085l1.843-5.017c8.909-26.522 31.744-41.78 56.576-37.683a248.934 248.934 0 0 1 96 35.942 293.882 293.882 0 0 1 36.455 29.338c1.024-.717 2.15-1.332 3.276-1.997A49.152 49.152 0 0 1 358.4 256V102.4zm460.8 0H460.8V256c0 4.403-.512 8.704-1.587 12.8a112.64 112.64 0 0 1 3.328 1.946c9.523-9.319 19.917-18.023 30.925-26.01a200.653 200.653 0 0 1 87.756-37.53l12.135-1.638a42.189 42.189 0 0 1 8.14-.768c22.221 1.69 41.114 15.82 47.565 35.635 3.84 7.987 10.957 27.443 14.439 66.816l2.099-.051h153.6V102.4z" fill="#e2b987"></path></svg>
                                                                 </use></svg></i>做任务，领奖励 </a></li>
-                                                <li id="J-header-interact-wrap" class="header-vippop-wrap"><a href="" class="header-vippop-item J-pop-item"><img src="images/vip_x.png" class="label-g label-home2020">星钻VIP享新权益 </a></li>
+                                                <li id="J-header-interact-wrap" class="header-vippop-wrap"><a href="" class="header-vippop-item J-pop-item"><img src="/images/NewVideo/vip_x.png" class="label-g label-home2020">星钻VIP享新权益 </a></li>
                                             </ul>
                                         </div>
                                         <div class="vippop-right">
@@ -167,7 +331,7 @@ $this->title = '瓜子视频-澳新华人在线视频分享网站';
                                                 <span>连续包月超低优惠</span>
                                             </div>
                                             <div class="vipqrcode-title">扫码查看详情</div>
-                                            <div class="vipqrcode-mid"><img src="images/getIMG.jpg" alt="" class="vipqrcode-img"></div>
+                                            <div class="vipqrcode-mid"><img src="/images/NewVideo/getIMG.jpg" alt="" class="vipqrcode-img"></div>
                                             <div class="vipqrcode-bot">建议微信或支付宝扫码<br>支付后刷新享会员权益</div>
                                         </div>
                                     </div>
@@ -194,8 +358,8 @@ $this->title = '瓜子视频-澳新华人在线视频分享网站';
                             <div class="popup-box-arrow"><span class="popup-box-arrowOut"><i class="popup-box-arrowIn"></i></span></div>
                             <div class="qy-header-gameCon">
                                 <ul class="header-gamepop">
-                                    <li class="header-gamepop-item"><a href="" class="header-pop-link"><img src="images/img03.jpg" alt="" class="game-img"></a></li>
-                                    <li class="header-gamepop-item"><a href="" class="header-pop-link"><img src="images/img03.jpg" alt="" class="game-img"></a></li>
+                                    <li class="header-gamepop-item"><a href="" class="header-pop-link"><img src="/images/NewVideo/img03.jpg" alt="" class="game-img"></a></li>
+                                    <li class="header-gamepop-item"><a href="" class="header-pop-link"><img src="/images/NewVideo/img03.jpg" alt="" class="game-img"></a></li>
                                 </ul>
                                 <div class="header-pop-button"><a href="" class="game-more">查看更多</a></div>
                             </div>
@@ -332,7 +496,7 @@ $this->title = '瓜子视频-澳新华人在线视频分享网站';
                     <div class="T-drop-hover">
                         <div class="T-drop-click">
                             <div class="header-sideItemCon">
-                                <a class="header-userLink"><img src="images/header-userImg-default-dark.png" alt="" class="header-userImg"></a>
+                                <a class="header-userLink"><img src="/images/NewVideo/header-userImg-default-dark.png" alt="" class="header-userImg"></a>
                                 <span class="header-sideItemTit T-icon-txt">登录</span><i class="qy-common-icon qy-common-msgdot"></i>
                             </div>
                         </div>
@@ -342,7 +506,7 @@ $this->title = '瓜子视频-澳新华人在线视频分享网站';
                                     <div class="qy-popup-box">
                                         <div class="popup-box-arrow"><span class="popup-box-arrowOut"><i class="popup-box-arrowIn"></i></span></div>
                                         <div class="login-top">
-                                            <div class="img-box"><a href="javascript:void(0);" class="img-link"><img src="images/header-userImg-default-dark.png" class="avatar-img"></a></div>
+                                            <div class="img-box"><a href="javascript:void(0);" class="img-link"><img src="/images/NewVideo/header-userImg-default-dark.png" class="avatar-img"></a></div>
                                             <div class="title">
                                                 <a class="user-link">登录</a><i class="slash">/</i>
                                                 <a class="user-link">注册</a><span class="user-txt">后，你可以：</span>
@@ -460,7 +624,7 @@ $this->title = '瓜子视频-澳新华人在线视频分享网站';
                                         <div class="qy20-nav-list qy20-nav-channel">
                                             <div class="nav-channel-box">
                                                 <div class="channel-box-inner">
-                                                    <a href="<?= Url::to(['index', 'channel_id' => $channel['channel_id']])?>"
+                                                    <a href="<?= Url::to(['video/newindex', 'channel_id' => $channel['channel_id']])?>"
                                                        class="qy20-nav-link channel-link">
                                                         <span class="nav-en">WATCH ME</span>
                                                         <span class="nav-name"><?= $channel['channel_name']?></span>
@@ -480,105 +644,316 @@ $this->title = '瓜子视频-澳新华人在线视频分享网站';
 </div>
 <div class="c"></div>
 
-<script src="/js/lib.js"></script>
-<script src="/js/swiper-bundle.min.js"></script>
-<script>
-    var swiper = new Swiper('#tv .swiper-container1', {
-        slidesPerView: 6,
-        slidesPerColumn: 2,
-        navigation: {
-            nextEl: '#tv .swiper-button-next',
-            prevEl: '#tv .swiper-button-prev',
-        },
-    });
-    var swiper = new Swiper('#moive .swiper-container2', {
-        slidesPerView: 6,
-        slidesPerColumn: 2,
-        navigation: {
-            nextEl: '#moive .swiper-button-next',
-            prevEl: '#moive .swiper-button-prev',
-        },
-    });
-    var swiper = new Swiper('#zongyi .swiper-container3', {
-        slidesPerView: 6,
-        slidesPerColumn: 2,
-        navigation: {
-            nextEl: '#zongyi .swiper-button-next',
-            prevEl: '#zongyi .swiper-button-prev',
-        },
-    });
-    var swiper = new Swiper('#dongman .swiper-container4', {
-        slidesPerView: 6,
-        slidesPerColumn: 2,
-        navigation: {
-            nextEl: '#dongman .swiper-button-next',
-            prevEl: '#dongman .swiper-button-prev',
-        },
-    });
-</script>
-<script>
-    $('.slider-for').slick({
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        arrows: false,
-        fade: true,
-        asNavFor: '.slider-nav',
-        autoplay:true
-    });
-    $('.slider-nav').slick({
-        slidesToShow: 10,
-        slidesToScroll: 1,
-        asNavFor: '.slider-for',
-        dots: false,
-        focusOnSelect: true,
-        arrows:false,
-        vertical:true,
-        autoplay:true
-    });
-    $('.qy20-h-carousel__voice-off').click(function(event) {
-        $(this).hide();
-        $('.qy20-h-carousel__voice-on').show();
-    });
-    $('.qy20-h-carousel__voice-on').click(function(event) {
-        $(this).hide();
-        $('.qy20-h-carousel__voice-off').show();
-    });
-    $('.moreBtn').hover(function() {
-        $('.qy20-more-pop').show();
-    });
-    $('.qy20-more-pop').mouseleave(function(event) {
-        $('.qy20-more-pop').hide();
-    });
-    $('.qy-mod-li').each(function() {
-        $(this).find('.qy-mod-link-wrap').hover(function() {
-
-            $('.qy-mod-li').find('.qy-video-card-small').removeClass('card-hover')
-            var card = $(this).parents('.qy-mod-li').find('.qy-video-card-small')
-            card.toggleClass('card-hover');
-            return false;
-        });
-    });
-    $('.qy-mod-li').mouseleave(function(event) {
-        $('.qy-mod-li').find('.qy-video-card-small').removeClass('card-hover')
-    });
-    $('.backToTop').click(function() {
-        $('html,body').stop(true, false).animate({
-            scrollTop: 0
-        })
-    });
-    /*$('.banner').on('afterChange', function(event, slick, currentSlide, nextSlide){
-        $('.slider-nav li').eq(currentSlide).addClass('slick-current').siblings('.panel-item').removeClass('slick-current');
-    });*/
-    $('.panel-item').hover(function() {
-        $('.panel-item').removeClass('slick-current');
-        $(this).addClass('slick-current');
-        var _index = $(this).attr('data-slick-index');
-        $('.slider-for .slick-slide').removeClass('slick-current slick-active');
-        $('.slider-for .slick-slide').attr('aria-hidden','true');
-        $('.slider-for .slick-slide').css('opacity','0');
-        $('.slider-for .slick-slide').eq(_index).addClass('slick-current slick-active');
-        $('.slider-for .slick-slide').eq(_index).attr('aria-hidden','false');
-        $('.slider-for .slick-slide').eq(_index).css('opacity','1');
-    });
-
-</script>
+<div class="qy20-content-wrap">
+    <div class="wp">
+        <?php if (!empty($data['label'])) :?>
+            <?php foreach ($data['label'] as  $labels): ?>
+                <?php if (!isset($labels['advert_id'])) : ?>
+                    <?php
+                    $tag = '';
+                    $channel = '';
+                    foreach ($labels['search'] as $s_k => $s_v) {
+                        if($s_v['field'] == 'channel_id') {
+                            $channel = $s_v['value'];
+                        }
+                        if($s_v['field'] == 'tag') {
+                            $tag = $s_v['value'];
+                        }
+                    }
+                    ?>
+                    <a class="anchor" id="section<?= $channel?>"></a>
+                    <div class="qy-mod-wrap-side">
+                        <div class="mod-left right-col-1">
+                            <div class="qy-mod-header">
+                                <h2 class="qy-mod-title">
+                                    <a class="link-txt" href="<?= Url::to(['list', 'channel_id' => $channel, 'tag' => $tag])?>">
+                                        <span class="qy-mod-text"><?= $labels['title']?></span></a>
+                                </h2>
+                                <div class="qy-mod-nav-link">
+                                    <ul class="qy-mod-crumb hasTurnBtn">
+                                        <!--<li><a href="">内地</a><em>|</em></li>
+                                        <li><a href="">自制剧</a><em>|</em></li>
+                                        <li><a href="">网络剧</a><em>|</em></li>
+                                        <li><a href="">迷雾剧场</a><em>|</em></li>
+                                        <li><a href="">哎青春剧场</a><em>|</em></li>
+                                        <li><a href="">神剧亮了</a><em>|</em></li>-->
+                                        <li><a href="<?= Url::to(['list', 'channel_id' => $channel, 'tag' => $tag])?>">
+                                                更多 ></a></li>
+                                    </ul>
+                                </div>
+                                <!-- Add Arrows -->
+                                <div class="swiper-button-next"><span rseat="712211_dianshiju_right" class="turn turn-right" data-v-74838658="" data-v-11eb7ce2=""><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" class="rightarrow_cu" data-v-74838658="" data-v-11eb7ce2=""><path d="M10 0C4.477 0 0 4.477 0 10s4.477 10 10 10 10-4.477 10-10S15.523 0 10 0zM7.561 4.95a1.429 1.429 0 0 1 2.02 0L14.633 10l-5.05 5.05-.125.112a1.429 1.429 0 0 1-1.896-.111l-.11-.125a1.429 1.429 0 0 1 .11-1.896l3.03-3.03-3.03-3.03-.11-.125a1.429 1.429 0 0 1 .11-1.896z" ></path></svg></span></div>
+                                <div class="swiper-button-prev"><span rseat="712211_dianshiju_left" class="turn turn-left" data-v-74838658="" data-v-11eb7ce2=""><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" class="leftarrow_cu" data-v-74838658="" data-v-11eb7ce2=""><path d="M10 0c5.523 0 10 4.477 10 10s-4.477 10-10 10S0 15.523 0 10 4.477 0 10 0zm2.439 4.95a1.429 1.429 0 0 0-2.02 0L5.367 10l5.05 5.05.125.112c.56.444 1.378.407 1.896-.111l.11-.125a1.429 1.429 0 0 0-.11-1.896L9.409 10l3.03-3.03.11-.125a1.429 1.429 0 0 0-.11-1.896z"></path></svg></span></div>
+                            </div>
+                            <div class="c"></div>
+                            <div class="qy-mod-list swiper-container swiper-container1">
+                                <div class="qy-mod-ul swiper-wrapper">
+                                    <?php foreach ($labels['list'] as $key => $list): ?>
+                                        <?php if($key < 9) :?>
+                                            <div class="qy-mod-li swiper-slide">
+                                                <div class="qy-mod-img vertical">
+                                                    <div class="qy-mod-link-wrap">
+                                                        <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>"
+                                                           class="qy-mod-link">
+                                                            <div style="height:100%;overflow:hidden;">
+                                                                <img src="<?= $list['cover']?>" class="qy-mod-cover">
+                                                            </div>
+<!--                                                            <div class="icon-tr">
+                                                                <img src="images/VIP.png">
+                                                            </div>-->
+                                                            <div class="icon-br icon-b">
+                                                                <span class="qy-mod-label">
+                                                                    <?= $list['flag']?>
+                                                                </span>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                    <div class="title-wrap">
+                                                        <p class="main">
+                                                            <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>" class="link-txt" >
+                                                                <span ><?= $list['video_name']?></span>
+                                                            </a>
+                                                        </p>
+                                                        <p class="sub"><?= $list['play_times']?></p>
+                                                    </div>
+                                                </div>
+                                                <div class="qy-video-card-small type-vertical">
+                                                    <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>"
+                                                       class="qy-vc-small_link">
+                                                        <div class="qy-vc-small_video">
+                                                            <img src="<?= $list['cover']?>" alt="" class="qy-vc-small_img">
+                                                            <span class="qy-vc-small_play">
+												                <svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="200" height="200" class="vc-play-svg"><path d="M884.622222 440.888889L216.177778 25.6C159.288889-11.377778 85.333333 31.288889 85.333333 96.711111v830.577778c0 68.266667 73.955556 108.088889 130.844445 71.111111l671.288889-415.288889c51.2-31.288889 51.2-110.933333-2.844445-142.222222z"></path></svg>
+                                                            </span>
+                                                            <span class="qy-vc-small-collect">
+												                <span class="qy-vc-small_collected-text">收藏</span>
+                                                                <svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="200" height="200" class="vc-collect-svg collect-svg"><path d="M767.748389 673.645714a130.925714 130.925714 0 0 1 27.209142-84.845714l145.334858-187.757714-225.865143-65.243429a129.828571 129.828571 0 0 1-72.045715-52.955428L512.187246 86.820571l-130.194286 196.022858c-16.969143 25.6-42.496 44.397714-72.045714 52.955428l-225.865143 65.243429L229.343817 588.8c18.724571 24.210286 28.379429 54.272 27.282286 84.845714l-8.484572 237.421715 219.209143-81.188572c28.964571-10.678857 60.708571-10.678857 89.673143 0l219.209143 81.188572-8.484571-237.421715z m-275.017143 224.841143l-242.541715 89.819429a56.393143 56.393143 0 0 1-72.630857-34.157715 58.002286 58.002286 0 0 1-3.364571-21.796571l9.362286-261.339429a57.782857 57.782857 0 0 0-11.995429-37.449142L12.255817 427.739429a57.782857 57.782857 0 0 1 9.654857-80.457143 56.32 56.32 0 0 1 19.382857-10.020572l248.32-71.753143a56.685714 56.685714 0 0 0 31.451429-23.113142L465.156389 25.307429a56.173714 56.173714 0 0 1 93.988571 0l144.091429 217.088a56.685714 56.685714 0 0 0 31.451428 23.113142l248.393143 71.68a57.417143 57.417143 0 0 1 29.037714 90.550858l-159.305143 205.824a57.782857 57.782857 0 0 0-11.995428 37.449142l9.362286 261.339429a57.051429 57.051429 0 0 1-54.491429 59.392 55.954286 55.954286 0 0 1-21.504-3.437714l-242.541714-89.819429a55.954286 55.954286 0 0 0-38.912 0z"></path></svg>
+											                </span>
+                                                        </div>
+                                                    </a>
+                                                    <div class="qy-vc-small_content">
+                                                        <a href="" class="qy-vc-small_title"><?= $list['video_name']?></a>
+                                                        <div class="qy-vc-small_type">
+                                                            <label class="label-type">类型：</label>
+                                                            <span class="label-con">
+												                <span class="label">偶像</span>
+												                <span class="label">言情</span>
+                                                                <span class="label">古装</span>
+											                </span>
+                                                        </div>
+                                                        <div>
+                                                            <div class="qy-vc-small_type">
+                                                                <label class="label-type">主演：</label>
+                                                                <span class="label-con">
+                                                                    <span class="label">王大陆</span>
+                                                                    <span class="label">王大陆</span>
+                                                                    <span class="label">王大陆</span>
+                                                                    <span class="label">王大陆</span>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="qy-vc-small_desc">溍炀两国，正邪对立，分庭抗礼。炀王楚馗大肆征战，战火纷飞。忠义的溍王抵抗楚馗未成，退守北方，养兵蓄锐，以待攻敌之日。...</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php endif;?>
+                                    <?php endforeach;?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mod-right qy-col-1">
+                            <div class="qy-mod-header">
+                                <h2 class="qy-mod-title">
+                                    <a class="link-txt" href=""><span class="qy-mod-text">风云榜</span></a>
+                                    <div class="qy-mod-nav-link">
+                                        <ul class="qy-mod-crumb">
+                                            <li class="crumb-li"><a href="">全部榜单 &gt;</a></li>
+                                        </ul>
+                                    </div>
+                                </h2>
+                            </div>
+                            <div class="qy-rank-index">
+                                <ul class="qy-rank-list">
+                                    <li class="qy-rank-item qy-rank-1">
+                                        <a href="" class="qy-rank-img-link">
+                                            <span class="qy-rank-no">NO</span>
+                                            <div class="qy-rank-num">1</div>
+                                            <div class="qy-rank-content">
+                                                <div class="qy-rank-title">大秦赋</div>
+                                                <div class="qy-rank-detail">
+											<span class="qy-rank-hot">
+												<svg width="9px" height="12px" viewBox="0 0 9 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M3.9421478,-6.66133815e-16 L4.1052901,0.092246338 L4.55975388,0.517703424 C5.74598595,1.64483368 6.68865412,2.75575744 6.47111799,4.88653712 C6.38953215,5.16307536 6.55268914,5.43966836 6.71584614,5.62417928 C6.96057429,5.71637086 7.28688828,5.71637086 7.53161643,5.34742202 L7.77936845,5.12890809 C8.0402125,4.90584563 8.20235664,4.79432728 8.26580086,4.79432728 C8.75527185,5.53191469 9,6.36165718 9,7.56034851 C9,10.5104791 6.38953215,11.6168146 5.24746257,11.8934076 C4.59484928,12.0779185 3.45267681,11.985873 3.12637752,11.8934076 C2.31060723,11.6168146 1.49483695,11.0638294 0.923794809,10.3259864 C-0.136703622,8.85112192 -0.299845921,6.82248732 0.515909666,5.16307536 C0.84222366,4.51778904 1.33167995,3.96469431 1.90272209,3.31920722 L2.40317485,2.79700735 C3.05897374,2.09098319 3.64594387,1.32649007 3.88877021,0.270268152 L3.9421478,-6.66133815e-16 Z M7.78806257,6.45966305 C7.40290132,6.68693621 6.95546408,6.73209791 6.52415274,6.61251383 L6.36332002,6.55998126 L6.13110127,6.47250209 L5.96672022,6.28660691 C5.58613535,5.85621122 5.36171944,5.34118153 5.47313971,4.76284973 L5.481,4.731 L5.49439334,4.57127216 C5.56830571,3.45646298 5.27635777,2.72874729 4.44785317,1.82437353 L4.406,1.781 L4.35405123,1.88092288 C4.02933909,2.46526132 3.56195951,3.03069776 2.88515022,3.73986713 L2.65169888,3.98180345 L2.08785557,4.63095648 C2.02217858,4.70991277 1.96421364,4.781918 1.90430615,4.85847247 C1.68748527,5.13554318 1.52846336,5.37671649 1.41333429,5.60424317 C0.760633722,6.93196823 0.890432522,8.56666025 1.71461765,9.71394133 C2.14680536,10.2723706 2.78785928,10.7227138 3.39901802,10.9312916 C3.67277305,11.0088672 4.60721156,11.0352246 5.01208146,10.9215045 C6.67582033,10.5185706 8,9.38659986 8,7.56034851 C8,7.20547479 7.97667435,6.89396702 7.92818517,6.61287895 L7.884,6.396 L7.78806257,6.45966305 Z" id="Shape-sp-126-1-2" fill="#FF1D1D" fill-opacity=""></path></svg>
+												<span class="qy-rank__hotscore">7012</span>
+											</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="qy-rank-item qy-rank-2">
+                                        <a href="" class="qy-rank-img-link">
+                                            <span class="qy-rank-no">NO</span>
+                                            <div class="qy-rank-num">2</div>
+                                            <div class="qy-rank-content">
+                                                <div class="qy-rank-title">狼殿下</div>
+                                                <div class="qy-rank-detail">
+											<span class="qy-rank-hot">
+												<svg width="9px" height="12px" viewBox="0 0 9 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M3.9421478,-6.66133815e-16 L4.1052901,0.092246338 L4.55975388,0.517703424 C5.74598595,1.64483368 6.68865412,2.75575744 6.47111799,4.88653712 C6.38953215,5.16307536 6.55268914,5.43966836 6.71584614,5.62417928 C6.96057429,5.71637086 7.28688828,5.71637086 7.53161643,5.34742202 L7.77936845,5.12890809 C8.0402125,4.90584563 8.20235664,4.79432728 8.26580086,4.79432728 C8.75527185,5.53191469 9,6.36165718 9,7.56034851 C9,10.5104791 6.38953215,11.6168146 5.24746257,11.8934076 C4.59484928,12.0779185 3.45267681,11.985873 3.12637752,11.8934076 C2.31060723,11.6168146 1.49483695,11.0638294 0.923794809,10.3259864 C-0.136703622,8.85112192 -0.299845921,6.82248732 0.515909666,5.16307536 C0.84222366,4.51778904 1.33167995,3.96469431 1.90272209,3.31920722 L2.40317485,2.79700735 C3.05897374,2.09098319 3.64594387,1.32649007 3.88877021,0.270268152 L3.9421478,-6.66133815e-16 Z M7.78806257,6.45966305 C7.40290132,6.68693621 6.95546408,6.73209791 6.52415274,6.61251383 L6.36332002,6.55998126 L6.13110127,6.47250209 L5.96672022,6.28660691 C5.58613535,5.85621122 5.36171944,5.34118153 5.47313971,4.76284973 L5.481,4.731 L5.49439334,4.57127216 C5.56830571,3.45646298 5.27635777,2.72874729 4.44785317,1.82437353 L4.406,1.781 L4.35405123,1.88092288 C4.02933909,2.46526132 3.56195951,3.03069776 2.88515022,3.73986713 L2.65169888,3.98180345 L2.08785557,4.63095648 C2.02217858,4.70991277 1.96421364,4.781918 1.90430615,4.85847247 C1.68748527,5.13554318 1.52846336,5.37671649 1.41333429,5.60424317 C0.760633722,6.93196823 0.890432522,8.56666025 1.71461765,9.71394133 C2.14680536,10.2723706 2.78785928,10.7227138 3.39901802,10.9312916 C3.67277305,11.0088672 4.60721156,11.0352246 5.01208146,10.9215045 C6.67582033,10.5185706 8,9.38659986 8,7.56034851 C8,7.20547479 7.97667435,6.89396702 7.92818517,6.61287895 L7.884,6.396 L7.78806257,6.45966305 Z" id="Shape-sp-126-1-2" fill="#FF1D1D" fill-opacity=""></path></svg>
+												<span class="qy-rank__hotscore">7012</span>
+											</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="qy-rank-item qy-rank-3">
+                                        <a href="" class="qy-rank-img-link">
+                                            <span class="qy-rank-no">NO</span>
+                                            <div class="qy-rank-num">3</div>
+                                            <div class="qy-rank-content">
+                                                <div class="qy-rank-title">功夫战警</div>
+                                                <div class="qy-rank-detail">
+											<span class="qy-rank-hot">
+												<svg width="9px" height="12px" viewBox="0 0 9 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M3.9421478,-6.66133815e-16 L4.1052901,0.092246338 L4.55975388,0.517703424 C5.74598595,1.64483368 6.68865412,2.75575744 6.47111799,4.88653712 C6.38953215,5.16307536 6.55268914,5.43966836 6.71584614,5.62417928 C6.96057429,5.71637086 7.28688828,5.71637086 7.53161643,5.34742202 L7.77936845,5.12890809 C8.0402125,4.90584563 8.20235664,4.79432728 8.26580086,4.79432728 C8.75527185,5.53191469 9,6.36165718 9,7.56034851 C9,10.5104791 6.38953215,11.6168146 5.24746257,11.8934076 C4.59484928,12.0779185 3.45267681,11.985873 3.12637752,11.8934076 C2.31060723,11.6168146 1.49483695,11.0638294 0.923794809,10.3259864 C-0.136703622,8.85112192 -0.299845921,6.82248732 0.515909666,5.16307536 C0.84222366,4.51778904 1.33167995,3.96469431 1.90272209,3.31920722 L2.40317485,2.79700735 C3.05897374,2.09098319 3.64594387,1.32649007 3.88877021,0.270268152 L3.9421478,-6.66133815e-16 Z M7.78806257,6.45966305 C7.40290132,6.68693621 6.95546408,6.73209791 6.52415274,6.61251383 L6.36332002,6.55998126 L6.13110127,6.47250209 L5.96672022,6.28660691 C5.58613535,5.85621122 5.36171944,5.34118153 5.47313971,4.76284973 L5.481,4.731 L5.49439334,4.57127216 C5.56830571,3.45646298 5.27635777,2.72874729 4.44785317,1.82437353 L4.406,1.781 L4.35405123,1.88092288 C4.02933909,2.46526132 3.56195951,3.03069776 2.88515022,3.73986713 L2.65169888,3.98180345 L2.08785557,4.63095648 C2.02217858,4.70991277 1.96421364,4.781918 1.90430615,4.85847247 C1.68748527,5.13554318 1.52846336,5.37671649 1.41333429,5.60424317 C0.760633722,6.93196823 0.890432522,8.56666025 1.71461765,9.71394133 C2.14680536,10.2723706 2.78785928,10.7227138 3.39901802,10.9312916 C3.67277305,11.0088672 4.60721156,11.0352246 5.01208146,10.9215045 C6.67582033,10.5185706 8,9.38659986 8,7.56034851 C8,7.20547479 7.97667435,6.89396702 7.92818517,6.61287895 L7.884,6.396 L7.78806257,6.45966305 Z" id="Shape-sp-126-1-2" fill="#FF1D1D" fill-opacity=""></path></svg>
+												<span class="qy-rank__hotscore">7012</span>
+											</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="qy-rank-item qy-rank-4">
+                                        <a href="" class="qy-rank-img-link">
+                                            <span class="qy-rank-no">NO</span>
+                                            <div class="qy-rank-num">4</div>
+                                            <div class="qy-rank-content">
+                                                <div class="qy-rank-title">鹿鼎记</div>
+                                                <div class="qy-rank-detail">
+											<span class="qy-rank-hot">
+												<svg width="9px" height="12px" viewBox="0 0 9 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M3.9421478,-6.66133815e-16 L4.1052901,0.092246338 L4.55975388,0.517703424 C5.74598595,1.64483368 6.68865412,2.75575744 6.47111799,4.88653712 C6.38953215,5.16307536 6.55268914,5.43966836 6.71584614,5.62417928 C6.96057429,5.71637086 7.28688828,5.71637086 7.53161643,5.34742202 L7.77936845,5.12890809 C8.0402125,4.90584563 8.20235664,4.79432728 8.26580086,4.79432728 C8.75527185,5.53191469 9,6.36165718 9,7.56034851 C9,10.5104791 6.38953215,11.6168146 5.24746257,11.8934076 C4.59484928,12.0779185 3.45267681,11.985873 3.12637752,11.8934076 C2.31060723,11.6168146 1.49483695,11.0638294 0.923794809,10.3259864 C-0.136703622,8.85112192 -0.299845921,6.82248732 0.515909666,5.16307536 C0.84222366,4.51778904 1.33167995,3.96469431 1.90272209,3.31920722 L2.40317485,2.79700735 C3.05897374,2.09098319 3.64594387,1.32649007 3.88877021,0.270268152 L3.9421478,-6.66133815e-16 Z M7.78806257,6.45966305 C7.40290132,6.68693621 6.95546408,6.73209791 6.52415274,6.61251383 L6.36332002,6.55998126 L6.13110127,6.47250209 L5.96672022,6.28660691 C5.58613535,5.85621122 5.36171944,5.34118153 5.47313971,4.76284973 L5.481,4.731 L5.49439334,4.57127216 C5.56830571,3.45646298 5.27635777,2.72874729 4.44785317,1.82437353 L4.406,1.781 L4.35405123,1.88092288 C4.02933909,2.46526132 3.56195951,3.03069776 2.88515022,3.73986713 L2.65169888,3.98180345 L2.08785557,4.63095648 C2.02217858,4.70991277 1.96421364,4.781918 1.90430615,4.85847247 C1.68748527,5.13554318 1.52846336,5.37671649 1.41333429,5.60424317 C0.760633722,6.93196823 0.890432522,8.56666025 1.71461765,9.71394133 C2.14680536,10.2723706 2.78785928,10.7227138 3.39901802,10.9312916 C3.67277305,11.0088672 4.60721156,11.0352246 5.01208146,10.9215045 C6.67582033,10.5185706 8,9.38659986 8,7.56034851 C8,7.20547479 7.97667435,6.89396702 7.92818517,6.61287895 L7.884,6.396 L7.78806257,6.45966305 Z" id="Shape-sp-126-1-2" fill="#FF1D1D" fill-opacity=""></path></svg>
+												<span class="qy-rank__hotscore">7012</span>
+											</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="qy-rank-item qy-rank-5">
+                                        <a href="" class="qy-rank-img-link">
+                                            <span class="qy-rank-no">NO</span>
+                                            <div class="qy-rank-num">5</div>
+                                            <div class="qy-rank-content">
+                                                <div class="qy-rank-title">鹿鼎记</div>
+                                                <div class="qy-rank-detail">
+											<span class="qy-rank-hot">
+												<svg width="9px" height="12px" viewBox="0 0 9 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M3.9421478,-6.66133815e-16 L4.1052901,0.092246338 L4.55975388,0.517703424 C5.74598595,1.64483368 6.68865412,2.75575744 6.47111799,4.88653712 C6.38953215,5.16307536 6.55268914,5.43966836 6.71584614,5.62417928 C6.96057429,5.71637086 7.28688828,5.71637086 7.53161643,5.34742202 L7.77936845,5.12890809 C8.0402125,4.90584563 8.20235664,4.79432728 8.26580086,4.79432728 C8.75527185,5.53191469 9,6.36165718 9,7.56034851 C9,10.5104791 6.38953215,11.6168146 5.24746257,11.8934076 C4.59484928,12.0779185 3.45267681,11.985873 3.12637752,11.8934076 C2.31060723,11.6168146 1.49483695,11.0638294 0.923794809,10.3259864 C-0.136703622,8.85112192 -0.299845921,6.82248732 0.515909666,5.16307536 C0.84222366,4.51778904 1.33167995,3.96469431 1.90272209,3.31920722 L2.40317485,2.79700735 C3.05897374,2.09098319 3.64594387,1.32649007 3.88877021,0.270268152 L3.9421478,-6.66133815e-16 Z M7.78806257,6.45966305 C7.40290132,6.68693621 6.95546408,6.73209791 6.52415274,6.61251383 L6.36332002,6.55998126 L6.13110127,6.47250209 L5.96672022,6.28660691 C5.58613535,5.85621122 5.36171944,5.34118153 5.47313971,4.76284973 L5.481,4.731 L5.49439334,4.57127216 C5.56830571,3.45646298 5.27635777,2.72874729 4.44785317,1.82437353 L4.406,1.781 L4.35405123,1.88092288 C4.02933909,2.46526132 3.56195951,3.03069776 2.88515022,3.73986713 L2.65169888,3.98180345 L2.08785557,4.63095648 C2.02217858,4.70991277 1.96421364,4.781918 1.90430615,4.85847247 C1.68748527,5.13554318 1.52846336,5.37671649 1.41333429,5.60424317 C0.760633722,6.93196823 0.890432522,8.56666025 1.71461765,9.71394133 C2.14680536,10.2723706 2.78785928,10.7227138 3.39901802,10.9312916 C3.67277305,11.0088672 4.60721156,11.0352246 5.01208146,10.9215045 C6.67582033,10.5185706 8,9.38659986 8,7.56034851 C8,7.20547479 7.97667435,6.89396702 7.92818517,6.61287895 L7.884,6.396 L7.78806257,6.45966305 Z" id="Shape-sp-126-1-2" fill="#FF1D1D" fill-opacity=""></path></svg>
+												<span class="qy-rank__hotscore">7012</span>
+											</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="qy-rank-item qy-rank-6">
+                                        <a href="" class="qy-rank-img-link">
+                                            <span class="qy-rank-no">NO</span>
+                                            <div class="qy-rank-num">6</div>
+                                            <div class="qy-rank-content">
+                                                <div class="qy-rank-title">鹿鼎记</div>
+                                                <div class="qy-rank-detail">
+											<span class="qy-rank-hot">
+												<svg width="9px" height="12px" viewBox="0 0 9 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M3.9421478,-6.66133815e-16 L4.1052901,0.092246338 L4.55975388,0.517703424 C5.74598595,1.64483368 6.68865412,2.75575744 6.47111799,4.88653712 C6.38953215,5.16307536 6.55268914,5.43966836 6.71584614,5.62417928 C6.96057429,5.71637086 7.28688828,5.71637086 7.53161643,5.34742202 L7.77936845,5.12890809 C8.0402125,4.90584563 8.20235664,4.79432728 8.26580086,4.79432728 C8.75527185,5.53191469 9,6.36165718 9,7.56034851 C9,10.5104791 6.38953215,11.6168146 5.24746257,11.8934076 C4.59484928,12.0779185 3.45267681,11.985873 3.12637752,11.8934076 C2.31060723,11.6168146 1.49483695,11.0638294 0.923794809,10.3259864 C-0.136703622,8.85112192 -0.299845921,6.82248732 0.515909666,5.16307536 C0.84222366,4.51778904 1.33167995,3.96469431 1.90272209,3.31920722 L2.40317485,2.79700735 C3.05897374,2.09098319 3.64594387,1.32649007 3.88877021,0.270268152 L3.9421478,-6.66133815e-16 Z M7.78806257,6.45966305 C7.40290132,6.68693621 6.95546408,6.73209791 6.52415274,6.61251383 L6.36332002,6.55998126 L6.13110127,6.47250209 L5.96672022,6.28660691 C5.58613535,5.85621122 5.36171944,5.34118153 5.47313971,4.76284973 L5.481,4.731 L5.49439334,4.57127216 C5.56830571,3.45646298 5.27635777,2.72874729 4.44785317,1.82437353 L4.406,1.781 L4.35405123,1.88092288 C4.02933909,2.46526132 3.56195951,3.03069776 2.88515022,3.73986713 L2.65169888,3.98180345 L2.08785557,4.63095648 C2.02217858,4.70991277 1.96421364,4.781918 1.90430615,4.85847247 C1.68748527,5.13554318 1.52846336,5.37671649 1.41333429,5.60424317 C0.760633722,6.93196823 0.890432522,8.56666025 1.71461765,9.71394133 C2.14680536,10.2723706 2.78785928,10.7227138 3.39901802,10.9312916 C3.67277305,11.0088672 4.60721156,11.0352246 5.01208146,10.9215045 C6.67582033,10.5185706 8,9.38659986 8,7.56034851 C8,7.20547479 7.97667435,6.89396702 7.92818517,6.61287895 L7.884,6.396 L7.78806257,6.45966305 Z" id="Shape-sp-126-1-2" fill="#FF1D1D" fill-opacity=""></path></svg>
+												<span class="qy-rank__hotscore">7012</span>
+											</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="qy-rank-item qy-rank-7">
+                                        <a href="" class="qy-rank-img-link">
+                                            <span class="qy-rank-no">NO</span>
+                                            <div class="qy-rank-num">7</div>
+                                            <div class="qy-rank-content">
+                                                <div class="qy-rank-title">鹿鼎记</div>
+                                                <div class="qy-rank-detail">
+											<span class="qy-rank-hot">
+												<svg width="9px" height="12px" viewBox="0 0 9 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M3.9421478,-6.66133815e-16 L4.1052901,0.092246338 L4.55975388,0.517703424 C5.74598595,1.64483368 6.68865412,2.75575744 6.47111799,4.88653712 C6.38953215,5.16307536 6.55268914,5.43966836 6.71584614,5.62417928 C6.96057429,5.71637086 7.28688828,5.71637086 7.53161643,5.34742202 L7.77936845,5.12890809 C8.0402125,4.90584563 8.20235664,4.79432728 8.26580086,4.79432728 C8.75527185,5.53191469 9,6.36165718 9,7.56034851 C9,10.5104791 6.38953215,11.6168146 5.24746257,11.8934076 C4.59484928,12.0779185 3.45267681,11.985873 3.12637752,11.8934076 C2.31060723,11.6168146 1.49483695,11.0638294 0.923794809,10.3259864 C-0.136703622,8.85112192 -0.299845921,6.82248732 0.515909666,5.16307536 C0.84222366,4.51778904 1.33167995,3.96469431 1.90272209,3.31920722 L2.40317485,2.79700735 C3.05897374,2.09098319 3.64594387,1.32649007 3.88877021,0.270268152 L3.9421478,-6.66133815e-16 Z M7.78806257,6.45966305 C7.40290132,6.68693621 6.95546408,6.73209791 6.52415274,6.61251383 L6.36332002,6.55998126 L6.13110127,6.47250209 L5.96672022,6.28660691 C5.58613535,5.85621122 5.36171944,5.34118153 5.47313971,4.76284973 L5.481,4.731 L5.49439334,4.57127216 C5.56830571,3.45646298 5.27635777,2.72874729 4.44785317,1.82437353 L4.406,1.781 L4.35405123,1.88092288 C4.02933909,2.46526132 3.56195951,3.03069776 2.88515022,3.73986713 L2.65169888,3.98180345 L2.08785557,4.63095648 C2.02217858,4.70991277 1.96421364,4.781918 1.90430615,4.85847247 C1.68748527,5.13554318 1.52846336,5.37671649 1.41333429,5.60424317 C0.760633722,6.93196823 0.890432522,8.56666025 1.71461765,9.71394133 C2.14680536,10.2723706 2.78785928,10.7227138 3.39901802,10.9312916 C3.67277305,11.0088672 4.60721156,11.0352246 5.01208146,10.9215045 C6.67582033,10.5185706 8,9.38659986 8,7.56034851 C8,7.20547479 7.97667435,6.89396702 7.92818517,6.61287895 L7.884,6.396 L7.78806257,6.45966305 Z" id="Shape-sp-126-1-2" fill="#FF1D1D" fill-opacity=""></path></svg>
+												<span class="qy-rank__hotscore">7012</span>
+											</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="qy-rank-item qy-rank-8">
+                                        <a href="" class="qy-rank-img-link">
+                                            <span class="qy-rank-no">NO</span>
+                                            <div class="qy-rank-num">8</div>
+                                            <div class="qy-rank-content">
+                                                <div class="qy-rank-title">鹿鼎记</div>
+                                                <div class="qy-rank-detail">
+											<span class="qy-rank-hot">
+												<svg width="9px" height="12px" viewBox="0 0 9 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M3.9421478,-6.66133815e-16 L4.1052901,0.092246338 L4.55975388,0.517703424 C5.74598595,1.64483368 6.68865412,2.75575744 6.47111799,4.88653712 C6.38953215,5.16307536 6.55268914,5.43966836 6.71584614,5.62417928 C6.96057429,5.71637086 7.28688828,5.71637086 7.53161643,5.34742202 L7.77936845,5.12890809 C8.0402125,4.90584563 8.20235664,4.79432728 8.26580086,4.79432728 C8.75527185,5.53191469 9,6.36165718 9,7.56034851 C9,10.5104791 6.38953215,11.6168146 5.24746257,11.8934076 C4.59484928,12.0779185 3.45267681,11.985873 3.12637752,11.8934076 C2.31060723,11.6168146 1.49483695,11.0638294 0.923794809,10.3259864 C-0.136703622,8.85112192 -0.299845921,6.82248732 0.515909666,5.16307536 C0.84222366,4.51778904 1.33167995,3.96469431 1.90272209,3.31920722 L2.40317485,2.79700735 C3.05897374,2.09098319 3.64594387,1.32649007 3.88877021,0.270268152 L3.9421478,-6.66133815e-16 Z M7.78806257,6.45966305 C7.40290132,6.68693621 6.95546408,6.73209791 6.52415274,6.61251383 L6.36332002,6.55998126 L6.13110127,6.47250209 L5.96672022,6.28660691 C5.58613535,5.85621122 5.36171944,5.34118153 5.47313971,4.76284973 L5.481,4.731 L5.49439334,4.57127216 C5.56830571,3.45646298 5.27635777,2.72874729 4.44785317,1.82437353 L4.406,1.781 L4.35405123,1.88092288 C4.02933909,2.46526132 3.56195951,3.03069776 2.88515022,3.73986713 L2.65169888,3.98180345 L2.08785557,4.63095648 C2.02217858,4.70991277 1.96421364,4.781918 1.90430615,4.85847247 C1.68748527,5.13554318 1.52846336,5.37671649 1.41333429,5.60424317 C0.760633722,6.93196823 0.890432522,8.56666025 1.71461765,9.71394133 C2.14680536,10.2723706 2.78785928,10.7227138 3.39901802,10.9312916 C3.67277305,11.0088672 4.60721156,11.0352246 5.01208146,10.9215045 C6.67582033,10.5185706 8,9.38659986 8,7.56034851 C8,7.20547479 7.97667435,6.89396702 7.92818517,6.61287895 L7.884,6.396 L7.78806257,6.45966305 Z" id="Shape-sp-126-1-2" fill="#FF1D1D" fill-opacity=""></path></svg>
+												<span class="qy-rank__hotscore">7012</span>
+											</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="qy-rank-item qy-rank-9">
+                                        <a href="" class="qy-rank-img-link">
+                                            <span class="qy-rank-no">NO</span>
+                                            <div class="qy-rank-num">9</div>
+                                            <div class="qy-rank-content">
+                                                <div class="qy-rank-title">鹿鼎记</div>
+                                                <div class="qy-rank-detail">
+											<span class="qy-rank-hot">
+												<svg width="9px" height="12px" viewBox="0 0 9 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M3.9421478,-6.66133815e-16 L4.1052901,0.092246338 L4.55975388,0.517703424 C5.74598595,1.64483368 6.68865412,2.75575744 6.47111799,4.88653712 C6.38953215,5.16307536 6.55268914,5.43966836 6.71584614,5.62417928 C6.96057429,5.71637086 7.28688828,5.71637086 7.53161643,5.34742202 L7.77936845,5.12890809 C8.0402125,4.90584563 8.20235664,4.79432728 8.26580086,4.79432728 C8.75527185,5.53191469 9,6.36165718 9,7.56034851 C9,10.5104791 6.38953215,11.6168146 5.24746257,11.8934076 C4.59484928,12.0779185 3.45267681,11.985873 3.12637752,11.8934076 C2.31060723,11.6168146 1.49483695,11.0638294 0.923794809,10.3259864 C-0.136703622,8.85112192 -0.299845921,6.82248732 0.515909666,5.16307536 C0.84222366,4.51778904 1.33167995,3.96469431 1.90272209,3.31920722 L2.40317485,2.79700735 C3.05897374,2.09098319 3.64594387,1.32649007 3.88877021,0.270268152 L3.9421478,-6.66133815e-16 Z M7.78806257,6.45966305 C7.40290132,6.68693621 6.95546408,6.73209791 6.52415274,6.61251383 L6.36332002,6.55998126 L6.13110127,6.47250209 L5.96672022,6.28660691 C5.58613535,5.85621122 5.36171944,5.34118153 5.47313971,4.76284973 L5.481,4.731 L5.49439334,4.57127216 C5.56830571,3.45646298 5.27635777,2.72874729 4.44785317,1.82437353 L4.406,1.781 L4.35405123,1.88092288 C4.02933909,2.46526132 3.56195951,3.03069776 2.88515022,3.73986713 L2.65169888,3.98180345 L2.08785557,4.63095648 C2.02217858,4.70991277 1.96421364,4.781918 1.90430615,4.85847247 C1.68748527,5.13554318 1.52846336,5.37671649 1.41333429,5.60424317 C0.760633722,6.93196823 0.890432522,8.56666025 1.71461765,9.71394133 C2.14680536,10.2723706 2.78785928,10.7227138 3.39901802,10.9312916 C3.67277305,11.0088672 4.60721156,11.0352246 5.01208146,10.9215045 C6.67582033,10.5185706 8,9.38659986 8,7.56034851 C8,7.20547479 7.97667435,6.89396702 7.92818517,6.61287895 L7.884,6.396 L7.78806257,6.45966305 Z" id="Shape-sp-126-1-2" fill="#FF1D1D" fill-opacity=""></path></svg>
+												<span class="qy-rank__hotscore">7012</span>
+											</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li class="qy-rank-item qy-rank-10">
+                                        <a href="" class="qy-rank-img-link">
+                                            <span class="qy-rank-no">NO</span>
+                                            <div class="qy-rank-num">10</div>
+                                            <div class="qy-rank-content">
+                                                <div class="qy-rank-title">鹿鼎记</div>
+                                                <div class="qy-rank-detail">
+											<span class="qy-rank-hot">
+												<svg width="9px" height="12px" viewBox="0 0 9 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M3.9421478,-6.66133815e-16 L4.1052901,0.092246338 L4.55975388,0.517703424 C5.74598595,1.64483368 6.68865412,2.75575744 6.47111799,4.88653712 C6.38953215,5.16307536 6.55268914,5.43966836 6.71584614,5.62417928 C6.96057429,5.71637086 7.28688828,5.71637086 7.53161643,5.34742202 L7.77936845,5.12890809 C8.0402125,4.90584563 8.20235664,4.79432728 8.26580086,4.79432728 C8.75527185,5.53191469 9,6.36165718 9,7.56034851 C9,10.5104791 6.38953215,11.6168146 5.24746257,11.8934076 C4.59484928,12.0779185 3.45267681,11.985873 3.12637752,11.8934076 C2.31060723,11.6168146 1.49483695,11.0638294 0.923794809,10.3259864 C-0.136703622,8.85112192 -0.299845921,6.82248732 0.515909666,5.16307536 C0.84222366,4.51778904 1.33167995,3.96469431 1.90272209,3.31920722 L2.40317485,2.79700735 C3.05897374,2.09098319 3.64594387,1.32649007 3.88877021,0.270268152 L3.9421478,-6.66133815e-16 Z M7.78806257,6.45966305 C7.40290132,6.68693621 6.95546408,6.73209791 6.52415274,6.61251383 L6.36332002,6.55998126 L6.13110127,6.47250209 L5.96672022,6.28660691 C5.58613535,5.85621122 5.36171944,5.34118153 5.47313971,4.76284973 L5.481,4.731 L5.49439334,4.57127216 C5.56830571,3.45646298 5.27635777,2.72874729 4.44785317,1.82437353 L4.406,1.781 L4.35405123,1.88092288 C4.02933909,2.46526132 3.56195951,3.03069776 2.88515022,3.73986713 L2.65169888,3.98180345 L2.08785557,4.63095648 C2.02217858,4.70991277 1.96421364,4.781918 1.90430615,4.85847247 C1.68748527,5.13554318 1.52846336,5.37671649 1.41333429,5.60424317 C0.760633722,6.93196823 0.890432522,8.56666025 1.71461765,9.71394133 C2.14680536,10.2723706 2.78785928,10.7227138 3.39901802,10.9312916 C3.67277305,11.0088672 4.60721156,11.0352246 5.01208146,10.9215045 C6.67582033,10.5185706 8,9.38659986 8,7.56034851 C8,7.20547479 7.97667435,6.89396702 7.92818517,6.61287895 L7.884,6.396 L7.78806257,6.45966305 Z" id="Shape-sp-126-1-2" fill="#FF1D1D" fill-opacity=""></path></svg>
+												<span class="qy-rank__hotscore">7012</span>
+											</span>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                <?php  else: ?>
+                    <div class="video-add-column">
+                        <a href="<?= $labels['ad_skip_url']?>">
+                            <img src="<?= $labels['ad_image']?>" alt="">
+                        </a>
+                    </div>
+                <?php endif; ?>
+            <?php endforeach;?>
+        <?php endif; ?>
+    </div>
+</div>
+<div class="c"></div>
+<footer class="qy-footer">
+	<div class="wp">
+		<p>本网站为非赢利性站点，所有内容均由机器人采集于互联网，或者网友上传，本站只提供WEB页面服务，本站不存储、不制作任何视频，不承担任何由于内容的合法性及健康性所引起的争议和法律责任。<br />若本站收录内容侵犯了您的权益，请附说明联系邮箱，本站将第一时间处理。站长邮箱：guazitv@163.com</p>
+	</div>
+</footer>
+<div class="qy-float-anchor det-nav" style="" id="det-nav">
+	<ul class="anchor-list">
+		<?php if(!empty($channels)) : ?>
+			<?php foreach ($channels['list'] as $key => $channel): ?>
+				<?php if($channel['channel_id'] != 0) : ?>
+					<li class="list-item"><a href="#section<?= $channel['channel_id']?>" class="list-link"><?= $channel['channel_name']?></a></li>
+				<?php endif;?>				
+			<?php endforeach ?>
+		<?php endif;?>
+		<li class="list-item"><a href="javascript:void(0)" class="list-link backToTop"><svg class="back-top-svg" viewBox="0 0 20 12" xmlns="http://www.w3.org/2000/svg"><path d="M10.784 2.305l6.91 6.911a1.045 1.045 0 1 1-1.477 1.478L10 4.477l-6.217 6.217a1.045 1.045 0 0 1-1.478-1.478l6.911-6.91c.189-.189.43-.29.677-.305h.214c.246.014.488.116.677.304z"></path></svg>顶部</a></li>
+	</ul>
+</div>

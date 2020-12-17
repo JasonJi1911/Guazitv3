@@ -43,7 +43,7 @@ class VideoController extends BaseController
     }
 
     /**
-     * 视频首页
+     * 视频xin首页
      */
     public function actionNewindex()
     {
@@ -56,6 +56,9 @@ class VideoController extends BaseController
         //请求频道、搜索信息
         $channels = Yii::$app->api->get('/video/channels');
 
+        //获取热搜
+        $hotWord = Yii::$app->api->get('/search/hot-word');
+
         if(!$data) {
             return $this->redirect('/site/error');
         }
@@ -63,7 +66,8 @@ class VideoController extends BaseController
         return $this->render('newIndex',[
             'data'          => $data,
             'channels'      => $channels,
-            'channel_id'    => $channel_id
+            'channel_id'    => $channel_id,
+            'hotWord'       => $hotWord
         ]);
     }
 
