@@ -1,7 +1,9 @@
 <?php
 use yii\helpers\Url;
+use pc\assets\StyleAsset;
 
 $this->title = '瓜子视频-澳新华人在线视频分享网站';
+StyleAsset::register($this);
 
 $js = <<<SCRIPT
 $(function(){
@@ -624,7 +626,7 @@ $this->registerJs($js);
                                         <div class="qy20-nav-list qy20-nav-channel">
                                             <div class="nav-channel-box">
                                                 <div class="channel-box-inner">
-                                                    <a href="<?= Url::to(['video/newindex', 'channel_id' => $channel['channel_id']])?>"
+                                                    <a href="<?= Url::to(['video/channel', 'channel_id' => $channel['channel_id']])?>"
                                                        class="qy20-nav-link channel-link">
                                                         <span class="nav-en">WATCH ME</span>
                                                         <span class="nav-name"><?= $channel['channel_name']?></span>
@@ -782,7 +784,7 @@ $this->registerJs($js);
                             </div>   						
                             <div class="qy-rank-index">
                                 <ul class="qy-rank-list">
-									<?php foreach ($hotWord['tab'] as $key => $tab): ?>
+									<?php foreach ($hotword['tab'] as $key => $tab): ?>
 										<?php if($tab['title'] == $channelName) :?>
 											<?php foreach ($tab['list'] as $key => $list): ?>
 												<li class="qy-rank-item qy-rank-<?= $key+1?>">
@@ -802,9 +804,7 @@ $this->registerJs($js);
 												</li>
 											<?php endforeach;?>
 										<?php endif;?>
-									<?php endforeach;?>  
-                                        <a href="" class="qy-rank-img-link">
-                                    </li>
+									<?php endforeach;?>
                                 </ul>
                             </div>
                         </div>

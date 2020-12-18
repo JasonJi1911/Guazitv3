@@ -57,7 +57,7 @@ class VideoController extends BaseController
         $channels = Yii::$app->api->get('/video/channels');
 
         //获取热搜
-        $hotWord = Yii::$app->api->get('/search/hot-word');
+        $hotword = Yii::$app->api->get('/search/hot-word');
 
         if(!$data) {
             return $this->redirect('/site/error');
@@ -67,7 +67,7 @@ class VideoController extends BaseController
             'data'          => $data,
             'channels'      => $channels,
             'channel_id'    => $channel_id,
-            'hotWord'       => $hotWord
+            'hotword'       => $hotword
         ]);
     }
 
@@ -87,7 +87,10 @@ class VideoController extends BaseController
         $channels = Yii::$app->api->get('/video/channels');
 
         //获取热搜
-        $hotWord = Yii::$app->api->get('/search/hot-word');
+        $hotword = Yii::$app->api->get('/search/hot-word');
+
+        //请求影片筛选信息
+        $info = Yii::$app->api->get('/video/filter', ['channel_id' => $channel_id, 'type' => 1, 'page_size' => 12]);
 
         if(!$data) {
             return $this->redirect('/site/error');
@@ -97,7 +100,8 @@ class VideoController extends BaseController
             'data'          => $data,
             'channels'      => $channels,
             'channel_id'    => $channel_id,
-            'hotWord'       => $hotWord
+            'hotword'       => $hotword,
+            'info'          => $info,
         ]);
     }
 
