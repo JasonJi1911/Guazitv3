@@ -53,7 +53,7 @@ AppAsset::register($this);
         text-decoration: none !important;
     }
 </style>
-<body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white">
+<body class="page-header-fixed page-sidebar-closed-hide-logo page-content-white classBody">
 
 <?php $this->beginBody() ?>
 

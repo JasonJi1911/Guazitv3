@@ -3,44 +3,49 @@ use yii\helpers\Url;
 use pc\assets\StyleInAsset;
 
 $this->title = '瓜子视频-澳新华人在线视频分享网站';
-
 StyleInAsset::register($this);
 
-$js = <<<SCRIPT
+$js = <<<JS
 $(function(){
-	$('.qy-header.home2020 .qy-search .search-box').hover(function() {
-        $(this).toggleClass('search-box-hover');
+    $('.category-class').each(function(index, el) {
+        $(this).find('.category-more').click(function(event) {
+            var _txt = $(this).find('em').text();
+            if( _txt == '更多'){
+                $(this).find('em').text('收起');
+                $(this).find('.qy-svgicon-guide-narrow-up').show();
+                $(this).find('.qy-svgicon-guide-narrow').hide();
+            }else{
+                $(this).find('em').text('更多');
+                $(this).find('.qy-svgicon-guide-narrow-up').hide();
+                $(this).find('.qy-svgicon-guide-narrow').show();
+            }
+            $(this).parents('.qy-list-category .category-class').toggleClass('actived');
+        });
     });
     
-    // 评分
-    $('[role="star"]').each(function(index, el) {
-        var link = $(this).find('a'),
-            input = $(this).find('.defei');
-            link.each(function(index, el) {
-                link.click(function(event) {
-                    var _sc = $(this).data('val');
-                    var at = _sc-1;
-                    input.text(_sc + '分');
-                    link.removeClass('active');
-                    link.eq(at).addClass('active');
-                });
-            });
+    $(window).scroll(function(event) {
+        var _top = $(window).scrollTop();
+        if(_top > 300){
+            $('.anchor-list').last().show();
+        }else{
+            $('.anchor-list').last().hide();
+        }
+        if(_top > 900){
+            $('.qy-comment-page .qycp-form-fixed ').show()
+        }else{
+            $('.qy-comment-page .qycp-form-fixed ').hide()
+        }
     });
-    
-    $('.banner-in .slider').slick({
-        dots: true,
-        arrows: true,
-        infinite: false,
-        speed: 300,
+    $('.backToTop').click(function() {
+        $('html,body').stop(true, false).animate({
+            scrollTop: 0
+        })
     });
-    var swiper = new Swiper('#section1 .swiper-container1', {
-          slidesPerView: 8,
-          slidesPerColumn: 1,
-          spaceBetween: 5,
-          navigation: {
-          nextEl: '#section1 .swiper-button-next',
-          prevEl: '#section1 .swiper-button-prev',
-        },
+    $('.comment-form').hover(function() {
+        $(this).toggleClass('form__focused');
+    });
+    $('.comment-btn-fixed').click(function(event) {
+        $('.qycp-form-fixed').addClass('show');
     });
     
     $('.qy-mod-li').each(function() {
@@ -55,17 +60,330 @@ $(function(){
     $('.qy-mod-li').mouseleave(function(event) {
         $('.qy-mod-li').find('.qy-video-card-small').removeClass('card-hover')
     });
-    $('.backToTop').click(function() {
-        $('html,body').stop(true, false).animate({
-            scrollTop: 0
-        })
+    
+    $('.video-list-box').bind('DOMNodeInserted', function(e) {
+        $('.qy-mod-li').each(function() {
+            $(this).find('.qy-mod-link-wrap').hover(function() {
+                
+                $('.qy-mod-li').find('.qy-video-card-small').removeClass('card-hover')
+                var card = $(this).parents('.qy-mod-li').find('.qy-video-card-small')
+                card.toggleClass('card-hover');
+                return false;
+            });
+        });
+        $('.qy-mod-li').mouseleave(function(event) {
+            $('.qy-mod-li').find('.qy-video-card-small').removeClass('card-hover')
+        });
     });
+    
+    //播放页是否传入搜索内容
+        if($('#is-keyword').val())
+        {
+            searchKeywords($('#is-keyword').val(), 'detail');
+        }
+        //搜索信息
+        $('.search-box-out').on('click', function() {
+            searchInfo()
+        });
+        
+        //回车搜索
+        $('#keywords').keypress(function(event){
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if(keycode == '13'){
+                searchInfo()
+            }
+        });
+        
+        //搜索信息
+        function searchInfo() {
+            if(!$('#keywords').val()) {
+                window.location.href = '/video/list';
+            }
+            
+            $('.index-header-search').removeClass("result");
+            $('.index-header-search-result').hide();
+            $('.index-search-btn').css('background-color', '#FF556E');
+            $('.index-header-search').css('border', '1px solid #FF556E');
+            $('.index-header-search-result').css('border', '1px solid #FF556E');
+            //写入缓存
+            var searchKeyword = $('#keywords').val();
+            searchKeywords(searchKeyword, 'index');
+        }
+        
+        //根据关键字，进行查询
+        function searchKeywords(keyword, type)
+        {
+            if(type == 'index') {
+                setSearchStore(keyword);
+            }
+            searchContent(keyword);
+            searchDisplay();
+        }
+        
+        //清楚搜索信息
+        $('.history-delete').click(function() {
+		    localStorage.removeItem('pcNovelKeywords');
+		    searchDisplay();
+        });
+        
+        //历史搜索信息展示与隐藏
+        function searchDisplay()
+        {
+             //搜索历史
+            keywords = JSON.parse(localStorage.getItem('pcNovelKeywords'));
+            var html = '';
+            if(keywords != null) {
+                keywords = noRepeat(keywords);
+            }
+            
+            //遍历历史搜索
+            $.each(keywords, function(i, v) {
+                html = html + "<li><a class='search-history' data-keyword='"+v+"'>" + v + "</a></li>";
+            });
+            
+            if(keywords == null) {
+                $('.video-history-search').hide();
+            }else {
+                $('.video-history-search').show();
+            }
+            
+            $('.search-histoty-list').html(html);
+        }
+        
+        searchDisplay();
+        
+        //点击搜索历史，进行搜索
+        $(".search-histoty-list").on('click', '.search-history',function(){
+            $('#keywords').val($(this).attr('data-keyword'));
+			$('.index-header-search').removeClass("result");
+			$('.index-header-search-result').hide();
+            searchContent($(this).attr('data-keyword'));
+        });
+        
+        
+        //数组去重
+        function noRepeat(arr) {
+            for(var i = 0; i < arr.length-1; i++){
+                for(var j = i+1; j < arr.length; j++){
+                    if(arr[i]===arr[j]){
+                        arr.splice(j,1);
+                        j--;
+                    }
+                }
+            }
+            return arr;
+        }
+        
+        //将搜索历史写入缓存
+        function setSearchStore(word){
+             //搜索历史写入local
+            if (keywords == null) {
+                keywords = [word];
+            } else {
+                
+                var item = $.inArray(word, keywords);
+                if (item > 0) {  //如果已有
+                    keywords.splice(item, 1);
+                } else {
+                    if (keywords.length > 4) {
+                        keywords.pop();
+                    }
+                }
+                keywords.unshift(word);
+            }
+            localStorage.setItem('pcNovelKeywords', JSON.stringify(keywords));
+        }
+        
+    //展示搜索内容
+    function searchContent(searchKeyword) {
+        //隐藏频道，展示数据
+        $('.video-list-box').html('');
+        $('.category-content').hide();
+        //点击搜索，加载数据
+        $.get('/video/search-video', {keyword:searchKeyword}, function(res) {
+            var data = res.data.list;
+            var content = refreshVideo(data);
+            $('.video-list-box').html(content); // 更新内容
+            $('.refresh-video-num-all').html(res.data.total_count); //刷新影片数
+            $('.video-list-box').attr('data-pages', res.data.total_page);
+            $('.video-list-box').attr('data-page', res.data.current_page);
+            $('.video-list-box').attr('data-url', '/video/search-video');
+        })
+    }
+    
+    //筛选影片
+    var arrIndex = {};
+    arrIndex['channel_id']= $('#channel-id').val();
+    
+    $(document).on('click', '.cate-list-li', function() {
+        var type = $(this).attr('data-type');
+        var value = $(this).attr('data-value');
+        
+        //追加筛选参数
+        arrIndex[type] = value;
+        arrIndex['page_num']= 1;
+        
+        console.log(arrIndex);
+        
+        //选中分类，添加背景
+        $(this).parent().find('.cate-list-li').removeClass('selected');
+        $(this).addClass('selected');
+        
+        //发送请求，获取数据
+        $.get('/video/refresh-cate', arrIndex, function(s) {
+            var data = s.data.list;
+            var content = refreshVideo(data);
+            refreshCate(s.data.search_box);
+            $('.video-list-box').html(content); // 更新内容
+            $('.refresh-video-num-all').html(s.data.total_count); //刷新影片数
+            $('.video-list-box').attr('data-pages', s.data.total_page);
+            $('.video-list-box').attr('data-page', 1);
+            $('.video-list-box').attr('data-url', '/video/refresh-cate');
+        });
+    });
+        
+    //刷新筛选条件
+    function refreshCate(list) {
+        var content = '';
+        for(var i=0;i<list.length; i++) {
+            content += "<div class='category-class category-class2'>" + 
+                            "<div class='category-list'>" +
+                            "<span class='category-item'><span class='category-text'>"+list[i]['label']+"</span></span>";
+            var selectFlag = false;
+            
+            for(var j=0;j<list[i]['list'].length; j++) {
+                if(list[i]['list'][j]['checked'] == 1) {
+                    selectFlag = true;
+                }
+            }
+
+           for(var k=0;k<list[i]['list'].length;k++) {
+              if(list[i]['list'][k]['checked'] == 1) {
+                  if(list[i]['field'] == 'channel_id')
+                  {
+                       content += "<input type='hidden' id='channel-id' value='"+list[i]['list'][k]['value']+"'>";
+                  }
+                  content += "<span class='category-item selected cate-list-li' data-value='"+list[i]['list'][k]['value']+"' data-type='"+list[i]['field']+"'>"+list[i]['list'][k]['display']+"</span>";
+                  continue;
+              }
+              content += "<span class='category-item cate-list-li' data-value='"+list[i]['list'][k]['value']+"' data-type='"+list[i]['field']+"'>"+list[i]['list'][k]['display']+"</span>";
+            }
+
+            content +="</div>" +
+                       "</div>";
+        }
+        
+        $('.category-content').html(content);
+    }
+    
+    //下拉加载更多
+    var progress = false; // 是否正在请求中
+    var isFlag = true;
+    $(window).scroll(function () {
+        if (($(window).scrollTop()+288) >= $(document).height() - $(window).height()) {
+            if(isFlag) {
+                    var arrScroll = arrIndex;
+                    var pages = $('.video-list-box').attr('data-pages') || 1;
+                    var page  = $('.video-list-box').attr('data-page') || 1;
+                    var url = $('.video-list-box').attr('data-url');
+                    
+                     if (parseInt(page) < parseInt(pages) && !progress) {
+                        progress = true;
+                        page++;
+                        var params = {};
+                        if(url == '/video/refresh-cate') {
+                            arrScroll['page_num'] = page;
+                            params = arrScroll;
+                        }else {
+                            params['keyword'] = $('#keywords').val();
+                            params['page_num'] = page;
+                        }
+                        
+                        $.get(url, params, function(res) {
+                            
+                            if(res) {
+                                 var data = res.data.list;
+                                 var content = refreshVideo(data);
+                                 $('.video-list-box').append(content); // 更新内容
+                                 $('.refresh-video-num-all').html(res.data.total_count); //刷新影片数
+                                 $('.video-list-box').attr('data-pages',res.data.total_page);
+                                 $('.video-list-box').attr('data-page',res.data.current_page);
+                            }
+                             progress = false;
+                        });
+                     } else if (page == pages) {
+                         progress = false;
+                     }
+                isFlag = false;
+            }
+        }else {
+            isFlag = true;
+        }
+    });
+    
+    //刷新影片内容
+    function refreshVideo(data) {
+        var content = '';
+        for (var i=0; i<data.length; i++) { //拼接换一换内容
+            content += "<li class='qy-mod-li'>"+
+                            "<div class='qy-mod-img vertical'>"+
+                                "<div class='qy-mod-link-wrap'>"+
+                                    "<a href='/video/new-detail?video_id="+data[i]['video_id']+ "' class='qy-mod-link'>"+
+                                        "<div style='height:100%;overflow:hidden;'>"+
+                                            "<img src='"+data[i]['cover']+"' class='qy-mod-cover'>"+
+                                            "<div class='icon-br icon-b'><span rseat='' class='qy-mod-label'>"+data[i]['flag']+"</span>"+
+                                            "</div>"+
+                                        "</div>"+
+                                        "<div class='icon-tr icon-b'>"+
+                                            "<span rseat='' class='qy-mod-label'>"+data[i]['score']+"</span>"+
+                                        "</div>"+
+                                    "</a>"+
+                                "</div>"+
+                                "<div class='title-wrap'>"+
+                                    "<p class='main score'>"+
+                                        "<a href='/video/new-detail?video_id="+data[i]['video_id']+ "'class='link-txt' >"+data[i]['video_name']+"</a>"+
+                                    "</p>"+
+                                    "<p class='sub'>"+data[i]['intro']+"</p>"+
+                                "</div>"+
+                            "</div>"+
+                            "<div class='qy-video-card-small qy-video-info-tips qy-video-info-tips2'>"+
+                                "<a href='/video/new-detail?video_id="+data[i]['video_id']+"' class='movie_tipLink'>"+
+                                    "<div class='movie_tipHd'>"+
+                                        "<div class='movie_tipImg'>"+
+                                            "<img src='"+data[i]['cover']+"'>"+
+                                        "</div>"+
+                                    "</div>"+
+                                    "<div class='movie_tipCon'>"+
+                                        "<div class='movie_tipTitle'>"+
+                                            "<p class='movie_tipName'>"+data[i]['video_name']+"</p>"+
+                                        "</div>"+
+                                        "<div class='tipLableBox'>"+
+                                            "<p class='tipLable_inner'>"+
+                                                "<span class='tipLable_title'>标签：</span>"+
+                                                "<span class='tipLable'>"+data[i]['tag']+"</span>"+
+                                            "</p>"+
+                                            "<p class='movie_tipTime'>"+data[i]['play_limit']+"分钟</p>"+
+                                        "</div>"+
+                                        "<div class='tip_des four_line'>"+data[i]['intro']+"</div>"+
+                                    "</div>"+
+                                "</a>"+
+                                "<div class='movie_tipBd'>"+
+                                    "<a href='/video/new-detail?video_id="+data[i]['video_id']+"'"+
+                                       "class='qy-button-small topBd_btn'>"+
+                                        "<span class='topBd_btnIn'>立即观看</span>"+
+                                    "</a>"+
+                                "</div>"+
+                            "</div>"+
+                        "</li>"
+        };
+        
+        return content;
+    }
 });
-SCRIPT;
+JS;
 
 $this->registerJs($js);
 ?>
-
 
 <!DOCTYPE html>
 <html>
@@ -75,15 +393,14 @@ $this->registerJs($js);
     <meta name="description" content="" />
     <meta content="telephone=no" name="format-detection" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
 </head>
-<body class="classBody">
+<body style="background-color:#fff;" class="classBody">
 <header class="qy-header home2020 aura2">
     <div class="header-wrap">
         <div class="header-inner">
             <div id="nav_logo" class="qy-logo">
-                <a href="/video/new-index" class="logo-link" title="瓜子视频"><img src="/images/NewVideo/logo.png" alt="">
-                    瓜子视频 · <?= $channels['list'][$channel_id]['channel_name'] ?></a>
+                <a href="/video/new-index" class="logo-link" title="瓜子视频"><img src="/images/NewVideo/logo.png" alt="">瓜子视频 · 电视剧</a>
             </div>
             <div class="qy-nav">
                 <div class="T-drop-hover nav-guide nav-link" id="dhBtn">
@@ -118,19 +435,11 @@ $this->registerJs($js);
             <div class="qy-search">
                 <div class="search-box">
 						<span class="search-box-in">
-							<input id="keywords"
-                                   autocomplete="off" placeholder="小猪佩奇" type="text" class="search-box-input">
-							<a href="" class="search-right-entry">
-                                <i class="qy-svgicon qy-svgicon-rank-hot2"></i>热搜榜
-                            </a>
+                            <input type="hidden" id="is-keyword" value="<?= $keyword?>">
+							<input autocomplete="off" placeholder="小猪佩奇" type="text" class="search-box-input" id="keywords">
+							<a href="" class="search-right-entry"><i class="qy-svgicon qy-svgicon-rank-hot2"></i>热搜榜 </a>
 						</span>
-                    <span class="search-box-out">
-                        <span id="J-search-btn" type="button"
-                              class="search-box-btn">
-                            <i class="qy-svgicon qy-svgicon-search"></i>
-                            <em class="search-box-btnTxt">搜全网</em>
-                        </span>
-                    </span>
+                    <span class="search-box-out"><span id="J-search-btn" type="button" class="search-box-btn"><i class="qy-svgicon qy-svgicon-search"></i><em class="search-box-btnTxt">搜全网</em></span></span>
                 </div>
             </div>
             <div class="qy-header-side">
@@ -399,243 +708,107 @@ $this->registerJs($js);
     </div>
 </header>
 <div class="c"></div>
-<div class="channel-page">
-    <div class="qy-channel-page">
-        <!-- banner -->
-        <div class="banner-in">
-            <div class="slider">
-                <?php if(!empty($data['banner'])) : ?>
-                    <?php foreach ($data['banner'] as $banner): ?>
-                        <div class="item-slide">
-                            <a href="<?= $banner['content']?>" style="background-image: url(<?= $banner['image']?>)">
-                                <div class="txt">
-                                    <i class="qy-channel-icon focus-playBtn-icon" ></i>
-                                    <div class="caption" ><?= $banner['title']?></div>
-<!--                                    <p class="desc">逆战时空真炸飞机</p>-->
-                                </div>
-                            </a>
-                        </div>
-                    <?php endforeach ?>
-                <?php endif;?>
-            </div>
-        </div>
-        <!-- banner end -->
-        <div class="qy-classes-logo j_pingback_view">
-            <div class="classes-logo-inner">
-                <div class="mod-classes-blcoks">
+<div class="qy-list-page">
+    <div class="qy-list-category">
+        <div class="list-content">
+            <div class="list-content">
+                <div class="category-content">
                     <?php foreach ($info['search_box'] as $cates): ?>
-                        <?php if($cates['label'] == '地区') : ?>
-                            <div class="classes-blcoks_dq">
-                                <dl class="classes-blcoks">
-                                    <dt>
-                                        <h4 class="classes-title">
-                                            地区
-                                        </h4>
-                                    </dt>
-                                    <dd>
-                                        <?php foreach ($cates['list'] as $key => $cate): ?>
-                                            <a class="classes-item"
-                                               href="<?= Url::to(['list', 'channel_id' => $channel_id, $cates['field'] => $cate['value']])?>">
-                                                <?= $cate['display']?></a>
-                                        <?php endforeach;?>
-                                    </dd>
-                                </dl>
+                        <div class="category-class category-class2">
+                            <div class="category-list">
+                                <span class="category-item"><span class="category-text"><?= $cates['label']?></span></span>
+                                <?php foreach ($cates['list'] as $key => $cate): ?>
+                                    <?php if($cates['field'] == 'channel_id' && $cate['checked'] == 1) : ?>
+                                        <input type="hidden" id="channel-id" value="<?= $cate['value']?>">
+                                    <?php endif;?>
+                                    <span class="category-item <?= $cate['checked'] == 1 ? 'selected' : ''?>
+                                        cate-list-li"
+                                       data-value="<?= $cate['value']?>"
+                                       data-type="<?= $cates['field']?>">
+                                        <?= $cate['display']?>
+                                    </span>
+                                <?php endforeach;?>
                             </div>
-                        <?php  elseif($cates['label'] == '类型'): ?>
-                            <div class="classes-blcoks_fl">
-                                <dl class="classes-blcoks">
-                                    <dt>
-                                        <h4 class="classes-title">
-                                            分类
-                                        </h4>
-                                    </dt>
-                                    <dd>
-                                        <?php foreach ($cates['list'] as $key => $cate): ?>
-                                            <a class="classes-item"
-                                               href="<?= Url::to(['list', 'channel_id' => $channel_id, $cates['field'] => $cate['value']])?>">
-                                                <?= $cate['display']?></a>
-                                        <?php endforeach;?>
-                                    </dd>
-                                </dl>
-                            </div>
-                        <?php  elseif($cates['label'] == '年代'): ?>
-                            <div class="classes-blcoks_pk">
-                                <dl class="classes-blcoks">
-                                    <dt>
-                                        <h4 class="classes-title">
-                                            片库
-                                        </h4>
-                                    </dt>
-                                    <dd>
-                                        <?php foreach ($cates['list'] as $key => $cate): ?>
-                                            <a class="classes-item"
-                                               href="<?= Url::to(['list', 'channel_id' => $channel_id, $cates['field'] => $cate['value']])?>">
-                                                <?= $cate['display']?></a>
-                                        <?php endforeach;?>
-                                    </dd>
-                                </dl>
-                            </div>
-                        <?php  elseif($cates['label'] == '排序'): ?>
-                            <div class="classes-blcoks_dq">
-                                <dl class="classes-blcoks">
-                                    <dt>
-                                        <h4 class="classes-title">
-                                            分类
-                                        </h4>
-                                    </dt>
-                                    <dd>
-                                        <div class="qy-mod-nav-tab">
-                                            <ul class="qy-mod-nav-list TAB" id=".tabCont">
-                                                <?php foreach ($cates['list'] as $key => $cate): ?>
-                                                    <li class="mod-nav-item">
-                                                        <div class="crumb-btn j_movie_tab_title selected">
-                                                            <a class="txt-link"
-                                                               href="<?= Url::to(['list', 'channel_id' => $channel_id, $cates['field'] => $cate['value']])?>">
-                                                                <?= $cate['display']?></a>
-                                                        </div>
-                                                    </li>
-                                                <?php endforeach;?>
-                                            </ul>
-                                        </div>
-                                    </dd>
-                                </dl>
-                            </div>
-                        <?php endif;?>
+                        </div>
                     <?php endforeach;?>
                 </div>
             </div>
         </div>
-        <div class="c"></div>
-        <div class="qy-channel-content">
-            <?php if (!empty($data['label'])) :?>
-                <?php foreach ($data['label'] as  $labels): ?>
-                    <?php if (!isset($labels['advert_id'])) : ?>
-                        <?php
-                        $tag = '';
-                        $channel = '';
-                        foreach ($labels['search'] as $s_k => $s_v) {
-                            if($s_v['field'] == 'channel_id') {
-                                $channel = $s_v['value'];
-                            }
-                            if($s_v['field'] == 'tag') {
-                                $tag = $s_v['value'];
-                            }
-                        }
-                        ?>
-                        <a class="anchor" id="section<?= $channel?>"></a>
-                        <div class="qy-left-video pr j_movie_tab j_pingback_view">
-                            <div class="qy-mod-header">
-                                <h2 class="qy-mod-title">
-                                    <a class="link-txt j_movie_tab_header"
-                                       href="<?= Url::to(['list', 'channel_id' => $channel, 'tag' => $tag])?>">
-                                        <span class="qy-mod-text"><?= $labels['title']?></span>
-                                    </a>
-                                </h2>
-                            </div>
-                            <div class="left-video-wrap j_movie_tab_body">
-                                <!-- 电影 -->
-                                <div class="qy-mod-wrap-side" id="section1">
-                                    <div class="listBox">
-                                        <div class="qy-mod-list swiper-container swiper-container1">
-                                            <div class="qy-mod-ul swiper-wrapper">
-                                                <?php foreach ($labels['list'] as $key => $list): ?>
-                                                    <?php if($key < 100) :?>
-                                                        <div class="qy-mod-li swiper-slide">
-                                                            <div class="qy-mod-img vertical">
-                                                                <div class="qy-mod-link-wrap">
-                                                                    <a href="<?= Url::to(['new-detail', 'video_id' => $list['video_id']])?>"
-                                                                       class="qy-mod-link">
-                                                                        <div style="height:100%;overflow:hidden;">
-                                                                            <img src="<?= $list['cover']?>" class="qy-mod-cover">
-                                                                        </div>
-                                                                    </a>
-                                                                </div>
-                                                                <div class="title-wrap">
-                                                                    <p class="main score">
-                                                                        <span class="text-score"><?= $list['score']?></span>
-                                                                        <a href="<?= Url::to(['new-detail', 'video_id' => $list['video_id']])?>"
-                                                                           class="link-txt" ><span ><?= $list['video_name']?></span></a></p>
-                                                                    <p class="sub"><?= $list['play_times']?></p>
-                                                                </div>
-                                                            </div>
-                                                            <div class="qy-video-card-small qy-video-info-tips j_hover_detail typs-m">
-                                                                <a href="<?= Url::to(['new-detail', 'video_id' => $list['video_id']])?>"
-                                                                   class="movie_tipLink">
-                                                                    <div class="movie_tipHd">
-                                                                        <div class="movie_tipImg">
-                                                                            <img src="<?= $list['horizontal_cover']?>"><span class="icon_hover"></span>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="movie_tipCon">
-                                                                        <div class="movie_tipTitle">
-                                                                            <p class="movie_tipScore"><?= $list['score']?></p>
-                                                                            <p class="movie_tipName"><?= $list['video_name']?></p>
-                                                                        </div>
-                                                                        <div class="tipLableBox">
-                                                                            <p class="tipLable_inner">
-                                                                                <span class="tipLable_title">标签：</span>
-                                                                                <span class="tipLable">普通话</span>
-                                                                                <span class="tipLable">华语</span>
-                                                                                <span class="tipLable">院线</span>
-                                                                            </p>
-                                                                            <p class="movie_tipTime">99分钟</p>
-                                                                        </div>
-                                                                        <div class="tip_starring" >
-                                                                            主演：
-                                                                            <span class="starring_link">章宇</span>/
-                                                                            <span class="starring_link">宋佳</span>/
-                                                                            <span class="starring_link">王砚辉</span>
-                                                                        </div>
-                                                                        <div class="tip_des four_line"><?= $list['intro']?></div>
-                                                                    </div>
-                                                                </a>
-                                                                <div class="movie_tipBd">
-                                                                    <div class="tipScore_box">
-                                                                        <div class="tipScore_wrap">
-                                                                            <div class="tipScore_outer">
-                                                                                <div class="tipScore_in">
-                                                                                    <div class="star_score" role="star">
-			            												<span class="commstar" >
-			            												   <a href="javascript:;" class="star1 active" data-val="1"></a>
-			            												   <a href="javascript:;" class="star2" data-val="2"></a>
-			            												   <a href="javascript:;" class="star3" data-val="3"></a>
-			            												   <a href="javascript:;" class="star4" data-val="4"></a>
-			            												   <a href="javascript:;" class="star5" data-val="5"></a>
-			            												</span>
-                                                                                        <span class="defei"></span>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <span class="tipScore_tx dn"></span>
-                                                                        </div>
-                                                                        <a href="javascript:;" class="handle-link">收藏</a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    <?php endif;?>
-                                                <?php endforeach;?>
-                                            </div>
-                                            <div class="swiper-button-next"></div>
-                                            <div class="swiper-button-prev"></div>
+    </div>
+    <div class="c"></div>
+    <div class="list-content">
+        <div class="qy-list-filter" id="block-C"><div class="filter-tab" style="height: 24px;"></div><!----></div>
+        <div class="qy-list-wrap">
+            <div class="total refresh-video-num-all">共<?= $info['total_count']?>个结果 </div>
+            <ul class="qy-mod-ul qy-mod-ul-search video-list-box"
+                data-pages="<?= $info['total_page']?>"
+                data-page="<?= $info['current_page']?>"
+                data-url="/video/refresh-cate">
+                <?php foreach ($info['list'] as $list): ?>
+                    <li class="qy-mod-li">
+                        <div class="qy-mod-img vertical">
+                            <div class="qy-mod-link-wrap">
+                                <a href="<?= Url::to(['/video/new-detail', 'video_id' => $list['video_id']])?>"
+                                   class="qy-mod-link">
+                                    <div style="height:100%;overflow:hidden;">
+                                        <img src="<?= $list['cover']?>" class="qy-mod-cover">
+                                        <div class="icon-br icon-b">
+                                            <span rseat="" class="qy-mod-label">
+										          <?= $list['flag']?>
+                                            </span>
                                         </div>
                                     </div>
-                                </div>
+                                    <div class="icon-tr icon-b">
+                                        <span rseat="" class="qy-mod-label">
+                                            <?= $list['score']?>
+                                        </span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="title-wrap">
+                                <p class="main score">
+                                    <a href="<?= Url::to(['/video/new-detail', 'video_id' => $list['video_id']])?>"
+                                       class="link-txt" ><?= $list['video_name']?>
+                                    </a>
+                                </p>
+                                <p class="sub"><?= $list['intro']?></p>
                             </div>
                         </div>
-                    <?php  else: ?>
-                        <div class="video-add-column">
-                            <a href="<?= $labels['ad_skip_url']?>">
-                                <img src="<?= $labels['ad_image']?>" alt="">
+                        <div class="qy-video-card-small qy-video-info-tips qy-video-info-tips2">
+                            <a href="<?= Url::to(['/video/new-detail', 'video_id' => $list['video_id']])?>"
+                               class="movie_tipLink">
+                                <div class="movie_tipHd">
+                                    <div class="movie_tipImg">
+                                        <img src="<?= $list['cover']?>">
+                                    </div>
+                                </div>
+                                <div class="movie_tipCon">
+                                    <div class="movie_tipTitle">
+                                        <p class="movie_tipName"><?= $list['video_name']?></p>
+                                    </div>
+                                    <div class="tipLableBox">
+                                        <p class="tipLable_inner">
+                                            <span class="tipLable_title">标签：</span>
+                                            <span class="tipLable"><?= $list['tag']?></span>
+                                        </p>
+                                        <p class="movie_tipTime"><?= $list['play_limit']?>分钟</p>
+                                    </div>
+                                    <div class="tip_des four_line"><?= $list['intro']?></div>
+                                </div>
                             </a>
+                            <div class="movie_tipBd">
+                                <a href="<?= Url::to(['/video/new-detail', 'video_id' => $list['video_id']])?>"
+                                   class="qy-button-small topBd_btn">
+                                    <span class="topBd_btnIn">立即观看</span>
+                                </a>
+                            </div>
                         </div>
-                    <?php endif; ?>
+                    </li>
                 <?php endforeach;?>
-            <?php endif; ?>
+            </ul>
         </div>
     </div>
 </div>
-<div class="c"></div>
 
 <div class="c"></div>
 <footer class="qy-footer">
@@ -643,6 +816,35 @@ $this->registerJs($js);
         <p>本网站为非赢利性站点，所有内容均由机器人采集于互联网，或者网友上传，本站只提供WEB页面服务，本站不存储、不制作任何视频，不承担任何由于内容的合法性及健康性所引起的争议和法律责任。<br />若本站收录内容侵犯了您的权益，请附说明联系邮箱，本站将第一时间处理。站长邮箱：guazitv@163.com</p>
     </div>
 </footer>
-<script src="/js/jquery.js"></script>
-<script src="/js/VideoSearch.js"></script>
+<div class="qy-scroll-anchor">
+    <ul class="scroll-anchor">
+        <li class="anchor-list anchor-integral">
+            <div class="qy-scroll-integral popBox dn">
+                <span class="tianjia-arrow"></span>
+                <img src="/images/NewVideo/ewm.png" alt="">
+            </div>
+            <a href="javascript:;" class="anchor-item j-pannel"><i class="qy-svgicon qy-svgicon-anchorIntegral j-pannel"></i><i class="dot j-pannel"></i></a>
+        </li>
+        <li class="anchor-list anchor-tianjia">
+            <div class="qy-scroll-tianjia popBox dn">
+                <span class="tianjia-arrow"></span>
+                <div class="tianjia-con">
+                    <p class="tianjia-text">添加
+                        <span class="tianjia-link">“爱奇艺网页应用”</span>
+                        <br>硬核内容全网独播~
+                    </p>
+                    <a href="javascript:;" class="tianjia-btn">立即添加</a>
+                </div>
+            </div>
+            <a href="javascript:;" class="anchor-item"><i class="qy-svgicon qy-svgicon-tianjia"></i></a>
+        </li>
+        <li class="anchor-list">
+            <a href="" class="anchor-item"><i class="qy-svgicon qy-svgicon-anchorHelp"></i><span class="anchor-txt">帮助反馈</span></a>
+        </li>
+        <li class="anchor-list dn">
+            <a href="javascript:;"  class="anchor-item backToTop"><i class="qy-svgicon qy-svgicon-anchorTop"></i><span class="anchor-txt">回到顶部</span></a>
+        </li>
+    </ul>
+</div>
 </body>
+</html>

@@ -169,20 +169,13 @@ SCRIPT;
 
 $this->registerJs($js);
 ?>
-<script src="/js/jquery.js"></script>
 <header class="qy-header home2020 qy-header--absolute ">
     <div class="header-wrap">
         <div class="header-inner">
             <div id="nav_logo" class="qy-logo">
-                <a href="" class="logo-link" title="瓜子视频"><img src="/images/NewVideo/logo.png" alt="">瓜子视频</a>
+                <a href="/video/new-index" class="logo-link" title="瓜子视频"><img src="/images/NewVideo/logo.png" alt="">瓜子视频</a>
             </div>
             <div class="qy-nav">
-                <div class="nav-channel">
-                    <a href="" class="nav-link nav-index J-nav-channel">电视剧</a>
-                    <a href="" class="nav-link nav-index J-nav-channel">电源</a>
-                    <a href="" class="nav-link nav-index J-nav-channel">综艺</a>
-                    <a href="" class="nav-link nav-index J-nav-channel">动漫</a>
-                </div>
                 <div class="T-drop-hover nav-guide nav-link" id="dhBtn">
                     <div class="T-drop-click">
 							<span class="J-nav-title">
@@ -197,76 +190,17 @@ $this->registerJs($js);
                     <div class="qy-nav-panel qy-nav-pop J-nav-body" style="display:none;">
                         <div class="qy-nav-sub-v3 qy-nav-pop J-nav-pop-wrap">
                             <div class="qy-nav-inner qy20-nav-wide">
-                                <div class="qy20-nav-list">
-                                    <a href="" class="qy20-nav-link"><span class="nav-en">MOVIES</span><span class="nav-name">电影</span></a>
-                                    <a href="" class="qy20-nav-link"><span class="nav-en">ANIME</span><span class="nav-name">动漫</span></a>
-                                </div>
-                                <i class="qy20-nav-line"></i>
-                                <div class="qy20-nav-list">
-                                    <a href="" class="qy20-nav-link"><span class="nav-en">TV SHOWS</span><span class="nav-name">电视剧</span></a>
-                                    <a href="" class="qy20-nav-link"><span class="nav-en">CHILDREN</span><span class="nav-name">儿童</span></a>
-                                </div>
-                                <i class="qy20-nav-line"></i>
-                                <div class="qy20-nav-list">
-                                    <a href="" class="qy20-nav-link"><span class="nav-en">VARIETY SHOWS</span><span class="nav-name">综艺</span></a>
-                                    <a href="" class="qy20-nav-link"><span class="nav-en">DOCUMENTARIES</span><span class="nav-name">纪录片</span></a>
-                                </div>
-                                <i class="qy20-nav-line"></i>
-                                <div class="qy20-nav-list">
-                                    <a href="" class="qy20-nav-link"><span class="nav-name">综艺</span></a>
-                                    <a href="" class="qy20-nav-link"><span class="nav-name">纪录片</span></a>
-                                </div>
-                                <i class="qy20-nav-line"></i>
-                                <div class="qy20-nav-list">
-                                    <a href="" class="qy20-nav-link"><span class="nav-name">综艺</span></a>
-                                    <a href="" class="qy20-nav-link"><span class="nav-name">纪录片</span></a>
-                                </div>
-                                <i class="qy20-nav-line"></i>
-                                <div class="qy20-nav-list">
-                                    <a href="" class="qy20-nav-link"><span class="nav-name">综艺</span></a>
-                                    <a href="" class="qy20-nav-link"><span class="nav-name">纪录片</span></a>
-                                </div>
-                                <i class="qy20-nav-line"></i>
-                                <div class="qy20-nav-list">
-                                    <a href="" class="qy20-nav-link"><span class="nav-name">综艺</span></a>
-                                    <a href="" class="qy20-nav-link"><span class="nav-name">纪录片</span></a>
-                                </div>
-                                <i class="qy20-nav-line"></i>
-                                <div class="qy20-nav-list">
-                                    <a href="" class="qy20-nav-link"><span class="nav-name">综艺</span></a>
-                                    <a href="" class="qy20-nav-link"><span class="nav-name">纪录片</span></a>
-                                </div>
-                                <i class="qy20-nav-line"></i>
-                                <div class="qy20-nav-list">
-                                    <a href="" class="qy20-nav-link"><span class="nav-name">综艺</span></a>
-                                    <a href="" class="qy20-nav-link"><span class="nav-name">纪录片</span></a>
-                                </div>
-                                <i class="qy20-nav-line"></i>
-                                <div class="qy20-nav-list">
-                                    <a href="" class="qy20-nav-link"><span class="nav-name">综艺</span></a>
-                                    <a href="" class="qy20-nav-link"><span class="nav-name">纪录片</span></a>
-                                </div>
-                                <i class="qy20-nav-line"></i>
-                                <div class="qy20-nav-list">
-                                    <a href="" class="qy20-nav-link"><span class="nav-name">综艺</span></a>
-                                    <a href="" class="qy20-nav-link"><span class="nav-name">纪录片</span></a>
-                                </div>
-                                <i class="qy20-nav-line"></i>
-                                <div class="qy20-nav-list">
-                                    <a href="" class="qy20-nav-link"><span class="nav-name">综艺</span></a>
-                                    <a href="" class="qy20-nav-link"><span class="nav-name">纪录片</span></a>
-                                </div>
-                                <i class="qy20-nav-line"></i>
-                                <div class="qy20-nav-list">
-                                    <a href="" class="qy20-nav-link"><span class="nav-name">综艺</span></a>
-                                    <a href="" class="qy20-nav-link"><span class="nav-name">纪录片</span></a>
-                                </div>
-                                <i class="qy20-nav-line"></i>
-                                <div class="qy20-nav-list">
-                                    <a href="" class="qy20-nav-link"><span class="nav-name">综艺</span></a>
-                                    <a href="" class="qy20-nav-link"><span class="nav-name">纪录片</span></a>
-                                </div>
-                                <i class="qy20-nav-line"></i>
+                                <?php if(!empty($channels)) :?>
+                                    <?php foreach ($channels['list'] as $channel) :?>
+                                        <div class="qy20-nav-list">
+                                            <a href="<?= Url::to(['/video/channel', 'channel_id' => $channel['channel_id']])?>"
+                                               class="qy20-nav-link">
+                                                <span class="nav-en">MOVIES</span>
+                                                <span class="nav-name"><?= $channel['channel_name']?></span></a>
+                                        </div>
+                                        <i class="qy20-nav-line"></i>
+                                    <?php endforeach;?>
+                                <?php endif;?>
                             </div>
                         </div>
                     </div>
@@ -276,7 +210,8 @@ $this->registerJs($js);
                 <div class="qy-search">
                     <div class="search-box">
 						<span class="search-box-in">
-							<input placeholder="大秦赋" type="text" value="" class="search-box-input">
+							<input placeholder="<?= empty($hotword['tab'][0]['list'][0]['video_name']) ? '': $hotword['tab'][0]['list'][0]['video_name']?>"
+                                   type="text" value="" class="search-box-input" id="keywords">
 							<a href="" class="search-right-entry">
 								<i class="qy20-header-svg qy20-header-svg-rank-hot">
 									<svg viewBox="0 0 10 13" aria-hidden="true" class="qy20-header-symbol"><linearGradient x1="79.5857988%" y1="17.1508789%" x2="20.4142012%" y2="90.2275473%" id="__gradient_header_rank-hot"><stop offset="0%" class="symbol-stop1-rank-hot"></stop><stop offset="100%" class="symbol-stop2-rank-hot"></stop></linearGradient><path d="M2.114 3.596c-.634.7-1.178 1.298-1.54 1.997-.907 1.798-.726 3.996.452 5.593.635.8 1.541 1.399 2.448 1.699.362.1 1.631.2 2.357 0C7.099 12.585 10 11.386 10 8.19c0-1.298-.272-2.197-.816-2.996-.09 0-.362.2-.816.599-.271.4-.634.4-.906.3-.181-.2-.363-.5-.272-.8C7.462 2.698 6.102 1.499 4.561.1l-.18-.1c-.273 1.598-1.27 2.597-2.267 3.596z" fill="#FFFFFF" fill-opacity="0.3"></path></svg>
@@ -695,7 +630,7 @@ $this->registerJs($js);
                                             <div class="qy-mod-li swiper-slide">
                                                 <div class="qy-mod-img vertical">
                                                     <div class="qy-mod-link-wrap">
-                                                        <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>"
+                                                        <a href="<?= Url::to(['new-detail', 'video_id' => $list['video_id']])?>"
                                                            class="qy-mod-link">
                                                             <div style="height:100%;overflow:hidden;">
                                                                 <img src="<?= $list['cover']?>" class="qy-mod-cover">
@@ -712,7 +647,7 @@ $this->registerJs($js);
                                                     </div>
                                                     <div class="title-wrap">
                                                         <p class="main">
-                                                            <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>" class="link-txt" >
+                                                            <a href="<?= Url::to(['new-detail', 'video_id' => $list['video_id']])?>" class="link-txt" >
                                                                 <span ><?= $list['video_name']?></span>
                                                             </a>
                                                         </p>
@@ -720,7 +655,7 @@ $this->registerJs($js);
                                                     </div>
                                                 </div>
                                                 <div class="qy-video-card-small type-vertical">
-                                                    <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>"
+                                                    <a href="<?= Url::to(['new-detail', 'video_id' => $list['video_id']])?>"
                                                        class="qy-vc-small_link">
                                                         <div class="qy-vc-small_video">
                                                             <img src="<?= $list['cover']?>" alt="" class="qy-vc-small_img">
@@ -788,7 +723,7 @@ $this->registerJs($js);
 										<?php if($tab['title'] == $channelName) :?>
 											<?php foreach ($tab['list'] as $key => $list): ?>
 												<li class="qy-rank-item qy-rank-<?= $key+1?>">
-													<a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>" class="qy-rank-img-link">
+													<a href="<?= Url::to(['new-detail', 'video_id' => $list['video_id']])?>" class="qy-rank-img-link">
 														<span class="qy-rank-no">NO</span>
 														<div class="qy-rank-num"><?= $key+1?></div>
 														<div class="qy-rank-content">
@@ -838,3 +773,5 @@ $this->registerJs($js);
 		<li class="list-item"><a href="javascript:void(0)" class="list-link backToTop"><svg class="back-top-svg" viewBox="0 0 20 12" xmlns="http://www.w3.org/2000/svg"><path d="M10.784 2.305l6.91 6.911a1.045 1.045 0 1 1-1.477 1.478L10 4.477l-6.217 6.217a1.045 1.045 0 0 1-1.478-1.478l6.911-6.91c.189-.189.43-.29.677-.305h.214c.246.014.488.116.677.304z"></path></svg>顶部</a></li>
 	</ul>
 </div>
+<script src="/js/jquery.js"></script>
+<script src="/js/VideoSearch.js"></script>

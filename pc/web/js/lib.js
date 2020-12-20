@@ -72,6 +72,32 @@ jQuery(document).ready(function($) {
    		$('#dhBtn').toggleClass('selected');
    });
    
+   $('.qy-search .search-box-input').click(function(event) {
+   		$('.qy-header .qy-search .search-result').show();
+   });
+   $(document).mouseup(function(e){
+     var _con = $('.qy-search .search-box-input');   // 设置目标区域
+     if(!_con.is(e.target) && _con.has(e.target).length === 0){ // Mark 1
+       $('.qy-header .qy-search .search-result').hide();
+     }
+   });
+   $('.qy-flash-func .func-share').hover(function() {
+   		$('.qy-flash-func .qy-func-share-pop').show(function(){
+   			$('.qy-func-share-pop .share-question-icon').click(function(event) {
+   				$('.qy-func-share-pop .share-help').show(function(){
+   					$('.qy-func-share-pop .back-link').click(function(event) {
+   						$('.qy-func-share-pop .share-help').hide();
+   						return false;
+   					});
+   				});
+   				return false;
+   			});
+   		});
+   });
+   $('.qy-flash-func .func-share').mouseleave(function(event) {
+   		$('.qy-flash-func .qy-func-share-pop').hide();
+   });
+   
    
    $(window).scroll(function(event) {
    	
@@ -90,5 +116,13 @@ jQuery(document).ready(function($) {
    		$('.qy-float-anchor').hide();
    		$('.qy-nav').hide();
    	}
+   });
+   
+   $(".TAB_CLICK li").click(function(){
+       var tab=$(this).parent(".TAB_CLICK");
+       var con=tab.attr("id");
+       var on=tab.find("li").index(this);
+       $(this).addClass('hover').siblings(tab.find("li")).removeClass('hover');
+       $(con).eq(on).show().siblings(con).hide();
    });
 });

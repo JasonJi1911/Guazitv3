@@ -291,6 +291,76 @@ body{
     background-color: hsla(0,0%,100%,.18);
     border-radius: 4px;
 }
+
+.qy-header .qy-search .search-result {
+    position: absolute;
+    z-index: 1001;
+    left: 0;
+    right: 0;
+    top: 40px;
+    display: none;
+}
+.qy-header .qy-search .search-result-con {
+    padding: 3px 0 6px;
+    border: 1px solid #f0f0f0;
+    border-top: 0;
+    border-color: rgba(18,19,24,.9);
+    box-shadow: 0 0 5px 0 rgba(0,0,0,.1);
+        background-color: rgba(18,19,24,.9);
+}
+.qy-header .qy-search .search-result-title {
+    height: 32px;
+    padding: 0 10px 0 15px;
+    line-height: 32px;
+    font-size: 14px;
+    color: #999;
+}
+.qy-header .qy-search .search-result-item {
+    display: block;
+    height: 32px;
+    padding: 0 10px 0 15px;
+    line-height: 32px;
+    font-size: 14px;
+    color: #222;
+    cursor: pointer;
+}
+.qy-header .qy-search .search-result-simple {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.qy-header .qy-search .search-result-num {
+    display: inline-block;
+    width: 23px;
+    height: 18px;
+    margin-right: 10px;
+    line-height: 18px;
+    color: #fff;
+    border-radius: 0 9px 9px 0;
+    background-color: #d8d8d8;
+    text-align: center;
+    width: 18px;
+    height: 18px;
+    color: hsla(0,0%,100%,.7);
+    border-radius: 2px;
+    background-color: hsla(0,0%,100%,.12);
+}
+.qy-header .qy-search .search-result-num.search-result-num1 {
+   background-color: #FF556E;
+}
+.qy-header .qy-search .search-result-num.search-result-num2 {
+    background-color: rgba(255,85,110,.6);
+}
+.qy-header .qy-search .search-result-num.search-result-num3 {
+    background-color: rgba(244,122,140,.4);
+}
+.qy-header.home2020 .qy-search .search-result-item {
+    color: hsla(0,0%,100%,.7);
+}
+.qy-header.home2020 .qy-search .search-result-item.selected, .qy-header.home2020 .qy-search .search-result-item:hover {
+    color: #FF556E;
+    background-color: hsla(0,0%,100%,.03);
+}
 @media screen and (min-width: 1820px){
 	.qy-header.home2020 .qy-search .search-box {
     	width: 370px;
@@ -1530,7 +1600,7 @@ body{
     line-height: 0;
 }
 .icon-home2020__close-orange10, .icon-home2020__empty {
-    background-image: url(../images/home2020-59702d8dd8.png);
+    background-image: url(../images/NewVideo/home2020-59702d8dd8.png);
 }
 .icon-home2020__empty {
     background-position: 0 -248px;
@@ -3535,3 +3605,13 @@ a.anchor{
 @media screen and (max-width: 1795px) and (min-width: 1560px){
 	.qy20-nav-focus .nav-text-link:first-child{margin-right: 10px;}
 }
+
+
+
+
+
+
+
+/*******************************
+	-------[=内页样式 begin]-------
+********************************/

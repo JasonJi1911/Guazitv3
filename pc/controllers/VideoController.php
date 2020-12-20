@@ -43,9 +43,9 @@ class VideoController extends BaseController
     }
 
     /**
-     * 视频xin首页
+     * 视频新首页
      */
-    public function actionNewindex()
+    public function actionNewIndex()
     {
         //获取频道信息
         $channel_id = Yii::$app->request->get('channel_id', 0);
@@ -63,7 +63,7 @@ class VideoController extends BaseController
             return $this->redirect('/site/error');
         }
 
-        return $this->render('newIndex',[
+        return $this->render('newindex',[
             'data'          => $data,
             'channels'      => $channels,
             'channel_id'    => $channel_id,
@@ -134,6 +134,64 @@ class VideoController extends BaseController
             'channels'  => $channels,
             'hot'       => $hot,
             'source_id' => $source_id,
+        ]);
+    }
+
+    /**
+     * 视频详情播放页
+     */
+    public function actionNewDetail()
+    {
+        //获取影片系列、剧集、源信息
+        $video_id = Yii::$app->request->get('video_id', 0);
+        $chapter_id = Yii::$app->request->get('chapter_id', '');
+        $source_id = Yii::$app->request->get('source_id', '');
+
+        //请求频道、搜索信息
+        $channels = Yii::$app->api->get('/video/channels');
+
+        //请求视频信息
+        $data = Yii::$app->api->get('/video/info', ['video_id' => $video_id, 'chapter_id' => $chapter_id, 'source_id' => $source_id]);
+
+
+        if(!$data) {
+            return $this->redirect('/site/error');
+        }
+
+        //请求热门搜索信息
+        $hot = Yii::$app->api->get('/search/hot-word');
+
+        return $this->render('newdetail', [
+            'data'      => $data,
+            'channels'  => $channels,
+            'hot'       => $hot,
+            'source_id' => $source_id,
+        ]);
+    }
+
+    /**
+     * 视频详情列表页
+     */
+    public function actionList()
+    {
+        //获取影片系列、剧集、源信息
+        $channel_id = Yii::$app->request->get('channel_id', '');
+        $keyword = Yii::$app->request->get('keyword', '');
+
+        //请求频道、搜索信息
+        $channels = Yii::$app->api->get('/video/channels');
+
+        //请求影片筛选信息
+        $info = Yii::$app->api->get('/video/filter', ['channel_id' => $channel_id, 'type' => 1, 'page_size' => 24]);
+        //请求热门搜索信息
+        $hot = Yii::$app->api->get('/search/hot-word');
+
+        return $this->render('list', [
+            'info'      => $info,
+            'hot'       => $hot,
+            'channel_id'=> $channel_id,
+            'keyword'   => $keyword,
+            'channels'  => $channels
         ]);
     }
 
