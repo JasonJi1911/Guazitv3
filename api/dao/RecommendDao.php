@@ -2,6 +2,7 @@
 namespace api\dao;
 
 use api\data\ActiveDataProvider;
+use api\models\video\Actor;
 use api\models\video\Recommend;
 use api\models\video\Video;
 use common\helpers\RedisKey;
@@ -145,6 +146,14 @@ class RecommendDao extends BaseDao
             ]);
 
             $data = $videoDataProvider->toArray($fields);
+            foreach ($data as &$it)
+            {
+                $videoDao = new VideoDao();
+                $videoInfo = $videoDao->videoInfo($it['video_id'], $fields);
+                $actorsId = $videoInfo['actors_id'] ? explode(',', $videoInfo['actors_id']) : [];
+                $actors = $videoDao->actorsInfo($actorsId);
+                $it['actors'] = array_values($actors);
+            }
 
             // 缓存推荐位视频id
             $videoIds = ArrayHelper::getColumn($data, 'video_id');

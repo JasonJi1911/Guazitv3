@@ -3490,6 +3490,11 @@ a.anchor{
 }
 .qy-video-info-tips .tip_des.four_line {
     height: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
 }
 .qy-video-info-tips .tipScore_box {
     position: relative;

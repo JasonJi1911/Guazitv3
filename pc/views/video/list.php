@@ -137,9 +137,12 @@ $(function(){
             }
             
             //遍历历史搜索
-            $.each(keywords, function(i, v) {
+            if(keywords != null)
+            {
+                $.each(keywords, function(i, v) {
                 html = html + "<li><a class='search-history' data-keyword='"+v+"'>" + v + "</a></li>";
-            });
+                });
+            }
             
             if(keywords == null) {
                 $('.video-history-search').hide();

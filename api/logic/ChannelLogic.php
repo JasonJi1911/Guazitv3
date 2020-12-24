@@ -15,7 +15,7 @@ use yii;
 class ChannelLogic
 {
     //视频字段
-    private $videoFields = ['video_id', 'video_name', 'score', 'cover', 'horizontal_cover', 'flag', 'tag', 'play_times'];
+    private $videoFields = ['video_id', 'video_name', 'score', 'cover', 'horizontal_cover', 'flag', 'tag', 'play_times', 'intro', 'category', 'actors_id'];
 
     /**
      * 频道首页数据

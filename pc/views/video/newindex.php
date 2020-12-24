@@ -626,7 +626,7 @@ $this->registerJs($js);
                             <div class="qy-mod-list swiper-container swiper-container1">
                                 <div class="qy-mod-ul swiper-wrapper">
                                     <?php foreach ($labels['list'] as $key => $list): ?>
-                                        <?php if($key < 9) :?>
+                                        <?php if($key < 17) :?>
                                             <div class="qy-mod-li swiper-slide">
                                                 <div class="qy-mod-img vertical">
                                                     <div class="qy-mod-link-wrap">
@@ -635,9 +635,9 @@ $this->registerJs($js);
                                                             <div style="height:100%;overflow:hidden;">
                                                                 <img src="<?= $list['cover']?>" class="qy-mod-cover">
                                                             </div>
-<!--                                                            <div class="icon-tr">
-                                                                <img src="images/VIP.png">
-                                                            </div>-->
+                                                            <!--                                                            <div class="icon-tr">
+                                                                                                                            <img src="images/VIP.png">
+                                                                                                                        </div>-->
                                                             <div class="icon-br icon-b">
                                                                 <span class="qy-mod-label">
                                                                     <?= $list['flag']?>
@@ -673,23 +673,22 @@ $this->registerJs($js);
                                                         <div class="qy-vc-small_type">
                                                             <label class="label-type">类型：</label>
                                                             <span class="label-con">
-												                <span class="label">偶像</span>
-												                <span class="label">言情</span>
-                                                                <span class="label">古装</span>
+                                                                <span class="label"><?= $list['category']?></span>
 											                </span>
                                                         </div>
                                                         <div>
                                                             <div class="qy-vc-small_type">
                                                                 <label class="label-type">主演：</label>
                                                                 <span class="label-con">
-                                                                    <span class="label">王大陆</span>
-                                                                    <span class="label">王大陆</span>
-                                                                    <span class="label">王大陆</span>
-                                                                    <span class="label">王大陆</span>
+                                                                    <?php if (!empty($list['actors'])) :?>
+                                                                        <?php foreach ($list['actors'] as $key => $actor): ?>
+                                                                            <span class="label"><?= $actor['actor_name']?></span>
+                                                                        <?php endforeach;?>
+                                                                    <?php endif;?>
                                                                 </span>
                                                             </div>
                                                         </div>
-                                                        <div class="qy-vc-small_desc">溍炀两国，正邪对立，分庭抗礼。炀王楚馗大肆征战，战火纷飞。忠义的溍王抵抗楚馗未成，退守北方，养兵蓄锐，以待攻敌之日。...</div>
+                                                        <div class="qy-vc-small_desc"><?= $list['intro']?></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -699,15 +698,15 @@ $this->registerJs($js);
                             </div>
                         </div>
                         <div class="mod-right qy-col-1">
-							<?php
-								$channelName = '';
-								foreach ($channels['list'] as $s_k => $s_v) {
-									if($s_v['channel_id'] == $channel) {
-										$channelName = $s_v['channel_name'];
-									}
-								}
-							?>
-							<div class="qy-mod-header">
+                            <?php
+                            $channelName = '';
+                            foreach ($channels['list'] as $s_k => $s_v) {
+                                if($s_v['channel_id'] == $channel) {
+                                    $channelName = $s_v['channel_name'];
+                                }
+                            }
+                            ?>
+                            <div class="qy-mod-header">
                                 <h2 class="qy-mod-title">
                                     <a class="link-txt" href=""><span class="qy-mod-text">风云榜</span></a>
                                     <div class="qy-mod-nav-link">
@@ -716,30 +715,30 @@ $this->registerJs($js);
                                         </ul>
                                     </div>
                                 </h2>
-                            </div>   						
+                            </div>
                             <div class="qy-rank-index">
                                 <ul class="qy-rank-list">
-									<?php foreach ($hotword['tab'] as $key => $tab): ?>
-										<?php if($tab['title'] == $channelName) :?>
-											<?php foreach ($tab['list'] as $key => $list): ?>
-												<li class="qy-rank-item qy-rank-<?= $key+1?>">
-													<a href="<?= Url::to(['new-detail', 'video_id' => $list['video_id']])?>" class="qy-rank-img-link">
-														<span class="qy-rank-no">NO</span>
-														<div class="qy-rank-num"><?= $key+1?></div>
-														<div class="qy-rank-content">
-															<div class="qy-rank-title"><?= $list['video_name']?></div>
-															<div class="qy-rank-detail">
+                                    <?php foreach ($hotword['tab'] as $key => $tab): ?>
+                                        <?php if($tab['title'] == $channelName) :?>
+                                            <?php foreach ($tab['list'] as $key => $list): ?>
+                                                <li class="qy-rank-item qy-rank-<?= $key+1?>">
+                                                    <a href="<?= Url::to(['new-detail', 'video_id' => $list['video_id']])?>" class="qy-rank-img-link">
+                                                        <span class="qy-rank-no">NO</span>
+                                                        <div class="qy-rank-num"><?= $key+1?></div>
+                                                        <div class="qy-rank-content">
+                                                            <div class="qy-rank-title"><?= $list['video_name']?></div>
+                                                            <div class="qy-rank-detail">
 														<span class="qy-rank-hot">
 															<svg width="9px" height="12px" viewBox="0 0 9 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M3.9421478,-6.66133815e-16 L4.1052901,0.092246338 L4.55975388,0.517703424 C5.74598595,1.64483368 6.68865412,2.75575744 6.47111799,4.88653712 C6.38953215,5.16307536 6.55268914,5.43966836 6.71584614,5.62417928 C6.96057429,5.71637086 7.28688828,5.71637086 7.53161643,5.34742202 L7.77936845,5.12890809 C8.0402125,4.90584563 8.20235664,4.79432728 8.26580086,4.79432728 C8.75527185,5.53191469 9,6.36165718 9,7.56034851 C9,10.5104791 6.38953215,11.6168146 5.24746257,11.8934076 C4.59484928,12.0779185 3.45267681,11.985873 3.12637752,11.8934076 C2.31060723,11.6168146 1.49483695,11.0638294 0.923794809,10.3259864 C-0.136703622,8.85112192 -0.299845921,6.82248732 0.515909666,5.16307536 C0.84222366,4.51778904 1.33167995,3.96469431 1.90272209,3.31920722 L2.40317485,2.79700735 C3.05897374,2.09098319 3.64594387,1.32649007 3.88877021,0.270268152 L3.9421478,-6.66133815e-16 Z M7.78806257,6.45966305 C7.40290132,6.68693621 6.95546408,6.73209791 6.52415274,6.61251383 L6.36332002,6.55998126 L6.13110127,6.47250209 L5.96672022,6.28660691 C5.58613535,5.85621122 5.36171944,5.34118153 5.47313971,4.76284973 L5.481,4.731 L5.49439334,4.57127216 C5.56830571,3.45646298 5.27635777,2.72874729 4.44785317,1.82437353 L4.406,1.781 L4.35405123,1.88092288 C4.02933909,2.46526132 3.56195951,3.03069776 2.88515022,3.73986713 L2.65169888,3.98180345 L2.08785557,4.63095648 C2.02217858,4.70991277 1.96421364,4.781918 1.90430615,4.85847247 C1.68748527,5.13554318 1.52846336,5.37671649 1.41333429,5.60424317 C0.760633722,6.93196823 0.890432522,8.56666025 1.71461765,9.71394133 C2.14680536,10.2723706 2.78785928,10.7227138 3.39901802,10.9312916 C3.67277305,11.0088672 4.60721156,11.0352246 5.01208146,10.9215045 C6.67582033,10.5185706 8,9.38659986 8,7.56034851 C8,7.20547479 7.97667435,6.89396702 7.92818517,6.61287895 L7.884,6.396 L7.78806257,6.45966305 Z" id="Shape-sp-126-1-2" fill="#FF1D1D" fill-opacity=""></path></svg>
 															<span class="qy-rank__hotscore">评分：<?= $list['score']?></span>
 														</span>
-															</div>
-														</div>
-													</a>
-												</li>
-											<?php endforeach;?>
-										<?php endif;?>
-									<?php endforeach;?>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            <?php endforeach;?>
+                                        <?php endif;?>
+                                    <?php endforeach;?>
                                 </ul>
                             </div>
                         </div>
@@ -757,21 +756,21 @@ $this->registerJs($js);
 </div>
 <div class="c"></div>
 <footer class="qy-footer">
-	<div class="wp">
-		<p>本网站为非赢利性站点，所有内容均由机器人采集于互联网，或者网友上传，本站只提供WEB页面服务，本站不存储、不制作任何视频，不承担任何由于内容的合法性及健康性所引起的争议和法律责任。<br />若本站收录内容侵犯了您的权益，请附说明联系邮箱，本站将第一时间处理。站长邮箱：guazitv@163.com</p>
-	</div>
+    <div class="wp">
+        <p>本网站为非赢利性站点，所有内容均由机器人采集于互联网，或者网友上传，本站只提供WEB页面服务，本站不存储、不制作任何视频，不承担任何由于内容的合法性及健康性所引起的争议和法律责任。<br />若本站收录内容侵犯了您的权益，请附说明联系邮箱，本站将第一时间处理。站长邮箱：guazitv@163.com</p>
+    </div>
 </footer>
 <div class="qy-float-anchor det-nav" style="" id="det-nav">
-	<ul class="anchor-list">
-		<?php if(!empty($channels)) : ?>
-			<?php foreach ($channels['list'] as $key => $channel): ?>
-				<?php if($channel['channel_id'] != 0) : ?>
-					<li class="list-item"><a href="#section<?= $channel['channel_id']?>" class="list-link"><?= $channel['channel_name']?></a></li>
-				<?php endif;?>				
-			<?php endforeach ?>
-		<?php endif;?>
-		<li class="list-item"><a href="javascript:void(0)" class="list-link backToTop"><svg class="back-top-svg" viewBox="0 0 20 12" xmlns="http://www.w3.org/2000/svg"><path d="M10.784 2.305l6.91 6.911a1.045 1.045 0 1 1-1.477 1.478L10 4.477l-6.217 6.217a1.045 1.045 0 0 1-1.478-1.478l6.911-6.91c.189-.189.43-.29.677-.305h.214c.246.014.488.116.677.304z"></path></svg>顶部</a></li>
-	</ul>
+    <ul class="anchor-list">
+        <?php if(!empty($channels)) : ?>
+            <?php foreach ($channels['list'] as $key => $channel): ?>
+                <?php if($channel['channel_id'] != 0) : ?>
+                    <li class="list-item"><a href="#section<?= $channel['channel_id']?>" class="list-link"><?= $channel['channel_name']?></a></li>
+                <?php endif;?>
+            <?php endforeach ?>
+        <?php endif;?>
+        <li class="list-item"><a href="javascript:void(0)" class="list-link backToTop"><svg class="back-top-svg" viewBox="0 0 20 12" xmlns="http://www.w3.org/2000/svg"><path d="M10.784 2.305l6.91 6.911a1.045 1.045 0 1 1-1.477 1.478L10 4.477l-6.217 6.217a1.045 1.045 0 0 1-1.478-1.478l6.911-6.91c.189-.189.43-.29.677-.305h.214c.246.014.488.116.677.304z"></path></svg>顶部</a></li>
+    </ul>
 </div>
 <script src="/js/jquery.js"></script>
 <script src="/js/VideoSearch.js"></script>

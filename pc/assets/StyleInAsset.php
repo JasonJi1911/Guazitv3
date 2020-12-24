@@ -12,7 +12,7 @@ class StyleInAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        '/css/style_in.css',
+        '/css/style_in.css?v=' . PC_ASSETS_CSS_VERSION,
     ];
     public $js = [
 
