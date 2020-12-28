@@ -19,7 +19,7 @@ class VideoController extends BaseController
     /**
      * 视频首页
      */
-    public function actionIndex()
+    public function actionOldIndex()
     {
         //获取影片系列、剧集、源信息
         $channel_id = Yii::$app->request->get('channel_id', '');
@@ -45,7 +45,7 @@ class VideoController extends BaseController
     /**
      * 视频新首页
      */
-    public function actionNewIndex()
+    public function actionIndex()
     {
         //获取频道信息
         $channel_id = Yii::$app->request->get('channel_id', 0);
@@ -108,7 +108,7 @@ class VideoController extends BaseController
     /**
      * 视频详情播放页
      */
-    public function actionDetail()
+    public function actionOldDetail()
     {
         //获取影片系列、剧集、源信息
         $video_id = Yii::$app->request->get('video_id', 0);
@@ -140,7 +140,7 @@ class VideoController extends BaseController
     /**
      * 视频详情播放页
      */
-    public function actionNewDetail()
+    public function actionDetail()
     {
         //获取影片系列、剧集、源信息
         $video_id = Yii::$app->request->get('video_id', 0);
@@ -177,12 +177,19 @@ class VideoController extends BaseController
         //获取影片系列、剧集、源信息
         $channel_id = Yii::$app->request->get('channel_id', '');
         $keyword = Yii::$app->request->get('keyword', '');
+        $sort = Yii::$app->request->get('sort', '');
+        $tag = Yii::$app->request->get('tag', '');
+        $area = Yii::$app->request->get('area', '');
+        $year = Yii::$app->request->get('year', '');
+        $play_limit = Yii::$app->request->get('play_limit', '');
+        $page_num = Yii::$app->request->get('page_num', 1);
 
         //请求频道、搜索信息
         $channels = Yii::$app->api->get('/video/channels');
 
         //请求影片筛选信息
-        $info = Yii::$app->api->get('/video/filter', ['channel_id' => $channel_id, 'type' => 1, 'page_size' => 24]);
+        $info = Yii::$app->api->get('/video/filter', ['channel_id' => $channel_id, 'tag' => $tag, 'sort' => $sort, 'area' => $area,
+            'play_limit' => $play_limit, 'year' => $year, 'page_num' => $page_num, 'page_size' =>24 ,'type' => 1]);
         //请求热门搜索信息
         $hot = Yii::$app->api->get('/search/hot-word');
 

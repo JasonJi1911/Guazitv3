@@ -264,7 +264,7 @@ class VideoLogic
         $videoDao = new VideoDao();
         foreach ($searchTab as &$tab) {
             //所有需要查询的视频信息
-            $tab['list'] = $videoDao->batchGetVideo($tab['list'], ['video_id', 'video_name', 'score', 'tag']);
+            $tab['list'] = $videoDao->batchGetVideo($tab['list'], ['video_id', 'video_name', 'score', 'tag', 'play_times', 'cover']);
         }
         $data['tab'] = $searchTab;
         return $data;
@@ -460,6 +460,7 @@ class VideoLogic
             'guess_like'    => $guessLike, // 猜你喜欢
             'comments'      => $commentData, // 评论
             "purchase_info" => $purchaseInfo, // 是否可播放信息
+            'channel_id'    => $videoInfo['channel_id'],
         ];
 
         //添加广告

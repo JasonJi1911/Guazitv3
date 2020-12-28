@@ -21,6 +21,7 @@ class Video extends \common\models\video\Video
             },
             'video_name' => 'title',
             'source',
+            'summary',
             'intro' => 'description',
             'keywords',
             'issue_date',
@@ -69,9 +70,9 @@ class Video extends \common\models\video\Video
             },
             'play_times' => function () {
                 if ($this->total_views<=10000) {
-                    return '热度:'.$this->total_views;
+                    return '播放:'.$this->total_views;
                 } else {
-                    return '热度:'. (round($this->total_views/10000, 2)).'万+';
+                    return '播放:'. (round($this->total_views/10000, 2)).'万+';
                 }
             },
             'total_favors',

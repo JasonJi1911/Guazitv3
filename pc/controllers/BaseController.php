@@ -20,9 +20,14 @@ class BaseController extends Controller
         if (!defined('IS_WECHAT_AGENT')) {
             define('IS_WECHAT_AGENT', false);
         }
+        
 
         if (Tool::isMobileClient()) {
-            $this->redirect(WAP_HOST_PATH);
+            if(strpos($currentRoute,'detail') !== false){ 
+                $this->redirect(WAP_HOST_PATH.'/'.$currentRoute.'?'.explode('?',$getUlr)[1]);
+            }else{
+                $this->redirect(WAP_HOST_PATH);
+            }
             return true;
         }
 

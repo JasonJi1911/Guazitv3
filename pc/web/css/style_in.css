@@ -2940,7 +2940,7 @@ a.anchor{
 @font-face {
     font-family: iconfont;
     src: url(../fonts/iconfont.eot);
-    src: url(../fonts/iconfont.eot#iefix) format("embedded-opentype"),url(../fonts/iconfont.woff) format("woff"),url(../fonts/iconfont.ttf) format("truetype"),url(../fontsiconfont.svg#iconfont) format("svg")
+    src: url(../fonts/iconfont.eot#iefix) format("embedded-opentype"),url(../fonts/iconfont.woff) format("woff"),url(../fonts/iconfont.ttf) format("truetype"),url(../fonts/iconfont.svg#iconfont) format("svg");
 }
 .qy-header.aura2 .logo-link{
 	width: 250px;
@@ -3391,7 +3391,7 @@ a.anchor{
 .qy-video-info-tips .movie_tipImg {
     position: relative;
     width: 100%;
-    height: 140px;
+    height: 150px;
     overflow: hidden;
     cursor: pointer;
 }
@@ -3455,7 +3455,7 @@ a.anchor{
     color: #666;
 }
 .qy-video-info-tips .tipLable, .qy-video-info-tips .tipLable_title {
-    display: inline-block;
+    /*display: inline-block;*/
     font-size: 12px;
     height: 20px;
 }
@@ -3489,11 +3489,11 @@ a.anchor{
     word-break:normal; 
 }
 .qy-video-info-tips .tip_des.four_line {
-    height: 80px;
+    height: 60px;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
 }
 .qy-video-info-tips .tipScore_box {
@@ -3622,7 +3622,7 @@ a.anchor{
     top: -10px;
     left: 0;
     z-index: 101;
-    width: 250px;
+    /*width: 250px;*/
     background: #fff;
     box-shadow: 1px 1px 8px rgba(0,0,0,.3);
     -webkit-animation: qy-video-info-hover .2s ease;
@@ -4305,7 +4305,7 @@ a.anchor{
 @font-face {
     font-family: svgicon3;
     src: url(../fonts/2/iconfont.eot);
-    src: url(../fonts/2/iconfont.eot#iefix) format("embedded-opentype"),url(../fonts/2/iconfont.woff) format("woff"),url(../fonts/2/iconfont.ttf) format("truetype"),url(../fonts/2/iconfont.svg) format("svg")
+    src: url(../fonts/2/iconfont.eot#iefix) format("embedded-opentype"),url(../fonts/2/iconfont.woff) format("woff"),url(../fonts/2/iconfont.ttf) format("truetype"),url(../fonts/2/iconfont.svg) format("svg");
 }
 .play-top-flash .qy-svgicon {
     display: inline-block;
@@ -5534,7 +5534,7 @@ a.anchor{
 
 @media screen and (min-width: 1560px) {
     .qy-episode-num .select-item {
-        width:66px
+        width:70px
     }
     .qy-flash-func .func-download,.qy-flash-func .func-give-piece,.qy-flash-func .func-share {
        display:block
@@ -5562,14 +5562,16 @@ a.anchor{
     background-color: #f8f8f8;
 }
 .qy-list-page .list-content {
-    position: relative;
+    /*position: relative; */
     margin: 0 auto 20px;
     overflow: hidden;
+    z-index: 1;
 }
 .qy-list-page .list-content {
-    position: relative;
+    /*position: relative;*/
     margin: 0 auto 20px;
     overflow: hidden;
+    z-index: 1;
 }
 .qy-list-category .category-content {
     padding: 4px 0 0;
@@ -5683,11 +5685,13 @@ a.anchor{
     margin: -4px 0 16px;
 }
 .total{
-    position: absolute;
+        /* position: absolute; */
     color: rgb(153, 153, 153);
     font-size: 14px;
-    right: 0px;
-    top: 0px;
+    /* right: 120px; */
+    /* top: -30px; */
+    text-align: right;
+    margin-bottom: 20px;
 }
 .qy-video-info-tips2 .topBd_btn, .qy-video-info-tips2 .topBd_collect {
     margin-left: 10px;
@@ -5770,15 +5774,20 @@ a.anchor{
     position: relative;
 }
 .qy-mod-ul-search .qy-mod-img.vertical {
-    width: 197px;
+    width: 228px;
 }
 .qy-mod-ul-search .qy-mod-img.vertical .qy-mod-link{
 	width: 100%;
-	height: auto;
+	/*height: auto;*/
 }
-.qy-mod-ul-search .qy-mod-li:nth-child(8n){
+.qy-mod-ul-search .qy-mod-li:nth-child(7n){
 	margin-right: 0;
 }
+
+.qy-mod-ul-search .qy-mod-li:nth-child(7n) .qy-video-info-tips2{
+	/*left: -22px;*/
+}
+
 .qy-mod-ul-search .qy-mod-img .icon-b{
 	position: absolute;
 	bottom: 5px;
@@ -5803,7 +5812,7 @@ a.anchor{
 
 
 .qy-video-info-tips2{
-	left: -19px;
+	/*left: -19px;*/
 }
 .qy-button-small:hover {
     background-color: #FF556E;
@@ -5963,7 +5972,7 @@ a.anchor{
 @font-face {
     font-family: svgicon4;
     src: url(../fonts/3/iconfont.eot);
-    src: url(../fonts/3/iconfont.eot#iefix) format("embedded-opentype"),url(../fonts/3/iconfont.woff) format("woff"),url() format("truetype"),url(../fonts/3/iconfont.svg) format("svg")
+    src: url(../fonts/3/iconfont.eot#iefix) format("embedded-opentype"),url(../fonts/3/iconfont.woff) format("woff"),url(../fonts/3/iconfont.ttf) format("truetype"),url(../fonts/3/iconfont.svg) format("svg");
 } 
 .qy-aura3 .qy-svgicon,
 .qy-flash-func .qy-play-icon.func-dwn-icon {
@@ -7321,17 +7330,25 @@ a.anchor{
 }
 
 @media screen and (max-width: 1768px){
-	.qy-mod-ul-search .qy-mod-img.vertical{width: 169px;}
+	.qy-mod-ul-search .qy-mod-img.vertical{width: 229px;}
+	.qy-list-wrap .qy-mod-li:nth-child(7n){margin-right: 20px;}
 }
 
 @media screen and (max-width: 1560px){
+    .qy-list-wrap .qy-mod-li:nth-child(7n){margin-right: 20px;}
 	.qy-list-wrap .qy-mod-li:nth-child(6n){margin-right: 0;}
 	.qy-mod-ul-search .qy-mod-img.vertical{width: 197px;}
+	.qy-list-wrap .qy-mod-li:nth-child(6n) .qy-video-info-tips2{
+	    left: -22px;
+    }
+	
 }
 
 @media screen and (max-width: 1366px){
 	.qy-list-wrap .qy-mod-li:nth-child(6n){margin-right: 20px}
 	.qy-list-wrap .qy-mod-li:nth-child(5n){margin-right: 0px}
-	
+	.qy-list-wrap .qy-mod-li:nth-child(5n) .qy-video-info-tips2{
+	    left: -22px;
+    }
 }
 

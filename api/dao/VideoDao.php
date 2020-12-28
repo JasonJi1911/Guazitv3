@@ -375,7 +375,7 @@ class VideoDao extends BaseDao
         foreach ($actorsId as $actor_id) {
             $key = RedisKey::actorInfo($actor_id);
             if ($redisSeries = $redis->get($key)) {  //有缓存
-                $data[] = json_decode($redisSeries, true);
+                $data[] = json_decode($redisSeries, true, 512, JSON_UNESCAPED_UNICODE);
             } else {
                 $noHitKeys[] = $actor_id;
             }
@@ -462,7 +462,8 @@ class VideoDao extends BaseDao
             'score',
             'horizontal_cover',
             'intro',
-        ], true);
+            'category',
+        ], true, ['actors']);
 
         $data['list'] = array_values($list);
 

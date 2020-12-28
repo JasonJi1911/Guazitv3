@@ -2,7 +2,6 @@
 namespace api\dao;
 
 use api\data\ActiveDataProvider;
-use api\models\video\Actor;
 use api\models\video\Recommend;
 use api\models\video\Video;
 use common\helpers\RedisKey;
@@ -114,12 +113,13 @@ class RecommendDao extends BaseDao
         $redisKey = RedisKey::recommendVideo($recommendId);
         $redis = new RedisStore();
 
-        if ($str = $redis->get($redisKey)) {
-            $videoIds = json_decode($str, true);
+        // if ($str = $redis->get($redisKey)) {
+        //     $videoIds = json_decode($str, true);
 
-            $videoDao = new VideoDao();
-            $data = $videoDao->batchGetVideo($videoIds, $fields, false);
-        } else {
+        //     $videoDao = new VideoDao();
+        //     $data = $videoDao->batchGetVideo($videoIds, $fields, false, ['actors']);
+        // } else {
+        {
             // 查询对象
             $objVideo = Video::find();
             // 获取推荐位信息
@@ -142,7 +142,7 @@ class RecommendDao extends BaseDao
 
             // 根据样式返回数据个数
             $videoDataProvider = new ActiveDataProvider([
-                'query' => $objVideo->orderBy('total_views desc')->limit(Recommend::$selectLimit[$recommendInfo['style']]),
+                'query' => $objVideo->orderBy('total_views desc')->limit(20),
             ]);
 
             $data = $videoDataProvider->toArray($fields);
