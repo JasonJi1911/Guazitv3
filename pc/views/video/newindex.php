@@ -178,6 +178,11 @@ SCRIPT;
 
 $this->registerJs($js);
 ?>
+<style>
+    .qy-header.home2020 .qy-search .search-right-entry:hover{
+        color: #ff556e;
+    }
+</style>
 <header class="qy-header home2020 qy-header--absolute ">
     <div class="header-wrap">
         <div class="header-inner">
@@ -231,11 +236,11 @@ $this->registerJs($js);
 						<span class="search-box-in">
 							<input placeholder="<?= empty($hotword['tab'][0]['list'][0]['video_name']) ? '': $hotword['tab'][0]['list'][0]['video_name']?>"
                                    type="text" value="" class="search-box-input" id="keywords">
-							<!--<a href="" class="search-right-entry">-->
-							<!--	<i class="qy20-header-svg qy20-header-svg-rank-hot">-->
-							<!--		<svg viewBox="0 0 10 13" aria-hidden="true" class="qy20-header-symbol"><linearGradient x1="79.5857988%" y1="17.1508789%" x2="20.4142012%" y2="90.2275473%" id="__gradient_header_rank-hot"><stop offset="0%" class="symbol-stop1-rank-hot"></stop><stop offset="100%" class="symbol-stop2-rank-hot"></stop></linearGradient><path d="M2.114 3.596c-.634.7-1.178 1.298-1.54 1.997-.907 1.798-.726 3.996.452 5.593.635.8 1.541 1.399 2.448 1.699.362.1 1.631.2 2.357 0C7.099 12.585 10 11.386 10 8.19c0-1.298-.272-2.197-.816-2.996-.09 0-.362.2-.816.599-.271.4-.634.4-.906.3-.181-.2-.363-.5-.272-.8C7.462 2.698 6.102 1.499 4.561.1l-.18-.1c-.273 1.598-1.27 2.597-2.267 3.596z" fill="#FFFFFF" fill-opacity="0.3"></path></svg>-->
-							<!--	</i>热搜榜-->
-							<!--</a>-->
+							<a href="<?= Url::to(['/video/hot-search'])?>" class="search-right-entry">
+								<i class="qy20-header-svg qy20-header-svg-rank-hot">
+									<svg viewBox="0 0 10 13" aria-hidden="true" class="qy20-header-symbol"><linearGradient x1="79.5857988%" y1="17.1508789%" x2="20.4142012%" y2="90.2275473%" id="__gradient_header_rank-hot"><stop offset="0%" class="symbol-stop1-rank-hot"></stop><stop offset="100%" class="symbol-stop2-rank-hot"></stop></linearGradient><path d="M2.114 3.596c-.634.7-1.178 1.298-1.54 1.997-.907 1.798-.726 3.996.452 5.593.635.8 1.541 1.399 2.448 1.699.362.1 1.631.2 2.357 0C7.099 12.585 10 11.386 10 8.19c0-1.298-.272-2.197-.816-2.996-.09 0-.362.2-.816.599-.271.4-.634.4-.906.3-.181-.2-.363-.5-.272-.8C7.462 2.698 6.102 1.499 4.561.1l-.18-.1c-.273 1.598-1.27 2.597-2.267 3.596z" fill="#FFFFFF" fill-opacity="0.3"></path></svg>
+								</i>热搜榜
+							</a>
 						</span>
                         <span class="search-box-out">
 							<span type="button" rseat="tj_serch" class="search-box-btn">
@@ -780,7 +785,9 @@ $this->registerJs($js);
                                     <a class="link-txt" href=""><span class="qy-mod-text">推荐榜</span></a>
                                     <div class="qy-mod-nav-link">
                                         <ul class="qy-mod-crumb">
-                                            <li class="crumb-li"><a href=""></a></li>
+                                            <li class="crumb-li">
+                                                <a href="<?= Url::to(['hot-play', 'channel_id' => $channel])?>">全部榜单 ></a>
+                                            </li>
                                         </ul>
                                     </div>
                                 </h2>

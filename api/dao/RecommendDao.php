@@ -153,6 +153,7 @@ class RecommendDao extends BaseDao
                 $actorsId = $videoInfo['actors_id'] ? explode(',', $videoInfo['actors_id']) : [];
                 $actors = $videoDao->actorsInfo($actorsId);
                 $it['actors'] = array_values($actors);
+                $it['year'] = $videoInfo['year'];
             }
 
             // 缓存推荐位视频id

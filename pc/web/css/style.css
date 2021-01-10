@@ -2583,7 +2583,7 @@ a.anchor{
     position: relative;
     border-radius: 3px;
     overflow: hidden;
-    height: 330px;
+    max-height: 295px;
 }
 .qy-mod-img.vertical .qy-mod-link {
     /*width: 186px;

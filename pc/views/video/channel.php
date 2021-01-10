@@ -34,13 +34,24 @@ $(function(){
         speed: 300,
     });
     var swiper = new Swiper('#section1 .swiper-container1', {
-          slidesPerView: 6,
-          slidesPerColumn: 1,
-          spaceBetween: 5,
-          navigation: {
-          nextEl: '#section1 .swiper-button-next',
-          prevEl: '#section1 .swiper-button-prev',
+        slidesPerView: 8,
+        slidesPerColumn: 1,
+        spaceBetween: 5,
+        navigation: {
+            nextEl: '#section1 .swiper-button-next',
+            prevEl: '#section1 .swiper-button-prev',
         },
+        breakpoints: {
+            1024: {
+                slidesPerView: 6,
+            },
+            1440: {
+                slidesPerView: 6,
+            },
+            1550: {
+                slidesPerView: 7,
+            },
+        }
     });
     
     $('.qy-mod-li').each(function() {
@@ -237,7 +248,7 @@ $this->registerJs($js);
                                 <dl class="classes-blcoks">
                                     <dt>
                                         <h4 class="classes-title">
-                                            片库
+                                            年份
                                         </h4>
                                     </dt>
                                     <dd>
@@ -254,7 +265,7 @@ $this->registerJs($js);
                                 <dl class="classes-blcoks">
                                     <dt>
                                         <h4 class="classes-title">
-                                            分类
+                                            排序
                                         </h4>
                                     </dt>
                                     <dd>
@@ -352,7 +363,7 @@ $this->registerJs($js);
 <!--                                                                                <span class="tipLable">华语</span>-->
 <!--                                                                                <span class="tipLable">院线</span>-->
                                                                             </p>
-                                                                            <p class="movie_tipTime">99分钟</p>
+                                                                            <p class="movie_tipTime"><?= $list['year']?></p>
                                                                         </div>
                                                                         <div class="tip_starring" >
                                                                             主演：
