@@ -7,6 +7,27 @@ StyleInAsset::register($this);
 
 $js = <<<JS
 $(function(){
+    
+    // var videoPath = $('#player1').data('src');
+    // var videoImage = '';
+    //
+    // var dp = new DPlayer({
+    //     element: document.getElementById('player1'),
+    //     theme: '#FADFA3',
+    //     loop: true,
+    //     lang: 'zh-cn',
+    //     hotkey: true,
+    //     preload: 'auto',
+    //     volume: 0.7,
+    //     autoplay: true,
+    //     playbackSpeed:[0.5, 0.75, 1, 1.25, 1.5, 2,2.5,3,5,7.5,10],
+    //     video: {
+    //         url: videoPath,
+    //         pic: videoImage,
+    //         type: 'hls'
+    //     },
+    // });
+        
     $('.qy-player-basic-intro').click(function(event) {
 			$('.qy-player-intro-pop').slideToggle();
 			$(this).toggleClass('selected');
@@ -64,17 +85,20 @@ $(function(){
             playbackRates: [0.5,1,1.5,2]
         });
         myVideo.play();
+        //dp.play();
     });
     
     //播放iframe
     $('.video-play-btn-iframe').click(function() {
         //隐藏封面
         $('.video-play-left-cover').hide();
+        //dp.play();
     });
     
     //5s后关闭封面图
     setTimeout(function() {
         $('.video-play-left-cover').hide();
+        //dp.play();
     },5000);
     
     //显示播放源
@@ -102,7 +126,28 @@ $(function(){
         var chapterId = $(this).attr('data-video-chapter-id');
         var sourceId = $(this).attr('data-source-id');
          window.location.href = "/video/detail?video_id="+videoId+"&chapter_id="+chapterId+"&source_id="+sourceId;
-    })
+    });
+    
+//    window.onload = function(){
+//        window.setInterval(showalert, 1000); 
+//        function showalert() 
+//        {
+//            var time = $("#my-iframe").contents().find(".yzmplayer-ptime").text();
+//            var dTime = $("#my-iframe").contents().find('.yzmplayer-dtime').text();
+//
+//            if (time == "" || dTime == "")
+//                return ;
+//            
+//            var videoId = $('.switch-next selected').attr('data-video-id');
+//            var chapterId = $('#next_chapter').val();
+//            var sourceId = $('.next-source selected').attr('data-source-id');
+//             if (time == dTime)
+//             {
+//                 window.location.href = "/video/detail?video_id="+videoId+"&chapter_id="+chapterId+"&source_id="+sourceId;
+//             }
+//        }
+//    }
+    
 });
 JS;
 
@@ -136,6 +181,15 @@ $this->registerJs($js);
         
         .on .tag-item{
             color: rgb(255, 85, 110);
+        }
+
+         .box{
+             height: 100%;
+         }
+
+        .video-play-btn-iframe {
+            width:100%;
+            height:100%;
         }
     </style>
 </head>
@@ -246,6 +300,7 @@ $this->registerJs($js);
                             <div class="qy-flash-box">
                                 <div class="flash-box">
                                     <div class="iqp-player">
+                                        <input type="hidden" id="next_chapter" value="<?= $data['info']['next_chapter'] ?>">
                                         <?php if($data['info']['resource_type'] == 1) :?>
                                             <div class="video-play-left-cover">
                                                 <img src="<?= $data['info']['horizontal_cover'] ?>" alt=""
@@ -269,6 +324,8 @@ $this->registerJs($js);
                                                     allowfullscreen="true" allowtransparency="true"
                                                     frameborder="0" scrolling="no" width="100%"
                                                     height="100%" scrolling="no"></iframe>
+<!--                                            <div class="box" id="player1"-->
+<!--                                                data-src="--><?//= $data['info']['resource_url']?><!--"></div>-->
                                         <?php endif;?>
                                     </div>
                                 </div>

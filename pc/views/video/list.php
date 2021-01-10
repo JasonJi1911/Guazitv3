@@ -300,9 +300,8 @@ $(function(){
                             params['keyword'] = $('#keywords').val();
                             params['page_num'] = page;
                         }
-                        
+
                         $.get(url, params, function(res) {
-                            
                             if(res) {
                                  var data = res.data.list;
                                  var content = refreshVideo(data);
@@ -462,7 +461,7 @@ $this->registerJs($js);
                             <input type="hidden" id="is-keyword" value="<?= $keyword?>">
 							<input autocomplete="off" 
 							placeholder="<?= empty($hot['tab'][0]['list'][0]['video_name']) ? '': $hot['tab'][0]['list'][0]['video_name']?>" 
-							type="text" class="search-box-input" id="keywords">
+							type="text" class="search-box-input" id="keywords" value="<?= $keyword?>">
 							<!--<a href="" class="search-right-entry"><i class="qy-svgicon qy-svgicon-rank-hot2"></i>热搜榜 </a>-->
 						</span>
                     <span class="search-box-out"><span id="J-search-btn" type="button" class="search-box-btn"><i class="qy-svgicon qy-svgicon-search"></i><em class="search-box-btnTxt">搜索</em></span></span>

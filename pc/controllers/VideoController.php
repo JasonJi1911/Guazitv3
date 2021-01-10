@@ -255,4 +255,50 @@ class VideoController extends BaseController
         return Tool::responseJson(0, '操作成功', $data );
     }
 
+    /**
+     * 热搜榜
+     **/
+    public function  actionHotSearch()
+    {
+        //搜索首页信息
+        $data = Yii::$app->api->get('/search/hot-word');
+
+        //请求频道、搜索信息
+        $channels = Yii::$app->api->get('/video/channels');
+
+        return $this->render('hotsearch', [
+            'data' => $data,
+            'channels'  => $channels,
+        ]);
+    }
+
+    /**
+     * 热搜榜
+     **/
+    public function  actionHotPlay()
+    {
+        //获取频道信息
+        $channel_id = Yii::$app->request->get('channel_id', 0);
+
+        //请求首页信息
+        $data = Yii::$app->api->get('/video/index', ['channel_id' => 0]);
+
+        //请求频道、搜索信息
+        $channels = Yii::$app->api->get('/video/channels');
+
+        //获取热搜
+        $hotword = Yii::$app->api->get('/search/hot-word');
+
+        if(!$data) {
+            return $this->redirect('/site/error');
+        }
+
+        return $this->render('hotplay',[
+            'data'          => $data,
+            'channels'      => $channels,
+            'channel_id'    => $channel_id,
+            'hotword'       => $hotword
+        ]);
+    }
+
 }

@@ -51,6 +51,7 @@ class Video extends \common\models\video\Video
             'type' => '视频类型',
             'area' => '地区',
             'year' => '年代',
+            'summary' => '副标题',
             'description' => '作品简介',
             'keywords' => 'Keywords',
             'score' => '评分',

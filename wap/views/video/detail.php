@@ -6,6 +6,30 @@ $this->title = '瓜子视频-澳新华人在线视频分享网站';
 $js = <<<JS
 $(function(){
     
+    // var videoPath = $('#player1').data('src');
+    // var videoImage = '';
+    //
+    // var dp = new DPlayer({
+    //     element: document.getElementById('player1'),
+    //     theme: '#FADFA3',
+    //     loop: true,
+    //     lang: 'zh-cn',
+    //     hotkey: true,
+    //     preload: 'auto',
+    //     volume: 0.7,
+    //     autoplay: true,
+    //     live: true,
+    //     playbackSpeed:[0.5, 0.75, 1, 1.25, 1.5, 2,2.5,3,5,7.5,10],
+    //     video: {
+    //         url: videoPath,
+    //         pic: videoImage,
+    //         type: 'hls'
+    //     },
+    // });
+    
+    setTimeout(function() {
+        $('.dplayer-play-icon').click();
+    },50);
     //实例化video对象
 /*    setTimeout(function() {
       $('.go-back').hide();
@@ -30,6 +54,7 @@ $(function(){
         $(".pop-intro").css("bottom","-100%");
         $("body").removeClass("body-mode");
         $(".pop-video-mask").hide();
+        //dp.play();
     }
     
     //选中播放视频
@@ -100,6 +125,10 @@ $this->registerJs($js);
     .on {
         color: #FF556E;
     }
+
+    .box{
+        height: 100%;
+    }
 </style>
 
 <div class="video-box">
@@ -131,6 +160,8 @@ $this->registerJs($js);
                     <?php else:?>
                         <div href="#" class="piclist-link-ifram" style="background-image:url(<?= $info['info']['horizontal_cover']?>);height: 3.8rem;z-index: 99;background-size: 100%"></>
                         <iframe name="my-iframe" id="my-iframe" src="<?= $info['info']['resource_url']?>" allowfullscreen="true" allowtransparency="true" frameborder="0" scrolling="no"  width="100%" height="100%" scrolling="no" style="height: 3.8rem"></iframe>
+<!--                        <div class="box" id="player1"-->
+<!--                             data-src="--><?//= $info['info']['resource_url']?><!--"></div>-->
                     <?php endif;?>
                 </div>
             </li>
