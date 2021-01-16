@@ -537,7 +537,7 @@ class VideoLogic
             return $url;
 
         } else if($product == Common::PRODUCT_PC){
-            return VIDEO_JIXI_URL.'?v='.urlencode($url);
+            return API_HOST_PATH.'/360apitv/jiexi/jianghu.php?v='.urlencode($url);
 //            return $url;
         } else {
             return VIDEO_JIXI_URL_WAP.'?v='.urlencode($url);

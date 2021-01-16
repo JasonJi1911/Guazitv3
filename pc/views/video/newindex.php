@@ -782,7 +782,9 @@ $this->registerJs($js);
 							?>
 							<div class="qy-mod-header">
                                 <h2 class="qy-mod-title">
-                                    <a class="link-txt" href=""><span class="qy-mod-text">推荐榜</span></a>
+                                    <a class="link-txt" href="<?= Url::to(['hot-play', 'channel_id' => $channel])?>">
+                                        <span class="qy-mod-text">风云榜</span>
+                                    </a>
                                     <div class="qy-mod-nav-link">
                                         <ul class="qy-mod-crumb">
                                             <li class="crumb-li">

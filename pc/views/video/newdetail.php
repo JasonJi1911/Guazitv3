@@ -128,25 +128,36 @@ $(function(){
          window.location.href = "/video/detail?video_id="+videoId+"&chapter_id="+chapterId+"&source_id="+sourceId;
     });
     
-//    window.onload = function(){
-//        window.setInterval(showalert, 1000); 
-//        function showalert() 
-//        {
-//            var time = $("#my-iframe").contents().find(".yzmplayer-ptime").text();
-//            var dTime = $("#my-iframe").contents().find('.yzmplayer-dtime').text();
-//
-//            if (time == "" || dTime == "")
-//                return ;
-//            
-//            var videoId = $('.switch-next selected').attr('data-video-id');
-//            var chapterId = $('#next_chapter').val();
-//            var sourceId = $('.next-source selected').attr('data-source-id');
-//             if (time == dTime)
-//             {
-//                 window.location.href = "/video/detail?video_id="+videoId+"&chapter_id="+chapterId+"&source_id="+sourceId;
-//             }
-//        }
-//    }
+    $("#my-iframe").load(function (){
+        var interval = setInterval(showalert, 1000); 
+        function showalert() 
+        {
+            var time = $("#my-iframe").contents().find(".yzmplayer-ptime").text();
+            var dTime = $("#my-iframe").contents().find('.yzmplayer-dtime').text();
+
+            if (time == "" || dTime == ""  
+                || time == undefined || dTime == undefined 
+                || dTime == "00:00" || dTime == "0:00" || dTime == "0:0")
+                return ;
+            
+            var videoId = $('.switch-next.selected').attr('data-video-id');
+            var chapterId = $('#next_chapter').val();
+            var sourceId = $('.on .next-source').attr('data-source-id');
+            var intStime = parseInt(time.split(':')[0] * 60) + parseInt(time.split(':')[1]);
+            var intDtime = parseInt(dTime.split(':')[0] * 60) + parseInt(dTime.split(':')[1]);
+            if(dTime.split(':').length == 3)
+            {
+               intStime = parseInt(time.split(':')[0] * 60) + parseInt(time.split(':')[1] * 60) + parseInt(time.split(':')[2]); 
+               intDtime = parseInt(dTime.split(':')[0] * 60) + parseInt(dTime.split(':')[1] * 60) + parseInt(dTime.split(':')[2]); 
+            }
+
+             if ((intStime+10) >= intDtime)
+             {
+                 window.location.href = "/video/detail?video_id="+videoId+"&chapter_id="+chapterId+"&source_id="+sourceId;
+                 clearInterval(interval);
+             }
+        }
+    });
     
 });
 JS;

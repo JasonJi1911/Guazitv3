@@ -190,7 +190,7 @@ $this->registerJs($js);
                         <a href="<?= Url::to(['hot-search'])?>" title="热搜榜" class="tab-link selected">热搜榜</a>
                     </li>
                 </ul>
-<!--                <div class="tab-right-box"><a href="" class="qy-top-sprite zhishu-link"></a></div>-->
+                <div class="tab-right-box"><a href="" class="qy-top-sprite zhishu-link"></a></div>
             </div>
 
             <div class="row-so">
