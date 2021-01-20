@@ -268,11 +268,14 @@ body{
     color: hsla(0,0%,93.3%,.88);
 }
 .qy-header.aura2 .qy-search {
-    position: absolute;
-    left: 50%;
-    margin-left: -280px;
-    top: 12px;
-    margin-left: -64px;
+    /*position: absolute;*/
+    /* left: 50%; */
+    /* margin-left: -280px; */
+    /* top: 12px; */
+    /* margin-left: -64px; */
+    float: left;
+    padding-left: 45px;
+    padding-top: 10px;
 }
 
 
@@ -280,19 +283,28 @@ body{
 
 .qy-header .qy-search .search-result {
     position: absolute;
-    z-index: 1001;
-    left: 0;
-    right: 95px;
-    top: 40px;
+    /*z-index: 1001;*/
+    /*left: 0;*/
+    /*right: 95px;*/
+    /*top: 40px;*/
     display: none;
-}
-.qy-header .qy-search .search-result-con {
+    width: 324px;
+    border-color: rgba(18,19,24,.9);
+    background-color: rgba(18,19,24,.9);
     padding: 3px 0 6px;
-    border: 1px solid #f0f0f0;
     border-top: 0;
     -webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,.1);
     box-shadow: 0 0 5px 0 rgba(0,0,0,.1);
-    background-color: #fff;
+}
+.qy-header .qy-search .search-result-con {
+    /*padding: 3px 0 6px;*/
+    /*border: 1px solid #f0f0f0;*/
+    /*border-top: 0;*/
+    /*-webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,.1);*/
+    /*box-shadow: 0 0 5px 0 rgba(0,0,0,.1);*/
+    /*background-color: #fff;*/
+    color: hsla(0,0%,100%,.7);
+    padding-top: 5px;
 }
 .qy-header .qy-search .search-result-title {
     height: 32px;
@@ -307,7 +319,8 @@ body{
     padding: 0 10px 0 15px;
     line-height: 32px;
     font-size: 14px;
-    color: #222;
+    /*color: #222;*/
+    color: hsla(0,0%,100%,.7);
     cursor: pointer;
 }
 .qy-header .qy-search .search-result-simple {
@@ -322,7 +335,7 @@ body{
     margin-right: 10px;
     line-height: 18px;
     color: #fff;
-    border-radius: 0 9px 9px 0;
+    /*border-radius: 0 9px 9px 0;*/
     background-color: #d8d8d8;
     text-align: center;
 }
@@ -374,7 +387,7 @@ body{
     vertical-align: top;
     letter-spacing: 0;
     position: relative;
-    width: 384px;
+    /*width: 384px;*/
     padding-right: 80px;
     width: 324px;
 }
@@ -2643,7 +2656,7 @@ a.anchor{
 .qy-mod-img.vertical .qy-mod-link {
     /*width: 210px;*/
     width: 100%;
-    height: 280px;
+    /*height: 280px;*/
     max-height: 295px;
 }
 .qy-mod-img .qy-mod-cover {
@@ -2944,7 +2957,7 @@ a.anchor{
     src: url(../fonts/iconfont.eot#iefix) format("embedded-opentype"),url(../fonts/iconfont.woff) format("woff"),url(../fonts/iconfont.ttf) format("truetype"),url(../fonts/iconfont.svg#iconfont) format("svg");
 }
 .qy-header.aura2 .logo-link{
-	width: 250px;
+	width: 100%;
 }
 .qy-header.aura2 .qy-nav{display: block !important;}
 .qy-header.aura2{position: relative;}
@@ -3877,6 +3890,7 @@ a.anchor{
     font-size: 14px;
     color: hsla(0,0%,100%,.3);
     line-height: 26px;
+    background-color: #191a20;
 }
 
 
@@ -4441,7 +4455,7 @@ a.anchor{
     float: left;
     width: 100%;
     height: 100%;
-    margin-top: 44px;
+    /*margin-top: 44px;*/
 }
 .qy-play-con .play-con-mnc {
     margin-right: 404px;
@@ -4865,6 +4879,7 @@ a.anchor{
 }
 .qy-player-info-area {
     background-color: #191a20;
+    padding-bottom: 10px;
 }
 .qy-player-detail-con {
     *zoom: 1;
@@ -5274,14 +5289,14 @@ a.anchor{
     position: relative;
     height: 28px;
     line-height: 28px;
-    margin-bottom: 18px;
+    /*margin-bottom: 18px;*/
     font-size: 0;
 }
 .qy-mod-title {
     position: relative;
     height: 28px;
     line-height: 28px;
-    margin-bottom: 18px;
+    /*margin-bottom: 18px;*/
     font-size: 0;
 }
 .qy-mod-title .mod-title {
@@ -6934,6 +6949,16 @@ a.anchor{
 .qy-aura3 .role-tab{
 	display: block !important;
 }
+.qy-aura3 .role-tab::before {
+    content: "";
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+    height: 1px;
+    background-color: rgb(232, 232, 232);
+}
+
 .qy-aura3 .qy-play-role-tab {
     position: relative;
     margin-bottom: 18px;
@@ -6970,7 +6995,7 @@ a.anchor{
 .qy-aura3 .qy-mod-img.horizon .qy-mod-link {
     /*width: 186px;*/
     width: 100%;
-    height: 104px;
+    /*height: 104px;*/
 }
 .qy-aura3 .qy-play-role-tab .role-item.slick-current .role-wrap,
 .qy-aura3 .qy-play-role-tab .role-item:hover .role-wrap{
@@ -7023,6 +7048,8 @@ a.anchor{
 	right: -23px;
 	background-image: url(../images/NewVideo/arrow-right.png);
 }
+.qy-aura3 .slick-prev:hover{background-image: url(../images/NewVideo/arrow-left-on.png);}
+.qy-aura3 .slick-next:hover{background-image: url(../images/NewVideo/arrow-right-on.png);}
 .qy-advunder-show .qy-play-list .icon-br {
     position: absolute;
     bottom: 2px;
@@ -7214,7 +7241,7 @@ a.anchor{
 	.qy-aura3 .qy-mod-img.horizon .qy-mod-link {
 	    width: 220px;
 	    width: 100%;
-	    height: 124px;
+	    /*height: 124px;*/
 	}
 	.qy-episode-txt .select-item {
 	    padding-left: 16px;
@@ -7223,13 +7250,13 @@ a.anchor{
 
 @media screen and (max-width: 1550px) and (min-width: 1336px){
 	.classBody .qy-header.aura2 .qy-search{
-	    margin-left: -155px;
+	    /*margin-left: -155px;*/
 	}
 }
 @media screen and (max-width: 1550px) and (min-width: 1156px){
 	.qy-header.aura2 .qy-nav .nav-index:nth-of-type(n+4) ,
 	.qy-header.aura2 .qy-nav .nav-index:nth-of-type(n+3) {
-	    display: none;
+	    /*display: none;*/
 	}
 }
 @media screen and (min-width: 1156px){
@@ -7251,11 +7278,15 @@ a.anchor{
 	    padding-right: 50px;
 	}
 	.classBody .qy-header.aura2 .qy-search{
-	    margin-left: -64px;
+	    /*margin-left: -64px;*/
 	}
 	.qy-header.aura2 .qy-search .search-box-in {
 	    width: 210px;
 	}
+    .qy-header .qy-search .search-result
+    {
+        width: 210px;
+    }
 	.qy-header.aura2 .qy-search .search-box-btnTxt {
 	    display: none;
 	}
@@ -7307,7 +7338,7 @@ a.anchor{
 	.qy-header.aura2 .header-inner {
 	    width: 920px;
 	}
-	.qy-header.home2020 .qy-nav .nav-channel{display: none;}
+	/*.qy-header.home2020 .qy-nav .nav-channel{display: none;}*/
 	.qy-header.aura2 .qy-search .search-box-in {
 	    width: 190px;
 	    padding-left: 0;
@@ -7323,7 +7354,8 @@ a.anchor{
 	    height: 401px;
 	}
 	.classBody .qy-header.aura2 .qy-search{
-		margin-left: -95px;
+		/*margin-left: -95px;*/
+        padding-left: 10px;
 	}
 	.qy-play-container {
 	    width: 920px;
@@ -7540,7 +7572,7 @@ a.anchor{
     content: "\e9c9";
 }
 .qy-svgicon-anchorTop:before {
-    content: "\e87a";
+    /*content: "\e87a";*/
 }
 .qy-top-channel .top-channel.actived {
     height: auto;
@@ -7782,6 +7814,37 @@ a.anchor{
     padding: 0 7px;
     border-radius: 10px;
 }
+.qy-mod-list-1 .qy-mod-li{
+    width: 25%;margin-bottom: 15px;
+    vertical-align: top;
+    display: inline-block;
+    padding-right: 16px;
+}
+.qy-mod-list-1 .date-lab{z-index: 2;font-size: 12px;
+    position: absolute;right: 5px;bottom: 5px;color: #fff;
+    padding: 0 10px;border-radius: 10px;line-height: 22px;
+    background-color: rgba(0,0,0,.5);
+}
+.qy-mod-title .huan{position: absolute;right: 19px;top: 0;font-size: 14px;color: #222;
+    padding-left: 25px;
+}
+.qy-mod-title .huan:after{content: '';position: absolute;width: 16px;height: 16px;
+    top: 50%;margin-top: -8px;left: 0;
+    background: url(../images/ico-01.png) no-repeat left center;
+    transition: .5s;
+    -ms-transition: .5s;
+    -moz-transition: .5s;
+    -webkit-transition: .5s;
+    -o-transition: .5s;
+}
+.qy-mod-title .huan:hover{color: #00be06;}
+.qy-mod-title .huan:hover:after{background-image: url(../images/ico-01-on.png);
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
 
 @media screen and (min-width: 0){
     .qy-top-sprite {
@@ -7794,5 +7857,6 @@ a.anchor{
     .qy-top-page .container {
         width: 1105px;
     }
+    .qy-mod-list-1 .qy-mod-li{width: 25%;}
 }
 

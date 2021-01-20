@@ -27,6 +27,30 @@ $(function(){
     //         type: 'hls'
     //     },
     // });
+    
+    $('.slider-for').slick({
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      arrows: false,
+      fade: true,
+      asNavFor: '.slider-nav'
+    });
+    $('.slider-nav').slick({
+      slidesToShow: 5,
+      slidesToScroll: 1,
+      asNavFor: '.slider-for',
+      dots: false,
+      arrows:true,
+      focusOnSelect: true
+    });
+    var swiper = new Swiper('.swiper-container', {
+         slidesPerView: 5,
+         spaceBetween: 15,
+         navigation: {
+           nextEl: '.swiper-button-next',
+           prevEl: '.swiper-button-prev',
+         },      
+    });	
         
     $('.qy-player-basic-intro').click(function(event) {
 			$('.qy-player-intro-pop').slideToggle();
@@ -142,6 +166,12 @@ $(function(){
             
             var videoId = $('.switch-next.selected').attr('data-video-id');
             var chapterId = $('#next_chapter').val();
+            if(chapterId == 0)
+            {
+                clearInterval(interval);
+                return;
+            }
+                
             var sourceId = $('.on .next-source').attr('data-source-id');
             var intStime = parseInt(time.split(':')[0] * 60) + parseInt(time.split(':')[1]);
             var intDtime = parseInt(dTime.split(':')[0] * 60) + parseInt(dTime.split(':')[1]);
@@ -202,105 +232,30 @@ $this->registerJs($js);
             width:100%;
             height:100%;
         }
+
+        .qy-mod-link div img
+        {
+            opacity: 1.0;
+        }
+
+        .qy-mod-link:hover div img
+        {
+            opacity: 0.8;
+        }
+
+        .rank-enter-link:hover
+        {
+            color: #ff4d8d;
+        }
+
+        .dn{
+            display: block;
+        }
     </style>
 </head>
-<body style="background-color:#fff;">
+<body style="background-color:#fff;" class="qy-aura3 qy-advunder-show classBody">
 <script src="/js/jquery.js"></script>
 <script src="/js/VideoSearch.js"></script>
-<?php
-    $channelName = '';
-        foreach ($channels['list'] as $s_k => $s_v) {
-            if($s_v['channel_id'] == $data['channel_id']) {
-                $channelName = $s_v['channel_name'];
-            }
-        }
-    ?>
-    <header class="qy-header home2020 aura2">
-        <div class="header-wrap">
-            <div class="header-inner">
-                <div id="nav_logo" class="qy-logo">
-                    <a href="/video/index" class="logo-link" title="瓜子TV"><img src="/images/NewVideo/logo.png" alt="">
-                        瓜子TV · <?= $channelName?></a>
-                </div>
-                <div class="qy-nav">
-                    <div class="nav-channel">
-                        <a href="<?= Url::to(['/video/channel', 'channel_id' => '2'])?>"
-                           class="nav-link nav-index J-nav-channel">电视剧</a>
-                        <a href="<?= Url::to(['/video/channel', 'channel_id' => '1'])?>"
-                           class="nav-link nav-index J-nav-channel">电影</a>
-                        <a href="<?= Url::to(['/video/channel', 'channel_id' => '3'])?>"
-                           class="nav-link nav-index J-nav-channel">综艺</a>
-                        <a href="<?= Url::to(['/video/channel', 'channel_id' => '4'])?>"
-                           class="nav-link nav-index J-nav-channel">动漫</a>
-                    </div>
-                    <div class="T-drop-hover nav-guide nav-link" id="dhBtn">
-                        <div class="T-drop-click">
-                                <span class="J-nav-title">
-                                    <span class="show920">
-                                        导航
-                                        <i class="qy20-header-svg qy20-header-svg-guide-narrow"><svg aria-hidden="true" class="qy20-header-symbol"><use xlink:href="#qy20-header-guide-narrow"></use></svg></i>
-                                    </span>
-                                    <span class="hidden920">全部<i class="qy20-header-svg qy20-header-svg-guide-narrow"><svg aria-hidden="true" class="qy20-header-symbol"><use xlink:href="#qy20-header-guide-narrow"><svg id="qy20-header-guide-narrow" viewBox="0 0 9 9"><path d="M.257 3.793a1 1 0 0 1 1.327-.078l.088.078L4.5 6.62l2.828-2.828a1 1 0 0 1 1.327-.078l.088.078A1 1 0 0 1 8.82 5.12l-.077.087-3.536 3.536a1 1 0 0 1-1.327.077l-.087-.077L.257 5.207a1 1 0 0 1 0-1.414z"></path></svg></use></svg></i></span>
-                                </span>
-                        </div>
-                        <div class="qy-nav-panel qy-nav-pop J-nav-body" style="display:none;">
-                            <div class="qy-nav-sub-v3 qy-nav-pop J-nav-pop-wrap">
-                                <div class="qy-nav-inner qy20-nav-wide">
-                                    <?php if(!empty($channels)) :?>
-                                        <?php foreach ($channels['list'] as $channel) :?>
-                                            <div class="qy20-nav-list">
-                                                <a href="<?= Url::to(['/video/channel', 'channel_id' => $channel['channel_id']])?>"
-                                                   class="qy20-nav-link">
-                                                    <span class="nav-en">MOVIES</span>
-                                                    <span class="nav-name"><?= $channel['channel_name']?></span></a>
-                                            </div>
-                                            <i class="qy20-nav-line"></i>
-                                        <?php endforeach;?>
-                                    <?php endif;?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="qy-search">
-                    <?php foreach ($hot['tab'] as $key => $tab): ?>
-                        <?php if($tab['title'] == '热搜') :?>
-                            <div class="search-box">
-                                <span class="search-box-in">
-                                     <input id="keywords" autocomplete="off"
-                                            placeholder="<?= empty($tab['list'][0]['video_name']) ? '': $tab['list'][0]['video_name']?>"
-                                            type="text" class="search-box-input"></a>
-                                </span>
-                                <span class="search-box-out">
-                                    <span id="J-search-btn" type="button"
-                                          class="search-box-btn">
-                                        <i class="qy-svgicon qy-svgicon-search"></i>
-                                        <em class="search-box-btnTxt">搜索</em>
-                                    </span>
-                                </span>
-                            </div>
-                            <div id="J-search-result-wrap" class="search-result" style="">
-                                <div class="search-result-con">
-                                    <div id="J-search-result-hot" class="search-result-hot" style="">
-                                        <div class="search-result-title">热门搜索</div>
-                                        <?php foreach ($tab['list'] as $key => $list): ?>
-                                            <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>"
-                                               class="search-result-item">
-                                                <div class="search-result-simple">
-                                                    <em class="search-result-num search-result-num1"><?= $key + 1?></em>
-                                                    <span class="search-result-text"><?= $list['video_name']?></span>
-                                                </div>
-                                            </a>
-                                        <?php endforeach;?>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endif;?>
-                    <?php endforeach;?>
-                </div>
-            </div>
-        </div>
-    </header>
     <div class="c"></div>
     <div class="qy-play-top">
         <div class="play-top-flash">
@@ -433,11 +388,19 @@ $this->registerJs($js);
                                                         <?php
                                                         $page = ceil(count($data['info']['videos'])/30);
                                                         $count = count($data['info']['videos']);
+                                                        $ontab = 0;
+                                                        foreach ($data['info']['videos'] as $index => $value){
+                                                            if ($data['info']['play_chapter_id'] != $value['chapter_id'])
+                                                                continue;
+
+                                                            $ontab = floor(($index+1) / 30);
+                                                            break;
+                                                        }
                                                         ?>
                                                         <div class="qy-episode-tab">
                                                             <ul class="tab-bar TAB_CLICK" id=".tabShow">
                                                                 <?php for($k=0; $k<$page; $k++){?>
-                                                                    <li class="bar-li <?= $k == 0? 'hover': ''?>">
+                                                                    <li class="bar-li <?= $k == $ontab? 'hover': ''?>">
                                                                         <a href="javascript:void(0);" class="bar-link">
                                                                             <?= $k*30 + 1?>-<?= ($k == ($page -1))? $count:$k*30 + 30?></a>
                                                                     </li>
@@ -446,7 +409,7 @@ $this->registerJs($js);
                                                         </div>
                                                         <div class="c"></div>
                                                         <?php for($i=0; $i<$page; $i++){?>
-                                                            <ul class="qy-episode-num tabShow  <?= $i > 0? 'dn': ''?>">
+                                                            <ul class="qy-episode-num tabShow  <?= $i == $ontab? 'dn': ''?>">
                                                                 <?php foreach ($data['info']['videos'] as $index => $value) : ?>
                                                                     <?php if($index>=$i*30 && $index < ($i*30+30)){?>
                                                                     <li class="select-item switch-next-li switch-next <?= $data['info']['play_chapter_id'] == $value['chapter_id'] ? 'selected' : ''?>"
@@ -648,6 +611,16 @@ $this->registerJs($js);
                                         </span>
                                     </li>
                                     <li class="intro-detail-item">
+                                        <em class="item-title">演员：</em>
+                                        <span class="item-content">
+                                            <?php foreach ($data['info']['actors'] as $key => $act) : ?>
+                                                <span class="name-wrap">
+                                                    <span class="name-link"><?= $act['actor_name']?></span>
+                                                </span>
+                                            <?php endforeach;?>
+                                        </span>
+                                    </li>
+                                    <li class="intro-detail-item">
                                         <em class="item-title">本集简介:</em>
                                         <span class="item-content">
                                             <span class="content-paragraph">
@@ -664,62 +637,164 @@ $this->registerJs($js);
             </div>
         </div>
     </div>
-    <div class="qy-play-container" style="display: none">
+
+    <div class="c"></div>
+    <div class="qy-play-container">
         <div class="qy-play-con">
             <div class="play-con-mn">
                 <div class="play-con-mnc">
-                    <div>
-                        <div class="qy-mod-wrap">
-                            
+                    <div class="qy-mod-wrap qy-aura3">
+                        <div class="qy-play-role-tab j_people_wrap">
+                            <div class="slider slider-nav role-tab">
+                                <?php foreach ($data['info']['actors'] as $key => $act) : ?>
+                                    <div class="role-item j_people_item j_slide_item">
+                                        <div class="role-wrap">
+                                            <div class="role-img-wrap">
+                                                <img src="<?= $act['avatar'] ?>"
+                                                     alt="<?= $act['actor_name'] ?>" class="role-img">
+                                            </div>
+                                            <div class="role-con ranking-name">
+                                                <h3 class="actor-name">
+                                                    <a href="javasctipt:return false;"
+                                                       title="<?= $act['actor_name'] ?>"
+                                                       class="role-name-link"><?= $act['actor_name'] ?></a>
+<!--                                                    <a href="javasctipt:return false;" class="ranking-num">NO.537</a>-->
+                                                </h3>
+<!--                                                <p class="role-name">饰 渤王</p>-->
+                                            </div>
+                                            <i class="line"></i>
+                                        </div>
+                                    </div>
+                                <?php endforeach;?>
+                            </div>
+                            <div class="slider slider-for">
+                                <?php foreach ($data['info']['actorvideos'] as $key => $actvideos) : ?>
+                                    <div class="qy-mod-list-scroll">
+                                        <div class="swiper-container">
+                                            <div class="swiper-wrapper qy-mod-ul">
+                                                <?php foreach ($actvideos as $i => $vi) : ?>
+                                                <div class="swiper-slide qy-mod-li qy-mod-li j_slide_item">
+                                                    <div class="qy-mod-img horizon">
+                                                        <div class="qy-mod-link-wrap">
+                                                            <a href="<?= Url::to(['/video/detail', 'video_id' => $vi['video_id']])?>"
+                                                               class="qy-mod-link">
+                                                                <img class="qy-mod-cover" src="<?= $vi['horizontal_cover']?>">
+<!--                                                                <div class="icon-tr">-->
+<!--                                                                    <img src="images/VIP.png">-->
+<!--                                                                </div>-->
+                                                                <div class="icon-br icon-b">
+                                                                    <span class="qy-mod-label"><?= $vi['flag']?></span>
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                        <div class="title-wrap">
+                                                            <p class="main">
+                                                                <a href="<?= Url::to(['/video/detail', 'video_id' => $vi['video_id']])?>"
+                                                                   class="link-txt" title="<?= $vi['video_name']?>"><?= $vi['video_name']?></a></p>
+                                                            <div class="sub"><?= $vi['intro']?></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <?php endforeach;?>
+                                            </div>
+                                            <!-- Add Arrows -->
+                                            <div class="swiper-button-next"></div>
+                                            <div class="swiper-button-prev"></div>
+                                        </div>
+                                    </div>
+                                <?php endforeach;?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="c"></div>
+
+                    <div class="qy-mod-title">
+                        <h3 class="mod-title">猜你喜欢</h3>
+                    </div>
+                    <div class="qy-mod-list qy-mod-list-1">
+                        <div class="qy-mod-ul">
+                            <?php foreach ($data['guess_like'] as $key => $list) :?>
+                                <?php if($key < 8) :?>
+                                    <div class="qy-mod-li">
+                                        <div class="qy-mod-img vertical">
+                                            <div class="qy-mod-link-wrap">
+                                                <a href="<?= Url::to(['/video/detail', 'video_id' => $list['video_id']])?>"
+                                                   class="qy-mod-link">
+                                                    <div style="height:100%;overflow:hidden;">
+                                                        <img src="<?= $list['cover']?>" originalsrc="images/p-1.jpg" class="qy-mod-cover">
+                                                    </div>
+<!--                                                    <div class="icon-tr">-->
+<!--                                                        <img src="images/self.png">-->
+<!--                                                    </div>-->
+                                                    <span class="date-lab"><?= $list['flag']?></span>
+                                                </a>
+                                            </div>
+                                            <div class="title-wrap">
+                                                <p class="main">
+                                                    <a href="" class="link-txt" ><span ><?= $list['video_name']?></span></a>
+                                                </p>
+                                                <div class="sub"><?= $list['intro']?></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endif;?>
+                            <?php endforeach;?>
                         </div>
                     </div>
                 </div>
             </div>
             <aside class="play-con-sd">
-                <div class="qy-mod-wrap side-wrap">
-                    <div class="qy-mod-title"><h3 class="mod-title">猜你喜欢</h3></div>
-                    <div class="qy-play-fav-list">
-                        <ul class="rank-list">
-                            <?php foreach ($data['guess_like'] as $key => $list) :?>
-                                <?php if($key < 6) :?>
-                                    <li class="rank-item">
-                                        <a href="<?= Url::to(['/video/detail', 'video_id' => $list['video_id']])?>" class="rank-item-link">
-                                            <div class="mod-left">
-                                                <div class="mod-img-link">
-                                                    <img class="mod-img" src="<?= $list['cover']?>">
-                                                    <div class="icon-b">
-                                                        <span class="qy-mod-label">
-                                                            <?= $list['flag']?>
-                                                        </span>
+                <div class="qy-mod-wrap side-wrap ">
+                    <div class="qy-mod-title">
+                        <h3 class="mod-title"><?= $channelName ?> · 风云榜
+                            <div class="qy-rank-enter">
+                                <a href="<?= Url::to(['hot-play', 'channel_id' => $channel_id])?>" class="rank-enter-link">
+                                    <span class="more">全部榜单&nbsp;</span>
+                                    <i class="qy-svgicon qy-svgicon-rightarrow_cu"></i>
+                                </a>
+                            </div>
+                        </h3>
+                    </div>
+                    <div>
+                        <div class="qy-mod-rank-des-min">
+                            <ul class="rank-list">
+                                <?php foreach ($hotword['tab'] as $key => $tab): ?>
+                                    <?php if($tab['title'] == $channelName) :?>
+                                        <?php foreach ($tab['list'] as $key => $list): ?>
+                                        <li class="rank-item">
+                                            <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>"
+                                               class="rank-item-link">
+                                                <div class="mod-left">
+                                                    <div class="rank-num-box">
+                                                        <span class="qy-rank-no No<?= $key+1?>">NO</span>
+                                                        <i class="sprite-rank-min rank-nub rank-nub-<?= $key+1?>"><?= $key+1?></i>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="mod-right">
-                                                <h3 class="main-title"><p class="title-link"><?= $list['video_name']?></p></h3>
-                                                <div class="sub-box"><p class="sub-des"><?= $list['intro']?></p></div>
-                                                <div class="sub-title">
-                                                    <i class="qy-svgicon qy-svgicon-hot"></i>
-                                                    <span class="count"><?= $list['play_times']?></span>
+                                                <div class="mod-right">
+                                                    <h3 class="main-title">
+                                                        <p href="javascript:" class="title-link"><?= $list['video_name']?></p>
+                                                    </h3>
+                                                    <div class="sub-box">
+                                                        <div class="sub-right"><i class="qy-svgicon qy-svgicon-hot hot-red"></i><span class="count">
+                                                                <?= $list['play_times']?></span>
+                                                        </div>
+                                                        <p class="sub-des"><?= $list['summary']?></p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                <?php endif;?>
-                            <?php endforeach;?>
-                        </ul>
+                                            </a>
+                                        </li>
+                                        <?php endforeach;?>
+                                    <?php endif;?>
+                                <?php endforeach;?>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </aside>
         </div>
     </div>
-    <div class="c"></div>
 
     <div class="c"></div>
-    <footer class="qy-footer">
-        <div class="wp">
-            <p>本网站为非赢利性站点，所有内容均由机器人采集于互联网，或者网友上传，本站只提供WEB页面服务，本站不存储、不制作任何视频，不承担任何由于内容的合法性及健康性所引起的争议和法律责任。<br />若本站收录内容侵犯了您的权益，请附说明联系邮箱，本站将第一时间处理。站长邮箱：guazitv@163.com</p>
-        </div>
-    </footer>
     <div class="qy-scroll-anchor qy-aura3">
         <ul class="scroll-anchor">
             <li class="anchor-list anchor-integral">

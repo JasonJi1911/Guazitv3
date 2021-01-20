@@ -15,7 +15,7 @@ class Video extends \common\models\video\Video
 
     public function fields()
     {
-        return ['id', 'title', 'source', 'cover' => 'thumb', 'description'];
+        return ['id', 'title', 'source', 'cover' => 'thumb', 'summary', 'description'];
     }
 
     /**
@@ -31,7 +31,7 @@ class Video extends \common\models\video\Video
             [['title'], 'string', 'max' => 64],
             [['source'], 'string', 'max' => 32],
             [['description'], 'string', 'max' => 2048],
-
+            [['summary'], 'string', 'max' => 64],
             [['total_views', 'total_favors', 'total_price'], 'integer', 'min' => NUMBER_INPUT_MIN, 'max' => NUMBER_INPUT_MAX],
         ];
     }

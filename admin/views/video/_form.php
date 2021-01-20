@@ -21,6 +21,8 @@ $horizontal_cover_height = ADMIN_COMIC_HORIZONTAL_HEIGHT * 4;
 
 <?= $form->field($model, 'title')->wrapper(['width' => 3, 'maxlength' => true]) ?>
 
+<?= $form->field($model, 'summary')->wrapper(['width' => 3]) ?>
+
 <?= $form->field($model, 'channel_id')->dropDownList(ArrayHelper::map(VideoChannel::find()->all(), 'id', 'channel_name'))->label('所属频道')->wrapper(['width' => 3])?>
 
 <div class="form-group field-comic-cat">

@@ -264,7 +264,7 @@ class VideoLogic
         $videoDao = new VideoDao();
         foreach ($searchTab as &$tab) {
             //所有需要查询的视频信息
-            $tab['list'] = $videoDao->batchGetVideo($tab['list'], ['video_id', 'video_name', 'score', 'tag', 'play_times', 'cover']);
+            $tab['list'] = $videoDao->batchGetVideo($tab['list'], ['video_id', 'video_name', 'score', 'tag', 'play_times', 'cover', 'summary']);
         }
         $data['tab'] = $searchTab;
         return $data;
@@ -429,7 +429,7 @@ class VideoLogic
         // 增加观看次数
         $this->increaseViews($videoId);
         // 猜你喜欢
-        $guessLike = $videoDao->refreshVideo(['channel_id' => $videoInfo['channel_id']], ['video_id', 'video_name', 'tag', 'flag', 'play_times', 'cover', 'horizontal_cover', 'intro'], 12, [$videoInfo['video_id']]);
+        $guessLike = $videoDao->refreshVideo(['channel_id' => $videoInfo['channel_id']], ['video_id', 'video_name', 'tag', 'flag', 'play_times', 'cover', 'horizontal_cover', 'intro', 'summary'], 12, [$videoInfo['video_id']]);
         // 评论信息
         $commentData = $this->videoInfoComment($videoId, $chapterInfo['chapter_id']);
         // 获取用户观看视频任务状态
@@ -537,7 +537,7 @@ class VideoLogic
             return $url;
 
         } else if($product == Common::PRODUCT_PC){
-            return API_HOST_PATH.'/360apitv/jiexi/jianghu.php?v='.urlencode($url);
+            return '/360apitv/jiexi/jianghu.php?v='.urlencode($url);
 //            return $url;
         } else {
             return VIDEO_JIXI_URL_WAP.'?v='.urlencode($url);

@@ -409,83 +409,6 @@ $this->registerJs($js);
     <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
 </head>
 <body style="background-color:#fff;" class="classBody">
-<header class="qy-header home2020 aura2">
-    <div class="header-wrap">
-        <div class="header-inner">
-            <div id="nav_logo" class="qy-logo">
-                <a href="/video/index" class="logo-link" title="瓜子TV"><img src="/images/NewVideo/logo.png" alt="">瓜子TV</a>
-            </div>
-            <div class="qy-nav">
-                <div class="nav-channel">
-                    <a href="<?= Url::to(['/video/channel', 'channel_id' => '2'])?>"
-                       class="nav-link nav-index J-nav-channel">电视剧</a>
-                    <a href="<?= Url::to(['/video/channel', 'channel_id' => '1'])?>"
-                       class="nav-link nav-index J-nav-channel">电影</a>
-                    <a href="<?= Url::to(['/video/channel', 'channel_id' => '3'])?>"
-                       class="nav-link nav-index J-nav-channel">综艺</a>
-                    <a href="<?= Url::to(['/video/channel', 'channel_id' => '4'])?>"
-                       class="nav-link nav-index J-nav-channel">动漫</a>
-                </div>
-                <div class="T-drop-hover nav-guide nav-link" id="dhBtn">
-                    <div class="T-drop-click">
-							<span class="J-nav-title">
-								<span class="show920">
-									导航
-									<i class="qy20-header-svg qy20-header-svg-guide-narrow"><svg aria-hidden="true" class="qy20-header-symbol"><use xlink:href="#qy20-header-guide-narrow"></use></svg></i>
-								</span>
-								<span class="hidden920">全部<i class="qy20-header-svg qy20-header-svg-guide-narrow"><svg aria-hidden="true" class="qy20-header-symbol"><use xlink:href="#qy20-header-guide-narrow"><svg id="qy20-header-guide-narrow" viewBox="0 0 9 9"><path d="M.257 3.793a1 1 0 0 1 1.327-.078l.088.078L4.5 6.62l2.828-2.828a1 1 0 0 1 1.327-.078l.088.078A1 1 0 0 1 8.82 5.12l-.077.087-3.536 3.536a1 1 0 0 1-1.327.077l-.087-.077L.257 5.207a1 1 0 0 1 0-1.414z"></path></svg></use></svg></i></span>
-							</span>
-                    </div>
-                    <div class="qy-nav-panel qy-nav-pop J-nav-body" style="display:none;">
-                        <div class="qy-nav-sub-v3 qy-nav-pop J-nav-pop-wrap">
-                            <div class="qy-nav-inner qy20-nav-wide">
-                                <?php if(!empty($channels)) :?>
-                                    <?php foreach ($channels['list'] as $channel) :?>
-                                        <div class="qy20-nav-list">
-                                            <a href="<?= Url::to(['/video/channel', 'channel_id' => $channel['channel_id']])?>"
-                                               class="qy20-nav-link">
-                                                <span class="nav-en">MOVIES</span>
-                                                <span class="nav-name"><?= $channel['channel_name']?></span></a>
-                                        </div>
-                                        <i class="qy20-nav-line"></i>
-                                    <?php endforeach;?>
-                                <?php endif;?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="qy-search">
-                <div class="search-box">
-						<span class="search-box-in">
-                            <input type="hidden" id="is-keyword" value="<?= $keyword?>">
-							<input autocomplete="off" 
-							placeholder="<?= empty($hot['tab'][0]['list'][0]['video_name']) ? '': $hot['tab'][0]['list'][0]['video_name']?>" 
-							type="text" class="search-box-input" id="keywords" value="<?= $keyword?>">
-							<!--<a href="" class="search-right-entry"><i class="qy-svgicon qy-svgicon-rank-hot2"></i>热搜榜 </a>-->
-						</span>
-                    <span class="search-box-out"><span id="J-search-btn" type="button" class="search-box-btn"><i class="qy-svgicon qy-svgicon-search"></i><em class="search-box-btnTxt">搜索</em></span></span>
-                </div>
-                <div id="J-search-result-wrap" class="search-result" style="">
-                    <div class="search-result-con">
-                        <div id="J-search-result-hot" class="search-result-hot" style="">
-                            <div class="search-result-title">热门搜索</div>
-                            <?php foreach ($hot['tab'][0]['list'] as $key => $list): ?>
-                                <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>"
-                                   class="search-result-item">
-                                    <div class="search-result-simple">
-                                        <em class="search-result-num search-result-num1"><?= $key + 1?></em>
-                                        <span class="search-result-text"><?= $list['video_name']?></span>
-                                    </div>
-                                </a>
-                            <?php endforeach;?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
 <div class="c"></div>
 <div class="qy-list-page">
     <div class="qy-list-category">
@@ -596,11 +519,6 @@ $this->registerJs($js);
 </div>
 
 <div class="c"></div>
-<footer class="qy-footer">
-    <div class="wp">
-        <p>本网站为非赢利性站点，所有内容均由机器人采集于互联网，或者网友上传，本站只提供WEB页面服务，本站不存储、不制作任何视频，不承担任何由于内容的合法性及健康性所引起的争议和法律责任。<br />若本站收录内容侵犯了您的权益，请附说明联系邮箱，本站将第一时间处理。站长邮箱：guazitv@163.com</p>
-    </div>
-</footer>
 <div class="qy-scroll-anchor qy-aura3">
     <ul class="scroll-anchor">
         <li class="anchor-list anchor-integral">

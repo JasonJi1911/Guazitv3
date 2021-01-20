@@ -77,6 +77,8 @@ class VideoController extends BaseController
      */
     public function actionChannel()
     {
+        $pageTab = "channel";
+
         //获取频道信息
         $channel_id = Yii::$app->request->get('channel_id', 0);
 
@@ -96,7 +98,8 @@ class VideoController extends BaseController
             return $this->redirect('/site/error');
         }
 
-        return $this->render('channel',[
+        return $this->render('newframe',[
+            'pageTab'       => $pageTab,
             'data'          => $data,
             'channels'      => $channels,
             'channel_id'    => $channel_id,
@@ -142,6 +145,8 @@ class VideoController extends BaseController
      */
     public function actionDetail()
     {
+        $pageTab = "newdetail";
+
         //获取影片系列、剧集、源信息
         $video_id = Yii::$app->request->get('video_id', 0);
         $chapter_id = Yii::$app->request->get('chapter_id', '');
@@ -153,7 +158,16 @@ class VideoController extends BaseController
         //请求视频信息
         $data = Yii::$app->api->get('/video/info', ['video_id' => $video_id, 'chapter_id' => $chapter_id, 'source_id' => $source_id]);
 
-
+        $channel_id = $data['channel_id'];
+        $data['info']['actorvideos'] = [];
+        foreach ($data['info']['actors'] as $key => $actor)
+        {
+            $actor_id = $actor['actor_id'];
+            $acVideos = Yii::$app->api->get('/actor/videos', ['actor_id' => $actor_id]);
+            array_push($data['info']['actorvideos'], $acVideos['list']);
+        }
+//        array_merge($data['info'], ['actorvideos' => $actorVideos]);
+//        $data['info']['actorvideos'] = $actorVideos;
         if(!$data) {
             return $this->redirect('/site/error');
         }
@@ -161,11 +175,13 @@ class VideoController extends BaseController
         //请求热门搜索信息
         $hot = Yii::$app->api->get('/search/hot-word');
 
-        return $this->render('newdetail', [
-            'data'      => $data,
-            'channels'  => $channels,
-            'hot'       => $hot,
-            'source_id' => $source_id,
+        return $this->render('newframe', [
+            'pageTab'       => $pageTab,
+            'data'          => $data,
+            'channels'      => $channels,
+            'hotword'       => $hot,
+            'source_id'     => $source_id,
+            'channel_id'    => $channel_id,
         ]);
     }
 
@@ -174,8 +190,10 @@ class VideoController extends BaseController
      */
     public function actionList()
     {
+        $pageTab = "list";
+
         //获取影片系列、剧集、源信息
-        $channel_id = Yii::$app->request->get('channel_id', '');
+//        $channel_id = Yii::$app->request->get('channel_id', '');
         $keyword = Yii::$app->request->get('keyword', '');
         $sort = Yii::$app->request->get('sort', '');
         $tag = Yii::$app->request->get('tag', '');
@@ -193,12 +211,13 @@ class VideoController extends BaseController
         //请求热门搜索信息
         $hot = Yii::$app->api->get('/search/hot-word');
 
-        return $this->render('list', [
-            'info'      => $info,
-            'hot'       => $hot,
-            'channel_id'=> $channel_id,
-            'keyword'   => $keyword,
-            'channels'  => $channels
+        return $this->render('newframe', [
+            'pageTab'       => $pageTab,
+            'info'          => $info,
+            'hotword'       => $hot,
+//            'channel_id'    => $channel_id,
+            'keyword'       => $keyword,
+            'channels'      => $channels
         ]);
     }
 
@@ -260,15 +279,18 @@ class VideoController extends BaseController
      **/
     public function  actionHotSearch()
     {
+        $pageTab = "hotsearch";
         //搜索首页信息
         $data = Yii::$app->api->get('/search/hot-word');
 
         //请求频道、搜索信息
         $channels = Yii::$app->api->get('/video/channels');
 
-        return $this->render('hotsearch', [
-            'data' => $data,
-            'channels'  => $channels,
+        return $this->render('newframe', [
+            'pageTab'       => $pageTab,
+            'data'          => $data,
+            'channels'      => $channels,
+            'hotword'       => $data,
         ]);
     }
 
@@ -277,6 +299,7 @@ class VideoController extends BaseController
      **/
     public function  actionHotPlay()
     {
+        $pageTab = "hotplay";
         //获取频道信息
         $channel_id = Yii::$app->request->get('channel_id', 0);
 
@@ -293,7 +316,8 @@ class VideoController extends BaseController
             return $this->redirect('/site/error');
         }
 
-        return $this->render('hotplay',[
+        return $this->render('newframe',[
+            'pageTab'       => $pageTab,
             'data'          => $data,
             'channels'      => $channels,
             'channel_id'    => $channel_id,

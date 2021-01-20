@@ -113,7 +113,38 @@ $(function(){
         var chapterId = $(this).attr('data-video-chapter-id');
         var sourceId = $(this).attr('data-source-id');
          window.location.href = "/video/detail?video_id="+videoId+"&chapter_id="+chapterId+"&source_id="+sourceId;
-    })
+    });
+    
+    $("#my-iframe").load(function (){
+        var interval = setInterval(showalert, 1000); 
+        function showalert() 
+        {
+            var time = $("#my-iframe").contents().find(".yzmplayer-ptime").text();
+            var dTime = $("#my-iframe").contents().find('.yzmplayer-dtime').text();
+
+            if (time == "" || dTime == ""  
+                || time == undefined || dTime == undefined 
+                || dTime == "00:00" || dTime == "0:00" || dTime == "0:0")
+                return ;
+            
+            var videoId = $('.switch-next.on').attr('data-video-id');
+            var chapterId = $('#next_chapter').val();
+            var sourceId = $('.on .next-source').attr('data-source-id');
+            var intStime = parseInt(time.split(':')[0] * 60) + parseInt(time.split(':')[1]);
+            var intDtime = parseInt(dTime.split(':')[0] * 60) + parseInt(dTime.split(':')[1]);
+            if(dTime.split(':').length == 3)
+            {
+               intStime = parseInt(time.split(':')[0] * 60) + parseInt(time.split(':')[1] * 60) + parseInt(time.split(':')[2]); 
+               intDtime = parseInt(dTime.split(':')[0] * 60) + parseInt(dTime.split(':')[1] * 60) + parseInt(dTime.split(':')[2]); 
+            }
+
+             if ((intStime+10) >= intDtime)
+             {
+                 window.location.href = "/video/detail?video_id="+videoId+"&chapter_id="+chapterId+"&source_id="+sourceId;
+                 clearInterval(interval);
+             }
+        }
+    });
     
 });
 JS;
@@ -140,6 +171,7 @@ $this->registerJs($js);
         <ul class="swiper-wrapper clearfix">
             <li class="swiper-slide">
                 <div class="piclist-img" style="height: 4rem">
+                    <input type="hidden" id="next_chapter" value="<?= $info['info']['next_chapter'] ?>">
                     <?php if($info['info']['resource_type'] == 1) :?>
                         <?php if(!empty($info['info']['horizontal_cover'])) :?>
                             <a href="javascript:void(0);" class="piclist-link" style="background-image:url(<?= $info['info']['horizontal_cover']?>);height: 3.8rem;z-index: 99"></a>

@@ -29,7 +29,7 @@ class ActorDao extends BaseDao
 
         //获取所有影片信息
         $videoDao = new VideoDao();
-        $seriesInfo = $videoDao->batchGetVideo($videoId, ['video_id', 'video_name', 'cover', 'horizontal_cover', 'flag', 'tag']);
+        $seriesInfo = $videoDao->batchGetVideo($videoId, ['video_id', 'video_name', 'cover', 'horizontal_cover', 'flag', 'tag', 'summary', 'intro']);
 
         $videoActor['list'] = $seriesInfo;
         return $videoActor;
