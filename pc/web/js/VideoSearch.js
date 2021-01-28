@@ -16,17 +16,17 @@ $('#keywords').keypress(function(event){
 function searchInfo() {
     var searchKeyword = $('#keywords').val();
     if(!searchKeyword) {
-        window.location.href = '/video/list';
+        window.location.href = '/video/search-result';
         return false;
     }
     //写入缓存
     setSearchStore(searchKeyword);
-    window.location.href = '/video/list?keyword=' + searchKeyword;
+    window.location.href = '/video/search-result?keyword=' + searchKeyword;
 }
 
 //点击搜索历史记录进行搜索
 $('.search-histoty-list').on('click', '.search-history', function() {
-    window.location.href = '/video/list?keyword=' + $(this).attr('data-keyword');
+    window.location.href = '/video/search-result?keyword=' + $(this).attr('data-keyword');
 });
 
 //清楚搜索信息

@@ -45,6 +45,22 @@ class ChannelLogic
         // 广告循环key
         $advertKey = 0;
         foreach ($channelList as $index => $channel) {
+            // 获取分类数据
+            $tagFields = ['cat_id', 'name'];
+            $channelTags = $this->channelCategory($channel['channel_id'], $tagFields);
+            foreach ($channelTags as $key => &$value){
+                $value['search'] = [
+                    [
+                        'field' => 'tag',
+                        'value' => $value['cat_id'],
+                    ],
+                    [
+                        'field' => 'channel_id',
+                        'value' => $channel['channel_id'],
+                    ],
+                ];
+                unset($value['id']);
+            }
             // 获取推荐位
             $recommend = $videoRecommend->recommendByChannel($channel['channel_id'], $recommendFields);
             if (empty($recommend)) {
@@ -53,6 +69,7 @@ class ChannelLogic
             // 获取权重最高的一个推荐位
             $recommend = $recommend[0];
             // marge 其他信息
+            $recommend['tags'] = $channelTags;
             $recommend['can_more']    = true;
             $recommend['can_refresh'] = true;
             $recommend['search']      = json_decode($recommend['search'], true);

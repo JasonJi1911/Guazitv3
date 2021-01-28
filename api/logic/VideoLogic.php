@@ -264,7 +264,7 @@ class VideoLogic
         $videoDao = new VideoDao();
         foreach ($searchTab as &$tab) {
             //所有需要查询的视频信息
-            $tab['list'] = $videoDao->batchGetVideo($tab['list'], ['video_id', 'video_name', 'score', 'tag', 'play_times', 'cover', 'summary']);
+            $tab['list'] = $videoDao->batchGetVideo($tab['list'], ['video_id', 'video_name', 'score', 'tag', 'play_times', 'cover', 'summary'], false, ['actors_id', 'actors', 'director', 'artist']);
         }
         $data['tab'] = $searchTab;
         return $data;
@@ -299,6 +299,7 @@ class VideoLogic
         if (!$channelId) { //如果没有传channel id,则默认查询所有的频道
             $channelId = array_column($videoChannel, 'channel_id');
         }
+
         $dataProvider = new ActiveDataProvider([
             'query' => Video::find()
                 ->andWhere(['like', 'title', $keyword])
@@ -310,7 +311,56 @@ class VideoLogic
         $seriesId = array_column($data['list'], 'video_id');
 
         $videoDao = new VideoDao();
-        $videos = $videoDao->batchGetVideo($seriesId, ['video_id', 'video_name', 'category', 'cover', 'horizontal_cover', 'intro', 'flag', 'score', 'play_times','title', 'area', 'year', 'tag', 'director', 'artist'], false);
+        $videos = $videoDao->batchGetVideo($seriesId, ['video_id', 'video_name', 'category', 'cover', 'horizontal_cover', 'intro', 'flag', 'score', 'play_times','title', 'area', 'year', 'tag', 'director', 'artist'], false, ['channel_id', 'actors_id', 'actors', 'director', 'artist', 'chapters']);
+
+        foreach ($videos as &$videoInfo) {
+            $videoInfo['cats'] = implode('/', explode(' ', $videoInfo['category']));
+        }
+
+        $data['list'] = $videos;
+
+        array_unshift($videoChannel,  ['channel_id' => '', 'channel_name' => '全部']);
+        $data['tabs'] = $videoChannel;
+
+        return $data;
+    }
+
+    /**
+     * 检索页面检索逻辑
+     * @param $channelId
+     * @param $keyword
+     * @return array
+     */
+    public function searchResult1($channelId, $keyword, $sort, $tag, $area, $year, $type, $playLimit, $page, $pageSize)
+    {
+        $commonDao = new CommonDao();
+        $videoChannel = $commonDao->videoChannel(['channel_id', 'channel_name']);
+
+        if (!$channelId) { //如果没有传channel id,则默认查询所有的频道
+            $channelId = array_column($videoChannel, 'channel_id');
+        }
+        $order = $sort == 'new' ? 'created_at' : ($sort == 'score' ? 'score' : 'total_views');
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => Video::find()
+                ->select('id')
+                ->andWhere(['like', 'title', $keyword])
+                ->andFilterWhere(['channel_id' => $channelId])
+                ->andFilterWhere(['like', 'category_ids' , $tag])
+                ->andFilterWhere(['area' => $area])
+                ->andFilterWhere(['year' => $year])
+                ->andFilterWhere(['play_limit' => $playLimit])
+                ->orderBy("$order desc, id desc")
+        ]);
+        $data = $dataProvider->setPagination(['page_num' => $page, 'page_size' => $pageSize])->toArray([
+            'video_id',
+        ]);
+
+        //根据查询的video_id获取影片信息
+        $seriesId = array_column($data['list'], 'video_id');
+
+        $videoDao = new VideoDao();
+        $videos = $videoDao->batchGetVideo($seriesId, ['video_id', 'video_name', 'category', 'cover', 'horizontal_cover', 'intro', 'flag', 'score', 'play_times','title', 'area', 'year', 'tag', 'director', 'artist'], false, ['channel_id', 'actors_id', 'actors', 'director', 'artist', 'chapters']);
 
         foreach ($videos as &$videoInfo) {
             $videoInfo['cats'] = implode('/', explode(' ', $videoInfo['category']));

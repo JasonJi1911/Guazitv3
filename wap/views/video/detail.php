@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Url;
 
-$this->title = '瓜子视频-澳新华人在线视频分享网站';
+$this->title = '瓜子TV-澳新华人在线视频分享网站';
 
 $js = <<<JS
 $(function(){
@@ -129,6 +129,12 @@ $(function(){
             
             var videoId = $('.switch-next.on').attr('data-video-id');
             var chapterId = $('#next_chapter').val();
+            if(chapterId == 0)
+            {
+                clearInterval(interval);
+                return;
+            }
+            
             var sourceId = $('.on .next-source').attr('data-source-id');
             var intStime = parseInt(time.split(':')[0] * 60) + parseInt(time.split(':')[1]);
             var intDtime = parseInt(dTime.split(':')[0] * 60) + parseInt(dTime.split(':')[1]);

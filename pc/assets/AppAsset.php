@@ -31,6 +31,7 @@ class AppAsset extends AssetBundle
 		'js/lyz.delayLoading.min.js',
         'js/swiper-bundle.min.js',
 		'js/starScore.js',
+        'js/VideoSearch.js?v='. PC_ASSETS_CSS_VERSION.'111',
     ];
     public $depends = [
         'yii\web\YiiAsset',

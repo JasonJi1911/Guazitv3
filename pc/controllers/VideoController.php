@@ -193,9 +193,9 @@ class VideoController extends BaseController
         $pageTab = "list";
 
         //获取影片系列、剧集、源信息
-//        $channel_id = Yii::$app->request->get('channel_id', '');
+        $channel_id = Yii::$app->request->get('channel_id', '');
         $keyword = Yii::$app->request->get('keyword', '');
-        $sort = Yii::$app->request->get('sort', '');
+        $sort = Yii::$app->request->get('sort', 'hot');
         $tag = Yii::$app->request->get('tag', '');
         $area = Yii::$app->request->get('area', '');
         $year = Yii::$app->request->get('year', '');
@@ -240,6 +240,27 @@ class VideoController extends BaseController
             'play_limit' => $play_limit, 'year' => $year, 'page_num' => $page_num, 'page_size' =>24 ,'type' => 1]);
 
         return Tool::responseJson(0, '操作成功', $data);
+    }
+
+    /**
+     * 视频筛选接口
+     */
+    public function actionRefreshVideo()
+    {
+        $keyword = Yii::$app->request->get('keyword');
+        $channel_id = Yii::$app->request->get('channel_id', 0);
+        $sort = Yii::$app->request->get('sort', '');
+        $tag = Yii::$app->request->get('tag', '');
+        $area = Yii::$app->request->get('area', '');
+        $year = Yii::$app->request->get('year', '');
+        $play_limit = Yii::$app->request->get('play_limit', '');
+        $page_num = Yii::$app->request->get('page_num', 1);
+
+        //搜索首页信息
+        $data = Yii::$app->api->get('/search/new-result', ['keyword' => $keyword, 'channel_id' => $channel_id, 'tag' => $tag, 'sort' => $sort,
+            'area' => $area, 'play_limit' => $play_limit, 'year' => $year, 'page_num' => $page_num, 'page_size' =>24 ,'type' => 1]);
+
+        return $this->renderPartial('partialresult', ['info' => $data]);
     }
 
     /**
@@ -325,4 +346,40 @@ class VideoController extends BaseController
         ]);
     }
 
+    /**
+     * 春晚直播
+     **/
+    public function actionSpringFestival()
+    {
+        return $this->render('springfestival');
+    }
+
+
+    public function  actionSearchResult()
+    {
+        $pageTab = "searchresult";
+        $keyword = Yii::$app->request->get('keyword', '');
+        $channel_id = Yii::$app->request->get('channel_id', 0);
+        $sort = Yii::$app->request->get('sort', 'hot');
+        $tag = Yii::$app->request->get('tag', '');
+        $area = Yii::$app->request->get('area', '');
+        $year = Yii::$app->request->get('year', '');
+        $play_limit = Yii::$app->request->get('play_limit', '');
+        $page_num = Yii::$app->request->get('page_num', 1);
+
+        $channels = Yii::$app->api->get('/video/channels');
+        $hotword = Yii::$app->api->get('/search/hot-word');
+
+        //搜索首页信息
+        $info = Yii::$app->api->get('/search/new-result', ['keyword' => $keyword, 'channel_id' => $channel_id, 'tag' => $tag, 'sort' => $sort, 'area' => $area,
+            'play_limit' => $play_limit, 'year' => $year, 'page_num' => $page_num, 'page_size' =>24 ,'type' => 1]);
+
+        return $this->render('newframe',[
+            'pageTab'       => $pageTab,
+            'keyword'       => $keyword,
+            'info'          => $info,
+            'channels'      => $channels,
+            'hotword'       => $hotword
+        ]);
+    }
 }

@@ -39,14 +39,19 @@ else
 $subTitle = ' · '.$channelName;
 $subTitle = $pageTab == "hotplay"? " · 热播":$subTitle;
 $subTitle = $pageTab == "list"? "":$subTitle;
+$subTitle = $pageTab == "searchresult"? "":$subTitle;
 
 if ($channel_id == '0')
     $channelName = "热搜";
 
-foreach ($hotword['tab'] as $key => $tab){
-    if($tab['title'] == $channelName)
-        $searchTip = empty($tab['list'][0]['video_name']) ? '' : $tab['list'][0]['video_name'];
+if (isset($hotword))
+{
+    foreach ($hotword['tab'] as $key => $tab){
+        if($tab['title'] == $channelName)
+            $searchTip = empty($tab['list'][0]['video_name']) ? '' : $tab['list'][0]['video_name'];
+    }
 }
+
 ?>
 <header class="qy-header home2020 aura2">
     <div class="header-wrap">
@@ -150,6 +155,15 @@ foreach ($hotword['tab'] as $key => $tab){
             'hotword'       => $hotword
         ]);
         break;
+    case "searchresult":
+        echo $this->render('searchresult',[
+            'info'          => $info,
+            'keyword'       => $keyword,
+            'channels'      => $channels,
+            'channel_id'    => $channel_id,
+            'hotword'       => $hotword
+        ]);
+        break;
 } ?>
 
 <footer class="qy-footer">
@@ -158,6 +172,5 @@ foreach ($hotword['tab'] as $key => $tab){
     </div>
 </footer>
 <script src="/js/jquery.js"></script>
-<script src="/js/VideoSearch.js"></script>
 </body>
 </html>

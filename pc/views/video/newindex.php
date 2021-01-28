@@ -667,9 +667,6 @@ $this->registerJs($js);
                         if($s_v['field'] == 'channel_id') {
                             $channel = $s_v['value'];
                         }
-                        if($s_v['field'] == 'tag') {
-                            $tag = $s_v['value'];
-                        }
                     }
                     ?>
                     <a class="anchor" id="section<?= $channel?>"></a>
@@ -677,18 +674,27 @@ $this->registerJs($js);
                         <div class="mod-left right-col-1">
                             <div class="qy-mod-header">
                                 <h2 class="qy-mod-title">
-                                    <a class="link-txt" href="<?= Url::to(['list', 'channel_id' => $channel, 'tag' => $tag])?>">
+                                    <a class="link-txt" href="<?= Url::to(['channel', 'channel_id' => $channel])?>">
                                         <span class="qy-mod-text"><?= $labels['title']?></span></a>
                                 </h2>
                                 <div class="qy-mod-nav-link">
                                     <ul class="qy-mod-crumb hasTurnBtn">
-                                        <!--<li><a href="">内地</a><em>|</em></li>
-                                        <li><a href="">自制剧</a><em>|</em></li>
-                                        <li><a href="">网络剧</a><em>|</em></li>
-                                        <li><a href="">迷雾剧场</a><em>|</em></li>
-                                        <li><a href="">哎青春剧场</a><em>|</em></li>
-                                        <li><a href="">神剧亮了</a><em>|</em></li>-->
-                                        <li><a href="<?= Url::to(['list', 'channel_id' => $channel, 'tag' => $tag])?>">
+                                        <?php if(!empty($labels['tags'])) : ?>
+                                            <?php foreach ($labels['tags'] as $li): ?>
+                                                <?php
+                                                foreach ($li['search'] as $s_k => $s_v) {
+                                                    if($s_v['field'] == 'tag') {
+                                                        $tag = $s_v['value'];
+                                                    }
+                                                    if($s_v['field'] == 'channel_id') {
+                                                        $channel = $s_v['value'];
+                                                    }
+                                                }
+                                                ?>
+                                                <li><a href="<?= Url::to(['list', 'channel_id' => $channel, 'tag' => $tag])?>"><?= $li['name']?></a></li>
+                                            <?php endforeach ?>
+                                        <?php endif;?>
+                                        <li><a href="<?= Url::to(['channel', 'channel_id' => $channel])?>">
                                                 更多 ></a></li>
                                     </ul>
                                 </div>
@@ -851,4 +857,3 @@ $this->registerJs($js);
 	</ul>
 </div>
 <script src="/js/jquery.js"></script>
-<script src="/js/VideoSearch.js"></script>

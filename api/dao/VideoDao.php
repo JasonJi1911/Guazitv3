@@ -254,7 +254,7 @@ class VideoDao extends BaseDao
         //获取需要查询的演员id
         $actorDataProvider = new ActiveDataProvider([
             'query' => VideoActor::find()
-                ->where(['video_id' => $videoIds])
+                ->where(['video_id' => $bakIds])
         ]);
         $actorsId = [];
         foreach ($actorDataProvider->toArray() as $item) { //键值对的形式处理影片和演员关系
@@ -282,6 +282,12 @@ class VideoDao extends BaseDao
             $video['area']         = isset($videoAreaInfo[$video['area']]) ? $videoAreaInfo[$video['area']]['area'] : '';
             $video['year']         = isset($yearsInfo[$video['year']]['year']) ? $yearsInfo[$video['year']]['year'] : '';
             $video['cats']         = $video['area'] . '/' . $video['year'];
+            $chapProvider= new ActiveDataProvider([
+                'query' => VideoChapter::find()
+                    ->where(['video_id' => $video['video_id']])
+                    ->orderBy('display_order asc, id asc')
+            ]);
+            $video['chapters']     = $chapProvider->toArray();
         }
 
         //获取额外的字段,传入的时候才进行查询,提高性能
@@ -463,7 +469,7 @@ class VideoDao extends BaseDao
             'horizontal_cover',
             'intro',
             'category',
-        ], true, ['actors']);
+        ], true, ['channel_id', 'actors_id', 'actors', 'director', 'artist', 'chapters']);
 
         $data['list'] = array_values($list);
 
