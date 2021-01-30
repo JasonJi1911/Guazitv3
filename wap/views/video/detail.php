@@ -6,30 +6,6 @@ $this->title = '瓜子TV-澳新华人在线视频分享网站';
 $js = <<<JS
 $(function(){
     
-    // var videoPath = $('#player1').data('src');
-    // var videoImage = '';
-    //
-    // var dp = new DPlayer({
-    //     element: document.getElementById('player1'),
-    //     theme: '#FADFA3',
-    //     loop: true,
-    //     lang: 'zh-cn',
-    //     hotkey: true,
-    //     preload: 'auto',
-    //     volume: 0.7,
-    //     autoplay: true,
-    //     live: true,
-    //     playbackSpeed:[0.5, 0.75, 1, 1.25, 1.5, 2,2.5,3,5,7.5,10],
-    //     video: {
-    //         url: videoPath,
-    //         pic: videoImage,
-    //         type: 'hls'
-    //     },
-    // });
-    
-    setTimeout(function() {
-        $('.dplayer-play-icon').click();
-    },50);
     //实例化video对象
 /*    setTimeout(function() {
       $('.go-back').hide();
@@ -54,7 +30,6 @@ $(function(){
         $(".pop-intro").css("bottom","-100%");
         $("body").removeClass("body-mode");
         $(".pop-video-mask").hide();
-        //dp.play();
     }
     
     //选中播放视频
@@ -163,8 +138,20 @@ $this->registerJs($js);
         color: #FF556E;
     }
 
-    .box{
-        height: 100%;
+    .browser{
+        padding: 0 10px;
+        color: #8D8D95;
+    }
+
+    .browser1:after{
+        content: '|';
+        position: relative;
+        left: 10px;
+    }
+
+    .browser:hover{
+        color: #FF556E;
+        border-right: #0c203a;
     }
 </style>
 
@@ -198,8 +185,6 @@ $this->registerJs($js);
                     <?php else:?>
                         <div href="#" class="piclist-link-ifram" style="background-image:url(<?= $info['info']['horizontal_cover']?>);height: 3.8rem;z-index: 99;background-size: 100%"></>
                         <iframe name="my-iframe" id="my-iframe" src="<?= $info['info']['resource_url']?>" allowfullscreen="true" allowtransparency="true" frameborder="0" scrolling="no"  width="100%" height="100%" scrolling="no" style="height: 3.8rem"></iframe>
-<!--                        <div class="box" id="player1"-->
-<!--                             data-src="--><?//= $info['info']['resource_url']?><!--"></div>-->
                     <?php endif;?>
                 </div>
             </li>
@@ -294,6 +279,9 @@ $this->registerJs($js);
 <!--</div>-->
 
 <div class="video-index-notice">
+    <p style="padding-bottom: 5px;text-align: center;">
+        <a class="browser browser1" href="http://m.guazitv.tv">手机端</a>
+        <a class="browser" href="http://www.guazitv.tv">电脑端</a></p>
     <p>本网站为非赢利性站点，所有内容均由机器人采集于互联网，或者网友上传，本站只提供WEB页面服务，本站不存储、不制作任何视频，不承担任何由于内容的合法性及健康性所引起的争议和法律责任。若本站收录内容侵犯了您的权益，请附说明联系邮箱，本站将第一时间处理。站长邮箱：guazitv@163.com</p>
 </div>
 <!--<div class="video-footer">

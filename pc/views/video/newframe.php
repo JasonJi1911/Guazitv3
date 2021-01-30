@@ -17,6 +17,23 @@ StyleInAsset::register($this);
     <title></title>
     <meta name="description" content="" />
     <meta name="keywords" content="" />
+    <style>
+        .wp .browser{
+            padding: 0 10px;
+        }
+
+        .wp .browser1:after{
+            content: '|';
+            position: relative;
+            /*left: 10px;*/
+            color: hsla(0,0%,100%,.3);
+        }
+
+        .wp .browser:hover{
+            color: #FF556E;
+            border-right: #0c203a;
+        }
+    </style>
 </head>
 <body>
 
@@ -167,6 +184,11 @@ if (isset($hotword))
 } ?>
 
 <footer class="qy-footer">
+    <div class="wp">
+        <a class="browser" href="http://m.guazitv.tv">手机端</a>
+        <a class="browser1" href="###"></a>
+        <a class="browser" href="http://www.guazitv.tv">电脑端</a>
+    </div>
     <div class="wp">
         <p>本网站为非赢利性站点，所有内容均由机器人采集于互联网，或者网友上传，本站只提供WEB页面服务，本站不存储、不制作任何视频，不承担任何由于内容的合法性及健康性所引起的争议和法律责任。<br />若本站收录内容侵犯了您的权益，请附说明联系邮箱，本站将第一时间处理。站长邮箱：guazitv@163.com</p>
     </div>

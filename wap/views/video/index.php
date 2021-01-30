@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Url;
 
-$this->title = '瓜子视频-澳新华人在线视频分享网站';
+$this->title = '瓜子TV-澳新华人在线视频分享网站';
 
 ?>
 
@@ -23,11 +23,27 @@ $this->title = '瓜子视频-澳新华人在线视频分享网站';
         left: 0;
         z-index: 99;
     }
+
+    .browser{
+        padding: 0 10px;
+        color: #8D8D95;
+    }
+
+    .browser1:after{
+        content: '|';
+        position: relative;
+        left: 10px;
+    }
+
+    .browser:hover{
+        color: #FF556E;
+        border-right: #0c203a;
+    }
 </style>
 
 <header class="video-header">
     <div class="video-header-top clearfix">
-        <a class="logo fl">瓜子视频</a>
+        <a class="logo fl">瓜子TV</a>
         <div class="search-cont fr">
             <div class="search-notice"><?php if(!empty($channels['hot_word'])) : ?><?= $channels['hot_word'][0]?><?php endif;?></div>
         </div>
@@ -73,11 +89,11 @@ $this->title = '瓜子视频-澳新华人在线视频分享网站';
     <?php if($channel_id == 0 && !empty($data['king_kong'])) : ?>
         <?php foreach ($data['king_kong'] as $key => $li): ?>
             <?php
-                foreach ($li['search'] as $s_k => $s_v) {
-                    if($s_v['field'] == 'channel_id') {
-                        $channel = $s_v['value'];
-                    }
+            foreach ($li['search'] as $s_k => $s_v) {
+                if($s_v['field'] == 'channel_id') {
+                    $channel = $s_v['value'];
                 }
+            }
             ?>
             <li>
                 <a href="<?= Url::to(['list', 'channel_id' => $channel])?>">
@@ -112,11 +128,11 @@ $this->title = '瓜子视频-澳新华人在线视频分享网站';
 <?php if (!empty($data['label'])) :?>
     <?php foreach ($data['label'] as  $labels): ?>
         <?php if (!isset($labels['advert_id'])) : ?>
-                <div class="video-index-column <?= $key == 0 ? 'mt20' : 'mt15';?>">
-                    <h3 class="video-index-title"><?= $labels['title']?></h3>
-                    <dl class="video-list-box clearfix <?= 'more-change-'.$labels['recommend_id'] ?>">
-                        <?php foreach ($labels['list'] as $key => $list): ?>
-                            <?php if($key < 9) :?>
+            <div class="video-index-column <?= $key == 0 ? 'mt20' : 'mt15';?>">
+                <h3 class="video-index-title"><?= $labels['title']?></h3>
+                <dl class="video-list-box clearfix <?= 'more-change-'.$labels['recommend_id'] ?>">
+                    <?php foreach ($labels['list'] as $key => $list): ?>
+                        <?php if($key < 9) :?>
                             <dd>
                                 <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
                                     <div class="video-item-top">
@@ -129,22 +145,22 @@ $this->title = '瓜子视频-澳新华人在线视频分享网站';
                                     <p class="video-item-play"><?= $list['play_times']?></p>
                                 </a>
                             </dd>
-                            <?php endif;?>
-                        <?php endforeach;?>
-                    </dl>
-                </div>
+                        <?php endif;?>
+                    <?php endforeach;?>
+                </dl>
+            </div>
 
             <?php
-                $tag = '';
-                $channel = '';
-                foreach ($labels['search'] as $s_k => $s_v) {
-                    if($s_v['field'] == 'channel_id') {
-                        $channel = $s_v['value'];
-                    }
-                    if($s_v['field'] == 'tag') {
-                        $tag = $s_v['value'];
-                    }
+            $tag = '';
+            $channel = '';
+            foreach ($labels['search'] as $s_k => $s_v) {
+                if($s_v['field'] == 'channel_id') {
+                    $channel = $s_v['value'];
                 }
+                if($s_v['field'] == 'tag') {
+                    $tag = $s_v['value'];
+                }
+            }
             ?>
             <div class="video-other-more clearfix">
                 <a href="<?= Url::to(['list', 'channel_id' => $channel, 'tag' => $tag])?>" class="fl more-item ">
@@ -165,8 +181,11 @@ $this->title = '瓜子视频-澳新华人在线视频分享网站';
 <?php endif; ?>
 <div class="addtohomescreen" style="position: fixed;bottom: 1px;left: 50%;transform: translateX(-50%);width: 75%;max-width: 75%;display: block;">
     <img src="http://img.guazitv8.com/addtohomescreen.png" alt="" style="width: 100%;">
-  </div>
+</div>
 <div class="video-index-notice">
+    <p style="padding-bottom: 5px;text-align: center;">
+        <a class="browser browser1" href="http://m.guazitv.tv">手机端</a>
+        <a class="browser" href="http://www.guazitv.tv">电脑端</a></p>
     <p>本网站为非赢利性站点，所有内容均由机器人采集于互联网，或者网友上传，本站只提供WEB页面服务，本站不存储、不制作任何视频，不承担任何由于内容的合法性及健康性所引起的争议和法律责任。若本站收录内容侵犯了您的权益，请附说明联系邮箱，本站将第一时间处理。站长邮箱：guazitv@163.com</p>
 </div>
 <!--<div class="video-footer">

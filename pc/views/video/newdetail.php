@@ -270,6 +270,9 @@ $this->registerJs($js);
 <div class="qy-play-top">
     <div class="play-top-flash">
         <div class="qy-play-container">
+            <a href="https://bit.ly/39qwDSo" target="_blank" class="">
+                <img src="/images/NewVideo/yeeyi-banner.png" style="width:100%;border-radius:5px;">
+            </a>
             <div class="qy-player-wrap">
                 <div class="player-mn">
                     <div class="player-mnc">
