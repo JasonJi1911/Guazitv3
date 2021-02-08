@@ -1,7 +1,9 @@
 <?php
 use yii\helpers\Url;
 
-$this->title = '瓜子TV-澳新华人在线视频分享网站';
+//$this->title = '瓜子TV-澳新华人在线视频分享网站';
+$this->title = $info['info']['video_name'].'瓜子TV|澳洲瓜子tv|澳新瓜子|澳新tv|澳新瓜子tv - guazitv.tv';
+$this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子,tv,瓜子tv,澳洲瓜子tv,澳洲,新西兰,澳新,电影,电视剧,榜单,综艺,动画,记录片']);
 
 $js = <<<JS
 $(function(){

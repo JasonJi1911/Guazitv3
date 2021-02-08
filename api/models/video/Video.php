@@ -24,6 +24,7 @@ class Video extends \common\models\video\Video
             'summary',
             'intro' => 'description',
             'keywords',
+            'title_en',
             'issue_date',
             'score' => function(){
                 return bcdiv($this->score, 10, 1);

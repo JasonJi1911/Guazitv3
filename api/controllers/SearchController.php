@@ -67,4 +67,18 @@ class SearchController extends BaseController
         $data = array_merge($data, $video);
         return $data;
     }
+
+    public function actionLetterResult()
+    {
+        $keyword = $this->getParam('keyword', '');  //关键词
+        $page      = $this->getParam('page_num', DEFAULT_PAGE_NUM); // 页面 当传入1时，返回检索项
+        $pageSize  = $this->getParam('page_size', 18);
+        if (empty($keyword)) {
+            throw new InvalidParamException('关键词');
+        }
+
+        $videoLogic = new VideoLogic();
+        $data = $videoLogic->searchLetterResult($keyword, $page, $pageSize);
+        return $data;
+    }
 }

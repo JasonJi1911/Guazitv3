@@ -47,4 +47,9 @@ class SiteController extends BaseController
         Yii::$app->response->cookies->remove('lid');
         Yii::$app->response->cookies->remove('user_token');
     }
+
+    public function actionShareDown()
+    {
+        return $this->render('sharedown');
+    }
 }

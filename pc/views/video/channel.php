@@ -2,8 +2,19 @@
 use yii\helpers\Url;
 use pc\assets\StyleInAsset;
 
-$this->title = '瓜子TV-澳新华人在线视频分享网站';
+$channelName = '';
+if(isset($channel_id))
+{
+    foreach ($channels['list'] as $s_k => $s_v) {
+        if($s_v['channel_id'] == $channel_id) {
+            $channelName = $s_v['channel_name'];
+        }
+    }
+}
 
+$this->title = ($channelName == ''?'':$channelName.'-').'瓜子TV|澳洲瓜子tv|澳新瓜子|澳新tv|澳新瓜子tv - guazitv.tv';
+//$this->metaTags['keywords'] = '瓜子,tv,瓜子tv,澳洲瓜子tv,澳洲,新西兰,澳新,电影,电视剧,榜单,综艺,动画,记录片';
+$this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子,tv,瓜子tv,澳洲瓜子tv,澳洲,新西兰,澳新,电影,电视剧,榜单,综艺,动画,记录片']);
 StyleInAsset::register($this);
 
 $js = <<<SCRIPT
@@ -82,8 +93,6 @@ $this->registerJs($js);
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
     <meta content="telephone=no" name="format-detection" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">

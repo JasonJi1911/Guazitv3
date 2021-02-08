@@ -2,7 +2,9 @@
 use yii\helpers\Url;
 use pc\assets\StyleAsset;
 
-$this->title = '瓜子TV-澳新华人在线视频分享网站';
+$this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子|tv|瓜子tv|澳洲瓜子tv|澳新瓜子|澳新tv|澳新瓜子tv|爱影视|澳洲爱影视|澳洲同城影视网|体育直播|澳洲足球直播|澳洲体育直播|美剧|电影|综艺||看tv|kantv']);
+//$this->metaTags['keywords'] = '瓜子|tv|瓜子tv|澳洲瓜子tv|澳新瓜子|澳新tv|澳新瓜子tv|爱影视|澳洲爱影视|澳洲同城影视网|体育直播|澳洲足球直播|澳洲体育直播|美剧|电影|综艺||看tv|kantv';
+$this->title = '瓜子TV|澳洲瓜子tv|澳新瓜子|澳新tv|澳新瓜子tv - guazitv.tv';
 StyleAsset::register($this);
 
 $js = <<<SCRIPT
@@ -178,11 +180,48 @@ SCRIPT;
 
 $this->registerJs($js);
 ?>
+
+<script src="/js/jquery.js"></script>
+<script>
+$(document).ready(function(){
+		var mobile_flag = isMobile();
+
+		if(mobile_flag){
+			window.location = 'http://m.guazitv.tv/';
+		}
+	});
+	
+	function isMobile() {
+		var userAgentInfo = navigator.userAgent;
+
+		var mobileAgents = [ "Android", "iPhone", "SymbianOS", "Windows Phone", "iPad","iPod"];
+
+		var mobile_flag = false;
+
+		//根据userAgent判断是否是手机
+		for (var v = 0; v < mobileAgents.length; v++) {
+			if (userAgentInfo.indexOf(mobileAgents[v]) > 0) {
+				mobile_flag = true;
+				break;
+			}
+		}
+
+		 var screen_width = window.screen.width;
+		 var screen_height = window.screen.height;    
+
+		 //根据屏幕分辨率判断是否是手机
+		 if(screen_width < 500 && screen_height < 800){
+			 mobile_flag = true;
+		 }
+
+		 return mobile_flag;
+	}
+</script>
 <style>
     .qy-header.home2020 .qy-search .search-right-entry:hover{
         color: #ff556e;
     }
-
+    
     .wp .browser{
         padding: 0 10px;
     }
@@ -190,8 +229,8 @@ $this->registerJs($js);
     .wp .browser1:after{
         content: '|';
         position: relative;
-        /*left: 10px;*/
         color: hsla(0,0%,100%,.3);
+        /*left: 10px;*/
     }
 
     .wp .browser:hover{
@@ -690,7 +729,7 @@ $this->registerJs($js);
                         <div class="mod-left right-col-1">
                             <div class="qy-mod-header">
                                 <h2 class="qy-mod-title">
-                                    <a class="link-txt" href="<?= Url::to(['channel', 'channel_id' => $channel])?>">
+                                    <a class="link-txt" href="<?= Url::to(['list', 'channel_id' => $channel, 'tag' => $tag])?>">
                                         <span class="qy-mod-text"><?= $labels['title']?></span></a>
                                 </h2>
                                 <div class="qy-mod-nav-link">
@@ -878,3 +917,4 @@ $this->registerJs($js);
 	</ul>
 </div>
 <script src="/js/jquery.js"></script>
+<script src="/js/VideoSearch.js"></script>

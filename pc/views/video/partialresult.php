@@ -6,15 +6,21 @@ use yii\helpers\Url;
 <input type="hidden" value="<?= $info['total_page']?>" id="parpages">
 <input type="hidden" value="<?= $info['total_count']?>" id="parcount">
 <?php foreach ($info['list'] as $list): ?>
+    <?php
+        $firstChap = $list['chapters'][0];
+    ?>
     <?php if($list['channel_id'] == '2') { ?>
         <div class="accordion-divider clearfix">
-            <div class="img fl">
+            <a class="img fl" style="display: block"
+               href="<?= Url::to(['detail', 'video_id' => $firstChap['video_id'], 'chapter_id' => $firstChap['chapter_id'], 'source_id' => $firstChap['source_id']])?>">
                 <img src="<?= $list['cover']?>">
                 <span><?= $list['flag']?></span>
                 <div class="zhezhao"></div>
-            </div>
+            </a>
             <div class="text-span fl">
-                <h2><?= $list['video_name']?> <span> <?= $list['year']?></span></h2>
+                <a href="<?= Url::to(['detail', 'video_id' => $firstChap['video_id'], 'chapter_id' => $firstChap['chapter_id'], 'source_id' => $firstChap['source_id']])?>">
+                    <h2><?= $list['video_name']?> <span> <?= $list['year']?></span></h2>
+                </a>
                 <p><span>主演:</span>
                     <?= str_replace("演员:","",$list['artist']);?>
                     <span> 导演: </span> <?= str_replace("导演:","",$list['director']);?>
@@ -39,13 +45,16 @@ use yii\helpers\Url;
         </div>
     <?php } else { ?>
         <div class="accordion-divider clearfix">
-            <div class="img fl">
+            <a class="img fl" style="display: block"
+               href="<?= Url::to(['detail', 'video_id' => $firstChap['video_id'], 'chapter_id' => $firstChap['chapter_id'], 'source_id' => $firstChap['source_id']])?>">
                 <img src="<?= $list['cover']?>">
                 <span><?= $list['flag']?></span>
                 <div class="zhezhao"></div>
-            </div>
+            </a>
             <div class="text-span fl">
-                <h2><?= $list['video_name']?> <span> <?= $list['year']?></span></h2>
+                <a href="<?= Url::to(['detail', 'video_id' => $firstChap['video_id'], 'chapter_id' => $firstChap['chapter_id'], 'source_id' => $firstChap['source_id']])?>">
+                    <h2><?= $list['video_name']?> <span> <?= $list['year']?></span></h2>
+                </a>
                 <p><span>主演:</span>
                     <?= str_replace("演员:","",$list['artist']);?>
                     <span> 导演: </span> <?= str_replace("导演:","",$list['director']);?>

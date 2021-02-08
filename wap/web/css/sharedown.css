@@ -1,0 +1,296 @@
+@charset "utf-8";
+/* CSS Document */
+
+@font-face {
+    font-family: "阿里巴巴普惠体";
+    font-display: swap;
+    src: url("../fonts/sharedown/webfont.eot"); /* IE9 */
+    src: url('../fonts/sharedown/webfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('../fonts/sharedown/webfont.woff2') format('woff2'),
+    url('../fonts/sharedown/webfont.woff') format('woff'), /* chrome、firefox */
+    url('../fonts/sharedown/webfont.ttf') format('truetype'), /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+    url('../fonts/sharedown/webfont.svg#webfont') format('svg'); /* iOS 4.1- */
+}
+
+html, body, div, span, iframe,input,select, map, font, img, a img, samp, strong, hr, h1, h2, h3, h4, h5, h6, b, p, blockquote, a, address, code, dl, dt, dd, ol, ul, li, form, label, table, tr, td, th {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    box-sizing: border-box;
+
+}
+body {
+    font-family: "阿里巴巴普惠体";
+}
+ol, ul {
+    list-style: none;
+}
+h1, h2, h3, h4, h5, h6 {
+    line-height:1;
+}
+a{
+    text-decoration: none;
+}
+i, em {
+    font-style: normal;
+}
+
+a:focus {
+    outline: none;
+}
+a.hidefocus {
+    outline: none
+}
+
+input[type=text],input[type=submit], input[type=button] {
+    -webkit-appearance: none; /*去除iPhone input默认样式}*/
+}
+
+input{
+    outline: none;
+    background: none;
+}
+img {
+    width: 100%;
+    display: block;
+}
+body {
+    position: relative;
+    margin-top: 0;
+    margin-right: auto;
+    margin-bottom: 0;
+    margin-left: auto;
+    font-size:12px;
+}
+
+@charset "utf-8";
+
+/* CSS Document */
+.bg {
+    width: 100%;
+    min-height: 100vh;
+    background-size: 100%;
+    overflow: hidden;
+    background-color: #fb5c70;
+}
+a {
+    color: inherit;
+}
+
+.title-box {
+    color: #fff;
+    font-size: 0.48rem;
+    text-align: center;
+    margin-top: 0.6rem;
+}
+.search-box {
+    width: 70%;
+    margin: 0.4rem auto 0;
+    display: flex;
+    justify-content: center;
+}
+.search-box input {
+    width: 85%;
+    border: 0.04rem solid;
+    height: 0.6rem;
+    background-color: #fff;
+    border-color: #582c39;
+    padding: 0.1rem 0 0.1rem 0.2rem;
+    border-radius: 0.2rem 0 0 0.2rem;
+    font-size: 12px;
+}
+
+.search-box input::placeholder{
+    color: #25232e;
+    font-weight: bold;
+}
+.search-button {
+    width: 15%;
+    border-color: #582c39;
+    background-image: url(../images/ShareDown/search.png);
+    background-size: 60%;
+    background-position: 0.1rem center;
+    background-repeat: no-repeat;
+    background-color:#582c39 ;
+    border: none;
+    outline: none;
+    border-radius: 0 0.25rem 0.25rem 0;
+}
+
+.one-bk-box {
+    width: 70%;
+    margin: 0.4rem auto;
+    position: relative;
+    left: -0.1rem;
+}
+
+.download {
+    position: fixed;
+    display: block;
+    width: 100%;
+    bottom: 19%;
+    z-index: 99;
+}
+
+.download-button:hover {
+    color: #ec818e ;
+}
+
+.download-button {
+    display: flex;
+    color: #fb5c70;
+    background-color: #fff;
+    outline: none;
+    border: none;
+    box-shadow: 0.1rem 0.1rem 0.1rem #dc3f52;
+    border-radius: .15rem;
+    font-weight: bold;
+    width: 70%;
+
+    justify-content: center;
+    font-size: 0.48rem;
+    align-items: center;
+    padding: 0.15rem .3rem;
+    margin: 0 auto;
+}
+
+
+.box-style {
+    width:  95%;
+    margin: 0 auto;
+    border: 0.02rem solid #fff;
+    padding: 0.2rem;
+    border-radius: 0.3rem;
+    margin-top: 0.6rem
+}
+
+
+.box-content {
+    background-color: #fff;
+    border-radius: 0.3rem;
+    text-align: center;
+    padding-top: 0.6rem;
+}
+
+.box-content-title {
+    padding-left: 0.5rem;
+    font-size: 0.36rem;
+    background-image: url(../images/ShareDown/title-bc.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position-y: center;
+    display: inline-block;
+    color: #333333;
+}
+
+.paragraph-box p{
+    margin-top: 0.2rem;
+    font-weight: bold;
+    color: #252525;
+    font-size: 0.3rem;
+}
+.paragraph-box p span {
+    color: #fb5c70;
+}
+
+.paragraph-box p:nth-of-type(1) {
+    margin-top: .4rem;
+}
+
+.two-bk-box {
+    width: 90%;
+    margin: 0.7rem auto 0.6rem;
+}
+
+.three-bk-box {
+    position: relative;
+    width: 95%;
+    margin: 0 auto;
+    padding: .7rem 0 1rem;
+}
+.four-bk-box {
+    margin: 0 auto;
+    width: 85%;
+    padding: .7rem 0 1.5rem;
+}
+
+.five-bk-box {
+    margin: 0 auto;
+    width: 90%;
+    padding: .5rem 0 .8rem;
+    position: relative;
+}
+
+.three-bk-box span {
+    position: absolute;
+}
+
+.three-bk-box span:nth-of-type(1) {
+    top: 27.5%;
+    width: 39%;
+    font-size: 0.28rem;
+    left: 0;
+    color: #181818;
+}
+
+.three-bk-box span:nth-of-type(2) {
+    right: 0;
+    width: 36%;
+    font-size: 0.36rem;
+    font-weight: bold;
+    top: 39.5%;
+}
+
+.three-bk-box span:nth-of-type(3) {
+    left: 0;
+    margin-left: 0.75rem;
+    bottom: 29%;
+    font-size: 0.24rem;
+    width: 33%;
+}
+
+.five-bk-box span {
+    color: #fff;
+    position: absolute;
+}
+
+.five-bk-box span:nth-of-type(1) {
+    width: 15%;
+    font-size: 0.32rem;
+    left: 9%;
+    top: 8.5%;
+}
+
+.five-bk-box span:nth-of-type(2) {
+    width: 20%;
+    right: 19%;
+    top: 32%;
+    font-size: 0.24rem;
+    transform: scale(0.8);
+}
+
+.box-style-footer {
+    font-weight: bold;
+    font-size: 0.32rem;
+    padding-bottom: 1rem;
+}
+
+.box-style-footer span {
+    color: #fb5c70;
+    font-size: 0.28rem;
+}
+
+.style-button {
+    background-color: #717bba;
+    color: #fff;
+    width: 80%;
+    box-shadow: 0.04rem 0.04rem 0.04rem #d2d6ff;
+    position: unset;
+    display: block;
+    background-image: url(../images/ShareDown/download-style.png);
+    background-repeat: no-repeat;
+    background-size: 0.4rem;
+    background-position-y: center;
+    background-position-x: .5rem;
+
+}

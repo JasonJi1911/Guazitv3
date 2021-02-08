@@ -2,7 +2,9 @@
 use yii\helpers\Url;
 use pc\assets\StyleInAsset;
 
-$this->title = '瓜子TV-澳新华人在线视频分享网站';
+$this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子,tv,瓜子tv,澳洲瓜子tv,澳洲,新西兰,澳新,电影,电视剧,榜单,综艺,动画,记录片']);
+//$this->metaTags['keywords'] = '瓜子,tv,瓜子tv,澳洲瓜子tv,澳洲,新西兰,澳新,电影,电视剧,榜单,综艺,动画,记录片';
+$this->title = $data['info']['video_name'].'瓜子TV|澳洲瓜子tv|澳新瓜子|澳新tv|澳新瓜子tv - guazitv.tv';
 StyleInAsset::register($this);
 
 $js = <<<JS
@@ -199,9 +201,6 @@ $this->registerJs($js);
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>首页</title>
-    <meta name="keywords" content="" />
-    <meta name="description" content="" />
     <meta content="telephone=no" name="format-detection" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
@@ -295,9 +294,11 @@ $this->registerJs($js);
                                         </video>
                                     <?php else:?>
                                         <div class="video-play-left-cover">
-                                            <img src="<?= $data['info']['horizontal_cover'] ?>"
+                                            <a href="" target="_blank">
+                                            <img src="<?= $data['info']['horizontal_cover']?>"
                                                  onerror="this.src='/images/video/default-cover-ver.png'"
                                                  id="video-cover" class="video-play-btn-iframe">
+                                                 </a>
                                         </div>
                                         <iframe name="my-iframe" id="my-iframe" src="<?= $data['info']['resource_url']?>"
                                                 allowfullscreen="true" allowtransparency="true"

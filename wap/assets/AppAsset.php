@@ -23,7 +23,7 @@ class AppAsset extends AssetBundle
         '/js/video/fastclick.min.js',
         'js/video/video.min.js',
         'js/video/hls.min.js',
-        'js/video/DPlayer.min.js',
+        'js/video/DPlayer.min.js'
     ];
 
     public $depends = [

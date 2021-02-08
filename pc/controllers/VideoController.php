@@ -160,15 +160,17 @@ class VideoController extends BaseController
 
         $channel_id = $data['channel_id'];
         $data['info']['actorvideos'] = [];
-        foreach ($data['info']['actors'] as $key => $actor)
-        {
-            $actor_id = $actor['actor_id'];
-            $acVideos = Yii::$app->api->get('/actor/videos', ['actor_id' => $actor_id]);
-            array_push($data['info']['actorvideos'], $acVideos['list']);
+        if (isset($data['info']['actors'])) {
+            foreach ($data['info']['actors'] as $key => $actor)
+            {
+                $actor_id = $actor['actor_id'];
+                $acVideos = Yii::$app->api->get('/actor/videos', ['actor_id' => $actor_id]);
+                array_push($data['info']['actorvideos'], $acVideos['list']);
+            }
         }
 //        array_merge($data['info'], ['actorvideos' => $actorVideos]);
 //        $data['info']['actorvideos'] = $actorVideos;
-        if(!$data) {
+        if(!$data || !isset($data['info']['source'])) {
             return $this->redirect('/site/error');
         }
 

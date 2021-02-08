@@ -7,7 +7,6 @@ use pc\assets\AppAsset;
 use yii\helpers\Html;
 
 AppAsset::register($this);
-
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -31,7 +30,7 @@ AppAsset::register($this);
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="keywords" content="瓜子TV-澳新华人在线视频分享网站">
+<!--    <meta name="keywords" content="--><?//= $this->metaTags['keywords'] ?><!--">-->
     <meta name="description" content="瓜子TV是澳大利亚、新西兰华人影视视频分享平台，网站包含最新的电视剧、美剧、日韩剧、华语电影、好莱坞电影、以及各种动漫和重大体育赛事直播。在这里，一定有你想看的一切！">
     <link rel="shortcut icon" type="image/x-icon" href="http://img.guazitv8.com/LOGO.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" >

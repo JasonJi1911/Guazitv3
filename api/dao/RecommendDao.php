@@ -2,11 +2,13 @@
 namespace api\dao;
 
 use api\data\ActiveDataProvider;
+use api\helpers\Common;
 use api\models\video\Recommend;
 use api\models\video\Video;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
 use yii\helpers\ArrayHelper;
+use Yii;
 
 class RecommendDao extends BaseDao
 {
@@ -140,9 +142,10 @@ class RecommendDao extends BaseDao
                 }
             }
 
+            $limitCnt = Yii::$app->common->product == Common::PRODUCT_APP ? 9 : 20;
             // 根据样式返回数据个数
             $videoDataProvider = new ActiveDataProvider([
-                'query' => $objVideo->orderBy('total_views desc')->limit(20),
+                'query' => $objVideo->orderBy('total_views desc')->limit($limitCnt),
             ]);
 
             $data = $videoDataProvider->toArray($fields);

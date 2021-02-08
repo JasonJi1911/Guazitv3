@@ -3,7 +3,7 @@
 use yii\helpers\Url;
 use pc\assets\StyleInAsset;
 
-$this->title = '瓜子TV-澳新华人在线视频分享网站';
+//$this->title = '瓜子TV-澳新华人在线视频分享网站 - guazitv.tv';
 
 StyleInAsset::register($this);
 
@@ -14,21 +14,18 @@ StyleInAsset::register($this);
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
-    <meta name="description" content="" />
-    <meta name="keywords" content="" />
     <style>
         .wp .browser{
             padding: 0 10px;
         }
-
+    
         .wp .browser1:after{
             content: '|';
             position: relative;
             /*left: 10px;*/
             color: hsla(0,0%,100%,.3);
         }
-
+    
         .wp .browser:hover{
             color: #FF556E;
             border-right: #0c203a;
@@ -194,5 +191,6 @@ if (isset($hotword))
     </div>
 </footer>
 <script src="/js/jquery.js"></script>
+<script src="/js/VideoSearch.js"></script>
 </body>
 </html>

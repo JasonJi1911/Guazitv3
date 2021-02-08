@@ -1,0 +1,356 @@
+@media screen and (min-width: 1000px) and (max-width: 1400px) {
+    html {
+        font-size: calc(8px + 1 * (100vw - 1000px) / 100);
+    }
+}
+
+@media screen and (min-width: 1400px) and (max-width: 1600px) {
+    html {
+        font-size: calc(11px + .5 * (100vw - 1300px) / 100);
+    }
+}
+
+@media screen and (min-width: 1600px) and (max-width: 2560px) {
+    html {
+        font-size: calc(12px + 1 * (100vw - 1500px) / 100);
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1000px) {
+    html {
+        font-size: calc(6.4px + 1 * (100vw - 768px) / 100);
+    }
+}
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+a{
+    color: #fb5c70;
+    text-decoration:none;
+}
+
+.head{
+    height: 103rem;
+    background-image: url(../images/ShareDown/2.png), url(../images/ShareDown/3.png) ,url(../images/ShareDown/16.png);
+    background-size: 20%, 50%, 100%;
+    background-position: 74% 18%, right 100%, center;
+    background-repeat: no-repeat;
+}
+
+.head-title{
+    display: inline-block;
+    font-size: 9rem;
+    font-weight: bolder;
+    position: relative;
+    line-height: 10rem;
+    font-family: "Source Han Sans CN";
+    top: 8%;
+    left: 22%;
+}
+
+.head-title a {
+    color: #fff;
+}
+
+.head-button{
+    margin-left: 22%;
+    margin-top: 14%;
+}
+
+.head-input-box{
+    width: 28%;
+    margin: -5.25rem auto 0;
+    display: flex;
+    position: relative;
+    left: -14.0625rem;
+    top: 14%;
+}
+
+.head-input-box input {
+    width: 75%;
+    border: 0.04rem solid;
+    border-color: #582c39;
+    height: 1.5625rem;
+    text-indent: .625rem;
+    font-size: 1.125rem;
+    padding: .3125rem;
+    border-radius: 1rem 0 0 1rem;
+    outline: none;
+}
+
+.head-input-box input::placeholder{
+    color: #25232e;
+    font-weight: bold;
+}
+
+.head-input-box a {
+    display: block;
+    width: 10%;
+    background-color: beige;
+    border-color: #582c39;
+    background-image: url(../images/ShareDown/search.png);
+    background-size: 40%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color:#582c39 ;
+    border: none;
+    outline: none;
+    border-radius: 0 1rem 1rem 0;
+}
+.head-button a,
+.foot-button a{
+    text-indent: 4rem;
+    justify-content: center;
+    align-items: center;
+    width: 22%;
+    height: 2.9375rem;
+    background-color: #fda7af;
+    border: 0;
+    padding: 1.25rem 1.375rem;
+    color: #fff;
+    display: flex;
+    font-size: 2rem;
+    cursor: pointer;
+    outline: none;
+    border-radius: .8125rem;
+}
+.button1{
+    background-image: url('../images/ShareDown/18.png');
+    background-repeat: no-repeat;
+    background-size: 15%;
+    text-indent: 1.75rem;
+    background-position: 4.1875rem center;
+}
+
+.button2{
+    background-image: url('../images/ShareDown/17.png');
+    background-repeat: no-repeat;
+    background-size: 15%;
+    background-position: 4.1rem center;
+}
+.button2{
+    margin-top: 1.3%;
+}
+.head p{
+    position: relative;
+    top: 4%;
+}
+
+.content-fast{
+    height: 63rem;
+    background-color: #fafafa;
+    background-image: url(../images/ShareDown/update.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.content1 {
+    height: 31%!important;
+}
+.content1 .content-box {
+    right: 0!important;
+    left: 15%;
+
+}
+.content1 p {
+    text-align: left!important;
+}
+.content2,.content1{
+    color: #252525;
+    font-weight: bold;
+    font-family: "Source Han Sans CN";
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 100%;
+}
+
+.content-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-position: 6.25rem center;
+    font-size: 1.75rem;
+    padding: 6.25rem 0;
+}
+.content-title > div{
+    width: 2.25rem;
+    margin-right: .625rem;
+
+}
+.content-title img{
+    width: auto;
+    height: auto;
+    display: block;;
+    max-width: 100%;
+    max-height: 100%;
+}
+.content-box {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 2rem;
+    position: relative;
+    top: -5%;
+    right: 15%;
+}
+.left-title {
+    width: 100%;
+    position: absolute;
+    text-align: unset;
+    font-size: 1.625rem;
+}
+
+.left-title:nth-of-type(1) {
+    left: -8.5%;
+    top: 29%;
+}
+
+.left-title:nth-of-type(2) {
+    left: 12%;
+    top: 42%;
+    font-size: 2.25rem;
+}
+
+.left-title:nth-of-type(3) {
+    left: -6%;
+    bottom: 25%;
+}
+
+.content-box p {
+    margin: 1.25rem 0 ;
+    text-align: right;
+}
+.bk-1 {
+    background-position: 25% 72%;
+    background-size: 37%;
+}
+
+
+.bk-2 {
+    height: 63rem;
+    background-image: url('../images/ShareDown/10.png');
+    background-color: #fff;
+}
+
+.bk-2 .content-box{
+    align-items: baseline;
+    top: -20%;
+    left: 25%;
+}
+
+.bk-2 .content-box p {
+    text-align: left;
+}
+
+.bk-3{
+    background-color: #f7f7f7;
+    height: 60rem;
+    background-image: url('../images/ShareDown/22.png');
+    background-position: 25% 72%;
+    background-size: 37%;
+}
+
+.bk-3 .content-box span:nth-of-type(1) {
+    font-size: 2rem;
+    left: -10.5%;
+    top: 11%;
+    color: #fff;
+}
+
+.bk-3 .content-box span:nth-of-type(2) {
+    font-size: 1.2rem;
+    left: 4.5%;
+    top: 32%;
+    color: #fff;
+}
+
+.foot{
+    background:url(../images/ShareDown/12.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 43.25rem;
+}
+.foot-button {
+    background:url(../images/ShareDown/1.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: 37% center;
+}
+
+.head-button {
+    background:url(../images/ShareDown/1.png);
+    background-size: 14%;
+    background-repeat: no-repeat;
+    background-position: 32% center;
+}
+.foot p{
+    text-align: center;
+    font-size: 7.0625rem;
+    position: relative;
+    top: 3.4375rem;
+    color: #ffffff;
+    font-weight: bold;
+    font-family: "Source Han Sans CN";
+}
+
+.foot-input-box  {
+    width: 28%;
+    margin: 3.75rem auto 0;
+    display: flex;
+    position: relative;
+    left: -1.0625rem;
+}
+
+.foot-input-box input {
+    width: 85%;
+    border: 0.04rem solid;
+    border-color: #582c39;
+    height: 1.5625rem;
+    text-indent: .625rem;
+    font-size: 1.125rem;
+    padding: .3125rem;
+    border-radius: 1rem 0 0 1rem;
+    outline: none;
+}
+
+.foot-input-box input::placeholder{
+    color: #25232e;
+    font-weight: bold;
+}
+
+.foot-input-box a {
+    display: block;
+    width: 10%;
+    background-color: beige;
+    border-color: #582c39;
+    background-image: url(../images/ShareDown/search.png);
+    background-size: 40%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color:#582c39 ;
+    border: none;
+    outline: none;
+
+    border-radius: 0 1rem 1rem 0;
+}
+
+.foot-button{
+    margin-left: 33%;
+    margin-top: 3.6%;
+}
+
+.foot-button .button2{
+    margin-top: 1%;
+}
+
+.foot-button a{
+    width: 25%;
+    text-indent: 4rem ;
+}

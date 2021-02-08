@@ -590,7 +590,9 @@ class VideoLogic
             return '/360apitv/jiexi/jianghu.php?v='.urlencode($url);
 //            return $url;
         } else {
-            return VIDEO_JIXI_URL_WAP.'?v='.urlencode($url);
+//            return VIDEO_JIXI_URL_WAP.'?v='.urlencode($url);
+            return '/360apitv/jiexi/jianghu.php?v='.urlencode($url);
+//            return $url;
         }
     }
 
@@ -990,5 +992,27 @@ class VideoLogic
         $videoList['list'] = $videoDao->batchGetVideo($videoId, $fields);
 
         return $videoList;
+    }
+
+    public function searchLetterResult($keyword, $page, $pageSize)
+    {
+        $dataProvider = new ActiveDataProvider([
+            'query' => Video::find()
+                ->select('id')
+                ->andWhere(['like', 'title_en', $keyword])
+        ]);
+        $data = $dataProvider->setPagination(['page_num' => $page, 'page_size' => $pageSize])->toArray([
+            'video_id',
+        ]);
+
+        //根据查询的video_id获取影片信息
+        $seriesId = array_column($data['list'], 'video_id');
+
+        $videoDao = new VideoDao();
+        $videos = $videoDao->batchGetVideo($seriesId, ['video_id', 'video_name', 'category', 'cover', 'horizontal_cover', 'intro', 'flag', 'score', 'play_times','title', 'area', 'year', 'tag', 'director', 'artist'], false, ['channel_id', 'actors_id', 'actors', 'director', 'artist', 'chapters']);
+
+        $data['list'] = $videos;
+
+        return $data;
     }
 }
