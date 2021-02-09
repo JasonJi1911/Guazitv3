@@ -485,7 +485,7 @@ class VideoDao extends BaseDao
      * @param $tag
      * @param $area
      */
-    private function checkFilterParams($channelId, &$tag, &$area)
+    public function checkFilterParams($channelId, &$tag, &$area)
     {
         // tag检索项
         $channelLogic = new ChannelLogic();

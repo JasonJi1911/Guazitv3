@@ -178,6 +178,11 @@ if (isset($hotword))
             'hotword'       => $hotword
         ]);
         break;
+    case "map":
+        echo $this->render('map',[
+            'channels'      => $channels,
+        ]);
+        break;
 } ?>
 
 <footer class="qy-footer">

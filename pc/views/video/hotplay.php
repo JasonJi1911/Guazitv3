@@ -150,58 +150,60 @@ $this->registerJs($js);
                     <div class="row-so row-so1">
                         <?php if (!empty($data['label'])) :?>
                             <?php foreach ($data['label'] as  $labels): ?>
-                                <?php
-                                $tag = '';
-                                $channel = '';
-                                foreach ($labels['search'] as $s_k => $s_v) {
-                                    if($s_v['field'] == 'channel_id') {
-                                        $channel = $s_v['value'];
+                                <?php if (!isset($labels['advert_id'])) : ?>
+                                    <?php
+                                    $tag = '';
+                                    $channel = '';
+                                    foreach ($labels['search'] as $s_k => $s_v) {
+                                        if($s_v['field'] == 'channel_id') {
+                                            $channel = $s_v['value'];
+                                        }
+                                        if($s_v['field'] == 'tag') {
+                                            $tag = $s_v['value'];
+                                        }
                                     }
-                                    if($s_v['field'] == 'tag') {
-                                        $tag = $s_v['value'];
-                                    }
-                                }
-                                ?>
-                                <div class="col-l">
-                                    <div class="item">
-                                        <div class="m-t2">
-                                            <h3><?= $labels['title']?></h3>
-                                            <a href="<?= Url::to(['hot-play', 'channel_id' => $channel])?>" class="more">更多&gt;</a>
-                                        </div>
-                                        <ul class="m-list2">
-                                            <?php foreach ($labels['list'] as $key => $list): ?>
-                                                <?php if($key < 10) :?>
-                                                    <li class="i<?= $key + 1?><?= $key == 0? " open":"" ?>">
-                                                        <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>" class="con">
-                                                            <div class="tit-con">
-                                                                <span class="num"><?= $key + 1?></span>
-                                                                <h3><?= $list['video_name']?></h3>
-                                                                <div class="sub-title">
-                                                                    <i class="qy-svgicon qy-svgicon-hot"></i>
-                                                                    <span><?= str_replace("播放:","",$list['play_times'])?></span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="pic-con">
-                                                                <div class="pic">
+                                    ?>
+                                    <div class="col-l">
+                                        <div class="item">
+                                            <div class="m-t2">
+                                                <h3><?= $labels['title']?></h3>
+                                                <a href="<?= Url::to(['hot-play', 'channel_id' => $channel])?>" class="more">更多&gt;</a>
+                                            </div>
+                                            <ul class="m-list2">
+                                                <?php foreach ($labels['list'] as $key => $list): ?>
+                                                    <?php if($key < 10) :?>
+                                                        <li class="i<?= $key + 1?><?= $key == 0? " open":"" ?>">
+                                                            <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>" class="con">
+                                                                <div class="tit-con">
                                                                     <span class="num"><?= $key + 1?></span>
-                                                                    <img src="<?= $list['horizontal_cover']?>" alt="">
-                                                                </div>
-                                                                <div class="txt">
                                                                     <h3><?= $list['video_name']?></h3>
-                                                                    <p><?= $list['summary']?></p>
                                                                     <div class="sub-title">
                                                                         <i class="qy-svgicon qy-svgicon-hot"></i>
                                                                         <span><?= str_replace("播放:","",$list['play_times'])?></span>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                        </a>
-                                                    </li>
-                                                <?php endif;?>
-                                            <?php endforeach;?>
-                                        </ul>
+                                                                <div class="pic-con">
+                                                                    <div class="pic">
+                                                                        <span class="num"><?= $key + 1?></span>
+                                                                        <img src="<?= $list['horizontal_cover']?>" alt="">
+                                                                    </div>
+                                                                    <div class="txt">
+                                                                        <h3><?= $list['video_name']?></h3>
+                                                                        <p><?= $list['summary']?></p>
+                                                                        <div class="sub-title">
+                                                                            <i class="qy-svgicon qy-svgicon-hot"></i>
+                                                                            <span><?= str_replace("播放:","",$list['play_times'])?></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                        </li>
+                                                    <?php endif;?>
+                                                <?php endforeach;?>
+                                            </ul>
+                                        </div>
                                     </div>
-                                </div>
+                                <?php endif; ?>
                             <?php endforeach;?>
                         <?php endif; ?>
                     </div>
@@ -220,44 +222,46 @@ $this->registerJs($js);
                     <ul class="m-list3">
                         <?php if (!empty($data['label'])) :?>
                             <?php foreach ($data['label'] as  $labels): ?>
-                                <?php
-                                $tag = '';
-                                $channel = '';
-                                foreach ($labels['search'] as $s_k => $s_v) {
-                                    if($s_v['field'] == 'channel_id') {
-                                        $channel = $s_v['value'];
+                                <?php if (!isset($labels['advert_id'])) : ?>
+                                    <?php
+                                    $tag = '';
+                                    $channel = '';
+                                    foreach ($labels['search'] as $s_k => $s_v) {
+                                        if($s_v['field'] == 'channel_id') {
+                                            $channel = $s_v['value'];
+                                        }
+                                        if($s_v['field'] == 'tag') {
+                                            $tag = $s_v['value'];
+                                        }
                                     }
-                                    if($s_v['field'] == 'tag') {
-                                        $tag = $s_v['value'];
-                                    }
-                                }
-                                ?>
-                                <?php if($channel == $channel_id) { ?>
-                                    <?php foreach ($labels['list'] as $key => $list): ?>
-                                        <li class="i<?= $key + 1?>">
-                                            <div class="pic">
-                                                <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
-                                                    <span class="num"><?= $key + 1?></span>
-                                                    <img src="<?= $list['horizontal_cover']?>" alt="">
-                                                    <div class="icon-br">
-                                                        <span class="qy-mod-label"> <?= $list['flag']?></span>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                            <div class="txt">
-                                                <h3><a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>"><?= $list['video_name']?></a></h3>
-                                                <p><?= $list['summary']?></p>
-                                                <div class="sub-title"><i class="qy-svgicon qy-svgicon-hot"></i>
-                                                    <span><?= str_replace("播放:","",$list['play_times'])?></span>
+                                    ?>
+                                    <?php if($channel == $channel_id) { ?>
+                                        <?php foreach ($labels['list'] as $key => $list): ?>
+                                            <li class="i<?= $key + 1?>">
+                                                <div class="pic">
+                                                    <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
+                                                        <span class="num"><?= $key + 1?></span>
+                                                        <img src="<?= $list['horizontal_cover']?>" alt="">
+                                                        <div class="icon-br">
+                                                            <span class="qy-mod-label"> <?= $list['flag']?></span>
+                                                        </div>
+                                                    </a>
                                                 </div>
-                                            </div>
-                                            <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>" class="J-btn-wrap collect">
-                                                <i class="J-btn-icon qy-svgicon qy-svgicon-collect"></i>
-                                                <span>立即播放</span>
-                                            </a>
-                                        </li>
-                                    <?php endforeach;?>
-                                <?php } ?>
+                                                <div class="txt">
+                                                    <h3><a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>"><?= $list['video_name']?></a></h3>
+                                                    <p><?= $list['summary']?></p>
+                                                    <div class="sub-title"><i class="qy-svgicon qy-svgicon-hot"></i>
+                                                        <span><?= str_replace("播放:","",$list['play_times'])?></span>
+                                                    </div>
+                                                </div>
+                                                <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>" class="J-btn-wrap collect">
+                                                    <i class="J-btn-icon qy-svgicon qy-svgicon-collect"></i>
+                                                    <span>立即播放</span>
+                                                </a>
+                                            </li>
+                                        <?php endforeach;?>
+                                    <?php } ?>
+                                <?php endif; ?>
                             <?php endforeach;?>
                         <?php endif; ?>
                     </ul>

@@ -334,10 +334,15 @@ class VideoLogic
     public function searchResult1($channelId, $keyword, $sort, $tag, $area, $year, $type, $playLimit, $page, $pageSize)
     {
         $commonDao = new CommonDao();
+        $videoDao = new VideoDao();
         $videoChannel = $commonDao->videoChannel(['channel_id', 'channel_name']);
 
-        if (!$channelId) { //如果没有传channel id,则默认查询所有的频道
+        if (empty($channelId)) { //如果没有传channel id,则默认查询所有的频道
             $channelId = array_column($videoChannel, 'channel_id');
+        }
+        else
+        {
+            $videoDao->checkFilterParams($channelId, $tag, $area);
         }
         $order = $sort == 'new' ? 'created_at' : ($sort == 'score' ? 'score' : 'total_views');
 
@@ -359,7 +364,7 @@ class VideoLogic
         //根据查询的video_id获取影片信息
         $seriesId = array_column($data['list'], 'video_id');
 
-        $videoDao = new VideoDao();
+//        $videoDao = new VideoDao();
         $videos = $videoDao->batchGetVideo($seriesId, ['video_id', 'video_name', 'category', 'cover', 'horizontal_cover', 'intro', 'flag', 'score', 'play_times','title', 'area', 'year', 'tag', 'director', 'artist'], false, ['channel_id', 'actors_id', 'actors', 'director', 'artist', 'chapters']);
 
         foreach ($videos as &$videoInfo) {

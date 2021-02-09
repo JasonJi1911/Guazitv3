@@ -19,9 +19,9 @@ $(function(){
 
     });
     
-    $(".activity-sxlist ul li").click(function() {
-        $(this).addClass('active-1').siblings().removeClass('active-1');
-    });
+    // $(".activity-sxlist ul li").click(function() {
+    //     $(this).addClass('active-1').siblings().removeClass('active-1');
+    // });
     
     function Show_Hidden(obj) {
         if (obj.style.display == "block") {
@@ -43,7 +43,7 @@ $(function(){
     var arrIndex = {};
     var progress = false; // 是否正在请求中
     var isFlag = true;
-    $(".cate-list-li").click(function (){
+    $(document).on('click', '.cate-list-li', function() {
         var type = $(this).attr('data-type');
         var value = $(this).attr('data-value');
         
@@ -51,7 +51,14 @@ $(function(){
         arrIndex[type] = value;
         arrIndex['page_num']= 1;
         arrIndex['keyword'] = $('#keywords').val();
+        
+        $(this).parent().addClass('active-1').siblings().removeClass('active-1');
+        
         $(".spinner").fadeIn();
+        //发送请求，获取数据
+        $.get('/video/refresh-cate', arrIndex, function(s) {
+            refreshCate(s.data.search_box);
+        });
         //发送请求，获取数据
         $.get('/video/refresh-video', arrIndex, function(s) {
             $('.vcontent').html(s); // 更新内容
@@ -60,7 +67,57 @@ $(function(){
             $('.modal-paging').attr('data-pages', $("#parpages").val()); //刷新ye数
             $(".spinner").fadeOut();
         });
+        
     });
+    
+    //刷新筛选条件
+    function refreshCate(list) {
+        var content = '';
+        for(var i=0;i<list.length; i++) {
+            if(list[i]['label'] == '排序')
+                continue
+                
+            content += "<div class='activity-sxlist clearfix'>" + 
+                            "<div class='tabel'>" + list[i]['label'] + "：</div>" +
+                             "<ul class='clearfix'>";
+            var selectFlag = false;
+            
+            for(var j=0;j<list[i]['list'].length; j++) {
+                if(list[i]['list'][j]['checked'] == 1) {
+                    selectFlag = true;
+                }
+            }
+
+           for(var k=0;k<list[i]['list'].length;k++) {
+              if(list[i]['list'][k]['checked'] == 1) {
+                  if(list[i]['field'] == 'channel_id')
+                  {
+                       content += "<input type='hidden' id='channel-id' value='"+list[i]['list'][k]['value']+"'>";
+                  }
+                  content += "<li class='active-1' " +
+                            "data-value='"+list[i]['list'][k]['value']+"'" +
+                             " data-type='"+list[i]['field']+"'>" +
+                             "<a class='cate-list-li'" +
+                                  "data-value='"+list[i]['list'][k]['value']+"'" +
+                                 " data-type='"+list[i]['field']+"'>" +
+                                  ""+list[i]['list'][k]['display']+"</a></li>";
+                  continue;
+              }
+              content += "<li class='' " +
+                            "data-value='"+list[i]['list'][k]['value']+"'" +
+                             " data-type='"+list[i]['field']+"'>" +
+                             "<a class='cate-list-li'" +
+                                  "data-value='"+list[i]['list'][k]['value']+"'" +
+                                 " data-type='"+list[i]['field']+"'>" +
+                                  ""+list[i]['list'][k]['display']+"</a></li>";
+            }
+
+            content +="</ul>" +
+                       "</div>";
+        }
+        
+        $('#thediv').html(content);
+    }
     
     //下拉加载更多
     $(window).scroll(function () {

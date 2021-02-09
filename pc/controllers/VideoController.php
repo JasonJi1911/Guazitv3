@@ -384,4 +384,26 @@ class VideoController extends BaseController
             'hotword'       => $hotword
         ]);
     }
+
+    public function actionMap()
+    {
+        $pageTab = "map";
+
+        $channels = Yii::$app->api->get('/video/channels');
+        $hotword = Yii::$app->api->get('/search/hot-word');
+
+        foreach ($channels['list'] as $s_k => &$s_v)
+        {
+            $channel_id = $s_v['channel_id'];
+            $cates = Yii::$app->api->get('/video/filter', ['channel_id' => $channel_id, 'tag' => '', 'sort' => '', 'area' => '',
+                'play_limit' => '', 'year' => '', 'page_num' => 1, 'page_size' =>24 ,'type' => 1]);
+            $s_v['search_box'] = $cates['search_box'];
+        }
+
+        return $this->render('newframe',[
+            'pageTab'       => $pageTab,
+            'channels'      => $channels,
+            'hotword'       => $hotword
+        ]);
+    }
 }
