@@ -24,6 +24,32 @@ AppAsset::register($this);
     <?php $this->head() ?>
     <link href="/css/error.min.css" rel="stylesheet" type="text/css" />
     <link rel="shortcut icon" href="/favicon.ico" />
+    <script>
+        function goBack(){
+            if ((navigator.userAgent.indexOf('MSIE') >= 0) && (navigator.userAgent.indexOf('Opera') < 0)){ // IE
+                if(history.length > 1){
+                    window.history.back();
+                }else{
+                    window.location.href = "/video/index";
+                }
+            }else{ //非IE浏览器
+                if (navigator.userAgent.indexOf('Firefox') >= 0 ||
+                    navigator.userAgent.indexOf('Opera') >= 0 ||
+                    navigator.userAgent.indexOf('Safari') >= 0 ||
+                    navigator.userAgent.indexOf('Chrome') >= 0 ||
+                    navigator.userAgent.indexOf('WebKit') >= 0){
+                    alert(window.history.length);
+                    if(window.history.length > 2){
+                        window.history.back();
+                    }else{
+                        window.location.href = "/video/index";
+                    }
+                }else{ //未知的浏览器
+                    window.history.go( -1 );
+                }
+            }
+        }
+    </script>
 </head>
 <!-- END HEAD -->
 <body class="page-500-full-page">
@@ -35,7 +61,8 @@ AppAsset::register($this);
                 <h3><?= Html::encode($name) ?></h3>
                 <p><?= nl2br(Html::encode($message)) ?></p>
                 <p>
-                    <a href="javascript:;" class="btn red btn-outline" onclick="history.back()"> 返回上一页 </a>
+<!--                    <a href="javascript:;" class="btn red btn-outline" onclick="history.back()"> 返回上一页 </a>-->
+                    <a href="javascript:;" class="btn red btn-outline" onclick="goBack()"> 返回上一页 </a>
                     <br>
                 </p>
             </div>

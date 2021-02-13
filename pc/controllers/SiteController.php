@@ -52,4 +52,45 @@ class SiteController extends BaseController
     {
         return $this->render('sharedown');
     }
+
+    public function actionMap()
+    {
+        //请求首页信息
+        $data = Yii::$app->api->get('/video/index', ['channel_id' => 0]);
+
+        $xml =  [
+            'class' => 'yii\web\Response',
+            'format' => \yii\web\Response::FORMAT_XML, //设置输出的格式为 XML
+            'formatters' => [
+                \yii\web\Response::FORMAT_XML => [
+                    'class' => 'yii\web\XmlResponseFormatter',
+                    'rootTag' => 'urlset', //根节点
+                    'itemTag' => 'url', //单元
+                ],
+            ],
+            'data' => [ //要输出的数据
+            ],
+        ];
+
+        if (!empty($data['label']))
+        {
+            foreach ($data['label'] as $k => $labels)
+            {
+                if (empty($labels['list']))
+                    continue;
+
+                foreach ($labels['list'] as $key => $list)
+                {
+                    $video = [];
+                    $video['loc'] = PC_HOST_PATH.Url::to(['detail', 'video_id' => $list['video_id']]);
+                    $video['score'] = $list['score'];
+                    $video['title'] = '瓜子TV_'.$list['video_name'];
+                    $video['year'] = $list['year'];
+                    array_push($xml['data'], $video);
+                }
+            }
+        }
+
+        return \Yii::createObject($xml);
+    }
 }

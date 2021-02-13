@@ -58,6 +58,10 @@ StyleMap::register($this);
         width: 100%;
         margin-top: 30px;
     }
+
+    .browser{
+        color: #666;
+    }
 </style>
 
 <div class="mapbody">

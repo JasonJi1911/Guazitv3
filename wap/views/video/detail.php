@@ -282,8 +282,10 @@ $this->registerJs($js);
 
 <div class="video-index-notice">
     <p style="padding-bottom: 5px;text-align: center;">
+        <a class="browser browser1" href="<?= Url::to(['map'])?>">网站地图</a>
         <a class="browser browser1" href="http://m.guazitv.tv">手机端</a>
-        <a class="browser" href="http://www.guazitv.tv">电脑端</a></p>
+        <a class="browser browser1" href="http://www.guazitv.tv">电脑端</a>
+        <a class="browser" href="<?= Url::to(['site/share-down'])?>">APP下载</a></p>
     <p>本网站为非赢利性站点，所有内容均由机器人采集于互联网，或者网友上传，本站只提供WEB页面服务，本站不存储、不制作任何视频，不承担任何由于内容的合法性及健康性所引起的争议和法律责任。若本站收录内容侵犯了您的权益，请附说明联系邮箱，本站将第一时间处理。站长邮箱：guazitv@163.com</p>
 </div>
 <!--<div class="video-footer">
