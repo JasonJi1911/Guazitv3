@@ -96,8 +96,11 @@ class VideoController extends BaseController
         $chapter_id = Yii::$app->request->get('chapter_id', '');
         $source_id = Yii::$app->request->get('source_id', '');
 
+        $ip = Tool::getIp();
+        $ipAddress = Tool::getIpAddress($ip);
         //请求视频信息
-        $info = Yii::$app->api->get('/video/info', ['video_id' => $video_id, 'chapter_id' => $chapter_id, 'source_id' => $source_id]);
+        $info = Yii::$app->api->get('/video/info', ['video_id' => $video_id
+            , 'chapter_id' => $chapter_id, 'source_id' => $source_id, 'city'=> $ipAddress['city']]);
 
         if(!$info) {
             return $this->redirect('/site/error');

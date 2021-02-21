@@ -191,14 +191,6 @@ $(function(){
              }
         }
     });
-    
-    let video = $("#easi").get(0)
-    var inter = setInterval(function (){
-        if (video.ended) {
-            document.getElementById('easiBox').style.display='none';
-            clearInterval(inter);
-        }
-    }, 500);
 });
 JS;
 
@@ -880,5 +872,9 @@ $this->registerJs($js);
 <script src="/js/jquery.js"></script>
 <script src="/js/video.js?v=1.5"></script>
 <script src="/js/VideoSearch.js"></script>
+<script>
+    if(document.getElementById('easiBox'))
+        setTimeout("document.getElementById('easiBox').style.display='none'",6000);
+</script>
 </body>
 </html>

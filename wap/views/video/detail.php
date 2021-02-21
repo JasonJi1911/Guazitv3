@@ -1,13 +1,38 @@
 <?php
 use yii\helpers\Url;
+use common\models\advert\AdvertPosition;
 
-//$this->title = '瓜子TV-澳新华人在线视频分享网站';
-$this->title = $info['info']['video_name'].'瓜子TV|澳洲瓜子tv|澳新瓜子|澳新tv|澳新瓜子tv - guazitv.tv';
+// $this->title = '瓜子TV-澳新华人在线视频分享网站';
+$this->title = $info['info']['video_name'].'-瓜子TV|澳洲瓜子tv|澳新瓜子|澳新tv|澳新瓜子tv - guazitv.tv';
 $this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子,tv,瓜子tv,澳洲瓜子tv,澳洲,新西兰,澳新,电影,电视剧,榜单,综艺,动画,记录片']);
 
 $js = <<<JS
 $(function(){
     
+    // var videoPath = $('#player1').data('src');
+    // var videoImage = '';
+    //
+    // var dp = new DPlayer({
+    //     element: document.getElementById('player1'),
+    //     theme: '#FADFA3',
+    //     loop: true,
+    //     lang: 'zh-cn',
+    //     hotkey: true,
+    //     preload: 'auto',
+    //     volume: 0.7,
+    //     autoplay: true,
+    //     live: true,
+    //     playbackSpeed:[0.5, 0.75, 1, 1.25, 1.5, 2,2.5,3,5,7.5,10],
+    //     video: {
+    //         url: videoPath,
+    //         pic: videoImage,
+    //         type: 'hls'
+    //     },
+    // });
+    
+    setTimeout(function() {
+        $('.dplayer-play-icon').click();
+    },50);
     //实例化video对象
 /*    setTimeout(function() {
       $('.go-back').hide();
@@ -32,6 +57,7 @@ $(function(){
         $(".pop-intro").css("bottom","-100%");
         $("body").removeClass("body-mode");
         $(".pop-video-mask").hide();
+        //dp.play();
     }
     
     //选中播放视频
@@ -140,6 +166,10 @@ $this->registerJs($js);
         color: #FF556E;
     }
 
+    .box{
+        height: 100%;
+    }
+
     .browser{
         padding: 0 10px;
         color: #8D8D95;
@@ -154,6 +184,103 @@ $this->registerJs($js);
     .browser:hover{
         color: #FF556E;
         border-right: #0c203a;
+    }
+
+    .video-play-left-cover {
+        width: 100%;
+        height: 100%;
+        /*position: absolute;*/
+        top: 0;
+        left: 0;
+        z-index: 99;
+    }
+
+    .video-play-left img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .btn-add-play{
+        z-index: 1000;
+        display: block;
+        bottom: 20px;
+        right: 50px;
+        width: 80px;
+        line-height: 2.5;
+        background-color: #ff556e;
+        position: absolute;
+        font-size: 12px;
+        border-radius: 15px;
+        text-align: center;
+        color: #fff;
+    }
+
+    .ad-arrow {
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        background: transparent;
+        border-top: 1px solid #fff;
+        border-right: 1px solid #fff;
+        -webkit-transform: rotate(
+                45deg
+        );
+        transform: rotate(
+                45deg
+        );
+        margin: 0 2px;
+        vertical-align: 1px;
+    }
+
+    .c-videoplay {
+        z-index: 930;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        -o-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+
+    .c-player-icon {
+        width: 1.0rem;
+        height: 1.0rem;
+        font-size: 1rem;
+        background-position: 0 0;
+        background-image: url(/images/video/player-bg.png);
+        background-size: 2rem 3rem;
+        display: inline-block;
+        background-repeat: no-repeat;
+    }
+
+    .handle-ad {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: .4rem;
+        z-index: 940;
+    }
+
+    .handle-ad .player-fullscreen {
+        right: .05rem;
+    }
+
+    .handle-ad .player-voice, .handle-ad .player-fullscreen {
+        position: absolute;
+        bottom: 15px;
+    }
+
+    .handle-ad .c-player-fullscreen {
+        background-position: -40px -50px;
+    }
+
+    .handle-ad .c-player-icon {
+        width: 40px;
+        height: 40px;
+        background-size: 100px 150px;
     }
 </style>
 
@@ -185,8 +312,45 @@ $this->registerJs($js);
                             <?php endif;?>
                         </video>
                     <?php else:?>
-                        <div href="#" class="piclist-link-ifram" style="background-image:url(<?= $info['info']['horizontal_cover']?>);height: 3.8rem;z-index: 99;background-size: 100%"></>
+                        <?php if(!empty($info['advert'])) :?>
+                            <?php foreach ($info['advert'] as $key => $advert) : ?>
+                                <?php if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_PLAY_BEFORE) :?>
+                                    <?php if(strpos($advert['ad_image'], '.mp4') !== false) :?>
+                                        <div id="easiBox" class="">
+                                            <video id="easi" style="width: 100%; height: 100%;" playsinline webkit-playsinline autoplay>
+                                                <source src="<?= $advert['ad_image']?>" type="video/mp4">
+                                            </video>
+                                            <div class="c-videoplay" id="btn-video-play">
+                                                <i class="c-player-icon c-player-big"></i>
+                                            </div>
+                                            <a class="btn-add-play" href="<?= $advert['ad_skip_url']?>" target="_blank">
+                                                了解详情
+                                                <i class="ad-arrow-wrapper ad-arrow"></i>
+                                            </a>
+                                            <!--<div style="">-->
+                                            <!--    <div class="handle-ad">-->
+                                            <!--        <span class="player-fullscreen" style="">-->
+                                            <!--            <i class="c-player-icon c-player-fullscreen"></i>-->
+                                            <!--        </span>-->
+                                            <!--    </div>-->
+                                            <!--</div>-->
+                                        </div>
+                                    <?php else:?>
+                                        <div class="video-play-left-cover" id="easiBox">
+                                            <a id="imgad" href="<?= $advert['ad_skip_url']?>" target="_blank" class="">
+                                                <img src="<?= $advert['ad_image']?>"
+                                                     onerror="this.src='/images/video/default-cover-ver.png'"
+                                                     id="video-cover" class="video-play-btn-iframe"
+                                                     style="width: 100%; height: 100%;">
+                                            </a>
+                                        </div>
+                                    <?php endif;?>
+                                <?php endif;?>
+                            <?php endforeach;?>
+                        <?php endif;?>
                         <iframe name="my-iframe" id="my-iframe" src="<?= $info['info']['resource_url']?>" allowfullscreen="true" allowtransparency="true" frameborder="0" scrolling="no"  width="100%" height="100%" scrolling="no" style="height: 3.8rem"></iframe>
+                        <!--                        <div class="box" id="player1"-->
+                        <!--                             data-src="--><?//= $info['info']['resource_url']?><!--"></div>-->
                     <?php endif;?>
                 </div>
             </li>
@@ -282,10 +446,8 @@ $this->registerJs($js);
 
 <div class="video-index-notice">
     <p style="padding-bottom: 5px;text-align: center;">
-        <a class="browser browser1" href="<?= Url::to(['map'])?>">网站地图</a>
         <a class="browser browser1" href="http://m.guazitv.tv">手机端</a>
-        <a class="browser browser1" href="http://www.guazitv.tv">电脑端</a>
-        <a class="browser" href="<?= Url::to(['site/share-down'])?>">APP下载</a></p>
+        <a class="browser" href="http://www.guazitv.tv">PC端</a></p>
     <p>本网站为非赢利性站点，所有内容均由机器人采集于互联网，或者网友上传，本站只提供WEB页面服务，本站不存储、不制作任何视频，不承担任何由于内容的合法性及健康性所引起的争议和法律责任。若本站收录内容侵犯了您的权益，请附说明联系邮箱，本站将第一时间处理。站长邮箱：guazitv@163.com</p>
 </div>
 <!--<div class="video-footer">
@@ -385,3 +547,22 @@ $this->registerJs($js);
 <script src="/js/video/jquery.min.1.11.1.js"></script>
 <script src="/js/video/swiper.min.js"></script>
 <script src="/js/video/video.js?v=1.0"></script>
+<script>
+    $("#btn-video-play").click(function(){
+        $(this).hide();
+        document.getElementById('easi').play();
+        $("#easi").attr("controls", "controls");
+        closeAdd();
+    });
+
+    function closeAdd()
+    {
+        setTimeout("document.getElementById('easiBox').style.display='none'",6000);
+    }
+    if (document.getElementById('easiBox'))
+    {
+        closeAdd();
+    }
+
+    // $('#btn-video-play').trigger("click");
+</script>
