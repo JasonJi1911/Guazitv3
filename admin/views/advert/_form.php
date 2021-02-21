@@ -2,6 +2,9 @@
 
 use metronic\widgets\ActiveForm;
 use admin\models\advert\Advert;
+use api\models\advert\AdvertPosition;
+use common\models\IpAddress;
+use yii\helpers\ArrayHelper;
 
 $js = <<<JS
     $("#advert-ad_type").change(function(){
@@ -31,10 +34,30 @@ $this->registerJs($js);
     <?= $form->field($model, 'title')->textInput(['maxlength' => true, 'placeholder' => '广告标题']) ?>
 
     <?php if ($model->isNewRecord):?>
-        <div id="web_advert_info">
-            <?= $form->field($model, 'image')->imageUpload(['width' => '600px', 'height' => '200px'])->hint('建议尺寸600*200')->label('广告图<span class="required">*</span>') ?>
+        <div id="web_advert_info <?=$model->position_id?>">
+            <?php
+            switch (intval(Yii::$app->request->get('position_id'))) {
+                case AdvertPosition::POSITION_VIDEO_INDEX_PC :
+                case AdvertPosition::POSITION_PLAY_BEFORE_PC :
+                case AdvertPosition::POSITION_FLASH_PC :
+                case AdvertPosition::POSITION_VIDEO_TOP_PC :
+                case AdvertPosition::POSITION_VIDEO_BOTTOM_PC :
+                    echo $form->field($model, 'image')->imageUpload(['width' => '600px', 'height' => '200px'])->hint('建议尺寸1196*130')->label('广告图<span class="required">*</span>');
+                    break;
+                default:
+                    echo $form->field($model, 'image')->imageUpload(['width' => '600px', 'height' => '200px'])->hint('建议尺寸600*200')->label('广告图<span class="required">*</span>');
+                    break;
+            }
+            ?>
+<!--            --><?//= $form->field($model, 'image')->imageUpload(['width' => '600px', 'height' => '200px'])->hint('建议尺寸600*200')->label('广告图<span class="required">*</span>') ?>
 
             <?= $form->field($model, 'url_type')->dropDownList(Advert::$urlTypes)->wrapper(['width' => 2]) ?>
+
+            <?php
+            if (intval(Yii::$app->request->get('position_id')) == AdvertPosition::POSITION_PLAY_BEFORE_PC) {
+                echo $form->field($model, 'city_id')->dropDownList(ArrayHelper::map(IpAddress::find()->groupBy('city')->all(), 'id', 'city'))->wrapper(['width' => 2]);
+            }
+            ?>
 
             <?= $form->field($model, 'skip_url')->textInput(['maxlength' => true, 'placeholder' => 'http://或https://']) ?>
         </div>
@@ -55,9 +78,29 @@ $this->registerJs($js);
         <?php
         switch ($model->ad_type) {
             case Advert::AD_TYPE_WEB : // web广告
-                echo $form->field($model, 'image')->imageUpload(['width' => '600', 'height' => '200'])->hint('建议上传600*200的图片');
+                switch (intval(Yii::$app->request->get('position_id'))) {
+                    case AdvertPosition::POSITION_VIDEO_INDEX_PC :
+                    case AdvertPosition::POSITION_PLAY_BEFORE_PC :
+                    case AdvertPosition::POSITION_FLASH_PC :
+                    case AdvertPosition::POSITION_VIDEO_TOP_PC :
+                    case AdvertPosition::POSITION_VIDEO_BOTTOM_PC :
+                    {
+                        echo $form->field($model, 'image')->imageUpload(['width' => '600px', 'height' => '200px'])->hint('建议尺寸1196*130')->label('广告图<span class="required">*</span>');
+                        if (strpos($model->image, '.mp4') !== false)
+                            echo '<video class="col-xs-offset-1" style="width: 600px; height: 200px;" controls="controls" autoplay="autoplay"><source src="'.$model->image.'" type="video/mp4"></video>';
+                        break;
+                    }
+                    default:
+                        echo $form->field($model, 'image')->imageUpload(['width' => '600', 'height' => '200'])->hint('建议上传600*200的图片');
+                        break;
+                }
 
                 echo $form->field($model, 'url_type')->dropDownList(Advert::$urlTypes)->wrapper(['width' => 2]);
+
+                if (intval(Yii::$app->request->get('position_id')) == AdvertPosition::POSITION_PLAY_BEFORE_PC) {
+                    echo $form->field($model, 'city_id')->dropDownList(ArrayHelper::map(IpAddress::find()->groupBy('city')->all(), 'id', 'city'))->wrapper(['width' => 2]);
+                }
+
                 echo $form->field($model, 'skip_url')->textInput(['maxlength' => true, 'placeholder' => 'http://或https://']);
                 break;
 

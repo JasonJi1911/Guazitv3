@@ -7,6 +7,7 @@ use api\helpers\ErrorCode;
 use api\models\advert\AdvertPosition;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
+use common\models\IpAddress;
 use common\models\pay\Expend;
 use common\models\traits\PositionInterface;
 use common\services\PayService;
@@ -27,7 +28,7 @@ class AdvertLogic
      * @param $position
      * @return array
      */
-    public function advertByPosition($position)
+    public function advertByPosition($position, $city='')
     {
         if (Yii::$app->setting->get('system.ad_switch') == Setting::SWITCH_OFF) { // 如果广告已关闭返回空
             return [];
@@ -38,13 +39,15 @@ class AdvertLogic
         }
         
         $advertDao = new AdvertDao();
-        $advertId = $advertDao->advertIdByPosition($position); // 根据位置获取广告
+        $advertId = $advertDao->advertIdByPosition($position, $city); // 根据位置获取广告
 
         if (empty($advertId)) {
             return [];
         }
         // 如果是首页和发现页，获取全部广告，其他位置随机获取一条广告
-        if ($position == AdvertPosition::POSITION_VIDEO_INDEX || $position == AdvertPosition::POSITION_VIDEO_TOPIC) {
+        if ($position == AdvertPosition::POSITION_VIDEO_INDEX
+            || $position == AdvertPosition::POSITION_VIDEO_INDEX_PC
+            || $position == AdvertPosition::POSITION_VIDEO_TOPIC) {
             $advert = [];
             foreach ($advertId as $id) {
                 // 添加PV

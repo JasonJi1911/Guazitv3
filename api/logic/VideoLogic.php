@@ -387,7 +387,7 @@ class VideoLogic
      * @return array
      * @throws ApiException
      */
-    public function playInfo($videoId, $chapterId, $sourceId)
+    public function playInfo($videoId, $chapterId, $sourceId, $city='')
     {
         //获取影片信息
         $videoDao = new VideoDao();
@@ -520,11 +520,20 @@ class VideoLogic
 
         //添加广告
         $advertLogic = new AdvertLogic();
+        $playbeforePos = Yii::$app->common->product == Common::PRODUCT_PC
+            ? AdvertPosition::POSITION_PLAY_BEFORE_PC : AdvertPosition::POSITION_PLAY_BEFORE;
+        $videoTopPos = Yii::$app->common->product == Common::PRODUCT_PC
+            ? AdvertPosition::POSITION_VIDEO_TOP_PC : AdvertPosition::POSITION_VIDEO_TOP_PC;
+        $videoBottomPos = Yii::$app->common->product == Common::PRODUCT_PC
+            ? AdvertPosition::POSITION_VIDEO_BOTTOM_PC : AdvertPosition::POSITION_VIDEO_BOTTOM_PC;
+
         $data['advert'] = [
-            (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_PLAY_BEFORE),
+            (object)$advertLogic->advertByPosition($playbeforePos, $city),
             (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_PLAY_STOP),
             (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_LIKE_TOP),
             (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_LIKE_BOTTOM),
+            (object)$advertLogic->advertByPosition($videoTopPos),
+            (object)$advertLogic->advertByPosition($videoBottomPos),
         ];
 
         return $data;

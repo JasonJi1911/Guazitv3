@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Url;
 use pc\assets\StyleInAsset;
+use common\models\advert\AdvertPosition;
 
 $this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子,tv,瓜子tv,澳洲瓜子tv,澳洲,新西兰,澳新,电影,电视剧,榜单,综艺,动画,记录片']);
 //$this->metaTags['keywords'] = '瓜子,tv,瓜子tv,澳洲瓜子tv,澳洲,新西兰,澳新,电影,电视剧,榜单,综艺,动画,记录片';
@@ -191,6 +192,13 @@ $(function(){
         }
     });
     
+    let video = $("#easi").get(0)
+    var inter = setInterval(function (){
+        if (video.ended) {
+            document.getElementById('easiBox').style.display='none';
+            clearInterval(inter);
+        }
+    }, 500);
 });
 JS;
 
@@ -269,9 +277,16 @@ $this->registerJs($js);
 <div class="qy-play-top">
     <div class="play-top-flash">
         <div class="qy-play-container">
-            <a href="https://bit.ly/39qwDSo" target="_blank" class="">
-                <img src="/images/NewVideo/yeeyi-banner.png" style="width:100%;border-radius:5px;">
-            </a>
+            <?php if(!empty($data['advert'])) :?>
+                <?php foreach ($data['advert'] as $key => $advert): ?>
+                    <?php if(!empty($advert) && intval($advert['position_id']) == intval(AdvertPosition::POSITION_VIDEO_TOP_PC)) :?>
+                    <a href="<?=$advert['ad_skip_url']?>" target="_blank" class="">
+                        <img src="<?=$advert['ad_image']?>" style="width:100%;border-radius:5px;">
+                    </a>
+                    <?php endif;?>
+                <?php endforeach;?>
+            <?php endif;?>
+
             <div class="qy-player-wrap">
                 <div class="player-mn">
                     <div class="player-mnc">
@@ -293,13 +308,27 @@ $this->registerJs($js);
                                             <?php endif;?>
                                         </video>
                                     <?php else:?>
-                                        <div class="video-play-left-cover">
-                                            <a href="" target="_blank">
-                                            <img src="<?= $data['info']['horizontal_cover']?>"
-                                                 onerror="this.src='/images/video/default-cover-ver.png'"
-                                                 id="video-cover" class="video-play-btn-iframe">
-                                                 </a>
-                                        </div>
+                                        <?php if(!empty($data['advert'])) :?>
+                                            <?php foreach ($data['advert'] as $key => $advert) : ?>
+                                                <?php if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_PLAY_BEFORE_PC) :?>
+                                                    <?php if(strpos($advert['ad_image'], '.mp4') !== false) :?>
+                                                    <a href="<?= $advert['ad_skip_url']?>" target="_blank" class="">
+                                                        <video id="easi" style="width: 100%; height: 100%;" controls="controls" autoplay="autoplay">
+                                                            <source src="<?= $advert['ad_image']?>" type="video/mp4">
+                                                        </video>
+                                                    </a>
+                                                    <?php else:?>
+                                                    <div class="video-play-left-cover">
+                                                        <a href="<?= $advert['ad_skip_url']?>" target="_blank" class="">
+                                                            <img src="<?= $advert['ad_image']?>"
+                                                                 onerror="this.src='/images/video/default-cover-ver.png'"
+                                                                 id="video-cover" class="video-play-btn-iframe">
+                                                        </a>
+                                                    </div>
+                                                    <?php endif;?>
+                                                <?php endif;?>
+                                            <?php endforeach;?>
+                                        <?php endif;?>
                                         <iframe name="my-iframe" id="my-iframe" src="<?= $data['info']['resource_url']?>"
                                                 allowfullscreen="true" allowtransparency="true"
                                                 frameborder="0" scrolling="no" width="100%"
@@ -648,6 +677,15 @@ $this->registerJs($js);
                 </div>
                 <div class="c"></div>
             </div>
+            <?php if(!empty($data['advert'])) :?>
+                <?php foreach ($data['advert'] as $key => $advert) : ?>
+                    <?php if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_VIDEO_BOTTOM_PC) :?>
+                        <a href="<?= $advert['ad_skip_url']?>" target="_blank" class="">
+                            <img src="<?= $advert['ad_image']?>" style="width:100%;">
+                        </a>
+                    <?php endif;?>
+                <?php endforeach;?>
+            <?php endif;?>
         </div>
     </div>
 </div>

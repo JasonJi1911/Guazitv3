@@ -42,6 +42,30 @@ AppAsset::register($this);
         gtag('js', new Date());
         gtag('config', 'G-6TXJP66KCH');
     </script>
+    <?php if ($this->params['isIndex'] == "1") : ?>
+        <script type=application/ld+json>{
+                "@context": "http://schema.org",
+                "@type": "SiteNavigationElement",
+                "name": [
+                    "瓜子tv",
+                    "电影",
+                    "连续剧",
+                    "综艺",
+                    "动漫"
+
+                ],
+                "url": [
+                    "http://guazitv.tv/",
+                    "http://guazitv.tv/video/channel?channel_id=1",
+                    "http://guazitv.tv/video/channel?channel_id=2",
+                    "http://guazitv.tv/video/channel?channel_id=3",
+                    "http://guazitv.tv/video/channel?channel_id=4"
+
+                ]
+            }
+        </script>
+    <?php endif; ?>
+
     <script>
         var _hmt = _hmt || [];
         (function() {

@@ -62,6 +62,7 @@ class VideoController extends BaseController
         if(!$data) {
             return $this->redirect('/site/error');
         }
+        $view = Yii::$app->view->params['isIndex'] = '1';
 
         return $this->render('newindex',[
             'data'          => $data,
@@ -154,9 +155,11 @@ class VideoController extends BaseController
 
         //请求频道、搜索信息
         $channels = Yii::$app->api->get('/video/channels');
-
+        $ip = Tool::getIp();
+        $ipAddress = Tool::getIpAddress($ip);
         //请求视频信息
-        $data = Yii::$app->api->get('/video/info', ['video_id' => $video_id, 'chapter_id' => $chapter_id, 'source_id' => $source_id]);
+        $data = Yii::$app->api->get('/video/info', ['video_id' => $video_id, 'chapter_id'
+            => $chapter_id, 'source_id' => $source_id, 'city'=> $ipAddress['city']]);
 
         $channel_id = $data['channel_id'];
         $data['info']['actorvideos'] = [];

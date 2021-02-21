@@ -41,7 +41,10 @@ class ChannelLogic
 
         // 获取广告
         $advertLogic = new AdvertLogic();
-        $advert = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX);
+//        $advert = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX);
+        $adposition = Yii::$app->common->product == Common::PRODUCT_PC
+            ? AdvertPosition::POSITION_VIDEO_INDEX_PC : AdvertPosition::POSITION_VIDEO_INDEX;
+        $advert = $advertLogic->advertByPosition($adposition);
         // 广告循环key
         $advertKey = 0;
         foreach ($channelList as $index => $channel) {
@@ -87,6 +90,11 @@ class ChannelLogic
             array_push($data['label'], $recommend);
         }
 
+        $flashPos = Yii::$app->common->product == Common::PRODUCT_PC
+            ? AdvertPosition::POSITION_FLASH_PC : AdvertPosition::POSITION_FLASH_WAP;
+        $flash = $advertLogic->advertByPosition($flashPos);
+        $data['flash'] = isset($flash[0]) ? $flash[0] : [];
+
         return $data;
     }
 
@@ -127,7 +135,9 @@ class ChannelLogic
 
         // 获取广告
         $advertLogic = new AdvertLogic();
-        $advert = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX);
+        $adposition = Yii::$app->common->product == Common::PRODUCT_PC
+            ? AdvertPosition::POSITION_VIDEO_INDEX_PC : AdvertPosition::POSITION_VIDEO_INDEX;
+        $advert = $advertLogic->advertByPosition($adposition);
         // 广告循环key
         $advertKey = 0;
         $label = [];
@@ -155,6 +165,11 @@ class ChannelLogic
         }
 
         $data['label'] = $label;
+        $flashPos = Yii::$app->common->product == Common::PRODUCT_PC
+            ? AdvertPosition::POSITION_FLASH_PC : AdvertPosition::POSITION_FLASH_WAP;
+        $flash = $advertLogic->advertByPosition($flashPos);
+        $data['flash'] = isset($flash[0]) ? $flash[0] : [];
+
         return $data;
     }
 

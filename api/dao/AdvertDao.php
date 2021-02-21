@@ -6,11 +6,13 @@ use api\models\advert\AdvertPosition;
 use api\models\advert\Advert;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
+use common\helpers\Tool;
+use common\models\IpAddress;
 use yii\helpers\ArrayHelper;
 
 class AdvertDao extends BaseDao
 {
-    private $_fields = ['advert_id', 'ad_title', 'ad_image', 'ad_type', 'ad_skip_url', 'ad_url_type', 'ad_width', 'ad_height'];
+    private $_fields = ['advert_id', 'ad_title', 'ad_image', 'ad_type', 'ad_skip_url', 'ad_url_type', 'ad_width', 'ad_height', 'position_id', 'city_id'];
 
     /**
      * 获取所有的广告id位置信息
@@ -19,18 +21,30 @@ class AdvertDao extends BaseDao
      * @param $positionId
      * @return array
      */
-    public function advertIdByPosition($positionId = '')
+    public function advertIdByPosition($positionId = '', $city = '')
     {
         $redisStore = new RedisStore();
         // 广告位置key
         $key = RedisKey::advertPosition();
+        if ($city) {
+            $key = $key.'_'.$city;
+        }
+
         if ($data = $redisStore->get($key)) {
             $data = json_decode($data, true);
         } else {
             //所有广告位
             $position = AdvertPosition::find()->select('id')->column();
+            $citylist = IpAddress::find()->select('id')->andWhere(['city' => $city])->column();
             //所有广告
-            $advert   = Advert::find()->select('id,position_id')->where(['position_id' => $position, 'status' => Advert::STATUS_OPEN])->all();
+            $advert = Advert::find()->select('id,position_id')
+                ->where(['position_id' => $position, 'status' => Advert::STATUS_OPEN])
+                ->all();
+
+            if ($city)
+                $advert = Advert::find()->select('id,position_id')
+                    ->where(['position_id' => $position, 'status' => Advert::STATUS_OPEN, 'city_id' => $citylist])
+                    ->all();
             //循环把广告id写入到位置数组里
             $data = [];
             foreach ($advert as $item) {

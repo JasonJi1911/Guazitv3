@@ -4,6 +4,7 @@ namespace admin\models\advert;
 use admin\models\advert\AdvertPosition;
 use common\helpers\RedisKey;
 use common\helpers\Tool;
+use common\models\IpAddress;
 
 class Advert extends \common\models\advert\Advert
 {
@@ -13,11 +14,11 @@ class Advert extends \common\models\advert\Advert
     public function rules()
     {
         return [
-            [['position_id', 'ad_type', 'width', 'height', 'url_type', 'pv', 'click', 'status', 'created_at', 'updated_at', 'deleted_at'], 'integer'],
+            [['position_id', 'city_id', 'ad_type', 'width', 'height', 'url_type', 'pv', 'click', 'status', 'created_at', 'updated_at', 'deleted_at'], 'integer'],
             [['title'], 'string', 'max' => 64],
             [['ad_key', 'ad_android_key'], 'string', 'max' => 128],
             [['skip_url'], 'string', 'max' => 256],
-            [['url_type', 'title', 'skip_url'], 'required']
+            [['url_type', 'title', 'skip_url', 'city_id'], 'required']
         ];
     }
 
@@ -41,9 +42,11 @@ class Advert extends \common\models\advert\Advert
             'pv' => 'Pv量',
             'click' => '点击量',
             'status' => '状态',
+            'city_id' => '所属城市',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'deleted_at' => 'Deleted At',
+            'cityName' => '地域'
         ];
     }
 
@@ -61,5 +64,20 @@ class Advert extends \common\models\advert\Advert
         // 删除缓存
         Tool::clearCache(RedisKey::advertInfoKey($this->id));
         parent::afterSave($insert, $changedAttributes);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     * 关联城市
+     */
+    public function getCityName()
+    {
+        $cityArea = IpAddress::findOne($this->city_id);
+        if ($cityArea) {
+            return $cityArea->city;
+        }
+
+        return '--';
+//        return $this->hasOne(IpAddress::className(), ['id' => 'city_id']);
     }
 }

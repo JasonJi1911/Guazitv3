@@ -201,13 +201,13 @@ class Tool
         if (empty($ip)) {
             return [];
         }
-        $api = 'https://api.ip138.com/ipv4/';
+        $api = 'https://api.ip138.com/ip/';
         $params = [
             'ip' => $ip,
-            'datatype' => 'json',
+            'datatype' => 'jsonp',
         ];
         $header = [
-            'token:1e9fae47a21562e8ca7a7e6b854e6fc4',
+            'token:189bf84b7605a61e0b37a07128aa1a51',
         ];
         $result = self::httpGet($api, $params, 10, $header);
 

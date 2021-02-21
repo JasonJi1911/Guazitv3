@@ -163,11 +163,12 @@ class VideoController extends BaseController
         $videoId   = $this->getParamOrFail('video_id');
         $chapterId = $this->getParam('chapter_id');
         $sourceId  = $this->getParam('source_id');
+        $city = $this->getParam('city');
         // 不传入id则设置为空
         $chapterId = $chapterId ? $chapterId : '';
 
         $videoLogic = new VideoLogic();
-        return $videoLogic->playInfo($videoId, $chapterId, $sourceId);
+        return $videoLogic->playInfo($videoId, $chapterId, $sourceId, $city);
     }
 
     /**

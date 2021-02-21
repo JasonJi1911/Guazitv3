@@ -53,10 +53,51 @@ class SiteController extends BaseController
         return $this->render('sharedown');
     }
 
+    public function actionAllMap()
+    {
+        $xml =  [
+            'class' => 'yii\web\Response',
+            'format' => \yii\web\Response::FORMAT_XML, //设置输出的格式为 XML
+            'formatters' => [
+                \yii\web\Response::FORMAT_XML => [
+                    'class' => 'yii\web\XmlResponseFormatter',
+                    'rootTag' => 'sitemapindex', //根节点
+                    'itemTag' => 'sitemap', //单元
+                ],
+            ],
+            'data' => [ //要输出的数据
+
+            ],
+        ];
+        $channels = Yii::$app->api->get('/video/channels');
+        if (!empty($channels))
+        {
+            foreach ($channels['list'] as $channel)
+            {
+                if (empty($channel))
+                    continue;
+
+                $video = [];
+                $video['loc'] = PC_HOST_PATH.Url::to(['site/map', 'channel_id' =>  $channel['channel_id']]);
+                $video['channel'] = $channel['channel_name'];
+                array_push($xml['data'], $video);
+            }
+        }
+
+
+        $ss= \Yii::createObject($xml);
+        $doc = new DOMDocument();
+        $doc->load('example.xml');
+        $ss->getElementsByTagName("");
+
+        return \Yii::createObject($xml);
+    }
+
     public function actionMap()
     {
+        $channel_id = Yii::$app->request->get('channel_id', 0);
         //请求首页信息
-        $data = Yii::$app->api->get('/video/index', ['channel_id' => 0]);
+        $data = Yii::$app->api->get('/video/index', ['channel_id' => $channel_id]);
 
         $xml =  [
             'class' => 'yii\web\Response',
@@ -64,11 +105,12 @@ class SiteController extends BaseController
             'formatters' => [
                 \yii\web\Response::FORMAT_XML => [
                     'class' => 'yii\web\XmlResponseFormatter',
-                    'rootTag' => 'urlset', //根节点
-                    'itemTag' => 'url', //单元
+                    'rootTag' => 'sitemapindex', //根节点
+                    'itemTag' => 'sitemap', //单元
                 ],
             ],
             'data' => [ //要输出的数据
+
             ],
         ];
 

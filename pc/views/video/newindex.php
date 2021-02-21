@@ -175,6 +175,10 @@ $(function(){
 		success: function (imgObj) { },      // 加载图片成功后的回调函数(默认：不执行任何操作)
 		error: function (imgObj) { }         // 加载图片失败后的回调函数(默认：不执行任何操作)
 	});
+	$(".jBox-closeButton").click(function(){
+	    $("#jBox1-overlay").hide();
+        $("#jBox1").fadeOut();
+	});
 });
 SCRIPT;
 
@@ -189,6 +193,16 @@ $(document).ready(function(){
 		if(mobile_flag){
 			window.location = 'http://m.guazitv.tv/';
 		}
+
+        if ($("#jBox1").length > 0) {
+            $("#jBox1-overlay").show();
+            $("#jBox1").fadeIn();
+
+            setTimeout(function (){
+                $("#jBox1-overlay").hide();
+                $("#jBox1").fadeOut();
+            }, 3000 );
+        }
 	});
 	
 	function isMobile() {
@@ -216,6 +230,18 @@ $(document).ready(function(){
 
 		 return mobile_flag;
 	}
+
+    // $(window).load(function (){
+    //     if ($("#jBox1").length > 0) {
+    //         $("#jBox1-overlay").show();
+    //         $("#jBox1").fadeIn();
+    //
+    //         setTimeout(function (){
+    //             $("#jBox1-overlay").hide();
+    //             $("#jBox1").fadeOut();
+    //         }, 5000 );
+    //     }
+    // });
 </script>
 <style>
     .qy-header.home2020 .qy-search .search-right-entry:hover{
@@ -237,6 +263,90 @@ $(document).ready(function(){
         color: #FF556E;
         border-right: #0c203a;
     }
+    .jBox-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        /* background-color: rgba(0,0,0,.82); */
+        background-color: rgba(255, 255, 255, 0.6);
+    }
+
+    #jBox1 {
+        top: 165px !important;
+    }
+
+    .jBox-wrapper {
+        text-align: left;
+        box-sizing: border-box;
+    }
+
+    .jBox-Modal .jBox-container, .jBox-Modal.jBox-closeButton-box:before {
+        box-shadow: 0 3px 15px rgb(0 0 0 / 40%), 0 0 5px rgb(0 0 0 / 40%);
+    }
+
+    .jBox-Modal .jBox-container {
+        border-radius: 4px;
+        background: #fff;
+    }
+
+    .jBox-container, .jBox-content, .jBox-title {
+        position: relative;
+        word-break: break-word;
+        box-sizing: border-box;
+    }
+
+    .jBox-Modal .jBox-content {
+        padding: 15px 20px;
+    }
+
+    .jBox-content {
+        padding: 8px 10px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        transition: opacity .2s;
+    }
+
+    .jBox-closeButton-box .jBox-closeButton {
+        top: -8px;
+        right: -10px;
+        width: 24px;
+        height: 24px;
+        background: #fff;
+        border-radius: 50%;
+    }
+
+    .jBox-closeButton {
+        z-index: 1;
+    }
+
+    .jBox-closeButton {
+        cursor: pointer;
+        position: absolute;
+    }
+
+    .jBox-closeButton-box .jBox-closeButton svg {
+        width: 10px;
+        height: 10px;
+        margin-top: -5px;
+        margin-right: -5px;
+    }
+
+    .jBox-closeButton svg {
+        position: absolute;
+        top: 50%;
+        right: 50%;
+    }
+
+    .jBox-closeButton path {
+        fill: #aaa;
+    }
+
+    .jBox-closeButton path {
+        transition: fill .2s;
+    }
+
 </style>
 <header class="qy-header home2020 qy-header--absolute ">
     <div class="header-wrap">
@@ -922,3 +1032,25 @@ $(document).ready(function(){
 </div>
 <script src="/js/jquery.js"></script>
 <script src="/js/VideoSearch.js"></script>
+
+<?php if (!empty($data['flash'])) : ?>?>
+<div id="jBox1" class="jBox-wrapper jBox-Modal jBox-Default jBox-closeButton-box"
+     style="position: fixed; display: none; opacity: 1; z-index: 10000; inset: 13px 35% auto 35%;">
+    <div class="jBox-container">
+        <div class="jBox-content" style="width: auto; height: auto;">
+            <div id="popup-ads" style="display: block;" data-jbox-content-appended="1">
+                <a href="<?= $data['flash']['ad_skip_url']?>" target="_blank">
+                    <img src="<?= $data['flash']['ad_image']?>" style="border: 0px;width:100%;">
+                </a>
+            </div>
+        </div>
+        <div class="jBox-closeButton jBox-noDrag">
+            <svg viewBox="0 0 24 24">
+                <path d="M22.2,4c0,0,0.5,0.6,0,1.1l-6.8,6.8l6.9,6.9c0.5,0.5,0,1.1,0,1.1L20,22.3c0,0-0.6,0.5-1.1,0L12,15.4l-6.9,6.9c-0.5,0.5-1.1,0-1.1,0L1.7,20c0,0-0.5-0.6,0-1.1L8.6,12L1.7,5.1C1.2,4.6,1.7,4,1.7,4L4,1.7c0,0,0.6-0.5,1.1,0L12,8.5l6.8-6.8c0.5-0.5,1.1,0,1.1,0L22.2,4z"></path>
+            </svg>
+        </div>
+    </div>
+</div>
+
+<div id="jBox1-overlay" class="jBox-overlay jBox-overlay-Modal" style="display: none; opacity: 1; z-index: 9999;"></div>
+<?php endif; ?>

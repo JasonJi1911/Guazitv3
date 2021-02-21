@@ -27,6 +27,7 @@ use Yii;
  * @property int $pv pv量
  * @property int $click 点击量
  * @property int $status 状态（1-开启，2-关闭）
+ * @property int $city_id 城市id
  * @property int $created_at 创建时间
  * @property int $updated_at 更新时间
  * @property int $deleted_at 删除时间
@@ -86,7 +87,7 @@ class Advert extends \xiang\db\ActiveRecord implements StatusToggleInterface,Sou
             'config' => [
                 'image' => [
                     'extensions' => UploadBehavior::$imageExtensions,
-                    'maxSize'    => 1024 * 1024 , // 1M
+                    'maxSize'    => 1024 * 1024 * 10 , // 1M
                     'required'   => true,
                     'dir'        => 'audio/advert/',
                 ]

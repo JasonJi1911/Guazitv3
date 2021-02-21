@@ -5,7 +5,29 @@ use yii\helpers\Url;
 $this->title = '瓜子TV|澳洲瓜子tv|澳新瓜子|澳新tv|澳新瓜子tv - m.guazitv.tv';
 $this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子|tv|瓜子tv|澳洲瓜子tv|澳新瓜子|澳新tv|澳新瓜子tv|爱影视|澳洲爱影视|澳洲同城影视网|体育直播|澳洲足球直播|澳洲体育直播|美剧|电影|综艺||看tv|kantv']);
 ?>
+<script>
+    $(document).ready(function(){
+        if ($("#jBox1").length > 0) {
+            $(".flashCount").text("关闭")
+            $(".bgcover").fadeIn();
 
+            // var timesRun = 0;
+            // var interval = setInterval(function(){
+            //     timesRun += 1;
+            //     if(timesRun === 5){
+            //         $("#jBox1").fadeOut();
+            //         clearInterval(interval);
+            //     }
+            //     $(".flashCount").text((5-timesRun) + "S")
+            // }, 1000);
+        }
+
+        $(".jBox-closeButton").click(function(){
+            // $("#jBox1-overlay").hide();
+            $(".bgcover").fadeOut();
+        });
+    });
+</script>
 <style>
     .nav-show {
         display: flex;
@@ -39,6 +61,41 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子|tv|瓜子tv|�
     .browser:hover{
         color: #FF556E;
         border-right: #0c203a;
+    }
+
+    .jBox-wrapper{
+        position: fixed;
+        opacity: 1;
+        z-index: 10000;
+        inset: 0px auto;
+        width: 300px;
+        left: 50%;
+        top: 50%;
+        -webkit-transform: translate(-50%,-50%);
+        transform: translate(-50%,-50%);
+    }
+
+    .bgcover
+    {
+        background-color: hsla(0,0%,100%,.54);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 999;
+    }
+
+    .jBox-closeButton-box .jBox-closeButton {
+        top: 0;
+        right: 0;
+        width: 46px;
+        height: 24px;
+        background: transparent;
+        z-index: 10001;
+        position: absolute;
+        color: #fff;
+        padding: 10px 0 0 10px;
     }
 </style>
 
@@ -231,3 +288,17 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子|tv|瓜子tv|�
     //设置banner距离顶部距离
     $('.video-banner').css('margin-top',$('.video-header').css('height'))
 </script>
+
+<?php if (!empty($data['flash'])) : ?>
+    <div class="bgcover" style="display: none;">
+        <div id="jBox1" class="jBox-wrapper jBox-Modal jBox-Default jBox-closeButton-box">
+
+            <a href="<?= $data['flash']['ad_skip_url']?>" target="_blank">
+                <img src="<?= $data['flash']['ad_image']?>" style="border: 0px;width:100%;height:100%">
+            </a>
+            <div class="jBox-closeButton jBox-noDrag">
+                <span class="flashCount"></span>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>

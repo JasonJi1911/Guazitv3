@@ -24,7 +24,7 @@ class UploadBehavior extends Behavior
     /**
      * @var array
      */
-    public static $imageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+    public static $imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'mp4'];
 
     public static $textExtensions = ['txt'];
 

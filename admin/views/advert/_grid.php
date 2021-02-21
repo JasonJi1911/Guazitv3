@@ -40,6 +40,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'format' => 'raw',
             'value' => function($model){
                 if ($model->ad_type == Advert::AD_TYPE_WEB) {
+                    if (strpos($model->image, '.mp4') !== false)
+                        return '<video src="'.$model->image.'" width="200px" height="100px" alt=""></video>';
+
                     return Html::img($model->image->resize(200, 100), ['width' => '200px', 'height' => '100px']);
                 }
                 return '--';
@@ -80,6 +83,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'pv',
         'click',
         '@status',
+        'cityName',
         [
             'class' => 'metronic\grid\ActionColumn',
             'template' => '{update} {shelve} {delete}',
