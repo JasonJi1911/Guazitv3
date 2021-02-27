@@ -874,7 +874,13 @@ $this->registerJs($js);
 <script src="/js/VideoSearch.js"></script>
 <script>
     if(document.getElementById('easiBox'))
-        setTimeout("document.getElementById('easiBox').style.display='none'",6000);
+    {
+        var elevideo = document.getElementById("easi");
+        elevideo.addEventListener('ended', function () { //结束
+            console.log("播放结束");
+            document.getElementById('easiBox').style.display='none';
+        }, false);
+    }
 </script>
 </body>
 </html>

@@ -93,7 +93,7 @@ class ChannelLogic
         $flashPos = Yii::$app->common->product == Common::PRODUCT_PC
             ? AdvertPosition::POSITION_FLASH_PC : AdvertPosition::POSITION_FLASH_WAP;
         $flash = $advertLogic->advertByPosition($flashPos);
-        $data['flash'] = isset($flash[0]) ? $flash[0] : [];
+        $data['flash'] = $flash;
 
         return $data;
     }
@@ -168,7 +168,7 @@ class ChannelLogic
         $flashPos = Yii::$app->common->product == Common::PRODUCT_PC
             ? AdvertPosition::POSITION_FLASH_PC : AdvertPosition::POSITION_FLASH_WAP;
         $flash = $advertLogic->advertByPosition($flashPos);
-        $data['flash'] = isset($flash[0]) ? $flash[0] : [];
+        $data['flash'] = $flash;
 
         return $data;
     }

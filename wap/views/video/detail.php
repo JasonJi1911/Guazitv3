@@ -336,7 +336,7 @@ $this->registerJs($js);
                                             <!--</div>-->
                                         </div>
                                     <?php else:?>
-                                        <div class="video-play-left-cover" id="easiBox">
+                                        <div class="video-play-left-cover" id="easiImgBox">
                                             <a id="imgad" href="<?= $advert['ad_skip_url']?>" target="_blank" class="">
                                                 <img src="<?= $advert['ad_image']?>"
                                                      onerror="this.src='/images/video/default-cover-ver.png'"
@@ -550,16 +550,23 @@ $this->registerJs($js);
 <script>
     $("#btn-video-play").click(function(){
         $(this).hide();
-        document.getElementById('easi').play();
+
+        var elevideo = document.getElementById("easi");
+        elevideo.play();
         $("#easi").attr("controls", "controls");
-        closeAdd();
+
+        elevideo.addEventListener('ended', function () { //结束
+            console.log("播放结束");
+            document.getElementById('easiBox').style.display='none';
+        }, false);
+        // closeAdd();
     });
 
     function closeAdd()
     {
-        setTimeout("document.getElementById('easiBox').style.display='none'",6000);
+        setTimeout("document.getElementById('easiImgBox').style.display='none'",6000);
     }
-    if (document.getElementById('easiBox'))
+    if (document.getElementById('easiImgBox'))
     {
         closeAdd();
     }
