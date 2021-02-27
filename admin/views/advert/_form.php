@@ -54,7 +54,8 @@ $this->registerJs($js);
             <?= $form->field($model, 'url_type')->dropDownList(Advert::$urlTypes)->wrapper(['width' => 2]) ?>
 
             <?php
-            if (intval(Yii::$app->request->get('position_id')) == AdvertPosition::POSITION_PLAY_BEFORE_PC) {
+            if (intval(Yii::$app->request->get('position_id')) == AdvertPosition::POSITION_PLAY_BEFORE_PC
+                || intval(Yii::$app->request->get('position_id')) == AdvertPosition::POSITION_PLAY_BEFORE) {
                 echo $form->field($model, 'city_id')->dropDownList(ArrayHelper::map(IpAddress::find()->groupBy('city')->all(), 'id', 'city'))->wrapper(['width' => 2]);
             }
             ?>
@@ -97,7 +98,8 @@ $this->registerJs($js);
 
                 echo $form->field($model, 'url_type')->dropDownList(Advert::$urlTypes)->wrapper(['width' => 2]);
 
-                if (intval(Yii::$app->request->get('position_id')) == AdvertPosition::POSITION_PLAY_BEFORE_PC) {
+                if (intval(Yii::$app->request->get('position_id')) == AdvertPosition::POSITION_PLAY_BEFORE_PC
+                    || intval(Yii::$app->request->get('position_id')) == AdvertPosition::POSITION_PLAY_BEFORE) {
                     echo $form->field($model, 'city_id')->dropDownList(ArrayHelper::map(IpAddress::find()->groupBy('city')->all(), 'id', 'city'))->wrapper(['width' => 2]);
                 }
 
