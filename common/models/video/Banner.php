@@ -40,11 +40,23 @@ class Banner extends \xiang\db\ActiveRecord implements StatusToggleInterface
     const ACTION_URL         = 3; // 内部url
     const ACTION_BROWSER_URL = 4; // 浏览器打开页面
 
+    const SOURCE_ALL     = 0;
+    const SOURCE_APP     = 1;
+    const SOURCE_PC      = 2;
+    const SOURCE_WAP     = 3;
+
     public static $actionMap = [
         self::ACTION_VIDEO       => '作品详情页',
         self::ACTION_SCHEME      => 'APP页面',
         self::ACTION_URL         => '跳转链接',
         self::ACTION_BROWSER_URL => '浏览器打开链接',
+    ];
+
+    public static $sourceBanner=[
+        self::SOURCE_ALL        => '全部',
+        self::SOURCE_APP        => 'App端',
+        self::SOURCE_PC         => 'Pc端',
+        self::SOURCE_WAP        => 'Wap端',
     ];
 
     public static $statusMap = [

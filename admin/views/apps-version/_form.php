@@ -86,6 +86,7 @@ $this->registerJs($js);
                         <td>
                             <input type="text" class="form-control file_path" name="file_path[<?= $item['id'] ?>]" value="<?= $item['file_path'] ?>" >
                         </td>
+                        
                         <td width="10%" <?php echo ($osType == AppsVersion::OS_TYPE_IOS) ? 'style="display:none"' : ''; ?> >
                             <span class="btn default btn-file upload-button">
                                 <span class="fileinput-new">上传安装包</span>

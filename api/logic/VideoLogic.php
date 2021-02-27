@@ -345,7 +345,7 @@ class VideoLogic
             $videoDao->checkFilterParams($channelId, $tag, $area);
         }
         $order = $sort == 'new' ? 'created_at' : ($sort == 'score' ? 'score' : 'total_views');
-
+        
         $dataProvider = new ActiveDataProvider([
             'query' => Video::find()
                 ->select('id')
@@ -364,7 +364,7 @@ class VideoLogic
         //根据查询的video_id获取影片信息
         $seriesId = array_column($data['list'], 'video_id');
 
-//        $videoDao = new VideoDao();
+        // $videoDao = new VideoDao();
         $videos = $videoDao->batchGetVideo($seriesId, ['video_id', 'video_name', 'category', 'cover', 'horizontal_cover', 'intro', 'flag', 'score', 'play_times','title', 'area', 'year', 'tag', 'director', 'artist'], false, ['channel_id', 'actors_id', 'actors', 'director', 'artist', 'chapters']);
 
         foreach ($videos as &$videoInfo) {
@@ -526,7 +526,7 @@ class VideoLogic
             ? AdvertPosition::POSITION_VIDEO_TOP_PC : AdvertPosition::POSITION_VIDEO_TOP_PC;
         $videoBottomPos = Yii::$app->common->product == Common::PRODUCT_PC
             ? AdvertPosition::POSITION_VIDEO_BOTTOM_PC : AdvertPosition::POSITION_VIDEO_BOTTOM_PC;
-
+            
         $data['advert'] = [
             (object)$advertLogic->advertByPosition($playbeforePos, $city),
             (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_PLAY_STOP),
@@ -604,7 +604,7 @@ class VideoLogic
             return '/360apitv/jiexi/jianghu.php?v='.urlencode($url);
 //            return $url;
         } else {
-//            return VIDEO_JIXI_URL_WAP.'?v='.urlencode($url);
+            // return VIDEO_JIXI_URL_WAP.'?v='.urlencode($url);
             return '/360apitv/jiexi/jianghu.php?v='.urlencode($url);
 //            return $url;
         }
@@ -1007,7 +1007,11 @@ class VideoLogic
 
         return $videoList;
     }
-
+    
+    
+    /**
+     * 拼音首字母搜索
+     */
     public function searchLetterResult($keyword, $page, $pageSize)
     {
         $dataProvider = new ActiveDataProvider([

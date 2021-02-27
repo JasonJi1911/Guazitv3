@@ -65,7 +65,7 @@ class Advert extends \common\models\advert\Advert
         Tool::clearCache(RedisKey::advertInfoKey($this->id));
         parent::afterSave($insert, $changedAttributes);
     }
-
+    
     /**
      * @return \yii\db\ActiveQuery
      * 关联城市

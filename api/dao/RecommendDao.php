@@ -2,9 +2,9 @@
 namespace api\dao;
 
 use api\data\ActiveDataProvider;
-use api\helpers\Common;
 use api\models\video\Recommend;
 use api\models\video\Video;
+use api\helpers\Common;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
 use yii\helpers\ArrayHelper;

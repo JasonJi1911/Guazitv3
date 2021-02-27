@@ -26,6 +26,7 @@ class AppsVersionController extends Controller
     public function actionButtons()
     {
         $osType = Yii::$app->request->get('os_type', AppsVersion::OS_TYPE_IOS);
+
         return [
             [
                 'label'   => '新增版本',
@@ -56,11 +57,14 @@ class AppsVersionController extends Controller
      */
     public function actionIndex()
     {
+
         $searchModel = new AppsVersionSearch();
 
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         foreach ($dataProvider->getModels() as $model) {
+            
             $count = AppsCheckSwitch::find()->andWhere(['version_id' => $model->id])->count();
+           
             if ($count == 0) {
                 if ($model->os_type == AppsVersion::OS_TYPE_IOS) {
                     $where = ['channel' => 'ios'];
@@ -78,6 +82,7 @@ class AppsVersionController extends Controller
                 Yii::$app->db->createCommand()->batchInsert(AppsCheckSwitch::tableName(), $fields, $column)->execute();
             }
         }
+     
         $checkSwitchList = AppsCheckSwitch::find()->andWhere(['version_id' => $dataProvider->getKeys()])->asArray()->all();
         $checkSwitch = [];
         foreach ($checkSwitchList as $item) {
@@ -111,17 +116,23 @@ class AppsVersionController extends Controller
         $model = new AppsVersion();
 
         $osType = Yii::$app->request->get('os_type', AppsVersion::OS_TYPE_IOS);
+
         $where = ['channel' => 'ios'];
+
         if ($osType == AppsVersion::OS_TYPE_ANDROID) {
-            $where = ['<>', 'channel', 'ios'];
+            $where = ['and',['<>', 'channel', 'ios'],['<>', 'channel', 'tv']];
         }
 
+        if($osType == AppsVersion::OS_TYPE_TV){
+            $where =['channel' => 'tv'];
+        }
+        
         // 获取对应系统渠道
         $checkSwitch = AppsCheckSwitch::find()->andWhere($where)->andWhere(['version_id' => 0])->indexBy('id')->asArray()->all();
 
         if (Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
-
+            
             $filePath = $post['file_path'];
             $channelIds = array_values(array_filter($post['channel_ids']));
             $model->upload_file = UploadedFile::getInstances($model, 'upload_file');
@@ -133,9 +144,13 @@ class AppsVersionController extends Controller
             $t = Yii::$app->db->beginTransaction();
             try {
                 if ($model->load($post) && $model->save()) {
-                    if ($model->os_type == AppsVersion::OS_TYPE_ANDROID && $channelIds) {
+                    if ($channelIds && $model->os_type != AppsVersion::OS_TYPE_IOS) {
                         $rootPath = getcwd() . '/../../api/web/';
                         $dirPath = 'uploads/channel_package/';
+                        if($model->os_type == AppsVersion::OS_TYPE_TV){
+                            $dirPath = 'uploads/channel_tv_package/';
+                        }
+                        
                         if (!file_exists($rootPath . $dirPath)) {
                             mkdir($rootPath . $dirPath, 0777, true);
                         }
@@ -213,9 +228,13 @@ class AppsVersionController extends Controller
             $t = Yii::$app->db->beginTransaction();
             try {
                 if ($model->load($post) && $model->save()) {
-                    if ($model->os_type == AppsVersion::OS_TYPE_ANDROID && $channelIds) {
+                    if ($model->os_type != AppsVersion::OS_TYPE_IOS && $channelIds) {
                         $rootPath = getcwd() . '/../../api/web/';
                         $dirPath = 'uploads/channel_package/';
+                        if($model->os_type == AppsVersion::OS_TYPE_TV){
+                            $dirPath = 'uploads/channel_tv_package/';
+                        }
+
                         if (!file_exists($rootPath.$dirPath)) {
                             mkdir($rootPath.$dirPath, 0777, true);
                         }
@@ -226,7 +245,6 @@ class AppsVersionController extends Controller
                             move_uploaded_file($model->upload_file[$index]->tempName, $rootPath.$fileUrl);
 
                             $filePath[$id] = API_HOST_PATH . '/' . $fileUrl;
-
                         }
                     }
 

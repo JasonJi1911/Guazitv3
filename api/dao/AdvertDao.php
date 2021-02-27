@@ -26,10 +26,10 @@ class AdvertDao extends BaseDao
         $redisStore = new RedisStore();
         // 广告位置key
         $key = RedisKey::advertPosition();
-        if ($city) {
+        if ($city != '') {
             $key = $key.'_'.$city;
         }
-
+        
         if ($data = $redisStore->get($key)) {
             $data = json_decode($data, true);
         } else {
@@ -41,7 +41,7 @@ class AdvertDao extends BaseDao
                 ->where(['position_id' => $position, 'status' => Advert::STATUS_OPEN])
                 ->all();
 
-            if ($city)
+            if ($city != '')
                 $advert = Advert::find()->select('id,position_id')
                     ->where(['position_id' => $position, 'status' => Advert::STATUS_OPEN, 'city_id' => $citylist])
                     ->all();

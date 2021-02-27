@@ -27,7 +27,7 @@ class Advert extends \common\models\advert\Advert
     {
         return parent::find()->andWhere(['status' => self::STATUS_OPEN])->addOrderBy(['id' => SORT_ASC]);
     }
-
+    
     public function getCity()
     {
         // 一个订单对应一个用户，一对一的关系使用hasOne()关联

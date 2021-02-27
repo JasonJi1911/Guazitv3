@@ -37,6 +37,7 @@ class AdvertPosition extends \xiang\db\ActiveRecord implements StatusToggleInter
     const POSITION_VIDEO_TOP_PC     = 14;
     const POSITION_VIDEO_BOTTOM_PC  = 15;
 
+
     public static $positionMap = [
         self::POSITION_VIDEO_INDEX  => '手机端首页',
         self::POSITION_VIDEO_TOPIC  => '手机端发现页',

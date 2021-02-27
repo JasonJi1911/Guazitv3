@@ -21,11 +21,12 @@ class Banner extends \common\models\video\Banner
         return [
 //            [[ 'status', 'display_order', 'action','title', 'video_id'], 'required'],
             [[ 'status', 'display_order', 'action','title',], 'required'],
-            [['channel_id', 'status', 'display_order', 'action'], 'integer'],
+            [['channel_id', 'status', 'display_order', 'action','product','city_id'], 'integer'],
             [['display_order'], 'integer', 'min' => DISPLAY_ORDER_MIN, 'max' => DISPLAY_ORDER_MAX],
             [['video_id', 'scheme', 'url'], 'string'],
             [['content'], 'string', 'max' => 256],
-            [['title'], 'string', 'max' => 32]
+            [['title'], 'string', 'max' => 32],
+            [['city_id','product'],'default','value'=>0]
         ];
     }
 
@@ -43,9 +44,10 @@ class Banner extends \common\models\video\Banner
             'video_id' => '作品',
             'content' => 'Content',
             'display_order' => '展示顺序',
-            'product' => 'Product',
+            'product' => 'Banner展示渠道',
             'status' => '当前状态',
             'actionLabel' => '动作类型',
+            'city_id'=>'所属城市',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'deleted_at' => 'Deleted At',

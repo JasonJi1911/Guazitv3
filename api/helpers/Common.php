@@ -24,6 +24,7 @@ class Common implements ProductInterface, FromChannelInterface, SourceInterface
     // osType
     const OS_IOS     = 1;
     const OS_ANDROID = 2;
+    const OS_TV = 3;
     const OS_OTHER   = 0;
 
     //终端和产品线映射关系
@@ -33,6 +34,8 @@ class Common implements ProductInterface, FromChannelInterface, SourceInterface
             self::OS_IOS     => self::FROM_CHANNEL_IOS,
             self::OS_ANDROID => self::FROM_CHANNEL_ANDROID,
             self::OS_OTHER   => self::FROM_CHANNEL_UNKNOWN,
+            self::OS_TV => self::OS_TV,
+
         ],
     ];
 
@@ -74,6 +77,10 @@ class Common implements ProductInterface, FromChannelInterface, SourceInterface
                     'sign_key'   => $secretKey['product_app']['os_android']['sign_key'],
                     'secret_key' => $secretKey['product_app']['os_android']['secret_key'],
                 ],
+                self::OS_TV => [
+                    'sign_key'   => $secretKey['product_app']['os_android']['sign_key'],
+                    'secret_key' => $secretKey['product_app']['os_android']['secret_key'],
+                ],
             ],
             self::PRODUCT_MP => [
                 self::OS_IOS => [
@@ -104,7 +111,6 @@ class Common implements ProductInterface, FromChannelInterface, SourceInterface
                 ],
             ],
         ];
-        
         return $signSecretKey[$product][$os_type];
     }
 

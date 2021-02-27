@@ -3,6 +3,7 @@
 use metronic\widgets\ActiveForm;
 use admin\models\video\Banner;
 use admin\models\video\VideoChannel;
+use common\models\IpAddress;
 use yii\helpers\ArrayHelper;
 
 
@@ -104,9 +105,19 @@ $this->registerJs($js);
 <?php endif;?>
 
 <?= $form->field($model, 'channel_id')->dropDownList(ArrayHelper::map(VideoChannel::find()->all(), 'id', 'channel_name'), ['prompt' => '首页' ])?>
+
 <?= $form->field($model, 'image')->imageUpload(['width' => Banner::API_BOOK_BANNER_WIDTH, 'height' => Banner::API_BOOK_BANNER_HEIGHT])->hint('建议大小'.Banner::API_BOOK_BANNER_WIDTH.'*'.Banner::API_BOOK_BANNER_HEIGHT.',该图片是必传图片')->label('图片<span class="required" aria-required="true"> * </span>') ?>
 <?= $form->field($model, 'display_order')->numberInput()->wrapper(['width' => 3])->hint('0 ~ 255之间，值越大，显示越靠前') ?>
+
+
+
+
 <?= $form->field($model, 'status')->dropDownList($model::$statusMap)->wrapper(['width' => 2]) ?>
+
+<?= $form->field($model, 'product')->dropDownList($model::$sourceBanner)->wrapper(['width' => 2])?>
+
+<?=$form->field($model, 'city_id')->dropDownList(ArrayHelper::map(IpAddress::find()->groupBy('city')->all(), 'id', 'city'), ['prompt' => '全部' ])->wrapper(['width' => 2]);?>
+
 
 <?php ActiveForm::end() ?>
 

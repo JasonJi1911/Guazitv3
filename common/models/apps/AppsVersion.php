@@ -24,9 +24,11 @@ class AppsVersion extends \xiang\db\ActiveRecord
     // 系统类型
     const OS_TYPE_IOS = 1;
     const OS_TYPE_ANDROID = 2;
+    const OS_TYPE_TV = 3;
     public static $osType = [
         self::OS_TYPE_IOS => '苹果',
         self::OS_TYPE_ANDROID => '安卓',
+        self::OS_TYPE_TV => '安卓TV',
     ];
 
     // 是否强制更新
@@ -44,6 +46,19 @@ class AppsVersion extends \xiang\db\ActiveRecord
         self::RELEASE_OFF => '未发布',
         self::RELEASE_ON  => '已发布',
     ];
+
+        // 系统类型
+    const OS_CHANNEL_IOS = 'appstore';
+    const OS_CHANNEL_ANDROID = 'android';
+    const OS_CHANNEL_TV = 'tv';
+    public static $channelType = [
+        self::OS_CHANNEL_IOS => 'ios',
+        self::OS_CHANNEL_ANDROID => 'android',
+        self::OS_CHANNEL_TV => 'tv',
+    ];
+
+
+
 
     /**
      * {@inheritdoc}

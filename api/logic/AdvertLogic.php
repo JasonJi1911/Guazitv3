@@ -39,13 +39,14 @@ class AdvertLogic
         }
         
         $advertDao = new AdvertDao();
+        // $advertId = $advertDao->advertIdByPosition($position); // 根据位置获取广告
         $advertId = $advertDao->advertIdByPosition($position, $city); // 根据位置获取广告
 
         if (empty($advertId)) {
             return [];
         }
         // 如果是首页和发现页，获取全部广告，其他位置随机获取一条广告
-        if ($position == AdvertPosition::POSITION_VIDEO_INDEX
+         if ($position == AdvertPosition::POSITION_VIDEO_INDEX
             || $position == AdvertPosition::POSITION_VIDEO_INDEX_PC
             || $position == AdvertPosition::POSITION_VIDEO_TOPIC) {
             $advert = [];

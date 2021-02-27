@@ -13,17 +13,6 @@ use yii;
 
 class Tool
 {
-    //定义自定义函数的名称
-    public static function unhtml($content){
-        $content=htmlspecialchars($content);                //转换文本中的特殊字符
-        $content=str_ireplace(chr(13),"<br>",$content);		//替换文本中的换行符
-        $content=str_ireplace(chr(32)," ",$content);		//替换文本中的
-        $content=str_ireplace("[_[","<",$content);			//替换文本中的小于号
-        $content=str_ireplace(")_)",">",$content);			//替换文本中的大于号
-        $content=str_ireplace("|_|"," ",$content);				//替换文本中的空格
-        return trim($content);								//删除文本中首尾的空格
-    }
-
     /**
      * 获取32位随机字符串
      * @return string
@@ -74,6 +63,7 @@ class Tool
         }
 
         $signStr = $appKey . rtrim($paramStr, '&') . $secretKey;
+        // echo $signStr;exit;
         if ($encode) {
             $signStr = urlencode($signStr);
         }

@@ -87,7 +87,7 @@ class Advert extends \xiang\db\ActiveRecord implements StatusToggleInterface,Sou
             'config' => [
                 'image' => [
                     'extensions' => UploadBehavior::$imageExtensions,
-                    'maxSize'    => 1024 * 1024 * 10 , // 1M
+                    'maxSize'    => 1024 * 1024 * 10 , // 10M
                     'required'   => true,
                     'dir'        => 'audio/advert/',
                 ]

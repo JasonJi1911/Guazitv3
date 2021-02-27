@@ -141,11 +141,21 @@ class ServiceController extends BaseController
      * @return array
      */
     private function _buildUpdateInfo() {
+        
         $versionUpdate = [
             'status' => 0,  // 更新状态 0-不更新，1-更新，2-强制更新
             'msg'    => '',    // 更新信息
             'url'    => '',    // 下载地址
         ];
+
+        /**
+         * 
+         * os_type  端类型 1-iOS 2-Android    
+         * is_release 是否发布 1-发布 0-未发布  
+         * ver_sn    版本号
+         * marketChannel  渠道来源
+         * 
+         */
 
         // 获取系统版本为发布状态且大于当前版本的版本记录  IOS版本控制处理逻辑 todo
         $versionList = AppsVersion::find()
@@ -156,10 +166,16 @@ class ServiceController extends BaseController
         if (empty($versionList)) {
             return $versionUpdate;
         }
-
+     
         //iOS端传的 是 AppStore
-        $channel = ($this->marketChannel == 'AppStore') ? 'ios' : $this->marketChannel;
-
+        // if($this->marketChannel == 'AppStore'){
+        //     $channel='ios';
+        // }else{
+        //     $channel=($this->marketChannel == "tv")?"tv":$this->marketChannel;
+        // }
+        $marketChannel=strtolower($this->marketChannel);
+        $channel=isset(AppsVersion::$channelType[$marketChannel]) ? AppsVersion::$channelType[$marketChannel]:$this->marketChannel;
+    
         foreach ($versionList as $version) {
             //查询版本对应的 渠道的审核状态
             $checkSwitch = AppsCheckSwitch::find()

@@ -225,7 +225,7 @@ class BaseController extends Controller
         
         $config = Common::getSecretKey($this->product, $this->osType);
         list($sign, $signStr) = Tool::getSign($config['sign_key'], $params, $config['secret_key']);
-
+        //var_dump($config);exit;
         // 检验签名
         if ($sign != $this->sign) {
             //签名二次校验,对于字段进行encode

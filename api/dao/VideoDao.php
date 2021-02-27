@@ -458,7 +458,7 @@ class VideoDao extends BaseDao
 
         $ids = ArrayHelper::getColumn($data['list'], 'video_id');
 
-        $list = $this->batchGetVideo($ids, [
+       $list = $this->batchGetVideo($ids, [
             'video_id',
             'video_name',
             'tag',
@@ -470,7 +470,7 @@ class VideoDao extends BaseDao
             'intro',
             'category',
         ], true, ['channel_id', 'actors_id', 'actors', 'director', 'artist', 'chapters']);
-
+        
         $data['list'] = array_values($list);
 
         // 写入缓存

@@ -30,7 +30,7 @@ class SearchController extends BaseController
 
         return $videoLogic->searchResult($channelId, $keyword);
     }
-
+    
     /**
      * 搜索结果页new
      */
@@ -67,7 +67,8 @@ class SearchController extends BaseController
         $data = array_merge($data, $video);
         return $data;
     }
-
+    
+    
     public function actionLetterResult()
     {
         $keyword = $this->getParam('keyword', '');  //关键词
@@ -80,5 +81,11 @@ class SearchController extends BaseController
         $videoLogic = new VideoLogic();
         $data = $videoLogic->searchLetterResult($keyword, $page, $pageSize);
         return $data;
+        // $versionUpdate = [
+        //     'status' => 0,  // 更新状态 0-不更新，1-更新，2-强制更新
+        //     'msg'    => '',    // 更新信息
+        //     'url'    => '',    // 下载地址
+        // ];
+        // return $versionUpdate;
     }
 }

@@ -46,6 +46,7 @@ class OssHelper {
     public function uploadFile($file, $object)
     {
         if (Yii::$app->setting->get('oss.save_type') == SettingOss::SAVE_TYPE_OSS) { //如果是阿里云oss存储
+
             try {
                 $ossClient = $this->ossClient;
             } catch (OssException $e) {
@@ -62,6 +63,7 @@ class OssHelper {
 
             return true;
         } else {  //图片本地存储
+    
             $rootPath = dirname(dirname(__DIR__)) . '/uploads/'; //文件存储根路径
 
             if (($pos = strrpos($object, '/')) !== false) { //存储的文件夹
@@ -71,9 +73,13 @@ class OssHelper {
                 }
             }
 
-            if (move_uploaded_file($file, $rootPath . $object)) {
+            if (copy($file, $rootPath . $object)) {
                 return true;
             }
+        
+            // if (move_uploaded_file($file, $rootPath . $object)) {
+            //     return true;
+            // }
             return false;
         }
     }
@@ -117,7 +123,7 @@ class OssHelper {
         } else {
             $name = $file_name;
         }
-        
+ 
         if ($this->uploadFile($localName, $name)) {
             @unlink($localName);
             return $name;

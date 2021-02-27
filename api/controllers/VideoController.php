@@ -149,7 +149,8 @@ class VideoController extends BaseController
         $videoDao = new VideoDao();
         $fields = ['video_id', 'video_name', 'score', 'tag', 'flag', 'play_times', 'cover', 'horizontal_cover', 'intro'];
 
-        return $videoDao->refreshVideo($where, $fields, Recommend::$selectLimit[$recommendInfo['style']]);
+        // return $videoDao->refreshVideo($where, $fields, Recommend::$selectLimit[$recommendInfo['style']]);
+        return $videoDao->refreshVideo($where, $fields, 9);
     }
 
     /**
@@ -163,11 +164,13 @@ class VideoController extends BaseController
         $videoId   = $this->getParamOrFail('video_id');
         $chapterId = $this->getParam('chapter_id');
         $sourceId  = $this->getParam('source_id');
+        
         $city = $this->getParam('city');
         // 不传入id则设置为空
         $chapterId = $chapterId ? $chapterId : '';
 
         $videoLogic = new VideoLogic();
+        // return $videoLogic->playInfo($videoId, $chapterId, $sourceId);
         return $videoLogic->playInfo($videoId, $chapterId, $sourceId, $city);
     }
 
