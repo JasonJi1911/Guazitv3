@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+	<!--<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>-->
+	<script src="js/jquery.min.js"></script>
+	<style>
+        .cate-list-li:hover{
+            cursor: pointer;
+        }
+
+        .spinner {
+            /* margin: 100px auto; */
+            width: 200px;
+            height: 60px;
+            text-align: center;
+            font-size: 10px;
+            top: 50%;
+            left: 50%;
+            position: fixed;
+            display: none;
+        }
+
+        .spinner .ani {
+            background-color: #FF556E;
+            height: 100%;
+            width: 6px;
+            display: inline-block;
+
+            -webkit-animation: stretchdelay 1.2s infinite ease-in-out;
+            animation: stretchdelay 1.2s infinite ease-in-out;
+        }
+
+        .spinner .rect2 {
+            -webkit-animation-delay: -1.1s;
+            animation-delay: -1.1s;
+        }
+
+        .spinner .rect3 {
+            -webkit-animation-delay: -1.0s;
+            animation-delay: -1.0s;
+        }
+
+        .spinner .rect4 {
+            -webkit-animation-delay: -0.9s;
+            animation-delay: -0.9s;
+        }
+
+        .spinner .rect5 {
+            -webkit-animation-delay: -0.8s;
+            animation-delay: -0.8s;
+        }
+
+        @-webkit-keyframes stretchdelay {
+            0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
+            20% { -webkit-transform: scaleY(1.0) }
+        }
+
+        @keyframes stretchdelay {
+            0%, 40%, 100% {
+                transform: scaleY(0.4);
+                -webkit-transform: scaleY(0.4);
+            }  20% {
+                   transform: scaleY(1.0);
+                   -webkit-transform: scaleY(1.0);
+               }
+        }
+    </style>
+</head>
+<body>
+	<div class="spinner">
+		<div class="spintitle"> Loading</div>
+		<div class="rect1 ani"></div>
+		<div class="rect2 ani"></div>
+		<div class="rect3 ani"></div>
+		<div class="rect4 ani"></div>
+		<div class="rect5 ani"></div>
+	</div>
+	<script>
+		$(".spinner").fadeIn();
+		
+		$(function(){
+			var mobile_flag = isMobile(); // true为PC端，false为手机端
+
+			if(mobile_flag){
+				window.location = 'http://m.guazitv.tv/';
+			}
+			else
+			{
+				window.location = 'http://www.guazitv.tv';
+			}
+		});
+		
+		function isMobile() {
+			var userAgentInfo = navigator.userAgent;
+
+			var mobileAgents = [ "Android", "iPhone", "SymbianOS", "Windows Phone", "iPad","iPod"];
+
+			var mobile_flag = false;
+
+			//根据userAgent判断是否是手机
+			for (var v = 0; v < mobileAgents.length; v++) {
+				if (userAgentInfo.indexOf(mobileAgents[v]) > 0) {
+					mobile_flag = true;
+					break;
+				}
+			}
+
+			 var screen_width = window.screen.width;
+			 var screen_height = window.screen.height;    
+
+			 //根据屏幕分辨率判断是否是手机
+			 if(screen_width < 500 && screen_height < 800){
+				 mobile_flag = true;
+			 }
+
+			 return mobile_flag;
+		}
+	</script>
+</body>

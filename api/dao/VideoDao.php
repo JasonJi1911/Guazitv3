@@ -17,7 +17,9 @@ use api\models\video\VideoChapter;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
 use common\helpers\Tool;
+use common\models\IpAddress;
 use yii\helpers\ArrayHelper;
+
 
 class VideoDao extends BaseDao
 {
@@ -36,19 +38,39 @@ class VideoDao extends BaseDao
      * @param array $fields
      * @return array|mixed
      */
-    public function banner($channelId, $fields = [])
+    public function banner($channelId, $fields = [], $city='')
     {
+        
         $redis = new RedisStore();
+        
         $key = RedisKey::videoBanner($channelId);
-
+        if($channelId == 0){
+            $key = RedisKey::videoBannerProduct(\Yii::$app->common->product);
+        }
+        
+        if ($city != '') {
+            $key = $key.'_'.md5($city);
+        }
+        
         if ($str = $redis->get($key)) {
             $data = json_decode($str, true);
         } else {
+            $citylist = IpAddress::find()->select('id')->andWhere(['city' => $city])->column();
+            array_push($citylist, 0);
             $bannerDataProvider = new ActiveDataProvider([
-                'query' => Banner::find()->andWhere(['channel_id' => $channelId]),
+                'query' => Banner::find()->andWhere(['channel_id' => $channelId])->andWhere(['in','product',[\Yii::$app->common->product,Common::PRODUCT_UNKNOWN]]),
             ]);
+            
+            if ($city != '')
+            {
+                $bannerDataProvider = new ActiveDataProvider([
+                    'query' => Banner::find()->andWhere(['channel_id' => $channelId])
+                        ->andWhere(['in','product',[\Yii::$app->common->product,Common::PRODUCT_UNKNOWN]])
+                        ->andWhere(["city_id" => $citylist]),
+                ]);
+            }
+        
             $data = $bannerDataProvider->toArray();
-
             // todo 优化
             foreach ($data as $k => $banner) {
                 if ($banner['action'] != Banner::ACTION_VIDEO) {
@@ -61,25 +83,29 @@ class VideoDao extends BaseDao
                 if (!$video || $video->status == Video::STATUS_DISABLED) {
                     unset($data[$k]);
                 }
+
             }
-
             $data = array_values($data);
-
             $redis->setEx($key, json_encode($data));
         }
+
+        //$redis->del($key);
+       
         //非APP端 过滤掉APP页面跳转
         foreach ($data as $k => &$v) {
             if ($v['action'] == Banner::ACTION_SCHEME && \Yii::$app->common->product != Common::PRODUCT_APP) {
                 unset($data[$k]);
             }
+
             //跳转链接
             if ($v['action'] == Banner::ACTION_VIDEO && \Yii::$app->common->product != Common::PRODUCT_APP) {
                 $v['content'] = '/video/detail?video_id='. $v['content'];
             }
         }
+      
         //重新索引数据
         $data = array_values($data);
-
+      
         // 过滤字段
         $data = $this->filter($data, $fields);
 

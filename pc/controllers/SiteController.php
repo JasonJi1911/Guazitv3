@@ -47,12 +47,15 @@ class SiteController extends BaseController
         Yii::$app->response->cookies->remove('lid');
         Yii::$app->response->cookies->remove('user_token');
     }
-
+    
     public function actionShareDown()
     {
-        return $this->render('sharedown');
+        $data = Yii::$app->api->get('/search/app-version');
+        return $this->render('sharedown',[
+            'data'          => $data,
+        ]);
     }
-
+    
     public function actionAllMap()
     {
         $xml =  [
@@ -77,22 +80,20 @@ class SiteController extends BaseController
                 if (empty($channel))
                     continue;
 
+                if ($channel['channel_id'] == 0) {
+                    continue;
+                }
                 $video = [];
-                $video['loc'] = PC_HOST_PATH.Url::to(['site/map', 'channel_id' =>  $channel['channel_id']]);
-                $video['channel'] = $channel['channel_name'];
+                // $video['loc'] = PC_HOST_PATH.Url::to(['site/map', 'channel_id' =>  $channel['channel_id']]);
+                $video['loc'] = PC_HOST_PATH.Url::to(['video/channel', 'channel_id' =>  $channel['channel_id']]);
+                // $video['channel'] = $channel['channel_name'];
                 array_push($xml['data'], $video);
             }
         }
 
-
-        $ss= \Yii::createObject($xml);
-        $doc = new DOMDocument();
-        $doc->load('example.xml');
-        $ss->getElementsByTagName("");
-
         return \Yii::createObject($xml);
     }
-
+    
     public function actionMap()
     {
         $channel_id = Yii::$app->request->get('channel_id', 0);
@@ -105,28 +106,27 @@ class SiteController extends BaseController
             'formatters' => [
                 \yii\web\Response::FORMAT_XML => [
                     'class' => 'yii\web\XmlResponseFormatter',
-                    'rootTag' => 'sitemapindex', //根节点
-                    'itemTag' => 'sitemap', //单元
+                    'rootTag' => 'urlset', //根节点
+                    'itemTag' => 'url', //单元
                 ],
             ],
             'data' => [ //要输出的数据
-
             ],
         ];
 
         if (!empty($data['label']))
         {
-            foreach ($data['label'] as $k => $labels)
+            foreach ($data['label'] as  $labels)
             {
                 if (empty($labels['list']))
                     continue;
-
+                    
                 foreach ($labels['list'] as $key => $list)
                 {
                     $video = [];
                     $video['loc'] = PC_HOST_PATH.Url::to(['detail', 'video_id' => $list['video_id']]);
                     $video['score'] = $list['score'];
-                    $video['title'] = '瓜子TV_'.$list['video_name'];
+                    $video['title'] = '瓜子TV|'.$list['video_name'];
                     $video['year'] = $list['year'];
                     array_push($xml['data'], $video);
                 }

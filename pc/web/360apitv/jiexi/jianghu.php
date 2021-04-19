@@ -55,7 +55,18 @@ if (preg_match($preg, $url)) {
     
 }
 	if (strstr($url, "qq.com") == true) {
-	$fh = get_url("http://360apitv.com/txjson.php?url=" . $url);
+	$fh = get_url("http://guazitv.tv/jx/?url=" . $url);
+	$jx = json_decode($fh, true);
+	$type = $jx["url"];
+	$metareferer = $jx["metareferer"];
+	if ($metareferer == "") {
+		$metareferer = "never";
+	}
+}
+
+
+	if (strstr($url, "iqiyi.com") == true) {
+	$fh = get_url("https://cache2.jhdyw.vip:8090/jhqiyi.php?url=" . $url);
 	$jx = json_decode($fh, true);
 	$type = $jx["url"];
 	$metareferer = $jx["metareferer"];
@@ -66,7 +77,7 @@ if (preg_match($preg, $url)) {
 
 
 if ($type == "") {
-    $fh = get_url("https://vip.jhys.top/analysis/json/?uid=" . $uid . "&my=" . $token . "&url=" . $url);
+    $fh = get_url("http://guazitv.tv/jx/?url=" . $url);
 	$jx = json_decode($fh, true);
 	$type = $jx["url"];
 	$metareferer = $jx["metareferer"];
@@ -127,7 +138,7 @@ if ($type == "")
 <meta name="x5-fullscreen" content="true" /><meta name="x5-page-mode" content="app"  /> <!-- X 全屏处理 -->
 <meta name="full-screen" content="yes" /><meta name="browsermode" content="application" />  <!-- UC 全屏应用模式 -->
 <meta name="apple-mobile-web-app-capable" content="yes "/> <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" /> <!--  苹果全屏应用模式 -->   
-<link rel="stylesheet" href="jianghu/assets/css/yzmplayer.css">
+<link rel="stylesheet" href="jianghu/assets/css/yzmplayer.css?v=13">
 <style>
     .yzmplayer-setting-speeds:hover .title, .yzmplayer .yzmplayer-controller .yzmplayer-icons.yzmplayer-comment-box .yzm-yzmplayer-send-icon {
     	background-color: <?php echo $color;?> !important;
@@ -138,7 +149,7 @@ if ($type == "")
 </style>
 <script src="jianghu/js/jhplayer.js"></script>
 <script src="jianghu/assets/js/jquery.min.js"></script>
-<script src="jianghu/js/setting.js"></script>
+<script src="jianghu/js/setting.js?v=14"></script>
 <?php 
 if ($p2p == "1") {
 	?>

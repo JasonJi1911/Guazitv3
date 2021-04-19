@@ -1,6 +1,54 @@
 <?php
+use yii\helpers\Html;
 use wap\assets\ShareAsset;
 ShareAsset::register($this);
+
+$iospath = "";
+$andpath ="";
+if(!empty($data["iosdata"]))
+{
+    $iospath = $data["iosdata"]["file_path"];
+}
+
+if(!empty($data["androiddata"]))
+{
+    $andpath = $data["androiddata"]["file_path"];
+}
+
+$js = <<<JS
+$(function(){
+    $(".download").click(function(){
+        var u = navigator.userAgent;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        var iospath = $("#iospath").val();
+        var andpath = $("#andpath").val();
+        
+        if (isiOS)
+        {
+            if (iospath != ""){
+                window.location = iospath;
+            } else {
+                alert("无可用IOS应用");  
+            }
+            return false;
+        }
+        
+        if (isAndroid)
+        {
+            if (andpath != ""){
+                window.location = andpath;
+            } else {
+                alert("无可用安卓应用");  
+            }
+            return false;
+        }
+        return false;
+    });
+});
+JS;
+
+$this->registerJs($js);
 ?>
 
 <!DOCTYPE html>
@@ -11,21 +59,26 @@ ShareAsset::register($this);
 	<meta name="keywords" content="">
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
-	<link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.0/theme-chalk/index.css" rel="stylesheet">
-    <style>
+	<!--link href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.0/theme-chalk/index.css" rel="stylesheet"-->
+	<style>
+	    body{
+	        max-width: 100%;
+	    }
+	    
         .wechatApp {
             width: 100%;
             -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
             display: block;
         }
-    </style>
+	</style>
 </head>
 <body>
 	<div class="bg">
         <?php if ($iswechat) { ?>
             <img class="wechatApp" alt="notice" src="/images/ShareDown/notice.png">
         <?php } ?>
-
+        <input type="hidden" id="iospath" value="<?= $iospath?>">
+        <input type="hidden" id="andpath" value="<?= $andpath?>">
 		<!-- 第一层 -->
 		<div class="title-box">
 			<h1 >

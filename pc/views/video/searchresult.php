@@ -2,7 +2,7 @@
 use yii\helpers\Url;
 use pc\assets\StyleSpring;
 
-$this->title = '瓜子TV-澳新华人在线视频分享网站';
+$this->title = '瓜子TV - 澳新华人在线视频分享平台,海量高清视频在线观看';
 StyleSpring::register($this);
 
 $js = <<<JS
@@ -19,9 +19,9 @@ $(function(){
 
     });
     
-    // $(".activity-sxlist ul li").click(function() {
-    //     $(this).addClass('active-1').siblings().removeClass('active-1');
-    // });
+    $(".activity-sxlist ul li").click(function() {
+        $(this).addClass('active-1').siblings().removeClass('active-1');
+    });
     
     function Show_Hidden(obj) {
         if (obj.style.display == "block") {
@@ -51,9 +51,9 @@ $(function(){
         arrIndex[type] = value;
         arrIndex['page_num']= 1;
         arrIndex['keyword'] = $('#keywords').val();
-        
         $(this).parent().addClass('active-1').siblings().removeClass('active-1');
         
+        console.log(arrIndex);
         $(".spinner").fadeIn();
         //发送请求，获取数据
         $.get('/video/refresh-cate', arrIndex, function(s) {
@@ -67,7 +67,6 @@ $(function(){
             $('.modal-paging').attr('data-pages', $("#parpages").val()); //刷新ye数
             $(".spinner").fadeOut();
         });
-        
     });
     
     //刷新筛选条件

@@ -1,32 +1,76 @@
 <?php
 use yii\helpers\Url;
 
-//$this->title = '瓜子TV-澳新华人在线视频分享网站';
+// $this->title = '瓜子TV-澳新华人在线视频分享网站';
 $this->title = '瓜子TV|澳洲瓜子tv|澳新瓜子|澳新tv|澳新瓜子tv - m.guazitv.tv';
 $this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子|tv|瓜子tv|澳洲瓜子tv|澳新瓜子|澳新tv|澳新瓜子tv|爱影视|澳洲爱影视|澳洲同城影视网|体育直播|澳洲足球直播|澳洲体育直播|美剧|电影|综艺||看tv|kantv']);
+
+header('X-Frame-Options:Deny');
 ?>
+<script src="/js/jquery.min.js"></script>
 <script>
     $(document).ready(function(){
-        if ($("#jBox1").length > 0) {
+		var mobile_flag = isMobile();
+
+		if(mobile_flag == false){
+			window.location = 'http://www.guazitv.tv/';
+		}
+		
+		if ($("#jBox1").length > 0) {
             $(".flashCount").text("关闭")
             $(".bgcover").fadeIn();
-
-            // var timesRun = 0;
-            // var interval = setInterval(function(){
-            //     timesRun += 1;
-            //     if(timesRun === 5){
-            //         $("#jBox1").fadeOut();
-            //         clearInterval(interval);
-            //     }
-            //     $(".flashCount").text((5-timesRun) + "S")
-            // }, 1000);
-        }
-
-        $(".jBox-closeButton").click(function(){
+		}
+		
+		$(".jBox-closeButton").click(function(){
             // $("#jBox1-overlay").hide();
             $(".bgcover").fadeOut();
         });
-    });
+        
+        function countDown(maxtime,fn){
+            var timer = setInterval(function() { 
+                if(!!maxtime ){  
+                fn(Math.floor(maxtime%60)); 
+                --maxtime;  
+            } else {  
+                clearInterval(timer ); 
+                fn(0);
+            }  
+            },1000); 
+        }
+        //9s后关闭封
+        countDown(9,function(msg) { 
+            if(msg == '0'){
+                $(".bgcover").fadeOut();
+            }
+            // document.getElementById('closeAd').innerHTML = msg+"秒后自动关闭"; 
+        })
+	});
+	
+	function isMobile() {
+		var userAgentInfo = navigator.userAgent;
+
+		var mobileAgents = [ "Android", "iPhone", "SymbianOS", "Windows Phone", "iPad","iPod"];
+
+		var mobile_flag = false;
+
+		//根据userAgent判断是否是手机
+		for (var v = 0; v < mobileAgents.length; v++) {
+			if (userAgentInfo.indexOf(mobileAgents[v]) > 0) {
+				mobile_flag = true;
+				break;
+			}
+		}
+
+		 var screen_width = window.screen.width;
+		 var screen_height = window.screen.height;    
+
+		 //根据屏幕分辨率判断是否是手机
+		 if(screen_width < 500 && screen_height < 800){
+			 mobile_flag = true;
+		 }
+
+		 return mobile_flag;
+	}
 </script>
 <style>
     .nav-show {
@@ -46,7 +90,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子|tv|瓜子tv|�
         left: 0;
         z-index: 99;
     }
-
+    
     .browser{
         padding: 0 10px;
         color: #8D8D95;
@@ -62,12 +106,12 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子|tv|瓜子tv|�
         color: #FF556E;
         border-right: #0c203a;
     }
-
+    
     .jBox-wrapper{
         position: fixed;
         opacity: 1;
         z-index: 10000;
-        inset: 0px auto;
+        /*inset: 0px auto;*/
         width: 300px;
         left: 50%;
         top: 50%;
@@ -85,7 +129,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子|tv|瓜子tv|�
         bottom: 0;
         z-index: 999;
     }
-
+    
     .jBox-closeButton-box .jBox-closeButton {
         top: 0;
         right: 0;
@@ -124,7 +168,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子|tv|瓜子tv|�
     </div>
 </header>
 
-<div class="video-banner swiper-container video-banner-caroul" id="video-list-banner">
+<div class="video-banner swiper-container video-banner-caroul alter-banner" id="video-list-banner">
     <ul class="swiper-wrapper clearfix">
         <?php if(!empty($data['banner'])) : ?>
             <?php foreach ($data['banner'] as $banner): ?>
@@ -147,11 +191,11 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子|tv|瓜子tv|�
     <?php if($channel_id == 0 && !empty($data['king_kong'])) : ?>
         <?php foreach ($data['king_kong'] as $key => $li): ?>
             <?php
-            foreach ($li['search'] as $s_k => $s_v) {
-                if($s_v['field'] == 'channel_id') {
-                    $channel = $s_v['value'];
+                foreach ($li['search'] as $s_k => $s_v) {
+                    if($s_v['field'] == 'channel_id') {
+                        $channel = $s_v['value'];
+                    }
                 }
-            }
             ?>
             <li>
                 <a href="<?= Url::to(['list', 'channel_id' => $channel])?>">
@@ -186,11 +230,11 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子|tv|瓜子tv|�
 <?php if (!empty($data['label'])) :?>
     <?php foreach ($data['label'] as  $labels): ?>
         <?php if (!isset($labels['advert_id'])) : ?>
-            <div class="video-index-column <?= $key == 0 ? 'mt20' : 'mt15';?>">
-                <h3 class="video-index-title"><?= $labels['title']?></h3>
-                <dl class="video-list-box clearfix <?= 'more-change-'.$labels['recommend_id'] ?>">
-                    <?php foreach ($labels['list'] as $key => $list): ?>
-                        <?php if($key < 9) :?>
+                <div class="video-index-column <?= $key == 0 ? 'mt20' : 'mt15';?>">
+                    <h3 class="video-index-title"><?= $labels['title']?></h3>
+                    <dl class="video-list-box clearfix <?= 'more-change-'.$labels['recommend_id'] ?>">
+                        <?php foreach ($labels['list'] as $key => $list): ?>
+                            <?php if($key < 9) :?>
                             <dd>
                                 <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
                                     <div class="video-item-top">
@@ -203,22 +247,22 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子|tv|瓜子tv|�
                                     <p class="video-item-play"><?= $list['play_times']?></p>
                                 </a>
                             </dd>
-                        <?php endif;?>
-                    <?php endforeach;?>
-                </dl>
-            </div>
+                            <?php endif;?>
+                        <?php endforeach;?>
+                    </dl>
+                </div>
 
             <?php
-            $tag = '';
-            $channel = '';
-            foreach ($labels['search'] as $s_k => $s_v) {
-                if($s_v['field'] == 'channel_id') {
-                    $channel = $s_v['value'];
+                $tag = '';
+                $channel = '';
+                foreach ($labels['search'] as $s_k => $s_v) {
+                    if($s_v['field'] == 'channel_id') {
+                        $channel = $s_v['value'];
+                    }
+                    if($s_v['field'] == 'tag') {
+                        $tag = $s_v['value'];
+                    }
                 }
-                if($s_v['field'] == 'tag') {
-                    $tag = $s_v['value'];
-                }
-            }
             ?>
             <div class="video-other-more clearfix">
                 <a href="<?= Url::to(['list', 'channel_id' => $channel, 'tag' => $tag])?>" class="fl more-item ">
@@ -230,8 +274,8 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子|tv|瓜子tv|�
             </div>
         <?php  else: ?>
             <div class="video-add-column">
-                <a href="<?= $labels['ad_skip_url']?>">
-                    <img src="<?= $labels['ad_image']?>" alt="">
+                <a href="">
+                    <img src="" alt="">
                 </a>
             </div>
         <?php endif; ?>
@@ -239,9 +283,9 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子|tv|瓜子tv|�
 <?php endif; ?>
 <div class="addtohomescreen" style="position: fixed;bottom: 1px;left: 50%;transform: translateX(-50%);width: 75%;max-width: 75%;display: block;">
     <img src="http://img.guazitv8.com/addtohomescreen.png" alt="" style="width: 100%;">
-</div>
+  </div>
 <div class="video-index-notice">
-    <p style="padding-bottom: 5px;text-align: center;">
+     <p style="padding-bottom: 5px;text-align: center;">
         <a class="browser browser1" href="<?= Url::to(['map'])?>">网站地图</a>
         <a class="browser browser1" href="http://m.guazitv.tv">手机端</a>
         <a class="browser browser1" href="http://www.guazitv.tv">电脑端</a>
@@ -259,7 +303,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子|tv|瓜子tv|�
 
 <script src="/js/video/jquery.min.1.11.1.js"></script>
 <script src="/js/video/swiper.min.js"></script>
-<script src="/js/video/video.js?v=1.1"></script>
+<!--<script src="/js/video/video.js?v=1.2"></script>-->
 <script src="/js/video/mtop.js"></script>
 <script>
     //导航选中项处于中间位置
@@ -287,18 +331,57 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子|tv|瓜子tv|�
     })
     //设置banner距离顶部距离
     $('.video-banner').css('margin-top',$('.video-header').css('height'))
+    
+    $(window).load(function(){
+	    var arrIndex = {};
+		arrIndex['channel_id']= 0;
+		
+		$.get('/video/index-banner', arrIndex, function(res) {
+            $('.alter-banner').html(res); // 更新内容
+        })
+        
+        arrIndex['page'] = "home";
+        var advertKey = 0;
+        $.get('/video/advert', arrIndex, function(res) {
+                    
+            $(".video-add-column").each(function(index){
+                if(!res.data.hasOwnProperty("advert"))
+                    return false;
+                    
+                if(!res.data.advert.hasOwnProperty(index)){  
+                    advertKey = 0;
+                }
+
+                var addata = res.data.advert[advertKey];
+                if (addata.hasOwnProperty("ad_skip_url")) {
+                    $(this).html("");
+                    $(this).html(refreshAdvert(addata));
+                }
+                advertKey++;
+            });
+        })
+	});
+	
+	function refreshAdvert(addata)
+	{
+	    var content = '';
+	    content += "<a href='" + addata.ad_skip_url + "'>" + 
+                            "<img src='"+ addata.ad_image + "' alt='new'>" +
+                    "</a>";
+        return content;
+	}
 </script>
 
 <?php if (!empty($data['flash'])) : ?>
-    <div class="bgcover" style="display: none;">
-        <div id="jBox1" class="jBox-wrapper jBox-Modal jBox-Default jBox-closeButton-box">
-
-            <a href="<?= $data['flash']['ad_skip_url']?>" target="_blank">
-                <img src="<?= $data['flash']['ad_image']?>" style="border: 0px;width:100%;height:100%">
-            </a>
-            <div class="jBox-closeButton jBox-noDrag">
-                <span class="flashCount"></span>
-            </div>
+<div class="bgcover" style="display: none;">
+    <div id="jBox1" class="jBox-wrapper jBox-Modal jBox-Default jBox-closeButton-box">
+        <div style="width:auto;font-size:15px;text-align:center"></div>
+        <a href="<?= $data['flash']['ad_skip_url']?>" target="_blank">
+            <img src="<?= $data['flash']['ad_image']?>" style="border: 0px;width:100%;height:100%">
+        </a>
+        <div class="jBox-closeButton jBox-noDrag">
+            <span class="flashCount"></span>
         </div>
     </div>
+</div>
 <?php endif; ?>

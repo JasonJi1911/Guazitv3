@@ -9,30 +9,6 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子,tv,瓜子tv,�
 $js = <<<JS
 $(function(){
     
-    // var videoPath = $('#player1').data('src');
-    // var videoImage = '';
-    //
-    // var dp = new DPlayer({
-    //     element: document.getElementById('player1'),
-    //     theme: '#FADFA3',
-    //     loop: true,
-    //     lang: 'zh-cn',
-    //     hotkey: true,
-    //     preload: 'auto',
-    //     volume: 0.7,
-    //     autoplay: true,
-    //     live: true,
-    //     playbackSpeed:[0.5, 0.75, 1, 1.25, 1.5, 2,2.5,3,5,7.5,10],
-    //     video: {
-    //         url: videoPath,
-    //         pic: videoImage,
-    //         type: 'hls'
-    //     },
-    // });
-    
-    setTimeout(function() {
-        $('.dplayer-play-icon').click();
-    },50);
     //实例化video对象
 /*    setTimeout(function() {
       $('.go-back').hide();
@@ -57,7 +33,6 @@ $(function(){
         $(".pop-intro").css("bottom","-100%");
         $("body").removeClass("body-mode");
         $(".pop-video-mask").hide();
-        //dp.play();
     }
     
     //选中播放视频
@@ -143,8 +118,8 @@ $(function(){
             var intDtime = parseInt(dTime.split(':')[0] * 60) + parseInt(dTime.split(':')[1]);
             if(dTime.split(':').length == 3)
             {
-               intStime = parseInt(time.split(':')[0] * 60) + parseInt(time.split(':')[1] * 60) + parseInt(time.split(':')[2]); 
-               intDtime = parseInt(dTime.split(':')[0] * 60) + parseInt(dTime.split(':')[1] * 60) + parseInt(dTime.split(':')[2]); 
+               intStime = parseInt(time.split(':')[0] * 3600) + parseInt(time.split(':')[1] * 60) + parseInt(time.split(':')[2]); 
+               intDtime = parseInt(dTime.split(':')[0] * 3600) + parseInt(dTime.split(':')[1] * 60) + parseInt(dTime.split(':')[2]); 
             }
 
              if ((intStime+10) >= intDtime)
@@ -169,7 +144,7 @@ $this->registerJs($js);
     .box{
         height: 100%;
     }
-
+    
     .browser{
         padding: 0 10px;
         color: #8D8D95;
@@ -185,7 +160,7 @@ $this->registerJs($js);
         color: #FF556E;
         border-right: #0c203a;
     }
-
+    
     .video-play-left-cover {
         width: 100%;
         height: 100%;
@@ -199,39 +174,61 @@ $this->registerJs($js);
         width: 100%;
         height: 100%;
     }
-
+    
     .btn-add-play{
         z-index: 1000;
         display: block;
-        bottom: 20px;
-        right: 50px;
-        width: 80px;
+        top: 10px;
+        right: 10px;
+        width: 120px;
         line-height: 2.5;
-        background-color: #ff556e;
+        /* background-color: rgb(51, 51, 51); */
         position: absolute;
         font-size: 12px;
         border-radius: 15px;
         text-align: center;
         color: #fff;
+        background: rgb(51, 51, 51);
+        opacity: 0.8;
     }
-
+    
+    .btn-add-detail{
+        z-index: 1000;
+        display: block;
+        bottom: 20px;
+        right: 10px;
+        width: 140px;
+        line-height: 2.5;
+        position: absolute;
+        font-size: 12px;
+        border-radius: 15px;
+        text-align: center;
+        color: #fff;
+        background: rgb(51, 51, 51);
+        opacity: 0.8;
+    }
+    
     .ad-arrow {
         display: inline-block;
         width: 6px;
         height: 6px;
-        background: transparent;
+        /*background: transparent;*/
         border-top: 1px solid #fff;
         border-right: 1px solid #fff;
         -webkit-transform: rotate(
-                45deg
+            45deg
         );
         transform: rotate(
-                45deg
+            45deg
         );
         margin: 0 2px;
         vertical-align: 1px;
     }
-
+    
+    .add-box a:hover{
+        color: #FF556E;
+    }
+    
     .c-videoplay {
         z-index: 930;
         position: absolute;
@@ -242,7 +239,7 @@ $this->registerJs($js);
         -o-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%);
     }
-
+    
     .c-player-icon {
         width: 1.0rem;
         height: 1.0rem;
@@ -253,7 +250,7 @@ $this->registerJs($js);
         display: inline-block;
         background-repeat: no-repeat;
     }
-
+    
     .handle-ad {
         position: absolute;
         bottom: 0;
@@ -263,24 +260,31 @@ $this->registerJs($js);
         height: .4rem;
         z-index: 940;
     }
-
+    
     .handle-ad .player-fullscreen {
         right: .05rem;
     }
-
+    
     .handle-ad .player-voice, .handle-ad .player-fullscreen {
         position: absolute;
         bottom: 15px;
     }
-
+    
     .handle-ad .c-player-fullscreen {
         background-position: -40px -50px;
     }
-
+    
     .handle-ad .c-player-icon {
         width: 40px;
         height: 40px;
         background-size: 100px 150px;
+    }
+    
+    #timer1:after{
+        content: '|';
+        position: relative;
+        left: 10px;
+        color: #fff;
     }
 </style>
 
@@ -292,7 +296,7 @@ $this->registerJs($js);
     <div class="video-banner swiper-container swiper-container-video">
         <ul class="swiper-wrapper clearfix">
             <li class="swiper-slide">
-                <div class="piclist-img" style="height: 4rem">
+                <div class="piclist-img" style="height: 3.8rem">
                     <input type="hidden" id="next_chapter" value="<?= $info['info']['next_chapter'] ?>">
                     <?php if($info['info']['resource_type'] == 1) :?>
                         <?php if(!empty($info['info']['horizontal_cover'])) :?>
@@ -315,18 +319,18 @@ $this->registerJs($js);
                         <?php if(!empty($info['advert'])) :?>
                             <?php foreach ($info['advert'] as $key => $advert) : ?>
                                 <?php if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_PLAY_BEFORE) :?>
-                                    <?php if(strpos($advert['ad_image'], '.mp4') !== false) :?>
-                                        <div id="easiBox" class="">
-                                            <video id="easi" style="width: 100%; height: 100%;" playsinline webkit-playsinline autoplay>
-                                                <source src="<?= $advert['ad_image']?>" type="video/mp4">
-                                            </video>
-                                            <div class="c-videoplay" id="btn-video-play">
-                                                <i class="c-player-icon c-player-big"></i>
-                                            </div>
-                                            <a class="btn-add-play" href="<?= $advert['ad_skip_url']?>" target="_blank">
-                                                了解详情
-                                                <i class="ad-arrow-wrapper ad-arrow"></i>
-                                            </a>
+                                    <!--<?php if(strpos($advert['ad_image'], '.mp4') !== false) :?>-->
+                                        <!--<div id="easiBox" class="">-->
+                                        <!--    <video id="easi" style="width: 100%; height: 100%;" playsinline webkit-playsinline autoplay>-->
+                                        <!--        <source src="<?= $advert['ad_image']?>" type="video/mp4">-->
+                                        <!--    </video>-->
+                                        <!--    <div class="c-videoplay" id="btn-video-play">-->
+                                        <!--        <i class="c-player-icon c-player-big"></i>-->
+                                        <!--    </div>-->
+                                        <!--    <a class="btn-add-play" href="<?= $advert['ad_skip_url']?>" target="_blank">-->
+                                        <!--        了解详情-->
+                                        <!--        <i class="ad-arrow-wrapper ad-arrow"></i>-->
+                                        <!--    </a>-->
                                             <!--<div style="">-->
                                             <!--    <div class="handle-ad">-->
                                             <!--        <span class="player-fullscreen" style="">-->
@@ -334,23 +338,47 @@ $this->registerJs($js);
                                             <!--        </span>-->
                                             <!--    </div>-->
                                             <!--</div>-->
-                                        </div>
-                                    <?php else:?>
-                                        <div class="video-play-left-cover" id="easiImgBox">
-                                            <a id="imgad" href="<?= $advert['ad_skip_url']?>" target="_blank" class="">
-                                                <img src="<?= $advert['ad_image']?>"
-                                                     onerror="this.src='/images/video/default-cover-ver.png'"
+                                        <!--</div>-->
+                                    <!--<?php else:?>-->
+                                        <!--<div class="video-play-left-cover" id="easiImgBox">-->
+                                        <!--    <a id="imgad" href="<?= $advert['ad_skip_url']?>" target="_blank" class="">-->
+                                        <!--        <img src="<?= $advert['ad_image']?>"-->
+                                        <!--             onerror="this.src='/images/video/default-cover-ver.png'"-->
+                                        <!--             id="video-cover" class="video-play-btn-iframe"-->
+                                        <!--             style="width: 100%; height: 100%;">-->
+                                        <!--    </a>-->
+                                        <!--</div>-->
+                                        <div id="easiImgBox" style="height: 100%" class="add-box">
+                                            <!--<div style="text-align: center;line-height: 30px;width: 180px;background: rgb(51, 51, 51);position: absolute;right: 10px;opacity: 0.8;z-index: 999;margin-top: 10px;border-radius: 30px;">-->
+                                            <!--    <div style="border-bottom: 1px solid #888;font-size:10px;line-height:28px;">-->
+                                                    <!--<a href="<?= $advert['ad_skip_url']?>" target="_blank" style="color:#fff;">视频加载中，-->
+                                                        <!--<span id="timer1" style="color:#FF556E"></span> 秒后开始播放-->
+                                                    <!--</a>-->
+                                            <!--    </div>-->
+                                            <!--</div>-->
+                                            <a href="<?= $advert['ad_skip_url']?>" target="_blank" class="btn-add-detail ad_url_link">
+                                                点击查看广告详情
+                                                <i class="ad-arrow-wrapper ad-arrow"></i>
+                                            </a>
+                                            <a href="<?= $advert['ad_skip_url']?>" target="_blank" class="ad_url_link">
+                                            <div id="imgad" href="<?= $advert['ad_skip_url']?>" target="_blank" class="video-play-left-cover ad_url_link">
+                                                <img src=""
+                                                     onerror="this.src='/images/video/load.gif'"
                                                      id="video-cover" class="video-play-btn-iframe"
                                                      style="width: 100%; height: 100%;">
+                                            </div>
+                                            </a>
+                                            <a class="btn-add-play" href="javascript:void(0);" id="hide-add">
+                                                <span id="timer1" style="color:#FF556E;margin-right: 10px;">10</span>
+                                                跳过广告
+                                                <i class="ad-arrow-wrapper ad-arrow"></i>
                                             </a>
                                         </div>
-                                    <?php endif;?>
+                                    <!--<?php endif;?>-->
                                 <?php endif;?>
                             <?php endforeach;?>
                         <?php endif;?>
                         <iframe name="my-iframe" id="my-iframe" src="<?= $info['info']['resource_url']?>" allowfullscreen="true" allowtransparency="true" frameborder="0" scrolling="no"  width="100%" height="100%" scrolling="no" style="height: 3.8rem"></iframe>
-                        <!--                        <div class="box" id="player1"-->
-                        <!--                             data-src="--><?//= $info['info']['resource_url']?><!--"></div>-->
                     <?php endif;?>
                 </div>
             </li>
@@ -445,9 +473,11 @@ $this->registerJs($js);
 <!--</div>-->
 
 <div class="video-index-notice">
-    <p style="padding-bottom: 5px;text-align: center;">
+     <p style="padding-bottom: 5px;text-align: center;">
+        <a class="browser browser1" href="<?= Url::to(['map'])?>">网站地图</a>
         <a class="browser browser1" href="http://m.guazitv.tv">手机端</a>
-        <a class="browser" href="http://www.guazitv.tv">PC端</a></p>
+        <a class="browser browser1" href="http://www.guazitv.tv">电脑端</a>
+        <a class="browser" href="<?= Url::to(['site/share-down'])?>">APP下载</a></p>
     <p>本网站为非赢利性站点，所有内容均由机器人采集于互联网，或者网友上传，本站只提供WEB页面服务，本站不存储、不制作任何视频，不承担任何由于内容的合法性及健康性所引起的争议和法律责任。若本站收录内容侵犯了您的权益，请附说明联系邮箱，本站将第一时间处理。站长邮箱：guazitv@163.com</p>
 </div>
 <!--<div class="video-footer">
@@ -548,28 +578,95 @@ $this->registerJs($js);
 <script src="/js/video/swiper.min.js"></script>
 <script src="/js/video/video.js?v=1.0"></script>
 <script>
-    $("#btn-video-play").click(function(){
-        $(this).hide();
 
-        var elevideo = document.getElementById("easi");
-        elevideo.play();
-        $("#easi").attr("controls", "controls");
-
-        elevideo.addEventListener('ended', function () { //结束
-            console.log("播放结束");
-            document.getElementById('easiBox').style.display='none';
-        }, false);
-        // closeAdd();
+    let timer = null;
+    $(document).ready(function(){
+        
+        refreshAds();
+        // $('#btn-video-play').trigger("click");
+    });
+    
+    function countDown(maxtime,fn){
+        timer = setInterval(function() { 
+            if(!!maxtime ){  
+                seconds = Math.floor(maxtime%60), 
+                msg = seconds;  
+                fn( msg ); 
+                --maxtime;  
+            } else {  
+                clearInterval(timer ); 
+                msg="0";
+                fn(msg);
+            }  
+        },1000); 
+    }
+    
+    $("#hide-add").click(function(){
+        if(document.getElementById('easiImgBox'))
+            document.getElementById('easiImgBox').style.display='none'; 
+        
+        if(document.getElementById('easiBox'))
+        {
+            var elevideo = document.getElementById("easi");
+            elevideo.pause()
+            document.getElementById('easiBox').style.display='none'; 
+        }
     });
 
-    function closeAdd()
+    
+    function refreshAds()
     {
-        setTimeout("document.getElementById('easiImgBox').style.display='none'",6000);
+        var arrIndex = {};
+        
+        arrIndex['page'] = "detail";
+        var advertKey = 0;
+        $.get('/video/advert', arrIndex, function(res) {
+            if(!res.data.hasOwnProperty("advert"))
+                return false;
+                
+            for (var prop in res.data.advert) {
+                console.log("obj." + prop + " = " + res.data.advert[prop]);
+                var adddata = res.data.advert[prop];
+                if (adddata.hasOwnProperty("position_id")) {
+                    if (prop == "videotop") {
+                        $(".video-top-ad").attr("href", adddata.ad_skip_url);
+                        $(".video-top-ad img").attr("src", adddata.ad_image);
+                    }
+                    else if (prop == "videobottom") {
+                        $(".video-bottom-add").attr("href", adddata.ad_skip_url);
+                        $(".video-bottom-add img").attr("src", adddata.ad_image);
+                    }
+                    else if (prop == "playbefore") {
+                        $(".add-box .ad_url_link").attr("href", adddata.ad_skip_url);
+                        if (adddata.ad_image.indexOf(".mp4") != -1)
+                        {
+                            setTimeout("document.getElementById('easiBox').style.display='none'",9000);
+                        }
+                        else
+                        {
+                            // $("#easiBox").remove();
+                            $(".add-box img").attr("src", adddata.ad_image);
+                            setTimeout("document.getElementById('easiImgBox').style.display='none'",30000);
+                            countPicAds();
+                        }
+                    }
+                }
+            }
+        })
     }
-    if (document.getElementById('easiImgBox'))
+    
+    function countPicAds()
     {
-        closeAdd();
+        if($('.piclist-img #easiImgBox').length > 0)
+        {
+            //8s后关闭广告图
+            document.getElementById('timer1').innerHTML = 8;
+            countDown(7, function(msg) { 
+                if(msg == '0'){
+                    document.getElementById('easiImgBox').style.display='none'; 
+                }
+                document.getElementById('timer1').innerHTML = msg; 
+            });
+        }
     }
-
-    // $('#btn-video-play').trigger("click");
 </script>

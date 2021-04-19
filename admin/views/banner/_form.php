@@ -64,6 +64,10 @@ $this->registerJs($js);
 
 <?= $form->field($model,'title')->textInput() ?>
 
+
+<?= $form->field($model,'stitle')->textInput() ?>
+
+
 <?= $form->field($model, 'action')->dropDownList($model::$actionMap, ['id' => 'action', 'disabled' => $model->isNewRecord ? false : true])?>
 
 <?php if ($model->isNewRecord):?>
@@ -116,7 +120,7 @@ $this->registerJs($js);
 
 <?= $form->field($model, 'product')->dropDownList($model::$sourceBanner)->wrapper(['width' => 2])?>
 
-<?=$form->field($model, 'city_id')->dropDownList(ArrayHelper::map(IpAddress::find()->groupBy('city')->all(), 'id', 'city'), ['prompt' => '全部' ])->wrapper(['width' => 2]);?>
+<?=$form->field($model, 'city_id')->dropDownList(ArrayHelper::map(IpAddress::find()->where(['not', ['sort' => 0]])->groupBy('city')->orderBy("sort desc")->all(), 'id', 'city'), ['prompt' => '全部' ])->wrapper(['width' => 2]);?>
 
 
 <?php ActiveForm::end() ?>

@@ -106,7 +106,6 @@ a{
     justify-content: center;
     align-items: center;
     width: 22%;
-    height: 2.9375rem;
     background-color: #fda7af;
     border: 0;
     padding: 1.25rem 1.375rem;
@@ -278,14 +277,14 @@ a{
     height: 43.25rem;
 }
 .foot-button {
-    background:url(../images/ShareDown/1.png);
+    background:url(../images/ShareDown/wap_share_down.png);
     background-size: contain;
     background-repeat: no-repeat;
     background-position: 37% center;
 }
 
 .head-button {
-    background:url(../images/ShareDown/1.png);
+    background:url(../images/ShareDown/wap_share_down.png);
     background-size: 14%;
     background-repeat: no-repeat;
     background-position: 32% center;

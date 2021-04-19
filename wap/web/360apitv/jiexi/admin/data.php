@@ -11,6 +11,7 @@
   'pbgjz' => '禁止辱骂、禁止谈论政治',
   'ads' => 
   array (
+    'state' => 'on',
     'set' => 
     array (
       'state' => '2',
@@ -29,8 +30,9 @@
     ),
     'pause' => 
     array (
-      'pic' => 'http://360apitv.com/jiexi/LOGO.png',
-      'link' => 'http://guazitv.tv',
+      'state' => 'on',
+      'pic' => 'http://img.guazitv8.com/audio/advert/6bfc966cea4ba026702ef5a8b6b16a3a.png',
+      'link' => 'http://m.guazitv.tv/site/share-down',
     ),
   ),
 );

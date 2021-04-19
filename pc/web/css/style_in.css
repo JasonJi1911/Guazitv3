@@ -2526,7 +2526,6 @@ body{
 }
 .qy-mod-wrap-side{
 	position: relative;
-	    margin-bottom: 48px;
 }
 .qy-mod-wrap-side .right-col-1 {
     position: relative;
@@ -7355,7 +7354,7 @@ a.anchor{
 	}
 	.classBody .qy-header.aura2 .qy-search{
 		/*margin-left: -95px;*/
-        padding-left: 10px;
+		padding-left: 10px;
 	}
 	.qy-play-container {
 	    width: 920px;

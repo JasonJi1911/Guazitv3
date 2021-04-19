@@ -24,6 +24,9 @@ use api\models\video\VideoChapter;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
 use yii\helpers\ArrayHelper;
+use common\helpers\OssHelper;
+
+use common\helpers\OssUrlHelper;
 
 class VideoLogic
 {
@@ -348,14 +351,15 @@ class VideoLogic
         
         $dataProvider = new ActiveDataProvider([
             'query' => Video::find()
-                ->select('id')
+                ->joinWith('years')
+                //->select('id')
                 ->andWhere(['like', 'title', $keyword])
                 ->andFilterWhere(['channel_id' => $channelId])
                 ->andFilterWhere(['like', 'category_ids' , $tag])
                 ->andFilterWhere(['area' => $area])
                 ->andFilterWhere(['year' => $year])
                 ->andFilterWhere(['play_limit' => $playLimit])
-                ->orderBy("$order desc, id desc")
+                //->orderBy("$order desc, id desc")
         ]);
         $data = $dataProvider->setPagination(['page_num' => $page, 'page_size' => $pageSize])->toArray([
             'video_id',
@@ -418,16 +422,27 @@ class VideoLogic
 
         // 获取源信息
         $commonDao = new CommonDao();
-        $sources = $commonDao->videoSource();
+        // 旧版
+        // $sources = $commonDao->videoSource(); 
+        //改动新版本
+        $sources = $commonDao->videoSource(Yii::$app->common->product);
 
         //APP端 全走视频流, 网页端全走IFrame嵌套
         $resourceType = Yii::$app->common->product == Common::PRODUCT_APP ? VideoChapter::RESOURCE_TYPE_DATA : VideoChapter::RESOURCE_TYPE_HTML;
+        
+        $ossHelper = new OssHelper();
+        $iconURL= $ossHelper->server_point;
 
         $source = [];
         foreach ($sources as $item) {
             if (!in_array($item['source_id'], array_keys($chapterInfo['resource_url'])) || empty($chapterInfo['resource_url'][$item['source_id']])) { // source_id不在视频里面或者没有视频播放连接
                 continue;
             }
+            
+            // app端不返回html的链接，暂时使用
+            $reUrl = $chapterInfo['resource_url'][$item['source_id']];
+            if (Yii::$app->common->product == Common::PRODUCT_APP && strpos($reUrl,'.html'))
+                continue;
 
             if (!$sourceId) {
                 $sourceId = $item['source_id'];
@@ -436,7 +451,7 @@ class VideoLogic
             $source[] = [
                 'source_id'    => $item['source_id'],
                 'name'         => $item['name'],
-                'icon'         => $item['icon'],
+                'icon'         => $iconURL.'/'.$item['icon'],
                 'resource_url' => $this->parseUrl($chapterInfo['resource_url'][$item['source_id']], Yii::$app->common->product),
                 'resource_type' => $resourceType,
                 'checked'      => $sourceId == $item['source_id'] ? 1 : 0
@@ -1017,7 +1032,9 @@ class VideoLogic
         $dataProvider = new ActiveDataProvider([
             'query' => Video::find()
                 ->select('id')
-                ->andWhere(['like', 'title_en', $keyword])
+                ->andWhere(['like', 'title_en', $keyword."%" ,false])
+                ->orderby('total_views desc')
+                //->andWhere(['like', 'title_en', $keyword])
         ]);
         $data = $dataProvider->setPagination(['page_num' => $page, 'page_size' => $pageSize])->toArray([
             'video_id',

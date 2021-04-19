@@ -12,7 +12,7 @@ class StyleSpring extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        '/css/SpringFestival.css?v='. PC_ASSETS_CSS_VERSION,
+        '/css/SpringFestival.css?v='. PC_ASSETS_CSS_VERSION.'124',
     ];
     public $js = [
 

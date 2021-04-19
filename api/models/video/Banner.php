@@ -19,6 +19,7 @@ class Banner extends \common\models\video\Banner
             'content',
             'display_order',
             'product',
+            'stitle',
         ];
     }
 

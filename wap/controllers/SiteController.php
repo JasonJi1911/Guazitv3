@@ -45,7 +45,7 @@ class SiteController extends BaseController
         Yii::$app->response->cookies->remove('lid');
         Yii::$app->response->cookies->remove('user_token');
     }
-
+    
     public function actionShareDown()
     {
         $useragent = Yii::$app->request->getUserAgent();
@@ -53,6 +53,10 @@ class SiteController extends BaseController
         if (strpos($useragent, 'MicroMessenger')) {
             $iswechat = true;
         }
-        return $this->render('sharedown', ['iswechat' => $iswechat]);
+        $data = Yii::$app->api->get('/search/app-version');
+        return $this->render('sharedown', [
+            'iswechat'  =>  $iswechat,
+            "data"      =>  $data,
+        ]);
     }
 }

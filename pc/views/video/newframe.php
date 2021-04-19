@@ -3,7 +3,7 @@
 use yii\helpers\Url;
 use pc\assets\StyleInAsset;
 
-//$this->title = '瓜子TV-澳新华人在线视频分享网站 - guazitv.tv';
+// $this->title = '瓜子TV-澳新华人在线视频分享网站';
 
 StyleInAsset::register($this);
 
@@ -31,6 +31,7 @@ StyleInAsset::register($this);
             border-right: #0c203a;
         }
     </style>
+    
 </head>
 <body>
 
@@ -54,6 +55,7 @@ $subTitle = ' · '.$channelName;
 $subTitle = $pageTab == "hotplay"? " · 热播":$subTitle;
 $subTitle = $pageTab == "list"? "":$subTitle;
 $subTitle = $pageTab == "searchresult"? "":$subTitle;
+$subTitle = $pageTab == "collaboration"? " · 商务合作":$subTitle;
 
 if ($channel_id == '0')
     $channelName = "热搜";
@@ -65,6 +67,9 @@ if (isset($hotword))
             $searchTip = empty($tab['list'][0]['video_name']) ? '' : $tab['list'][0]['video_name'];
     }
 }
+
+$version = Yii::$app->api->get('/search/app-version');
+$tvpath = $version['tvdata'];
 
 ?>
 <header class="qy-header home2020 aura2">
@@ -183,10 +188,20 @@ if (isset($hotword))
             'channels'      => $channels,
         ]);
         break;
+    case "collaboration":
+        echo $this->render('collaboration',[
+            'data'          => $data,
+            'channels'      => $channels,
+            'channel_id'    => $channel_id,
+            'hotword'       => $hotword,
+        ]);
+        break;
 } ?>
 
 <footer class="qy-footer">
     <div class="wp">
+        <a class="browser" href="<?= Url::to(['collaboration'])?>">商务合作</a>
+        <a class="browser1" href="###"></a>
         <a class="browser" href="<?= Url::to(['map'])?>">网站地图</a>
         <a class="browser1" href="###"></a>
         <a class="browser" href="http://m.guazitv.tv">手机端</a>
@@ -194,6 +209,9 @@ if (isset($hotword))
         <a class="browser" href="http://www.guazitv.tv">电脑端</a>
         <a class="browser1" href="###"></a>
         <a class="browser" href="<?= Url::to(['site/share-down'])?>">APP下载</a>
+        <a class="browser1" href="###"></a>
+        <!--<a class="browser" href="http://app.guazitv6.com/guazi-tv-1.0.1-debug.apk">电视TV版下载</a>-->
+        <a class="browser" href="<?= !empty($tvpath["file_path"])?$tvpath["file_path"]:"###" ?>">电视TV版下载</a>
     </div>
     <div class="wp">
         <p>本网站为非赢利性站点，所有内容均由机器人采集于互联网，或者网友上传，本站只提供WEB页面服务，本站不存储、不制作任何视频，不承担任何由于内容的合法性及健康性所引起的争议和法律责任。<br />若本站收录内容侵犯了您的权益，请附说明联系邮箱，本站将第一时间处理。站长邮箱：guazitv@163.com</p>

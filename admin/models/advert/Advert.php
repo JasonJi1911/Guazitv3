@@ -14,11 +14,12 @@ class Advert extends \common\models\advert\Advert
     public function rules()
     {
         return [
-            [['position_id', 'city_id', 'ad_type', 'width', 'height', 'url_type', 'pv', 'click', 'status', 'created_at', 'updated_at', 'deleted_at'], 'integer'],
+            [['position_id', 'ad_type','city_id', 'width', 'height', 'url_type', 'pv', 'click', 'status', 'created_at', 'updated_at', 'deleted_at'], 'integer'],
             [['title'], 'string', 'max' => 64],
             [['ad_key', 'ad_android_key'], 'string', 'max' => 128],
             [['skip_url'], 'string', 'max' => 256],
-            [['url_type', 'title', 'skip_url', 'city_id'], 'required']
+            [['url_type', 'title', 'skip_url'], 'required'],
+            [['city_id'],'default','value'=>0]
         ];
     }
 

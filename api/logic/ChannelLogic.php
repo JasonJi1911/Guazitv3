@@ -21,7 +21,7 @@ class ChannelLogic
      * 频道首页数据
      * @return mixed
      */
-    public function channelIndexData()
+    public function channelIndexData($city='')
     {
         // 首页金刚位
         $data['king_kong'] = $this->_kingKong();
@@ -44,7 +44,7 @@ class ChannelLogic
         //        $advert = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX);
         $adposition = Yii::$app->common->product == Common::PRODUCT_PC
             ? AdvertPosition::POSITION_VIDEO_INDEX_PC : AdvertPosition::POSITION_VIDEO_INDEX;
-        $advert = $advertLogic->advertByPosition($adposition);
+        $advert = $advertLogic->advertByPosition($adposition, $city);
         // 广告循环key
         $advertKey = 0;
         foreach ($channelList as $index => $channel) {
@@ -92,7 +92,7 @@ class ChannelLogic
         
         $flashPos = Yii::$app->common->product == Common::PRODUCT_PC
             ? AdvertPosition::POSITION_FLASH_PC : AdvertPosition::POSITION_FLASH_WAP;
-        $flash = $advertLogic->advertByPosition($flashPos);
+        $flash = $advertLogic->advertByPosition($flashPos, $city);
         $data['flash'] = $flash;
 
         return $data;
@@ -103,7 +103,7 @@ class ChannelLogic
      * @param $channelId
      * @return array
      */
-    public function channelLabelData($channelId)
+    public function channelLabelData($channelId, $city='')
     {
         $data = [];
         // 获取分类数据
@@ -138,7 +138,7 @@ class ChannelLogic
         // $advert = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX);
         $adposition = Yii::$app->common->product == Common::PRODUCT_PC
             ? AdvertPosition::POSITION_VIDEO_INDEX_PC : AdvertPosition::POSITION_VIDEO_INDEX;
-        $advert = $advertLogic->advertByPosition($adposition);
+        $advert = $advertLogic->advertByPosition($adposition, $city);
         // 广告循环key
         $advertKey = 0;
         $label = [];
@@ -168,7 +168,7 @@ class ChannelLogic
         $data['label'] = $label;
         $flashPos = Yii::$app->common->product == Common::PRODUCT_PC
             ? AdvertPosition::POSITION_FLASH_PC : AdvertPosition::POSITION_FLASH_WAP;
-        $flash = $advertLogic->advertByPosition($flashPos);
+        $flash = $advertLogic->advertByPosition($flashPos, $city);
         $data['flash'] = isset($flash[0]) ? $flash[0] : [];
         return $data;
     }

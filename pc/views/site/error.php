@@ -38,7 +38,7 @@ AppAsset::register($this);
                     navigator.userAgent.indexOf('Safari') >= 0 ||
                     navigator.userAgent.indexOf('Chrome') >= 0 ||
                     navigator.userAgent.indexOf('WebKit') >= 0){
-                    alert(window.history.length);
+
                     if(window.history.length > 2){
                         window.history.back();
                     }else{
@@ -61,7 +61,7 @@ AppAsset::register($this);
                 <h3><?= Html::encode($name) ?></h3>
                 <p><?= nl2br(Html::encode($message)) ?></p>
                 <p>
-<!--                    <a href="javascript:;" class="btn red btn-outline" onclick="history.back()"> 返回上一页 </a>-->
+                    <!--<a href="javascript:;" class="btn red btn-outline" onclick="history.back()"> 返回上一页 </a>-->
                     <a href="javascript:;" class="btn red btn-outline" onclick="goBack()"> 返回上一页 </a>
                     <br>
                 </p>

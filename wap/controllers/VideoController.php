@@ -12,7 +12,7 @@ use yii\helpers\Url;
 use yii\web\Cookie;
 use common\models\Activity;
 use common\models\ActivityLog;
-
+use common\helpers\RedisStore;
 
 class VideoController extends BaseController
 {
@@ -24,9 +24,21 @@ class VideoController extends BaseController
         //获取频道信息
         $channel_id = Yii::$app->request->get('channel_id', 0);
 
+        $city = "";
+        $redis = new RedisStore();
+        $ip = Tool::getIp();
+        $cityCache=$redis->get(md5($ip."_city"));
+        if (empty($cityCache)) {
+            $ipAddress = Tool::getIpAddressFromStack($ip);
+            $city = $ipAddress['city'];
+            $redis->setEx(md5($ip."_city"), $city, 3600*24*30);
+        }
+        else {
+            $city = $cityCache;
+        }
         //请求首页信息
-        $data = Yii::$app->api->get('/video/index', ['channel_id' => $channel_id]);
-
+        $data = Yii::$app->api->get('/video/index', ['channel_id' => $channel_id, 'city'=> $city]);
+        
         //请求频道、搜索信息
         $channels = Yii::$app->api->get('/video/channels');
 
@@ -39,6 +51,62 @@ class VideoController extends BaseController
             'channels'      => $channels,
             'channel_id'    => $channel_id
         ]);
+    }
+    
+    /**
+     * 首页banner局部视图
+     */
+    public function actionIndexBanner()
+    {
+       //获取频道信息
+        $channel_id = Yii::$app->request->get('channel_id', 0);
+
+        $city = "";
+        $redis = new RedisStore();
+        $ip = Tool::getIp();
+        $cityCache=$redis->get(md5($ip."_city"));
+        if (empty($cityCache)) {
+            $ipAddress = Tool::getIpAddressFromStack($ip);
+            $city = $ipAddress['city'];
+            $redis->setEx(md5($ip."_city"), $city, 3600*24*30);
+        }
+        else {
+            $city = $cityCache;
+        }
+        //请求首页信息
+        $data = Yii::$app->api->get('/video/banner', ['channel_id' => $channel_id, 'city'=> $city]);
+
+        return $this->renderPartial('indexbanner', ['data' => $data]);
+    }
+    
+    /**
+     * 广告局部刷新
+     */
+    public function actionAdvert()
+    {
+       //获取频道信息
+        $page = Yii::$app->request->get('page', "home");
+
+        $city = "";
+        $redis = new RedisStore();
+        $ip = Tool::getIp();
+        $cityCache=$redis->get(md5($ip."_city"));
+        if (empty($cityCache)) {
+            $ipAddress = Tool::getIpAddressFromStack($ip);
+            $city = $ipAddress['city'];
+            $redis->setEx(md5($ip."_city"), $city, 3600*24*30);
+        }
+        else {
+            $city = $cityCache;
+        }
+        //请求首页信息
+        $data = Yii::$app->api->get('/video/advert', ['page' => $page, 'city'=> $city]);
+        $data['page'] = $page;
+        $data['city'] = $city;
+        $data['cityCache'] = $cityCache;
+        $data['random'] = rand(10000, 99999);
+
+        return Tool::responseJson(0, '操作成功', $data);
     }
 
     /**
@@ -96,11 +164,21 @@ class VideoController extends BaseController
         $chapter_id = Yii::$app->request->get('chapter_id', '');
         $source_id = Yii::$app->request->get('source_id', '');
 
+        $city = "";
+        $redis = new RedisStore();
         $ip = Tool::getIp();
-        $ipAddress = Tool::getIpAddress($ip);
+        $cityCache=$redis->get(md5($ip."_city"));
+        if (empty($cityCache)) {
+            $ipAddress = Tool::getIpAddressFromStack($ip);
+            $city = $ipAddress['city'];
+            $redis->setEx(md5($ip."_city"), $city, 3600*24*30);
+        }
+        else {
+            $city = $cityCache;
+        }
         //请求视频信息
         $info = Yii::$app->api->get('/video/info', ['video_id' => $video_id
-            , 'chapter_id' => $chapter_id, 'source_id' => $source_id, 'city'=> $ipAddress['city']]);
+            , 'chapter_id' => $chapter_id, 'source_id' => $source_id, 'city'=> $city]);
 
         if(!$info) {
             return $this->redirect('/site/error');
@@ -185,5 +263,27 @@ class VideoController extends BaseController
         $data = Yii::$app->api->get('/video/info', ['video_id' => $video_id, 'chapter_id' => $chapter_id, 'source_id' => $source_id]);
 
         return Tool::responseJson(0, '操作成功', $data );
+    }
+    
+    public function actionMap()
+    {
+        $pageTab = "map";
+
+        $channels = Yii::$app->api->get('/video/channels');
+        $hotword = Yii::$app->api->get('/search/hot-word');
+
+        foreach ($channels['list'] as $s_k => &$s_v)
+        {
+            $channel_id = $s_v['channel_id'];
+            $cates = Yii::$app->api->get('/video/filter', ['channel_id' => $channel_id, 'tag' => '', 'sort' => '', 'area' => '',
+                'play_limit' => '', 'year' => '', 'page_num' => 1, 'page_size' =>24 ,'type' => 1]);
+            $s_v['search_box'] = $cates['search_box'];
+        }
+
+        return $this->render('map',[
+            'pageTab'       => $pageTab,
+            'channels'      => $channels,
+            'hotword'       => $hotword
+        ]);
     }
 }

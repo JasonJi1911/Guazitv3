@@ -12,9 +12,10 @@ if(isset($channel_id))
     }
 }
 
-$this->title = ($channelName == ''?'':$channelName.'-').'瓜子TV|澳洲瓜子tv|澳新瓜子|澳新tv|澳新瓜子tv - guazitv.tv';
-//$this->metaTags['keywords'] = '瓜子,tv,瓜子tv,澳洲瓜子tv,澳洲,新西兰,澳新,电影,电视剧,榜单,综艺,动画,记录片';
-$this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子,tv,瓜子tv,澳洲瓜子tv,澳洲,新西兰,澳新,电影,电视剧,榜单,综艺,动画,记录片']);
+// $this->title = '瓜子TV-澳新华人在线视频分享网站';
+$this->title = ($channelName == ''?'':$channelName.'-').'瓜子TV - 澳新华人在线视频分享平台,海量高清视频在线观看';
+// $this->metaTags['keywords'] = '瓜子,tv,瓜子tv,澳洲瓜子tv,澳洲,新西兰,澳新,电影,电视剧,榜单,综艺,动画,记录片';
+$this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子tv,澳洲瓜子tv,新西兰瓜子tv,澳新瓜子tv,瓜子视频,瓜子影视,电影,电视剧,榜单,综艺,动画,记录片']);
 StyleInAsset::register($this);
 
 $js = <<<SCRIPT
@@ -82,6 +83,41 @@ $(function(){
             scrollTop: 0
         })
     });
+    
+    $(window).load(function(){
+	    var arrIndex = {};
+        arrIndex['page'] = "home";
+        var advertKey = 0;
+        $.get('/video/advert', arrIndex, function(res) {
+            if(res.data.hasOwnProperty("city"))
+                $("#head-city").text(res.data.city);
+                    
+            $(".video-add-column").each(function(index){
+                if(!res.data.hasOwnProperty("advert"))
+                    return false;
+                    
+                if(!res.data.advert.hasOwnProperty(index)){  
+                    advertKey = 0;
+                }
+
+                var addata = res.data.advert[advertKey];
+                if (addata.hasOwnProperty("ad_skip_url")) {
+                    $(this).html("");
+                    $(this).html(refreshAdvert(addata));
+                }
+                advertKey++;
+            });
+        })
+	});
+	
+	function refreshAdvert(addata)
+	{
+	    var content = '';
+	    content += "<a href='" + addata.ad_skip_url + "'>" + 
+                            "<img src='"+ addata.ad_image + "' alt='new'>" +
+                    "</a>";
+        return content;
+	}
 });
 SCRIPT;
 
@@ -104,6 +140,7 @@ $this->registerJs($js);
     </style>
 </head>
 <body class="classBody">
+<input type="hidden" value="<?= $channel_id?>">
 <div class="c"></div>
 <div class="channel-page">
     <div class="qy-channel-page">
@@ -333,8 +370,8 @@ $this->registerJs($js);
                         </div>
                     <?php  else: ?>
                         <div class="video-add-column">
-                            <a href="<?= $labels['ad_skip_url']?>">
-                                <img src="<?= $labels['ad_image']?>" alt="">
+                            <a href="">
+                                <img src="" alt="">
                             </a>
                         </div>
                     <?php endif; ?>

@@ -4,7 +4,7 @@ use pc\assets\StyleMap;
 
 $this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子,tv,瓜子tv,澳洲瓜子tv,澳洲,新西兰,澳新,电影,电视剧,榜单,综艺,动画,记录片']);
 //$this->metaTags['keywords'] = '瓜子,tv,瓜子tv,澳洲瓜子tv,澳洲,新西兰,澳新,电影,电视剧,榜单,综艺,动画,记录片';
-$this->title = '瓜子TV|澳洲瓜子tv|澳新瓜子|澳新tv|澳新瓜子tv - guazitv.tv';
+$this->title = '瓜子TV - 澳新华人在线视频分享平台,海量高清视频在线观看';
 StyleMap::register($this);
 ?>
 <style>
@@ -58,12 +58,12 @@ StyleMap::register($this);
         width: 100%;
         margin-top: 30px;
     }
-
+    
     .browser{
         color: #666;
     }
 </style>
-
+<script src="https://kit.fontawesome.com/82b0e30b1b.js" crossorigin="anonymous"></script>
 <div class="mapbody">
     <div class="container">
         <div class="row">
@@ -74,7 +74,7 @@ StyleMap::register($this);
                             <div class="myui-panel__head clearfix">
                                 <h3 class="title"><?= $s_v['channel_name'] ?></h3>
                                 <a class="more text-muted" href="<?= Url::to(['list', 'channel_id' => $s_v['channel_id']])?>">
-                                    查看<?=$s_v['channel_id']?>
+                                    查看
                                     <i class="fa fa-angle-right"></i>
                                 </a>
                             </div>

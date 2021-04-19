@@ -14,16 +14,13 @@ class AppAsset extends AssetBundle
         '/css/site.css?v='.WAP_ASSETS_CSS_VERSION,
         '/css/video/swiper.min.css',
         '/css/video/video.css?v='.WAP_ASSETS_CSS_VERSION,
-        '/css/video/video-js.min.css',
-        '/css/video/DPlayer.min.css'
+        '/css/video/video-js.min.css'
     ];
 
     public $js = [
         '/js/jquery.min.js',
         '/js/video/fastclick.min.js',
-        'js/video/video.min.js',
-        'js/video/hls.min.js',
-        'js/video/DPlayer.min.js'
+        'js/video/video.min.js'
     ];
 
     public $depends = [

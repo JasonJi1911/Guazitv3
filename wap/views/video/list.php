@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Url;
 
-//$this->title = '瓜子TV-澳新华人在线视频分享网站';
+// $this->title = '瓜子TV-澳新华人在线视频分享网站';
 $this->title = '视频列表-瓜子TV|澳洲瓜子tv|澳新瓜子|澳新tv|澳新瓜子tv - m.guazitv.tv';
 $this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子,tv,瓜子tv,澳洲瓜子tv,澳洲,新西兰,澳新,电影,电视剧,榜单,综艺,动画,记录片']);
 
@@ -172,7 +172,7 @@ $this->registerJs($js);
 </div>
 
 <div class="video-index-notice">
-    <p style="padding-bottom: 5px;text-align: center;">
+     <p style="padding-bottom: 5px;text-align: center;">
         <a class="browser browser1" href="http://m.guazitv.tv">手机端</a>
         <a class="browser" href="http://www.guazitv.tv">电脑端</a></p>
     <p>本网站为非赢利性站点，所有内容均由机器人采集于互联网，或者网友上传，本站只提供WEB页面服务，本站不存储、不制作任何视频，不承担任何由于内容的合法性及健康性所引起的争议和法律责任。若本站收录内容侵犯了您的权益，请附说明联系邮箱，本站将第一时间处理。站长邮箱：guazitv@163.com</p>

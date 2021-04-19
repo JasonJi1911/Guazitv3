@@ -83,6 +83,10 @@ class Video extends \common\models\video\Video
             'is_down'
         ];
     }
+    
+    public function getYears(){
+        return $this->hasOne(VideoYear::className(), ['id' => 'year']);
+    }
 
 
     /**

@@ -536,7 +536,6 @@ class UserLogic
      */
     public function setAvatar($avatar)
     {
-       
         $ossHelper = new OssHelper();
         $dir = 'avatar/' . date('Ym');  //目录
         $ret = $ossHelper->uploadFileBaseToOss($avatar, $dir);

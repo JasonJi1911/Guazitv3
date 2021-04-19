@@ -74,6 +74,7 @@ use admin\models\video\Video;
             }
         ],
         'display_order',
+        'cityName',
         '@status',
         [
             'class' => 'metronic\grid\ActionColumn',

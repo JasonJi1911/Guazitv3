@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Url;
 
-$this->title = '瓜子视频-澳新华人在线视频分享网站';
+$this->title = '瓜子TV - 澳新华人在线视频分享平台,海量高清视频在线观看';
 
 $js = <<<JS
 $(function(){

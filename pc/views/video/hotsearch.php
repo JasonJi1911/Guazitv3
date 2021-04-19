@@ -2,7 +2,7 @@
 use yii\helpers\Url;
 use pc\assets\StyleInAsset;
 
-$this->title = '瓜子TV-澳新华人在线视频分享网站';
+$this->title = '瓜子TV - 澳新华人在线视频分享平台,海量高清视频在线观看';
 StyleInAsset::register($this);
 
 $js = <<<JS

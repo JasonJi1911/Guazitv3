@@ -55,12 +55,12 @@ $this->registerJs($js);
             <?= $form->field($model, 'url_type')->dropDownList(Advert::$urlTypes)->wrapper(['width' => 2]) ?>
             
             <?php
-            if (intval(Yii::$app->request->get('position_id')) == AdvertPosition::POSITION_PLAY_BEFORE_PC
-                || intval(Yii::$app->request->get('position_id')) == AdvertPosition::POSITION_PLAY_BEFORE) {
-                echo $form->field($model, 'city_id')->dropDownList(ArrayHelper::map(IpAddress::find()->groupBy('city')->all(), 'id', 'city'))->wrapper(['width' => 2]);
-            }
+            // if (intval(Yii::$app->request->get('position_id')) == AdvertPosition::POSITION_PLAY_BEFORE_PC
+            //     || intval(Yii::$app->request->get('position_id')) == AdvertPosition::POSITION_PLAY_BEFORE) {
+            //     echo $form->field($model, 'city_id')->dropDownList(ArrayHelper::map(IpAddress::find()->groupBy('city')->all(), 'id', 'city'))->wrapper(['width' => 2]);
+            // }
+            echo $form->field($model, 'city_id')->dropDownList(ArrayHelper::map(IpAddress::find()->where(['not', ['sort' => 0]])->groupBy('city')->orderBy("sort desc")->all(), 'id', 'city'), ['prompt' => '全部' ])->wrapper(['width' => 2]);
             ?>
-
             <?= $form->field($model, 'skip_url')->textInput(['maxlength' => true, 'placeholder' => 'http://或https://']) ?>
         </div>
 
@@ -75,6 +75,7 @@ $this->registerJs($js);
 
             <?= $form->field($model, 'height')->textInput([])->hint('广点通类型广告请填写高度')?>
         </div>
+
 
     <?php else:?>
         <?php
@@ -100,10 +101,11 @@ $this->registerJs($js);
                 // echo $form->field($model, 'image')->imageUpload(['width' => '600', 'height' => '200'])->hint('建议上传600*200的图片');
 
                 echo $form->field($model, 'url_type')->dropDownList(Advert::$urlTypes)->wrapper(['width' => 2]);
-                if (intval(Yii::$app->request->get('position_id')) == AdvertPosition::POSITION_PLAY_BEFORE_PC
-                || intval(Yii::$app->request->get('position_id')) == AdvertPosition::POSITION_PLAY_BEFORE) {
-                    echo $form->field($model, 'city_id')->dropDownList(ArrayHelper::map(IpAddress::find()->groupBy('city')->all(), 'id', 'city'))->wrapper(['width' => 2]);
-                }
+                // if (intval(Yii::$app->request->get('position_id')) == AdvertPosition::POSITION_PLAY_BEFORE_PC
+                // || intval(Yii::$app->request->get('position_id')) == AdvertPosition::POSITION_PLAY_BEFORE) {
+                //     echo $form->field($model, 'city_id')->dropDownList(ArrayHelper::map(IpAddress::find()->groupBy('city')->all(), 'id', 'city'))->wrapper(['width' => 2]);
+                // }
+                echo $form->field($model, 'city_id')->dropDownList(ArrayHelper::map(IpAddress::find()->where(['not', ['sort' => 0]])->groupBy('city')->orderBy("sort desc")->all(), 'id', 'city'), ['prompt' => '全部' ])->wrapper(['width' => 2]);
                 echo $form->field($model, 'skip_url')->textInput(['maxlength' => true, 'placeholder' => 'http://或https://']);
                 break;
 

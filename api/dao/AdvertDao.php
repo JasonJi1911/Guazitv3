@@ -26,8 +26,8 @@ class AdvertDao extends BaseDao
         $redisStore = new RedisStore();
         // 广告位置key
         $key = RedisKey::advertPosition();
-        if ($city != '') {
-            $key = $key.'_'.$city;
+        if ($city) {
+            $key = $key.'_'.md5($city);
         }
         
         if ($data = $redisStore->get($key)) {
@@ -36,12 +36,13 @@ class AdvertDao extends BaseDao
             //所有广告位
             $position = AdvertPosition::find()->select('id')->column();
             $citylist = IpAddress::find()->select('id')->andWhere(['city' => $city])->column();
+            array_push($citylist, 0);
             //所有广告
             $advert = Advert::find()->select('id,position_id')
                 ->where(['position_id' => $position, 'status' => Advert::STATUS_OPEN])
                 ->all();
 
-            if ($city != '')
+            if ($city)
                 $advert = Advert::find()->select('id,position_id')
                     ->where(['position_id' => $position, 'status' => Advert::STATUS_OPEN, 'city_id' => $citylist])
                     ->all();

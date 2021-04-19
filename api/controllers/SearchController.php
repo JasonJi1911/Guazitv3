@@ -1,8 +1,11 @@
 <?php
 namespace api\controllers;
 
+use api\data\ActiveDataProvider;
 use api\exceptions\InvalidParamException;
 use api\logic\VideoLogic;
+use common\models\apps\AppsCheckSwitch;
+use common\models\apps\AppsVersion;
 
 class SearchController extends BaseController
 {
@@ -87,5 +90,36 @@ class SearchController extends BaseController
         //     'url'    => '',    // 下载地址
         // ];
         // return $versionUpdate;
+    }
+    
+    public function actionAppVersion()
+    {
+        $data = [];
+        $appverModel = new AppsVersion();
+
+        $iosprovider  = new ActiveDataProvider([
+            'query' => $appverModel::find()
+                ->andWhere(["os_type" => AppsVersion::OS_TYPE_IOS, "is_release" => AppsVersion::RELEASE_ON]),
+        ]);
+
+        $andprovider  = new ActiveDataProvider([
+            'query' => $appverModel::find()
+                ->andWhere(["os_type" => AppsVersion::OS_TYPE_ANDROID, "is_release" => AppsVersion::RELEASE_ON]),
+        ]);
+
+        $tvprovider  = new ActiveDataProvider([
+            'query' => $appverModel::find()
+                ->andWhere(["os_type" => AppsVersion::OS_TYPE_TV, "is_release" => AppsVersion::RELEASE_ON]),
+        ]);
+
+        $iosdata = AppsCheckSwitch::find()->andWhere(['version_id' => $iosprovider->getKeys()])->asArray()->one();
+        $androiddata = AppsCheckSwitch::find()->andWhere(['version_id' => $andprovider->getKeys()])->asArray()->one();
+        $tvdata = AppsCheckSwitch::find()->andWhere(['version_id' => $tvprovider->getKeys()])->asArray()->one();
+
+        $data['iosdata'] = $iosdata;
+        $data['androiddata'] = $androiddata;
+        $data['tvdata'] = $tvdata;
+        
+        return $data;
     }
 }

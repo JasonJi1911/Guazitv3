@@ -8,7 +8,7 @@ $(function() {
         var url   = $this.data('url') || location.href;
         var page  = $this.data('page') || 1;
 
-        // console.log(pages);
+        // console.log(url);
         
         if (page < pages && !progress) {
             progress = true;

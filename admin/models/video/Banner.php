@@ -5,6 +5,7 @@ use admin\models\traits\ProductTrait;
 use common\helpers\RedisKey;
 use common\helpers\Tool;
 use yii\helpers\ArrayHelper;
+use common\models\IpAddress;
 
 class Banner extends \common\models\video\Banner
 {
@@ -23,7 +24,7 @@ class Banner extends \common\models\video\Banner
             [[ 'status', 'display_order', 'action','title',], 'required'],
             [['channel_id', 'status', 'display_order', 'action','product','city_id'], 'integer'],
             [['display_order'], 'integer', 'min' => DISPLAY_ORDER_MIN, 'max' => DISPLAY_ORDER_MAX],
-            [['video_id', 'scheme', 'url'], 'string'],
+            [['video_id', 'scheme', 'url','stitle'], 'string'],
             [['content'], 'string', 'max' => 256],
             [['title'], 'string', 'max' => 32],
             [['city_id','product'],'default','value'=>0]
@@ -39,6 +40,7 @@ class Banner extends \common\models\video\Banner
             'id' => 'ID',
             'channel_id' => '频道',
             'title' => '标题',
+            'stitle'=>'副标题',
             'image' => 'Image',
             'action' => '跳转类型',
             'video_id' => '作品',
@@ -51,6 +53,7 @@ class Banner extends \common\models\video\Banner
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'deleted_at' => 'Deleted At',
+            'cityName' => '地域'
         ];
     }
 
@@ -122,6 +125,19 @@ class Banner extends \common\models\video\Banner
         return ArrayHelper::getValue(self::$actionMap, $this->action);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     * 关联城市
+     */
+    public function getCityName()
+    {
+        $cityArea = IpAddress::findOne($this->city_id);
+        if ($cityArea) {
+            return $cityArea->city;
+        }
 
+        return '全部';
+//        return $this->hasOne(IpAddress::className(), ['id' => 'city_id']);
+    }
 
 }

@@ -30,9 +30,8 @@ AppAsset::register($this);
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<!--    <meta name="keywords" content="--><?//= $this->metaTags['keywords'] ?><!--">-->
     <meta name="description" content="瓜子TV是澳大利亚、新西兰华人影视视频分享平台，网站包含最新的电视剧、美剧、日韩剧、华语电影、好莱坞电影、以及各种动漫和重大体育赛事直播。在这里，一定有你想看的一切！">
-    <link rel="shortcut icon" type="image/x-icon" href="http://img.guazitv8.com/LOGO.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="http://img.guazitv.tv/LOGO.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-6TXJP66KCH"></script>
@@ -40,77 +39,64 @@ AppAsset::register($this);
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
+        
         gtag('config', 'G-6TXJP66KCH');
     </script>
-    <?php if ($this->params['isIndex'] == "1") : ?>
-        <script type=application/ld+json>{
-                "@context": "http://schema.org",
-                "@type": "SiteNavigationElement",
-                "name": [
-                    "瓜子tv",
-                    "电影",
-                    "连续剧",
-                    "综艺",
-                    "动漫"
-
-                ],
-                "url": [
-                    "http://guazitv.tv/",
-                    "http://guazitv.tv/video/channel?channel_id=1",
-                    "http://guazitv.tv/video/channel?channel_id=2",
-                    "http://guazitv.tv/video/channel?channel_id=3",
-                    "http://guazitv.tv/video/channel?channel_id=4"
-
-                ]
-            }
-        </script>
-    <?php endif; ?>
-
+    
     <script>
         var _hmt = _hmt || [];
         (function() {
-            var hm = document.createElement("script");
-            hm.src = "https://hm.baidu.com/hm.js?acb48993923bb825b8c964792dfee455";
-            var s = document.getElementsByTagName("script")[0];
-            s.parentNode.insertBefore(hm, s);
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?acb48993923bb825b8c964792dfee455";
+        var s = document.getElementsByTagName("script")[0]; 
+        s.parentNode.insertBefore(hm, s);
         })();
     </script>
-    <script src="/js/jquery.js"></script>
-    <script>
-        $(document).ready(function(){
-            var mobile_flag = isMobile();
-
-            if(mobile_flag){
-                window.location = 'http://m.guazitv.tv/';
-            }
-        });
-
-        function isMobile() {
-            var userAgentInfo = navigator.userAgent;
-
-            var mobileAgents = [ "Android", "iPhone", "SymbianOS", "Windows Phone", "iPad","iPod"];
-
-            var mobile_flag = false;
-
-            //根据userAgent判断是否是手机
-            for (var v = 0; v < mobileAgents.length; v++) {
-                if (userAgentInfo.indexOf(mobileAgents[v]) > 0) {
-                    mobile_flag = true;
-                    break;
-                }
-            }
-
-            var screen_width = window.screen.width;
-            var screen_height = window.screen.height;
-
-            //根据屏幕分辨率判断是否是手机
-            if(screen_width < 500 && screen_height < 800){
-                mobile_flag = true;
-            }
-
-            return mobile_flag;
+    <?php if ($this->params['isIndex'] == "1") : ?>
+        <script type="application/ld+json">{
+      "@context":"http://schema.org",
+      "@type":"ItemList",
+      "itemListElement":[
+        {
+          "@type": "SiteNavigationElement",
+          "position": 1,
+          "name": "首页",
+          "url":"http://guazitv.tv/"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 2,
+          "name": "电影",
+          "url":"http://guazitv.tv/video/channel?channel_id=1"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 3,
+          "name": "连续剧",
+          "url":"http://guazitv.tv/video/channel?channel_id=2"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 4,
+          "name": "动漫",
+          "url":"http://guazitv.tv/video/channel?channel_id=4"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 5,
+          "name": "综艺",
+          "url":"http://guazitv.tv/video/channel?channel_id=3"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 6,
+          "name": "纪录片",
+          "url":"http://guazitv.tv/video/channel?channel_id=32"
         }
+      ]
+    }
     </script>
+    <?php endif; ?>
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>

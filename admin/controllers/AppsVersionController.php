@@ -145,7 +145,7 @@ class AppsVersionController extends Controller
             try {
                 if ($model->load($post) && $model->save()) {
                     if ($channelIds && $model->os_type != AppsVersion::OS_TYPE_IOS) {
-                        $rootPath = getcwd() . '/../../api/web/';
+                        $rootPath = getcwd() . '/../../install/';
                         $dirPath = 'uploads/channel_package/';
                         if($model->os_type == AppsVersion::OS_TYPE_TV){
                             $dirPath = 'uploads/channel_tv_package/';
@@ -160,7 +160,7 @@ class AppsVersionController extends Controller
                             $fileUrl = $dirPath . $fileName;
                             move_uploaded_file($model->upload_file[$index]->tempName, $rootPath . $fileUrl);
 
-                            $filePath[$id] = API_HOST_PATH . '/' . $fileUrl;
+                            $filePath[$id] = "http://app.guazitv6.com" . '/' . $fileUrl;
 
                         }
                     }
@@ -229,7 +229,7 @@ class AppsVersionController extends Controller
             try {
                 if ($model->load($post) && $model->save()) {
                     if ($model->os_type != AppsVersion::OS_TYPE_IOS && $channelIds) {
-                        $rootPath = getcwd() . '/../../api/web/';
+                        $rootPath = getcwd() . '/../../install/';
                         $dirPath = 'uploads/channel_package/';
                         if($model->os_type == AppsVersion::OS_TYPE_TV){
                             $dirPath = 'uploads/channel_tv_package/';
@@ -244,7 +244,7 @@ class AppsVersionController extends Controller
                             $fileUrl = $dirPath.$fileName;
                             move_uploaded_file($model->upload_file[$index]->tempName, $rootPath.$fileUrl);
 
-                            $filePath[$id] = API_HOST_PATH . '/' . $fileUrl;
+                            $filePath[$id] = "http://app.guazitv6.com" . '/' . $fileUrl;
                         }
                     }
 

@@ -13,6 +13,8 @@ use api\models\video\VideoYear;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
 use yii\helpers\ArrayHelper;
+use Yii;
+use common\models\channel\ChannelVideo;
 
 /**
  * 公共dao
@@ -150,21 +152,38 @@ class CommonDao extends BaseDao
      * 缓存视频源,返回以source_id为key的二维数组
      * @return array
      */
-    public function videoSource()
-    {
-        $key = RedisKey::videoSource();
+    public function videoSource($product){
+        
+        $product=Yii::$app->common->product < 3 ?1:Yii::$app->common->product;
+        if(Yii::$app->common->marketChannel == 'tv'){
+            $product= 2;
+        }
         $redis = new RedisStore();
-
+        $key = RedisKey::videoShannelSource($product);
+        
+        // if($product ==0){
+        //     $key = RedisKey::videoSource();
+        // }
         if ($str = $redis->get($key)) {
             $data = json_decode($str, true);
         } else {
-            $dataProvider = new ActiveDataProvider([
-                'query' => VideoSource::find()
-            ]);
-            $data = $dataProvider->toArray();
+                $data = (new \yii\db\Query())
+                ->select('v.id as source_id,v.name,v.icon')
+                ->from(ChannelVideo::tableName().'as c')
+                ->leftJoin(VideoSource::tableName().'as v','v.id=c.sid')
+                ->where(['c.os_type'=>$product])
+                ->andWhere(['v.created_at' => 0])
+                ->orderBy('c.display_order desc')
+                ->all();
+                if(empty($data)){
+                    $dataProvider = new ActiveDataProvider([
+                        'query' => VideoSource::find()
+                    ]);
+                    $data = $dataProvider->toArray();
+                }
             $redis->set($key, json_encode($data));
         }
-
+        //$redis->del($key);
         return ArrayHelper::index($data, 'source_id');
     }
 

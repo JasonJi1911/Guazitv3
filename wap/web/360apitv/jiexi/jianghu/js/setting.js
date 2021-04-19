@@ -122,7 +122,7 @@ var YZM = {
 		{
 		if(YZM.headt==null)
 		{
-		    YZM.headt='18';
+		    //YZM.headt='18';
 		}
 		}
 		YZM.lastt = yzmck.get("lastt");
@@ -716,9 +716,12 @@ var liyih = '<div class="dmrules"><a target="_blank" href="' + config.dmrule + '
 		'pause': {
 			'play': function(l, p) {
 				if (YZM.ads.pause.state == 'on') {
-					var pause_ad_html = '<div id="player_pause"><div class="tip">广告</div><a href="' + l +
+					var pause_ad_html = '<div id="player_pause"><div class="tip">关闭广告</div><a href="' + l +
 						'" target="_blank"><img src="' + p + '"></a></div>';
 					$('#player').before(pause_ad_html);
+				    $(".tip").click(function(){
+                        $("#player_pause").remove();
+                    });
 				}
 			},
 			'out': function() {

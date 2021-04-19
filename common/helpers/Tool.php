@@ -178,7 +178,7 @@ class Tool
 //                $ip = getenv($_SERVER['REMOTE_ADDR']);
 //            }
 //        }
-
+        
         return $ip;
     }
 
@@ -218,6 +218,43 @@ class Tool
             'city' => $address['data'][2],
         ];
 
+        return $data;
+    }
+    
+    /**
+     * 根据ip获取地址
+     * @param $ip
+     * @return array [国家, 省份, 城市]
+     */
+    public static function getIpAddressFromStack($ip) {
+        if (empty($ip)) {
+            return [];
+        }
+        $api = 'http://api.ipstack.com/'.$ip.'?access_key=04ba44ae3676412ec830d41be1232846&language=zh';
+
+        $result = self::httpGet($api);
+        if ($result['http_code'] != '200') {
+            Yii::warning('ip address request failed, http_code:'. $result['http_code']);
+            return [];
+        }
+
+        $address = json_decode($result['data'], true);
+        if (!$address['city']) {
+            Yii::warning('ip address request failed, response:'. $result['data']);
+            return [];
+        }
+
+        $data = [
+            'area' => $address['country_name'],
+            'province' => $address['region_name'],
+            'city' => $address['city'],
+        ];
+
+        // $logpath = ROOT_PATH.'/log/IPTrace.txt';
+        // if(!is_dir(ROOT_PATH.'/log'))
+        //     mkdir(ROOT_PATH.'/log');
+
+        // file_put_contents($logpath, $ip.PHP_EOL,FILE_APPEND);
         return $data;
     }
 
@@ -443,6 +480,50 @@ class Tool
         curl_close($ch);
 
         return $ret;
+    }
+    
+    public static function httpGetProxy($url, $proxyIp, $proxyPort)
+    {
+        // 要访问的目标页面
+        $targetUrl = $url;
+
+        // 代理服务器
+        $proxyServer = "http://".$proxyIp.":".$proxyPort;;
+
+        // 隧道身份信息
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $targetUrl);
+
+        curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, false);
+
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+        // 设置代理服务器
+        curl_setopt($ch, CURLOPT_PROXYTYPE, 0); //http
+
+        // curl_setopt($ch, CURLOPT_PROXYTYPE, 5); //sock5
+
+        curl_setopt($ch, CURLOPT_PROXY, $proxyServer);
+
+        // 设置隧道验证信息
+        curl_setopt($ch, CURLOPT_PROXYAUTH, CURLAUTH_BASIC);
+
+        curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727;)");
+
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
+
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+
+        curl_setopt($ch, CURLOPT_HEADER, true);
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $result = curl_exec($ch);
+
+        curl_close($ch);
+
+        // var_dump($result);
     }
 
     /**

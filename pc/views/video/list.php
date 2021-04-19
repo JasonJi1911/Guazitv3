@@ -2,7 +2,7 @@
 use yii\helpers\Url;
 use pc\assets\StyleInAsset;
 
-$this->title = '瓜子TV-澳新华人在线视频分享网站';
+$this->title = '瓜子TV - 澳新华人在线视频分享平台,海量高清视频在线观看';
 StyleInAsset::register($this);
 
 $js = <<<JS
@@ -50,7 +50,6 @@ $(function(){
     
     $('.qy-mod-li').each(function() {
         $(this).find('.qy-mod-link-wrap').hover(function() {
-            
             $('.qy-mod-li').find('.qy-video-card-small').removeClass('card-hover')
             var card = $(this).parents('.qy-mod-li').find('.qy-video-card-small')
             card.toggleClass('card-hover');
@@ -58,13 +57,13 @@ $(function(){
         });
     });
     $('.qy-mod-li').mouseleave(function(event) {
+    
         $('.qy-mod-li').find('.qy-video-card-small').removeClass('card-hover')
     });
     
     $('.video-list-box').bind('DOMNodeInserted', function(e) {
         $('.qy-mod-li').each(function() {
             $(this).find('.qy-mod-link-wrap').hover(function() {
-                
                 $('.qy-mod-li').find('.qy-video-card-small').removeClass('card-hover')
                 var card = $(this).parents('.qy-mod-li').find('.qy-video-card-small')
                 card.toggleClass('card-hover');
@@ -72,6 +71,7 @@ $(function(){
             });
         });
         $('.qy-mod-li').mouseleave(function(event) {
+            
             $('.qy-mod-li').find('.qy-video-card-small').removeClass('card-hover')
         });
     });
@@ -327,13 +327,16 @@ $(function(){
         var content = '';
         for (var i=0; i<data.length; i++) { //拼接换一换内容
             var actors = '';
+            var intro="";
             if (data[i]['actors'] != undefined) {
                 for (var j=0; j<data[i]['actors'].length; j++) 
-                {
+                {  
+                    if(j >5){
+                        break;
+                    }
                     actors +=  "<span class='starring_link'>"+data[i]['actors'][j]['actor_name']+"/</span>";
                 }
             }
-            
             content += "<li class='qy-mod-li'>"+
                             "<div class='qy-mod-img vertical'>"+
                                 "<div class='qy-mod-link-wrap'>"+
@@ -373,10 +376,7 @@ $(function(){
                                             "</p>"+
                                             // "<p class='movie_tipTime'>"+data[i]['play_limit']+"分钟</p>"+
                                         "</div>"+
-                                        "<div class='tip_starring'>"+
-                                            "主演："+
-                                            actors+
-                                        "</div>"+
+                                        "<div class='tip_starring'>"+"主演："+actors+"</div>"+
                                         "<div class='tip_des four_line'>"+data[i]['intro']+"</div>"+
                                     "</div>"+
                                 "</a>"+
@@ -447,6 +447,7 @@ $this->registerJs($js);
                 data-page="<?= $info['current_page']?>"
                 data-url="/video/refresh-cate">
                 <?php foreach ($info['list'] as $list): ?>
+            
                     <li class="qy-mod-li">
                         <div class="qy-mod-img vertical">
                             <div class="qy-mod-link-wrap">
@@ -512,6 +513,7 @@ $this->registerJs($js);
                             </div>
                         </div>
                     </li>
+             
                 <?php endforeach;?>
             </ul>
         </div>

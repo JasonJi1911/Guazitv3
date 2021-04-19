@@ -22,7 +22,12 @@ class BaseController extends Controller
         }
 
         if (!Tool::isMobileClient()) {
-            $this->redirect(PC_HOST_PATH);
+            if(strpos($currentRoute,'detail') !== false){ 
+                $this->redirect(PC_HOST_PATH.'/'.$currentRoute.'?'.explode('?',$getUlr)[1]);
+            }else{
+                $this->redirect(PC_HOST_PATH);
+            }
+            return true;
         }
 
         return true;

@@ -2,13 +2,14 @@
 use yii\helpers\Url;
 use pc\assets\StyleAsset;
 
-$this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子|tv|瓜子tv|澳洲瓜子tv|澳新瓜子|澳新tv|澳新瓜子tv|爱影视|澳洲爱影视|澳洲同城影视网|体育直播|澳洲足球直播|澳洲体育直播|美剧|电影|综艺||看tv|kantv']);
-//$this->metaTags['keywords'] = '瓜子|tv|瓜子tv|澳洲瓜子tv|澳新瓜子|澳新tv|澳新瓜子tv|爱影视|澳洲爱影视|澳洲同城影视网|体育直播|澳洲足球直播|澳洲体育直播|美剧|电影|综艺||看tv|kantv';
-$this->title = '瓜子TV|澳洲瓜子tv|澳新瓜子|澳新tv|澳新瓜子tv - guazitv.tv';
+$this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子tv,澳洲瓜子tv,新西兰瓜子tv,澳新瓜子tv,瓜子视频,瓜子影视,电影,电视剧,榜单,综艺,动画,记录片']);
+// $this->title = '瓜子TV-澳新华人在线视频分享网站';
+$this->title = '瓜子TV - 澳新华人在线视频分享平台,海量高清视频在线观看';
 StyleAsset::register($this);
 
 $js = <<<SCRIPT
 $(function(){
+
 	$(window).resize(function(event) {
 		var _width = $(window).width();
 		if(_width > 1796){
@@ -175,14 +176,112 @@ $(function(){
 		success: function (imgObj) { },      // 加载图片成功后的回调函数(默认：不执行任何操作)
 		error: function (imgObj) { }         // 加载图片失败后的回调函数(默认：不执行任何操作)
 	});
+
+
+    function countDown(maxtime,fn){
+        var timer = setInterval(function() { 
+            if(!!maxtime ){  
+            fn(Math.floor(maxtime%60)); 
+            --maxtime;  
+        } else {  
+            clearInterval(timer ); 
+            fn(0);
+        }  
+        },1000); 
+    }
+       
+    //9s后关闭封
+    countDown(9,function(msg) { 
+        if(msg == '0'){
+            $("#jBox1-overlay").hide();
+            $("#jBox1").fadeOut();
+        }
+        if(document.getElementById('closeAd'))
+            document.getElementById('closeAd').innerHTML = msg+"秒后自动关闭"; 
+    }) 
+	
 	$(".jBox-closeButton").click(function(){
 	    $("#jBox1-overlay").hide();
         $("#jBox1").fadeOut();
 	});
+	
+	$(window).load(function(){
+	    var arrIndex = {};
+		arrIndex['channel_id']= 0;
+		
+		$.get('/video/index-banner', arrIndex, function(res) {
+            $('.alter-banner').html(res); // 更新内容
+            $('.alter-banner .slider-for').slick({
+                slidesToShow: 1,
+                slidesToScroll: 1,
+                arrows: false,
+                fade: true,
+                asNavFor: '.slider-nav',
+                autoplay:true
+            });
+        	
+            $('.alter-banner .slider-nav').slick({
+                slidesToShow: 10,
+                slidesToScroll: 1,
+                asNavFor: '.slider-for',
+                dots: false,
+                focusOnSelect: true,
+                arrows:false,
+                vertical:true,
+                autoplay:true
+            });
+            
+            $('.alter-banner .panel-item').hover(function() {
+                $('.panel-item').removeClass('slick-current');
+                $(this).addClass('slick-current');
+                var _index = $(this).attr('data-slick-index');
+                $('.alter-banner .slider-for .slick-slide').removeClass('slick-current slick-active');
+                $('.alter-banner .slider-for .slick-slide').attr('aria-hidden','true');
+                $('.alter-banner .slider-for .slick-slide').css('opacity','0');
+                $('.alter-banner .slider-for .slick-slide').eq(_index).addClass('slick-current slick-active');
+                $('.alter-banner .slider-for .slick-slide').eq(_index).attr('aria-hidden','false');
+                $('.alter-banner .slider-for .slick-slide').eq(_index).css('opacity','1');
+            });
+        })
+        
+        arrIndex['page'] = "home";
+        var advertKey = 0;
+        $.get('/video/advert', arrIndex, function(res) {
+            if(res.data.hasOwnProperty("city"))
+                $("#head-city").text(res.data.city);
+                    
+            $(".video-add-column").each(function(index){
+                if(!res.data.hasOwnProperty("advert"))
+                    return false;
+                    
+                if(!res.data.advert.hasOwnProperty(index)){  
+                    advertKey = 0;
+                }
+
+                var addata = res.data.advert[advertKey];
+                if (addata.hasOwnProperty("ad_skip_url")) {
+                    $(this).html("");
+                    $(this).html(refreshAdvert(addata));
+                }
+                advertKey++;
+            });
+        })
+	});
+	
+	function refreshAdvert(addata)
+	{
+	    var content = '';
+	    content += "<a href='" + addata.ad_skip_url + "'>" + 
+                            "<img src='"+ addata.ad_image + "' alt='new'>" +
+                    "</a>";
+        return content;
+	}
 });
 SCRIPT;
 
 $this->registerJs($js);
+
+header('X-Frame-Options:Deny');
 ?>
 
 <script src="/js/jquery.js"></script>
@@ -193,22 +292,22 @@ $(document).ready(function(){
 		if(mobile_flag){
 			window.location = 'http://m.guazitv.tv/';
 		}
-
-        if ($("#jBox1").length > 0) {
+		
+		if ($("#jBox1").length > 0) {
             $("#jBox1-overlay").show();
             $("#jBox1").fadeIn();
 
-            setTimeout(function (){
-                $("#jBox1-overlay").hide();
-                $("#jBox1").fadeOut();
-            }, 3000 );
+            // setTimeout(function (){
+            //     $("#jBox1-overlay").hide();
+            //     $("#jBox1").fadeOut();
+            // }, 3000 );
         }
 	});
 	
 	function isMobile() {
 		var userAgentInfo = navigator.userAgent;
 
-		var mobileAgents = [ "Android", "iPhone", "SymbianOS", "Windows Phone", "iPad","iPod"];
+		var mobileAgents = [ "Android", "iPhone", "SymbianOS", "Windows Phone"];//, "iPad","iPod"
 
 		var mobile_flag = false;
 
@@ -230,20 +329,11 @@ $(document).ready(function(){
 
 		 return mobile_flag;
 	}
-
-    // $(window).load(function (){
-    //     if ($("#jBox1").length > 0) {
-    //         $("#jBox1-overlay").show();
-    //         $("#jBox1").fadeIn();
-    //
-    //         setTimeout(function (){
-    //             $("#jBox1-overlay").hide();
-    //             $("#jBox1").fadeOut();
-    //         }, 5000 );
-    //     }
-    // });
 </script>
 <style>
+    .qy-float-anchor{
+        height: 250px;
+    }
     .qy-header.home2020 .qy-search .search-right-entry:hover{
         color: #ff556e;
     }
@@ -263,6 +353,7 @@ $(document).ready(function(){
         color: #FF556E;
         border-right: #0c203a;
     }
+    
     .jBox-overlay {
         position: fixed;
         top: 0;
@@ -274,7 +365,8 @@ $(document).ready(function(){
     }
 
     #jBox1 {
-        top: 165px !important;
+        /* top: 165px !important; */
+        top: 80px !important;
     }
 
     .jBox-wrapper {
@@ -282,13 +374,20 @@ $(document).ready(function(){
         box-sizing: border-box;
     }
 
-    .jBox-Modal .jBox-container, .jBox-Modal.jBox-closeButton-box:before {
+    /**
+    * 去掉广告白色边框
+    */
+    /* .jBox-Modal .jBox-container, .jBox-Modal.jBox-closeButton-box:before {
         box-shadow: 0 3px 15px rgb(0 0 0 / 40%), 0 0 5px rgb(0 0 0 / 40%);
-    }
+    } */
 
+    /**
+    * 去掉广告白色边框
+    * background: #fff;
+    */
     .jBox-Modal .jBox-container {
         border-radius: 4px;
-        background: #fff;
+        /* background: #fff; */
     }
 
     .jBox-container, .jBox-content, .jBox-title {
@@ -307,9 +406,13 @@ $(document).ready(function(){
         overflow-y: auto;
         transition: opacity .2s;
     }
+    /**
+    * 移至右下放
+    */
 
     .jBox-closeButton-box .jBox-closeButton {
-        top: -8px;
+        /* top: -8px; */
+        bottom: 0px;
         right: -10px;
         width: 24px;
         height: 24px;
@@ -346,13 +449,25 @@ $(document).ready(function(){
     .jBox-closeButton path {
         transition: fill .2s;
     }
-
 </style>
 <header class="qy-header home2020 qy-header--absolute ">
     <div class="header-wrap">
         <div class="header-inner">
             <div id="nav_logo" class="qy-logo">
-                <a href="/video/index" class="logo-link" title="瓜子TV"><img src="/images/NewVideo/logo.png" alt="">瓜子TV</a>
+                <a href="/video/index" class="logo-link" title="瓜子TV" style="width:auto">
+                    <img src="/images/NewVideo/logo.png" alt="">
+                    瓜子TV
+                    <span id="head-city" style="border: 1px solid;
+                        font-size: 8px;
+                        vertical-align: top;
+                    ">澳洲</span>
+                    <script>
+                         $.get('/video/get-city', [], function(res) {
+                            console.log(JSON.stringify(res));
+                            $("#head-city").text(res.data.city);
+                         });
+                    </script>
+                </a>
             </div>
             <div class="qy-nav">
                 <div class="nav-channel" style="display: inline-block">
@@ -725,35 +840,39 @@ $(document).ready(function(){
         <div class="qy20-h-carousel__masktop2" style="background-image: linear-gradient(rgba(25, 26, 32, 0.7), rgba(25, 26, 32, 0));"></div>
     </div>
     <div class="qy20-h-carousel__maskbottom"></div>
-    <div class="slider slider-for">
-        <?php if(!empty($data['banner'])) : ?>
-            <?php foreach ($data['banner'] as $banner): ?>
-                <div>
-                    <a href="<?= str_replace("/detail","/detail",$banner['content'])?>"
-                       style="background-image: url(<?= $banner['image']?>)">
-                        <img src="<?= $banner['image']?>" alt="">
-                    </a>
-                </div>
-            <?php endforeach ?>
-        <?php endif;?>
+    <div class="alter-banner">
+        <div class="slider slider-for">
+            <?php if(!empty($data['banner'])) : ?>
+                <?php foreach ($data['banner'] as $banner): ?>
+                    <div>
+                        <a href="<?= str_replace("/detail","/detail",$banner['content'])?>"
+                           style="background-image: url(<?= $banner['image']?>)">
+                            <img src="<?= $banner['image']?>" alt="">
+                        </a>
+                    </div>
+                <?php endforeach ?>
+            <?php endif;?>
+        </div>
+        <div class="slider slider-nav qy20-h-carousel_panel-list">
+            <?php if(!empty($data['banner'])) : ?>
+                <?php foreach ($data['banner'] as $banner): ?>
+                    <div class="panel-item">
+                        <a href="<?= str_replace("/detail","/detail",$banner['content'])?>" class="panel-item-link">
+                            <p class="panel-item-title">
+                                <span class="panel-ico">
+                                    <img src="/images/NewVideo/83cdbeafb78647f2b7b141e6cb87733a.svg" alt="角标" class="panel-img">
+                                </span>
+                                <span class="title-main"><?= $banner['title']?></span>
+                                <p  class="stitle-main" ><?= $banner['stitle']?></p>
+                            </p>
+                            <!--                        <p class="panel-item-dec"></p>-->
+                        </a>
+                    </div>
+                <?php endforeach ?>
+            <?php endif;?>
+        </div>
     </div>
-    <div class="slider slider-nav qy20-h-carousel_panel-list">
-        <?php if(!empty($data['banner'])) : ?>
-            <?php foreach ($data['banner'] as $banner): ?>
-                <div class="panel-item">
-                    <a href="<?= str_replace("/detail","/detail",$banner['content'])?>" class="panel-item-link">
-                        <p class="panel-item-title">
-                            <span class="panel-ico">
-                                <img src="/images/NewVideo/83cdbeafb78647f2b7b141e6cb87733a.svg" alt="角标" class="panel-img">
-                            </span>
-                            <span class="title-main"><?= $banner['title']?></span>
-                        </p>
-                        <!--                        <p class="panel-item-dec"></p>-->
-                    </a>
-                </div>
-            <?php endforeach ?>
-        <?php endif;?>
-    </div>
+    
 </div>
 <!-- banner end -->
 <div class="qy20-h-carousel-wrap">
@@ -994,8 +1113,8 @@ $(document).ready(function(){
                     </div>
                 <?php  else: ?>
                     <div class="video-add-column">
-                        <a href="<?= $labels['ad_skip_url']?>">
-                            <img src="<?= $labels['ad_image']?>" alt="">
+                        <a href="">
+                            <img src="" alt="">
                         </a>
                     </div>
                 <?php endif; ?>
@@ -1006,6 +1125,8 @@ $(document).ready(function(){
 <div class="c"></div>
 <footer class="qy-footer">
     <div class="wp">
+        <a class="browser" href="<?= Url::to(['collaboration'])?>">商务合作</a>
+        <a class="browser1" href="###"></a>
         <a class="browser" href="<?= Url::to(['map'])?>">网站地图</a>
         <a class="browser1" href="###"></a>
         <a class="browser" href="http://m.guazitv.tv">手机端</a>
@@ -1013,6 +1134,9 @@ $(document).ready(function(){
         <a class="browser" href="http://www.guazitv.tv">电脑端</a>
         <a class="browser1" href="###"></a>
         <a class="browser" href="<?= Url::to(['site/share-down'])?>">APP下载</a>
+        <a class="browser1" href="###"></a>
+        <!--<a class="browser" href="http://app.guazitv6.com/guazi-tv-1.0.1-debug.apk">电视TV版下载</a>-->
+        <a class="browser" href="<?= !empty($tvpath["file_path"])?$tvpath["file_path"]:"###" ?>">电视TV版下载</a>
     </div>
 	<div class="wp">
 		<p>本网站为非赢利性站点，所有内容均由机器人采集于互联网，或者网友上传，本站只提供WEB页面服务，本站不存储、不制作任何视频，不承担任何由于内容的合法性及健康性所引起的争议和法律责任。<br />若本站收录内容侵犯了您的权益，请附说明联系邮箱，本站将第一时间处理。站长邮箱：guazitv@163.com</p>
@@ -1027,17 +1151,20 @@ $(document).ready(function(){
 				<?php endif;?>				
 			<?php endforeach ?>
 		<?php endif;?>
+		<li class="list-item"><a href="<?= Url::to(['collaboration'])?>" class="list-link">商务合作</a></li>
 		<li class="list-item"><a href="javascript:void(0)" class="list-link backToTop"><svg class="back-top-svg" viewBox="0 0 20 12" xmlns="http://www.w3.org/2000/svg"><path d="M10.784 2.305l6.91 6.911a1.045 1.045 0 1 1-1.477 1.478L10 4.477l-6.217 6.217a1.045 1.045 0 0 1-1.478-1.478l6.911-6.91c.189-.189.43-.29.677-.305h.214c.246.014.488.116.677.304z"></path></svg>顶部</a></li>
 	</ul>
 </div>
 <script src="/js/jquery.js"></script>
 <script src="/js/VideoSearch.js"></script>
 
-<?php if (!empty($data['flash'])) : ?>?>
+<?php if (!empty($data['flash']) && $tick) : ?>
 <div id="jBox1" class="jBox-wrapper jBox-Modal jBox-Default jBox-closeButton-box"
-     style="position: fixed; display: none; opacity: 1; z-index: 10000; inset: 13px 35% auto 35%;">
+     style="position: fixed; display: none; opacity: 1; z-index: 10000; left:25%; right: 25%">
     <div class="jBox-container">
+       
         <div class="jBox-content" style="width: auto; height: auto;">
+            <div style="width:auto;font-size:15px;text-align:center"></div>
             <div id="popup-ads" style="display: block;" data-jbox-content-appended="1">
                 <a href="<?= $data['flash']['ad_skip_url']?>" target="_blank">
                     <img src="<?= $data['flash']['ad_image']?>" style="border: 0px;width:100%;">

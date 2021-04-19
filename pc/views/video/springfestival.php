@@ -2,14 +2,14 @@
 use yii\helpers\Url;
 use pc\assets\StyleSpring;
 
-$this->title = '瓜子TV-澳新华人在线视频分享网站';
+$this->title = '瓜子TV - 澳新华人在线视频分享平台,海量高清视频在线观看';
 StyleSpring::register($this);
 
 $cctv1src = ['http://ivi.bupt.edu.cn/hls/cctv1hd.m3u8', 'http://223.110.245.159/ott.js.chinamobile.com/PLTV/3/224/3221225852/index.m3u8', 'http://shbu.live.bestvcdn.com.cn:8080/live/program/live/cctv1hd/2300000/mnf.m3u8','http://shbu.live.bestvcdn.com.cn:8080/live/program/live/cctv1hd/4000000/mnf.m3u8', 'http://shbu.live.bestvcdn.com.cn:8080/live/program/live/cctv1/1300000/mnf.m3u8'];
 
 $js = <<<JS
 $(function(){
-    $("a").click(function(){
+    $(".livelink").click(function(){
 		$("#video").css("display", "none");
 		$("#cover").css("display", "block");
 		
@@ -36,9 +36,9 @@ $this->registerJs($js);
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
-    <meta name="description" content="" />
-    <meta name="keywords" content="" />
+    <title>瓜子TV-澳新华人在线视频分享网站</title>
+    <meta name="description" content="瓜子TV是澳大利亚、新西兰华人影视视频分享平台，网站包含最新的电视剧、美剧、日韩剧、华语电影、好莱坞电影、以及各种动漫和重大体育赛事直播。在这里，一定有你想看的一切！" />
+    <meta name="keywords" content="瓜子|tv|瓜子tv|澳洲瓜子tv|澳新瓜子|澳新tv|澳新瓜子tv|爱影视|澳洲爱影视|澳洲同城影视网|体育直播|澳洲足球直播|澳洲体育直播|美剧|电影|综艺||看tv|kantv" />
     <style>
         .nn{
             display: none;
@@ -47,30 +47,47 @@ $this->registerJs($js);
         .dn{
             display: block;
         }
-
+        
         .tvmenu{
             overflow-y: scroll;
             height: 440px;
         }
     </style>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6TXJP66KCH"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-6TXJP66KCH');
+    </script>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?acb48993923bb825b8c964792dfee455";
+        var s = document.getElementsByTagName("script")[0]; 
+        s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
 </head>
 <body>
 <div class="loading-email">
     <div class="gallery-star">
         <div class="nav-top">
             <ul class="flex-L">
-                <!--安徽卫视-->
-                <li><a id="defaultLink" href="#dcctvd" data-url="/360apitv/jiexi/jianghu.php?v=http://zbbf2.ahtv.cn/live/749.m3u8">春晚直播1</a></li>
                 <!--河北卫视-->
-                <li><a href="#dcctve" data-url="/360apitv/jiexi/jianghu.php?v=http://live2.plus.hebtv.com/hbwsx/hd/live.m3u8">春晚直播2</a></li>
-                <!--cctv4-->
-                <li><a href="#dcctv4" data-url="/360apitv/jiexi/jianghu.php?v=http://shbu.live.bestvcdn.com.cn:8080/live/program/live/cctv4/1300000/mnf.m3u8">春晚直播3</a></li>
-                <!--cctv1-->
-                <li><a href="#dcctva" data-url="/360apitv/jiexi/jianghu.php?v=http://shbu.live.bestvcdn.com.cn:8080/live/program/live/cctv1/1300000/mnf.m3u8">春晚直播4</a></li>
+                <li><a class="livelink" id="defaultLink" href="#dcctvd" data-url="/360apitv/jiexi/jianghu.php?v=http://shbu.live.bestvcdn.com.cn:8080/live/program/live/hnwshd/2300000/mnf.m3u8">春晚直播1</a></li>
+                <!--安徽卫视-->
+                <li><a class="livelink" href="#dcctve" data-url="/360apitv/jiexi/jianghu.php?v=http://shbu.live.bestvcdn.com.cn:8080/live/program/live/bjwshd/2300000/mnf.m3u8">春晚直播2</a></li>
+                <!---->
+                <li><a class="livelink" href="#dcctv4" data-url="/360apitv/jiexi/jianghu.php?v=http://hw-m-l.cztv.com/channels/lantian/channel01/1080p.m3u8">春晚直播3</a></li>
+                <!---->
+                <li><a class="livelink" href="#dcctva" data-url="https://www.youtube.com/embed/T-FKLX6xeLw">春晚直播4</a></li>
                 <!--湖南卫视-->
-                <li><a href="#dcctvb" data-url="/360apitv/jiexi/jianghu.php?v=http://shbu.live.bestvcdn.com.cn:8080/live/program/live/hnwshd/2300000/mnf.m3u8">春晚直播5</a></li>
+                <li><a class="livelink"  href="#dcctvb" data-url="https://www.youtube.com/embed/g-lxMLoGtIg">春晚直播5</a></li>
                 <!--浙江卫视-->
-                <li><a href="#dcctvc" data-url="/360apitv/jiexi/jianghu.php?v=http://hw-m-l.cztv.com/channels/lantian/channel01/1080p.m3u8">春晚直播6</a></li>
+                <li><a href="http://guazitv.tv" target="_blank">瓜子TV</a></li>
             </ul>
         </div>
         <div class="images-text clearfix">

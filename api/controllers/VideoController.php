@@ -6,11 +6,14 @@ use api\dao\RecommendDao;
 use api\dao\VideoDao;
 use api\exceptions\ApiException;
 use api\helpers\ErrorCode;
+use api\helpers\Common;
 use api\logic\ChannelLogic;
 use api\logic\PayLogic;
 use api\logic\VideoLogic;
+use api\logic\AdvertLogic;
 use api\models\video\Recommend;
 use api\models\video\UserWatchLog;
+use api\models\advert\AdvertPosition;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
 use Yii;
@@ -46,27 +49,105 @@ class VideoController extends BaseController
      */
     public function actionIndex()
     {
+     
         $channelId = $this->getParamOrFail('channel_id');
+        
+        $city = $this->getParam('city');
 
         $data = [];
 
         // 获取banner数据
-        $bannerFields = ['title', 'action', 'content', 'image'];
+        $bannerFields = ['title','action', 'content', 'image','stitle'];
         $videoDao= new VideoDao();
-        $banner = $videoDao->banner($channelId, $bannerFields);
+   
+        $banner = $videoDao->banner($channelId, $bannerFields,$city);
         $data['banner'] = $banner;
-
         // $channelId == 0 时返回首页数据
+        
         $channelLogic = new ChannelLogic();
         if ($channelId == 0) {
-            $channelData = $channelLogic->channelIndexData();
+            $channelData = $channelLogic->channelIndexData($city);
         } else {
-            $channelData = $channelLogic->channelLabelData($channelId);
+            $channelData = $channelLogic->channelLabelData($channelId,$city);
         }
 
         $data = array_merge($data, $channelData);
         return $data;
     }
+    
+
+    /**
+     * 首页&频道首页banner图
+     * @return array
+     * @throws \api\exceptions\InvalidParamException
+     */
+    public function actionBanner()
+    {
+      
+        $channelId = $this->getParamOrFail('channel_id');
+        
+        $city = $this->getParam('city');
+
+        $data = [];
+
+        // 获取banner数据
+        $bannerFields = ['title','action', 'content', 'image','stitle'];
+        $videoDao= new VideoDao();
+   
+        $banner = $videoDao->banner($channelId, $bannerFields, $city);
+        $data['banner'] = $banner;
+
+        return $data;
+    }
+    
+    /**
+     * 广告
+     * @return array
+     * @throws \api\exceptions\InvalidParamException
+     */
+    public function actionAdvert()
+    {
+      
+        $page = $this->getParam('page');
+        $city = $this->getParam('city');
+        
+        // 获取广告
+        $advertLogic = new AdvertLogic();
+        //        $advert = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX);
+        $adposition = Yii::$app->common->product == Common::PRODUCT_PC
+            ? AdvertPosition::POSITION_VIDEO_INDEX_PC : AdvertPosition::POSITION_VIDEO_INDEX;
+        $flashPos = Yii::$app->common->product == Common::PRODUCT_PC
+            ? AdvertPosition::POSITION_FLASH_PC : AdvertPosition::POSITION_FLASH_WAP;
+            
+        $playbeforePos = Yii::$app->common->product == Common::PRODUCT_PC
+            ? AdvertPosition::POSITION_PLAY_BEFORE_PC : AdvertPosition::POSITION_PLAY_BEFORE;
+        $videoTopPos = Yii::$app->common->product == Common::PRODUCT_PC
+            ? AdvertPosition::POSITION_VIDEO_TOP_PC : AdvertPosition::POSITION_VIDEO_TOP_PC;
+        $videoBottomPos = Yii::$app->common->product == Common::PRODUCT_PC
+            ? AdvertPosition::POSITION_VIDEO_BOTTOM_PC : AdvertPosition::POSITION_VIDEO_BOTTOM_PC;
+            
+        $data = [];
+        
+        if ($page == "home") {
+            $advert = $advertLogic->advertByPosition($adposition, $city);
+            $data['advert'] = $advert;
+            
+            $flash = $advertLogic->advertByPosition($flashPos, $city);
+            $data['flash'] = $flash;
+        } else if($page == "detail"){
+            $data['advert'] = [
+                'playbefore' => (object)$advertLogic->advertByPosition($playbeforePos, $city),
+                'playtop' => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_PLAY_STOP, $city),
+                'playliketop' => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_LIKE_TOP, $city),
+                'playlikebottom' => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_LIKE_BOTTOM, $city),
+                'videotop' => (object)$advertLogic->advertByPosition($videoTopPos, $city),
+                'videobottom' => (object)$advertLogic->advertByPosition($videoBottomPos, $city),
+            ];
+        }
+        
+        return $data;
+    }
+
 
     /**
      * 视频筛选

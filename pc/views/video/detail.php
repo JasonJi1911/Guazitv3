@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Url;
 
-$this->title = '瓜子视频-澳新华人在线视频分享网站';
+$this->title = '瓜子TV - 澳新华人在线视频分享平台,海量高清视频在线观看';
 
 $js = <<<JS
 $(function(){
@@ -219,7 +219,7 @@ $this->registerJs($js);
 
 <div class="index-main" xmlns="http://www.w3.org/1999/html">
     <div class="video-index-header clearfix">
-        <h1 class="fl index-logo">瓜子视频</h1>
+        <h1 class="fl index-logo">瓜子tv</h1>
         <a href="<?= Url::to(['/'])?>" class="fl index-link ml44">首页</a>
         <div class="fl video-header-drop">
             <a href="#" class="fl index-link index-link-icon">导航</a>

@@ -33,6 +33,7 @@ class RedisKey
 
     // 视频
     const VIDEO_BANNER        = 'video_banner_%d';      // 视频分类信息
+    const VIDEO_BANNER_PRODUCT = 'video_banner_product_%d';    //banner分端信息
     const CHANNEL_RECOMMEND   = 'channel_recommend_%d';   // 视频频道推荐位
     const RECOMMEND_INFO      = 'recommend_info_%d'; // 视频推荐位信息
     const VIDEO_AREA          = 'video_area';        // 视频地区
@@ -48,6 +49,7 @@ class RedisKey
     const VIDEO_USER_FAVORITE = 'video_user_favorite_%d'; //用户收藏
     const REFRESH_VIDEO       = 'refresh_video_%s';       // 换一换
     const VIDEO_SOURCE        = 'video_source';           // 视频源
+    const VIDEO_SHANNEL_SOURCE = 'video_channel_source_%d'; // 新增渠道区分视频源
     const VIDEO_COMMENT       = 'video_comment_%s';  // 评论
     const TOPIC_LIST          = 'TOPIC_LIST_%s'; // 专题列表
     const SEARCH_HOT_WORD     = 'search_hot_word'; // 热词
@@ -141,6 +143,13 @@ class RedisKey
     {
         return sprintf(self::VIDEO_BANNER, $channelId);
     }
+    
+    // 获取频道banner设置相关key,key是频道id
+    public static function videoBannerProduct($channelId)
+    {
+        return sprintf(self::VIDEO_BANNER_PRODUCT, $channelId);
+    }
+    
     //获取频道推荐位id
     public static function channelRecommend($channelId)
     {
@@ -217,6 +226,12 @@ class RedisKey
     public static function videoSource()
     {
         return self::VIDEO_SOURCE;
+    }
+    
+    // 分端视频源信息 新增方法
+    public static function videoShannelSource($channelId)
+    {
+        return  sprintf(self::VIDEO_SHANNEL_SOURCE, $channelId);
     }
     
     // 书籍评论

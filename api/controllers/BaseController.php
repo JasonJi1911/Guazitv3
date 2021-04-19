@@ -86,7 +86,7 @@ class BaseController extends Controller
         $this->checkSignature();
 
         //接口级缓存读取
-        if (in_array($this->route, Yii::$app->params['cache_route'])) {
+         if (in_array($this->route, Yii::$app->params['cache_route'])) {
             //缓存key
             $key = $this->_getKey();
             $redis = new RedisStore();

@@ -42,8 +42,8 @@ class Banner extends \xiang\db\ActiveRecord implements StatusToggleInterface
 
     const SOURCE_ALL     = 0;
     const SOURCE_APP     = 1;
-    const SOURCE_PC      = 2;
-    const SOURCE_WAP     = 3;
+    const SOURCE_WAP     = 2;
+    const SOURCE_PC      = 3;
 
     public static $actionMap = [
         self::ACTION_VIDEO       => '作品详情页',
@@ -55,8 +55,8 @@ class Banner extends \xiang\db\ActiveRecord implements StatusToggleInterface
     public static $sourceBanner=[
         self::SOURCE_ALL        => '全部',
         self::SOURCE_APP        => 'App端',
-        self::SOURCE_PC         => 'Pc端',
-        self::SOURCE_WAP        => 'Wap端',
+        self::SOURCE_WAP         => 'Wap端',
+        self::SOURCE_PC        => 'Pc端',
     ];
 
     public static $statusMap = [
