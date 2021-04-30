@@ -878,5 +878,121 @@ class Tool
 
         return '热度:'. $hot;
     }
+
+    public static function mac_buildregx($regstr,$regopt)
+    {
+        return '/'.str_replace('/','\/',$regstr).'/'.$regopt;
+    }
+
+    // CurlPOST数据提交-----------------------------------------
+    public static function mac_curl_post($url,$data,$heads=array(),$cookie='')
+    {
+        $ch = @curl_init();
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36');
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLINFO_CONTENT_LENGTH_UPLOAD,strlen($data));
+        curl_setopt($ch, CURLOPT_HEADER,0);
+        curl_setopt($ch, CURLOPT_REFERER, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 1);
+
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        if(!empty($cookie)){
+            curl_setopt($ch, CURLOPT_COOKIE, $cookie);
+        }
+        if(count($heads)>0){
+            curl_setopt ($ch, CURLOPT_HTTPHEADER , $heads );
+        }
+        $response = @curl_exec($ch);
+        if(curl_errno($ch)){//出错则显示错误信息
+            //print curl_error($ch);
+        }
+        curl_close($ch); //关闭curl链接
+        return $response;//显示返回信息
+    }
+// CurlGet数据提交-----------------------------------------
+    public static function mac_curl_get($url,$heads=array(),$cookie='')
+    {
+        $ch = @curl_init();
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36');
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_HEADER,0);
+        curl_setopt($ch, CURLOPT_REFERER, $url);
+        curl_setopt($ch, CURLOPT_POST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 1);
+        if(!empty($cookie)){
+            curl_setopt($ch, CURLOPT_COOKIE, $cookie);
+        }
+        if(count($heads)>0){
+            curl_setopt ($ch, CURLOPT_HTTPHEADER , $heads );
+        }
+        $response = @curl_exec($ch);
+        if(curl_errno($ch)){//出错则显示错误信息
+            //print curl_error($ch);die;
+        }
+        curl_close($ch); //关闭curl链接
+        return $response;//显示返回信息
+    }
+
+    /*
+    *功能：php完美实现下载远程图片保存到本地
+    *参数：文件url,保存文件目录,保存文件名称，使用的下载方式
+    *当保存文件名称为空时则使用远程文件原来的名称
+    */
+    public static function getImage($url,$save_dir='',$filename='',$type=0){
+        if(trim($url)==''){
+            return array('file_name'=>'','save_path'=>'','error'=>1);
+        }
+        if(trim($save_dir)==''){
+            $save_dir='./';
+        }
+        if(trim($filename)==''){//保存文件名
+            $ext=strrchr($url,'.');
+            if($ext!='.gif'&&$ext!='.jpg'){
+                return array('file_name'=>'','save_path'=>'','error'=>3);
+            }
+            $filename=time().$ext;
+        }
+        if(0!==strrpos($save_dir,'/')){
+            $save_dir.='/';
+        }
+        //创建保存目录
+        if(!file_exists($save_dir)&&!mkdir($save_dir,0777,true)){
+            return array('file_name'=>'','save_path'=>'','error'=>5);
+        }
+        //获取远程文件所采用的方法
+        if($type){
+            $ch=curl_init();
+            $timeout=300;
+            curl_setopt($ch,CURLOPT_URL,$url);
+            curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+            curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,$timeout);
+            $img=curl_exec($ch);
+            curl_close($ch);
+        }else{
+            ob_start();
+            readfile($url);
+            $img=ob_get_contents();
+            ob_end_clean();
+        }
+        //$size=strlen($img);
+        //文件大小
+        $fp2=@fopen($save_dir.$filename,'a');
+        fwrite($fp2,$img);
+        fclose($fp2);
+        unset($img,$url);
+        return array('file_name'=>$filename,'save_path'=>$save_dir.$filename,'error'=>0);
+    }
 }
 

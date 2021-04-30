@@ -15,6 +15,7 @@ class VideoSource extends \common\models\video\VideoSource
             [['name', 'display_order'], 'required'],
             [['display_order', 'created_at'], 'integer'],
             [['name'], 'string', 'max' => 16],
+            [['player'], 'string', 'max' => 2048],
             [['display_order'], 'integer', 'min' => DISPLAY_ORDER_MIN, 'max' => DISPLAY_ORDER_MAX],
         ];
     }
@@ -29,6 +30,7 @@ class VideoSource extends \common\models\video\VideoSource
             'name' => '源名称',
             'icon' => 'Icon图标',
             'display_order' => '排序',
+            'player' => '播放器地址',
             'created_at' => 'Created At',
         ];
     }

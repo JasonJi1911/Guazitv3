@@ -28,7 +28,9 @@ define('TASK_AWARD_SWITCH', 1);
 //解析api地址
 define('VIDEO_JIXI_URL',     'http://360apitv.com/jiexi/jianghu.php'); //播放器
 define('VIDEO_JIXI_URL_WAP' ,'http://360apitv.com/jiexi/jianghu.php');
-define('VIDEO_JSON_URL', 'http://360apitv.com/json/'); //云解析
+
+define('VIDEO_JIXI_URL_LOCAL', '/360apitv/jiexi/jianghu.php?v='); //本地播放器
+define('VIDEO_JSON_URL', 'http://guazitv.tv/jx/'); //云解析
 
 if (!defined('NUMBER_INPUT_MIN')) {
     define('NUMBER_INPUT_MIN', 0); //数字输入框默认最小值

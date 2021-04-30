@@ -3,7 +3,7 @@ return [
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=127.0.0.1;dbname=beiwo_sofa',
+            'dsn' => 'mysql:host=156.232.7.201;dbname=beiwo_sofa',
             'username' => 'beiwo_sofa',
             'password' => 'BriwSr6ZYAyAx5r6',
             'tablePrefix' => 'sf_',

@@ -122,7 +122,7 @@ $this->registerJs($js);
 </style>
 <header class="video-header video-list-header">
     <div class="video-header-top clearfix">
-        <a href="<?= Url::to(['/'])?>" class="logo fl">瓜子视频</a>
+        <a href="<?= Url::to(['/'])?>" class="logo fl">瓜子TV</a>
         <div class="search-cont fr">
             <div class="search-notice"><?= empty($hot['tab'][0]['list'][0]['video_name']) ? '': $hot['tab'][0]['list'][0]['video_name']?></>
         </div>

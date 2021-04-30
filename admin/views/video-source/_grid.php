@@ -28,6 +28,7 @@ use yii\helpers\Html;
             }
         ],
         'display_order',
+        'player',
         [
             'label' => '创建时间',
             'enableSorting' => false,

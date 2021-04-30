@@ -53,7 +53,7 @@ class CommonDao extends BaseDao
     public function videoChannel($fields = [], $index = false)
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => VideoChannel::find()
+            'query' => VideoChannel::find()->andWhere(['is_kingkong'=> 1])
         ]);
         $data = $dataProvider->toArray();
 
@@ -168,7 +168,7 @@ class CommonDao extends BaseDao
             $data = json_decode($str, true);
         } else {
                 $data = (new \yii\db\Query())
-                ->select('v.id as source_id,v.name,v.icon')
+                ->select('v.id as source_id,v.name,v.icon,v.player')
                 ->from(ChannelVideo::tableName().'as c')
                 ->leftJoin(VideoSource::tableName().'as v','v.id=c.sid')
                 ->where(['c.os_type'=>$product])

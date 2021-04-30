@@ -440,9 +440,9 @@ class VideoLogic
             }
             
             // app端不返回html的链接，暂时使用
-            $reUrl = $chapterInfo['resource_url'][$item['source_id']];
-            if (Yii::$app->common->product == Common::PRODUCT_APP && strpos($reUrl,'.html'))
-                continue;
+//            $reUrl = $chapterInfo['resource_url'][$item['source_id']];
+//            if (Yii::$app->common->product == Common::PRODUCT_APP && strpos($reUrl,'.html'))
+//                continue;
 
             if (!$sourceId) {
                 $sourceId = $item['source_id'];
@@ -452,7 +452,7 @@ class VideoLogic
                 'source_id'    => $item['source_id'],
                 'name'         => $item['name'],
                 'icon'         => $iconURL.'/'.$item['icon'],
-                'resource_url' => $this->parseUrl($chapterInfo['resource_url'][$item['source_id']], Yii::$app->common->product),
+                'resource_url' => $this->parseUrl($chapterInfo['resource_url'][$item['source_id']], Yii::$app->common->product, $item['source_id'], $sources),
                 'resource_type' => $resourceType,
                 'checked'      => $sourceId == $item['source_id'] ? 1 : 0
             ];
@@ -513,7 +513,7 @@ class VideoLogic
                     'play_chapter_id' => $chapterInfo['chapter_id'],
                     'chapter_title'   => $chapterInfo['title'],
                     'play_video_id'   => $chapterInfo['video_id'],
-                    'resource_url'    => $this->parseUrl($chapterInfo['resource_url'][$sourceId], Yii::$app->common->product),
+                    'resource_url'    => $this->parseUrl($chapterInfo['resource_url'][$sourceId], Yii::$app->common->product, $sourceId, $sources),
                     'resource_type'   => $resourceType,
                     'total_comment'   => VideoChapter::getTotalComment($chapterInfo['chapter_id']), // 获取评论总数
 //                    'total_views'     => $chapterInfo['total_views'],
@@ -579,7 +579,17 @@ class VideoLogic
      * @param $product
      * @return string
      */
-    public function parseUrl($url, $product) {
+    public function parseUrl($url, $product, $source = 0, $sourcesList = []) {
+        if ($source == 0 || empty($sourcesList))
+            $player = VIDEO_JIXI_URL_LOCAL;
+
+        if (!isset($sourcesList[$source]) || !isset($sourcesList[$source]['player']))
+            $player = VIDEO_JIXI_URL_LOCAL;
+        else
+        {
+            $player = $sourcesList[$source]['player'];
+        }
+
         if ($product == Common::PRODUCT_APP) {
             $resourceType = $this->getResourceType($url);
             if ($resourceType == VideoChapter::RESOURCE_TYPE_DATA) {
@@ -616,11 +626,13 @@ class VideoLogic
             return $url;
 
         } else if($product == Common::PRODUCT_PC){
-            return '/360apitv/jiexi/jianghu.php?v='.urlencode($url);
+            //            return '/360apitv/jiexi/jianghu.php?v='.urlencode($url);
+            return $player.urlencode($url);
 //            return $url;
         } else {
             // return VIDEO_JIXI_URL_WAP.'?v='.urlencode($url);
-            return '/360apitv/jiexi/jianghu.php?v='.urlencode($url);
+//            return '/360apitv/jiexi/jianghu.php?v='.urlencode($url);
+            return $player.urlencode($url);
 //            return $url;
         }
     }

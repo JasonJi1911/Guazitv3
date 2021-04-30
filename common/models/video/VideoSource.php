@@ -12,6 +12,7 @@ use Yii;
  * @property string $name 源名称
  * @property string $icon icon图标
  * @property int $display_order 展示序号
+ * @property string $player 播放器地址
  * @property int $created_at 创建时间
  */
 class VideoSource extends \yii\db\ActiveRecord

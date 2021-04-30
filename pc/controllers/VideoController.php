@@ -66,11 +66,14 @@ class VideoController extends BaseController
 
         $city = "";
         $redis = new RedisStore();
-        $ip = Tool::getIp();
+//        $ip = Tool::getIp();
+        $ip = "203.220.95.25";
         $cityCache=$redis->get(md5($ip."_city"));
         if (empty($cityCache)) {
             $ipAddress = Tool::getIpAddressFromStack($ip);
             $city = $ipAddress['city'];
+            if (!isset($city))
+                $city = "";
             $redis->setEx(md5($ip."_city"), $city, 3600*24*30);
         }
         else {
@@ -112,11 +115,14 @@ class VideoController extends BaseController
 
         $city = "";
         $redis = new RedisStore();
-        $ip = Tool::getIp();
+//        $ip = Tool::getIp();
+        $ip = "203.220.95.25";
         $cityCache=$redis->get(md5($ip."_city"));
         if (empty($cityCache)) {
             $ipAddress = Tool::getIpAddressFromStack($ip);
             $city = $ipAddress['city'];
+            if (!isset($city))
+                $city = "";
             $redis->setEx(md5($ip."_city"), $city, 3600*24*30);
         }
         else {
@@ -137,11 +143,14 @@ class VideoController extends BaseController
 
         $city = "";
         $redis = new RedisStore();
-        $ip = Tool::getIp();
+//        $ip = Tool::getIp();
+        $ip = "203.220.95.25";
         $cityCache=$redis->get(md5($ip."_city"));
         if (empty($cityCache)) {
             $ipAddress = Tool::getIpAddressFromStack($ip);
             $city = $ipAddress['city'];
+            if (!isset($city))
+                $city = "";
             $redis->setEx(md5($ip."_city"), $city, 3600*24*30);
         }
         else {
@@ -162,11 +171,14 @@ class VideoController extends BaseController
     {
         $city = "";
         $redis = new RedisStore();
-        $ip = Tool::getIp();
+//        $ip = Tool::getIp();
+        $ip = "203.220.95.25";
         $cityCache=$redis->get(md5($ip."_city"));
         if (empty($cityCache)) {
             $ipAddress = Tool::getIpAddressFromStack($ip);
             $city = $ipAddress['city'];
+            if (!isset($city))
+                $city = "";
             $redis->setEx(md5($ip."_city"), $city, 3600*24*30);
         }
         else {
@@ -192,11 +204,14 @@ class VideoController extends BaseController
 
         $city = "";
         $redis = new RedisStore();
-        $ip = Tool::getIp();
+//        $ip = Tool::getIp();
+        $ip = "203.220.95.25";
         $cityCache=$redis->get(md5($ip."_city"));
         if (empty($cityCache)) {
             $ipAddress = Tool::getIpAddressFromStack($ip);
             $city = $ipAddress['city'];
+            if (!isset($city))
+                $city = "";
             $redis->setEx(md5($ip."_city"), $city, 3600*24*30);
         }
         else {
@@ -276,11 +291,14 @@ class VideoController extends BaseController
         $channels = Yii::$app->api->get('/video/channels');
         $city = "";
         $redis = new RedisStore();
-        $ip = Tool::getIp();
+//        $ip = Tool::getIp();
+        $ip = "203.220.95.25";
         $cityCache=$redis->get(md5($ip."_city"));
         if (empty($cityCache)) {
             $ipAddress = Tool::getIpAddressFromStack($ip);
             $city = $ipAddress['city'];
+            if (!isset($city))
+                $city = "";
             $redis->setEx(md5($ip."_city"), $city, 3600*24*30);
         }
         else {
@@ -590,11 +608,14 @@ class VideoController extends BaseController
         
         $city = "";
         $redis = new RedisStore();
-        $ip = Tool::getIp();
+//        $ip = Tool::getIp();
+        $ip = "203.220.95.25";
         $cityCache=$redis->get(md5($ip."_city"));
         if (empty($cityCache)) {
             $ipAddress = Tool::getIpAddressFromStack($ip);
             $city = $ipAddress['city'];
+            if (!isset($city))
+                $city = "";
             $redis->setEx(md5($ip."_city"), $city, 3600*24*30);
         }
         else {
