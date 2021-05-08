@@ -122,6 +122,7 @@ $(function(){
     $(window).scroll(function () {
         if (($(window).scrollTop()+488) >= $(document).height() - $(window).height()) {
             if(isFlag) {
+                    arrIndex['keyword'] = $('#keywords').val();
                     var arrScroll = arrIndex;
                     var pages = $('.modal-paging').attr('data-pages') || 1;
                     var page  = $('.modal-paging').attr('data-page') || 1;
