@@ -18,9 +18,10 @@ class ChannelVideo extends \xiang\db\ActiveRecord{
 
     public function attributeLabels(){
         return [
-            'sid' => '',
-            'display_order' => 'sort',
-            'id' => 'os_type',
+            'sid' => '线路',
+            'display_order' => '排序',
+            'id' => 'id',
+            'os_type' => '播放渠道',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];

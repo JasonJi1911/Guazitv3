@@ -45,11 +45,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     <tr>
                         <td>
                             <label class="checkbox-inline" style="width: 150px;">
-                                <?=$form->field($model, 'sid['.$item['id'].']')->checkboxList([$item['id']=>$item['name']]);?>
+                                <?=$form->field($model, 'sid['.$item['id'].']')->checkboxList([$item['id']=>$item['name']])->label('');?>
                             </label>
                         </td>
                         <td>
-                            <?= $form->field($model, 'display_order['.$item['id'].']')->textInput(); ?>   
+                            <?= $form->field($model, 'display_order['.$item['id'].']')->textInput()->label('sort'); ?>
                         </td>
                     </tr>
                 <?php } ?>

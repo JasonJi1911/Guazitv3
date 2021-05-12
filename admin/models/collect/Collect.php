@@ -425,7 +425,7 @@ class Collect extends \common\models\collect\Collect
                 $videoDao->total_price = 0;
                 $videoDao->issue_date = time();
 
-                $info = $videoDao::find()->andWhere(['title'=>$v['vod_name']])->asArray()->one();
+                $info = $videoDao::find()->andWhere(['title'=>$v['vod_name'], 'status'=>1, 'channel_id'=>$videoDao->channel_id])->asArray()->one();
                 if (!$info)
                 {
                     if($param['isdownload'] == Collect::COLLECT_DOWNLOAD_YES)
@@ -459,7 +459,22 @@ class Collect extends \common\models\collect\Collect
                     $updateDao->oldAttributes = $info;
                     $newAttributes = [];
                     if ($videoDao->category_ids != $info['category_ids'])
-                        $newAttributes['category_ids'] = $videoDao->category_ids.','.$info['category_ids'];
+                    {
+                        $oldCatArr = explode(',', $info['category_ids']);
+                        $newCatArr = explode(',', $videoDao->category_ids);
+                        foreach ($newCatArr as $cat)
+                        {
+                            if (in_array($cat, $oldCatArr))
+                                continue;
+                            array_push($oldCatArr, $cat);
+                        }
+                        $newAttributes['category_ids'] = implode(',', array_unique($oldCatArr));
+                    }
+                    else
+                    {
+                        $oldCatArr = explode(',', $info['category_ids']);
+                        $newAttributes['category_ids'] = implode(',', array_unique($oldCatArr));
+                    }
 
                     if (strpos($info['cover'], 'video/cover') === false && $param['isdownload'] == Collect::COLLECT_DOWNLOAD_YES)
                     {
@@ -471,13 +486,16 @@ class Collect extends \common\models\collect\Collect
                         }
                     }
 
+                    $this->ParseVideoChapter($info['id'], $v['vod_play_from'], $v['vod_play_url'], $param['source'], $videoDao->channel_id, $v['vod_name'],$filterStr);
                     if ($videoDao->episode_num > $info['episode_num'])
                         $newAttributes['episode_num'] = $videoDao->episode_num;
 
-                    if (!empty($newAttributes))
-                        $updateDao->updateAttributes($newAttributes);
+                    if ($videoDao->channel_id != CollectBind::VIDEO_CHANNEL_MOVIE)
+                        $newAttributes['episode_num'] = VideoChapter::find()->where(['video_id'=>$info['id']])->count();
 
-                    $this->ParseVideoChapter($info['id'], $v['vod_play_from'], $v['vod_play_url'], $param['source'], $videoDao->channel_id, $v['vod_name'],$filterStr);
+                    if (!empty($newAttributes))
+                    $updateDao->updateAttributes($newAttributes);
+
                     $this->ParseVideoActor($info['id'], $v['vod_actor']);
                     $this->ParseVideoActor($info['id'], $v['vod_director'], 2);
                     $des = $des.'数据更新成功!!';
@@ -614,7 +632,7 @@ class Collect extends \common\models\collect\Collect
         if (!isset($video_id))
             return;
 
-        $titleBak = ['正片', 'HD', '高清', 'HD1080P中字', 'HD高清', 'DVD', 'BD超清中字', 'BD国语超清', '高清国语中文字幕', 'BD', 'BD高清中字', 'HD720P中字', 'BD高清', 'HD国语', $video_name ];
+        $titleBak = ['正片', 'HD', '高清', 'HD1080P中字', 'HD高清', 'DVD', 'BD超清中字', 'BD国语超清', '高清国语中文字幕', 'BD', 'BD高清中字', 'HD720P中字', 'BD高清', 'HD国语', '1080P', $video_name ];
 //        $videoChapter = new VideoChapter();
 
         $cj_play_from_arr = explode('$$$',$play_from);
@@ -647,7 +665,8 @@ class Collect extends \common\models\collect\Collect
                 }
 
                 if ($channel_id == CollectBind::VIDEO_CHANNEL_DRAMA
-                    || $channel_id == CollectBind::VIDEO_CHANNEL_ANIMATION)
+                    || $channel_id == CollectBind::VIDEO_CHANNEL_ANIMATION
+                    || $channel_id == CollectBind::VIDEO_CHANNEL_DOCUMENTARY)
                 {
                     if (strpos($title,"第0") !== false){
                         $title = str_replace("第0","第",$title);
@@ -659,8 +678,17 @@ class Collect extends \common\models\collect\Collect
                         $title = "正片";
                     }
                 }
+                else if ($channel_id == CollectBind::VIDEO_CHANNEL_ENTER)
+                {
+                    $pattern="/\\d{1,4}((-|\/)\d{1,2}){2}(\s{0,5}\\d{1,2}(\:\d{1,2}){1,2}){0,1}/";
+                    preg_match($pattern,$title,$match);
+
+                    if (!empty($match) && !empty($match[0]))
+                        $title = str_replace(array('/','-'),'',$match[0]);
+                }
 
                 $diplay_order = 0;
+                $chapterurlArr = array();
                 $foundKey = array_search($title, $old_chapter_Arr);
                 if ($foundKey !== false) {
                     $chapter = $old_chapter_list[$foundKey];

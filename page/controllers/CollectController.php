@@ -4,6 +4,7 @@ namespace page\controllers;
 use admin\models\collect\CollectBind;
 use admin\models\video\VideoChannel;
 use admin\widgets\MyArrayDataProvider;
+use common\models\advert\Advert;
 use Yii;
 use yii\helpers\Url;
 use common\helpers\Tool;
@@ -83,5 +84,51 @@ class CollectController extends Controller
 
         $result = $collectModel->vod_data($param,$res );
         return $result;
+    }
+
+    public function actionRunClick()
+    {
+        $advertId = Yii::$app->request->get('advert_id');
+
+        if (!isset($advertId))
+        {
+            echo '没有advertId';
+            return;
+        }
+
+        $adverMo = Advert::find()->andWhere(['id'=>$advertId])->one();
+
+        if (!isset($adverMo))
+        {
+            echo '广告不存在';
+            return;
+        }
+
+        $adUrl = $adverMo->skip_url;
+
+        echo $adUrl;
+
+        $count = rand(1,10);
+        $count = Yii::$app->request->get('count', $count);
+
+        for ($i = 0; $i < $count; $i++) {
+            // code...
+            $proxyUrl = "http://tiqu.linksocket.com:81/abroad?num=1&type=2&lb=1&sb=0&flow=1&regions=au&port=1&n=0";
+            $getData = Tool::httpGet($proxyUrl);
+            $proxyData = json_decode($getData['data']);
+
+            echo $getData['data'];
+
+            if ($proxyData->success != true || count($proxyData->data) <= 0) {
+                $data["status"] = 500;
+                $data["msg"] = "动态IP失效";
+                echo Tool::responseJson(0, '操作成功', $data);
+                continue;
+            }
+
+            $proxyResult = Tool::httpGetProxy($adUrl,  $proxyData->data[0]->ip, $proxyData->data[0]->port);
+            echo($i);
+            // sleep(5);
+        }
     }
 }

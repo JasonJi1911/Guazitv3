@@ -112,5 +112,36 @@ use common\helpers\Tool;
         return $this->redirect('index');
     }
 
+    public function actionUpdate()
+    {
+        $id = Yii::$app->request->get('id');
+        $osType = Yii::$app->request->get('os_type', commonChannelVideo::OS_TYPE_APP);
 
+        if (Yii::$app->request->isPost) {
+            $post = Yii::$app->request->post();
+            if(is_array($post['ChannelVideo'])){
+                $upDao = new ChannelVideo();
+                $oldAttr =  ChannelVideo::find()->andWhere(['id' => $id])->asArray()->one();
+                $upDao->oldAttributes = $oldAttr;
+                $post['ChannelVideo']['os_type'] = $osType;
+                $rows = $upDao->updateAttributes($post['ChannelVideo']);
+            }
+            return $this->redirect(['index', 'os_type' => $osType]);
+        }
+
+        $sid=[];
+        $model = commonChannelVideo::find()->andWhere(['os_type'=>$osType, 'id'=>$id])->one();
+
+        $channelVideoData=ChannelVideo::find()->where(['os_type'=>$osType])->asArray()->all();
+        foreach($channelVideoData as $key=>$val){
+            if ($val['sid'] != $model->sid)
+                $sid[]=$val['sid'];
+        }
+        $videoSource=VideoSource::find()->where(['not in','id',$sid])->orderBy("display_order desc")->asArray()->all();
+
+        return $this->render('_update', [
+            'model'=>$model,
+            'videoSource' => $videoSource,
+        ]);
+    }
  }

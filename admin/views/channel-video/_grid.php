@@ -51,6 +51,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'dataProvider' => $dataProvider,
             'columns' => [
                 'id',
+                'os_type',
                 [
                     'attribute' => 'os_type',
                     'enableSorting' => false,
@@ -79,7 +80,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 ],
                 [
                     'class' => 'metronic\grid\ActionColumn',
-                    'template' => '{delete}',
+                    'template' => '{delete}{update}',
+                    'buttons' => [
+                        'update' => function ($url, $model) {
+                            return Html::a("<i class='fa fa-edit'> 编辑</i>", ['channel-video/update', 'id' => $model->id, 'os_type' => $model->os_type],
+                                ['class' => 'btn btn-outline btn-circle btn-xs red']);
+                        },
+                    ]
                 ],
             ],
         ]); ?>
