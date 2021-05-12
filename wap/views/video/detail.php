@@ -93,42 +93,42 @@ $(function(){
          window.location.href = "/video/detail?video_id="+videoId+"&chapter_id="+chapterId+"&source_id="+sourceId;
     });
     
-    $("#my-iframe").load(function (){
-        var interval = setInterval(showalert, 1000); 
-        function showalert() 
-        {
-            var time = $("#my-iframe").contents().find(".yzmplayer-ptime").text();
-            var dTime = $("#my-iframe").contents().find('.yzmplayer-dtime').text();
-
-            if (time == "" || dTime == ""  
-                || time == undefined || dTime == undefined 
-                || dTime == "00:00" || dTime == "0:00" || dTime == "0:0")
-                return ;
-            
-            var videoId = $('.switch-next.on').attr('data-video-id');
-            var chapterId = $('#next_chapter').val();
-            if(chapterId == 0)
-            {
-                clearInterval(interval);
-                return;
-            }
-            
-            var sourceId = $('.on .next-source').attr('data-source-id');
-            var intStime = parseInt(time.split(':')[0] * 60) + parseInt(time.split(':')[1]);
-            var intDtime = parseInt(dTime.split(':')[0] * 60) + parseInt(dTime.split(':')[1]);
-            if(dTime.split(':').length == 3)
-            {
-               intStime = parseInt(time.split(':')[0] * 3600) + parseInt(time.split(':')[1] * 60) + parseInt(time.split(':')[2]); 
-               intDtime = parseInt(dTime.split(':')[0] * 3600) + parseInt(dTime.split(':')[1] * 60) + parseInt(dTime.split(':')[2]); 
-            }
-
-             if ((intStime+10) >= intDtime)
-             {
-                 window.location.href = "/video/detail?video_id="+videoId+"&chapter_id="+chapterId+"&source_id="+sourceId;
-                 clearInterval(interval);
-             }
-        }
-    });
+//    $("#my-iframe").load(function (){
+//        var interval = setInterval(showalert, 1000); 
+//        function showalert() 
+//        {
+//            var time = $("#my-iframe").contents().find(".yzmplayer-ptime").text();
+//            var dTime = $("#my-iframe").contents().find('.yzmplayer-dtime').text();
+//
+//            if (time == "" || dTime == ""  
+//                || time == undefined || dTime == undefined 
+//                || dTime == "00:00" || dTime == "0:00" || dTime == "0:0")
+//                return ;
+//            
+//            var videoId = $('.switch-next.on').attr('data-video-id');
+//            var chapterId = $('#next_chapter').val();
+//            if(chapterId == 0)
+//            {
+//                clearInterval(interval);
+//                return;
+//            }
+//            
+//            var sourceId = $('.on .next-source').attr('data-source-id');
+//            var intStime = parseInt(time.split(':')[0] * 60) + parseInt(time.split(':')[1]);
+//            var intDtime = parseInt(dTime.split(':')[0] * 60) + parseInt(dTime.split(':')[1]);
+//            if(dTime.split(':').length == 3)
+//            {
+//               intStime = parseInt(time.split(':')[0] * 3600) + parseInt(time.split(':')[1] * 60) + parseInt(time.split(':')[2]); 
+//               intDtime = parseInt(dTime.split(':')[0] * 3600) + parseInt(dTime.split(':')[1] * 60) + parseInt(dTime.split(':')[2]); 
+//            }
+//
+//             if ((intStime+10) >= intDtime)
+//             {
+//                 window.location.href = "/video/detail?video_id="+videoId+"&chapter_id="+chapterId+"&source_id="+sourceId;
+//                 clearInterval(interval);
+//             }
+//        }
+//    });
     
 });
 JS;
@@ -370,8 +370,9 @@ $this->registerJs($js);
                                             </a>
                                             <a class="btn-add-play" href="javascript:void(0);" id="hide-add">
                                                 <span id="timer1" style="color:#FF556E;margin-right: 10px;">10</span>
-                                                跳过广告
-                                                <i class="ad-arrow-wrapper ad-arrow"></i>
+                                                秒跳过广告
+<!--                                                跳过广告-->
+<!--                                                <i class="ad-arrow-wrapper ad-arrow"></i>-->
                                             </a>
                                         </div>
                                     <!--<?php endif;?>-->
@@ -646,7 +647,7 @@ $this->registerJs($js);
                         {
                             // $("#easiBox").remove();
                             $(".add-box img").attr("src", adddata.ad_image);
-                            setTimeout("document.getElementById('easiImgBox').style.display='none'",30000);
+                            setTimeout("document.getElementById('easiImgBox').style.display='none'",15000);
                             countPicAds();
                         }
                     }
