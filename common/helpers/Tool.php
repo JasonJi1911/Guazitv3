@@ -248,6 +248,7 @@ class Tool
             'area' => $address['country_name'],
             'province' => $address['region_name'],
             'city' => $address['city'],
+            'region_code' => $address['region_code'],
         ];
 
         // $logpath = ROOT_PATH.'/log/IPTrace.txt';

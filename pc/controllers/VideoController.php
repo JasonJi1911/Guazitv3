@@ -16,6 +16,20 @@ use common\helpers\RedisStore;
 
 class VideoController extends BaseController
 {
+    private function ReformateCityName($region_code, $city)
+    {
+        if ($region_code == 'NSW' && $city != '悉尼')
+            $city = '悉尼';
+
+        if ($region_code == 'QLD' && $city != '布里斯班')
+            $city = '布里斯班';
+
+        if ($region_code == 'VIC' && $city != '墨尔本')
+            $city = '墨尔本';
+
+        return $city;
+    }
+
     /**
      * 视频首页
      */
@@ -72,6 +86,7 @@ class VideoController extends BaseController
         if (empty($cityCache)) {
             $ipAddress = Tool::getIpAddressFromStack($ip);
             $city = $ipAddress['city'];
+            $city = $this->ReformateCityName($ipAddress['region_code'], $city);
             if (!isset($city))
                 $city = "";
             $redis->setEx(md5($ip."_city"), $city, 3600*24*30);
@@ -121,6 +136,7 @@ class VideoController extends BaseController
         if (empty($cityCache)) {
             $ipAddress = Tool::getIpAddressFromStack($ip);
             $city = $ipAddress['city'];
+            $city = $this->ReformateCityName($ipAddress['region_code'], $city);
             if (!isset($city))
                 $city = "";
             $redis->setEx(md5($ip."_city"), $city, 3600*24*30);
@@ -149,6 +165,9 @@ class VideoController extends BaseController
         if (empty($cityCache)) {
             $ipAddress = Tool::getIpAddressFromStack($ip);
             $city = $ipAddress['city'];
+
+            $city = $this->ReformateCityName($ipAddress['region_code'], $city);
+
             if (!isset($city))
                 $city = "";
             $redis->setEx(md5($ip."_city"), $city, 3600*24*30);
@@ -177,6 +196,7 @@ class VideoController extends BaseController
         if (empty($cityCache)) {
             $ipAddress = Tool::getIpAddressFromStack($ip);
             $city = $ipAddress['city'];
+            $city = $this->ReformateCityName($ipAddress['region_code'], $city);
             if (!isset($city))
                 $city = "";
             $redis->setEx(md5($ip."_city"), $city, 3600*24*30);
@@ -210,6 +230,7 @@ class VideoController extends BaseController
         if (empty($cityCache)) {
             $ipAddress = Tool::getIpAddressFromStack($ip);
             $city = $ipAddress['city'];
+            $city = $this->ReformateCityName($ipAddress['region_code'], $city);
             if (!isset($city))
                 $city = "";
             $redis->setEx(md5($ip."_city"), $city, 3600*24*30);
@@ -297,6 +318,7 @@ class VideoController extends BaseController
         if (empty($cityCache)) {
             $ipAddress = Tool::getIpAddressFromStack($ip);
             $city = $ipAddress['city'];
+            $city = $this->ReformateCityName($ipAddress['region_code'], $city);
             if (!isset($city))
                 $city = "";
             $redis->setEx(md5($ip."_city"), $city, 3600*24*30);
@@ -614,6 +636,7 @@ class VideoController extends BaseController
         if (empty($cityCache)) {
             $ipAddress = Tool::getIpAddressFromStack($ip);
             $city = $ipAddress['city'];
+            $city = $this->ReformateCityName($ipAddress['region_code'], $city);
             if (!isset($city))
                 $city = "";
             $redis->setEx(md5($ip."_city"), $city, 3600*24*30);
