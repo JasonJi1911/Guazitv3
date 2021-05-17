@@ -82,7 +82,7 @@ $this->params['breadcrumbs'][] = $this->title;
         [
             'class' => 'metronic\grid\ActionColumn',
             'header' => "采集操作",
-            'template' => '{daily} {weekly} {all}',
+            'template' => '{daily} {weekly} {all} {cancelAll}',
             'buttons' => [
                 'daily' => function ($url, $model) {
                     return Html::actionButton('采集当天',
@@ -155,6 +155,17 @@ $this->params['breadcrumbs'][] = $this->title;
                         'eye',
                         'blue',
                         ['title' => '采集所有']);
+                },
+                'cancelAll' => function ($url, $model) {
+                    return Html::actionButton('清空线路',
+                        [
+                            '/collect/cancel-all',
+                            'cjflag' => md5($model->collect_url),
+                            'source' => $model->video_source,
+                        ],
+                        'times',
+                        'red',
+                        ['title' => '清空线路']);
                 }
             ]
         ],

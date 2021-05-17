@@ -400,7 +400,7 @@ class VideoLogic
         if (!$videoInfo) { //视频不存在
             throw new ApiException(ErrorCode::EC_VIDEO_NOT_EXIST);
         }
-        
+
         // 获取影片剧集信息
         $videos = $videoDao->videoChapter($videoId, [], true);
         if (!$videos) { // 没有剧集抛出异常
@@ -429,29 +429,24 @@ class VideoLogic
 
         //APP端 全走视频流, 网页端全走IFrame嵌套
         $resourceType = Yii::$app->common->product == Common::PRODUCT_APP ? VideoChapter::RESOURCE_TYPE_DATA : VideoChapter::RESOURCE_TYPE_HTML;
-        
-        $ossHelper = new OssHelper();
-        $iconURL= $ossHelper->server_point;
 
         $source = [];
         foreach ($sources as $item) {
             if (!in_array($item['source_id'], array_keys($chapterInfo['resource_url'])) || empty($chapterInfo['resource_url'][$item['source_id']])) { // source_id不在视频里面或者没有视频播放连接
                 continue;
             }
-            
-            // app端不返回html的链接，暂时使用
-//            $reUrl = $chapterInfo['resource_url'][$item['source_id']];
-//            if (Yii::$app->common->product == Common::PRODUCT_APP && strpos($reUrl,'.html'))
-//                continue;
 
             if (!$sourceId) {
                 $sourceId = $item['source_id'];
             }
 
+            //补全域名
+            $toUrl=new OssUrlHelper($item['icon']);
             $source[] = [
                 'source_id'    => $item['source_id'],
                 'name'         => $item['name'],
-                'icon'         => $iconURL.'/'.$item['icon'],
+                'icon'         => $toUrl->toUrl(),
+                //'icon'         => $item['icon'],
                 'resource_url' => $this->parseUrl($chapterInfo['resource_url'][$item['source_id']], Yii::$app->common->product, $item['source_id'], $sources),
                 'resource_type' => $resourceType,
                 'checked'      => $sourceId == $item['source_id'] ? 1 : 0
@@ -463,6 +458,7 @@ class VideoLogic
         $purchaseInfo = $this->_purchaseInfo($videoId, $videoInfo, $chapterInfo['chapter_id'], $videos);
         // 重新格式化数据
         $videos = array_values($videos);
+        // $videosBak = $videos;
         // 格式化章节信息
         foreach ($videos as $key => &$video) {
             if (mb_strlen($video['title']) > 6) {
@@ -474,7 +470,7 @@ class VideoLogic
             $video['mime_type']     = substr(strrchr($video['resource_url'][$sourceId], '.'), 1);
             $video['last_chapter']  = isset($videos[$key-1]) ? $videos[$key-1]['chapter_id'] : 0;
             $video['next_chapter']  = isset($videos[$key+1]) ? $videos[$key+1]['chapter_id'] : 0;
-            unset($video['resource_url']); // 安全考虑，删除剧集播放连接，防止全部播放连接一次性全返回
+            // unset($video['resource_url']); // 安全考虑，删除剧集播放连接，防止全部播放连接一次性全返回
         }
 
         // 演员信息
@@ -505,6 +501,8 @@ class VideoLogic
         // 获取用户观看视频任务状态
         $taskLogic = new TaskLogic();
         $taskStatus = $taskLogic->taskStatus(Yii::$app->user->id, TaskInfo::TASK_ACTION_PLAY_VIDEO);
+        $sourceFilter = $this->filterResourceChapter($videos, $sources, $sourceId);
+        $souceVideos = ArrayHelper::index($sourceFilter, 'resId')[$sourceId]['data'];
         $data = [
             'info' => array_merge($videoInfo,
                 [
@@ -519,13 +517,15 @@ class VideoLogic
 //                    'total_views'     => $chapterInfo['total_views'],
                     'play_limit'      => $chapterInfo['play_limit'],
                     'last_play_time'  => intval($lastPlayLInfo['lastPlayTime']),
-                    'next_chapter'    => ArrayHelper::index($videos, 'chapter_id')[$chapterInfo['chapter_id']]['next_chapter'],
+                    'next_chapter'    => ArrayHelper::index($souceVideos, 'chapter_id')[$chapterInfo['chapter_id']]['next_chapter'],
+                    'last_chapter'    => ArrayHelper::index($souceVideos, 'chapter_id')[$chapterInfo['chapter_id']]['last_chapter'],
                     'video_task_time' => $taskStatus ? 0 : 60, //TODO
                     'videos'          => $videos,
                     'source'          => $source,
                     'actors'          => array_values($actors),
                     'director'        => $director,
                     'actor'           => $actor,
+                    'filter'          => $sourceFilter,
                 ]),
             'guess_like'    => $guessLike, // 猜你喜欢
             'comments'      => $commentData, // 评论
@@ -541,17 +541,49 @@ class VideoLogic
             ? AdvertPosition::POSITION_VIDEO_TOP_PC : AdvertPosition::POSITION_VIDEO_TOP_PC;
         $videoBottomPos = Yii::$app->common->product == Common::PRODUCT_PC
             ? AdvertPosition::POSITION_VIDEO_BOTTOM_PC : AdvertPosition::POSITION_VIDEO_BOTTOM_PC;
-            
+
         $data['advert'] = [
             (object)$advertLogic->advertByPosition($playbeforePos, $city),
-            (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_PLAY_STOP),
-            (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_LIKE_TOP),
-            (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_LIKE_BOTTOM),
-            (object)$advertLogic->advertByPosition($videoTopPos),
-            (object)$advertLogic->advertByPosition($videoBottomPos),
+            (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_PLAY_STOP, $city),
+            (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_LIKE_TOP, $city),
+            (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_LIKE_BOTTOM, $city),
+            (object)$advertLogic->advertByPosition($videoTopPos, $city),
+            (object)$advertLogic->advertByPosition($videoBottomPos, $city),
         ];
 
         return $data;
+    }
+
+    private function filterResourceChapter($videos, $sources, $sourceId)
+    {
+        $data = [];
+        $sourceArr = array_column($sources, 'name', 'source_id');
+        foreach ($videos as &$chap)
+        {
+            $urlList = $chap['resource_url'];
+            foreach (array_keys($urlList) as $souid) {
+                if (!$urlList[$souid] || empty($urlList[$souid]) || empty($sourceArr[$souid])) {
+                    continue;
+                }
+                if (!isset($data[$souid])) {
+                    $data[$souid] = ['resId' => $souid, 'resName' => $sourceArr[$souid]];
+                }
+
+                if (!is_array($data[$souid]['data'])) {
+                    $data[$souid]['data'] = [];
+                }
+                array_push($data[$souid]['data'], $chap);
+            }
+            unset($chap['resource_url']); // 安全考虑，删除剧集播放连接，防止全部播放连接一次性全返回
+        }
+
+        foreach ($data[$sourceId]['data'] as $key => &$video) {
+            $video['last_chapter']  = isset($data[$sourceId]['data'][$key-1]) ? $data[$sourceId]['data'][$key-1]['chapter_id'] : 0;
+            $video['next_chapter']  = isset($data[$sourceId]['data'][$key+1]) ? $data[$sourceId]['data'][$key+1]['chapter_id'] : 0;
+            // unset($video['resource_url']); // 安全考虑，删除剧集播放连接，防止全部播放连接一次性全返回
+        }
+
+        return array_values($data);
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace admin\controllers;
 
 use admin\models\collect\CollectBind;
+use admin\models\video\Video;
 use admin\models\video\VideoChannel;
 use admin\widgets\MyArrayDataProvider;
 use Yii;
@@ -228,5 +229,35 @@ class CollectController extends BaseController
         {
             return Tool::responseJson(1, '类型绑定失败');
         }
+    }
+
+    public function actionCancelAll()
+    {
+        $param = [];
+        $param['cjflag'] = Yii::$app->request->get('cjflag');
+        $param['page'] = Yii::$app->request->get('page');
+        $param['source'] = Yii::$app->request->get('source');
+
+        if (!isset($param['page']))
+            $param['page'] = 1;
+
+        $videoCount = Video::find()->count();
+
+        $recordcount = $videoCount;
+        $page = $param['page'];
+        $pagesize = 30;
+        $pagecount = intval(ceil(($videoCount / $pagesize)));
+
+        $array_page = [];
+        $array_page['page'] = $page;
+        $array_page['pagecount'] = $pagecount;
+        $array_page['pagesize'] = $pagesize;
+        $array_page['recordcount'] = $recordcount;
+
+        $array_data = Video::find()->select(['id','title'])->limit($pagesize)->offset(($page-1)*$pagesize)->asArray()->all();
+        $res = ['code'=>1, 'msg'=>'json', 'page'=>$array_page, 'data'=>$array_data ];
+        $collectModel = new Collect();
+        $result = $collectModel->cancel_source($param,$res );
+        return $this->render('_cancelSource', ['data' => $res, 'messages' => $result, 'param'=>$param]);
     }
 }

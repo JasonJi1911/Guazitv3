@@ -14,6 +14,7 @@ use admin\models\video\VideoChapter;
 use common\models\video\VideoActor;
 use admin\models\video\Actor;
 use function GuzzleHttp\Psr7\str;
+use yii\helpers\ArrayHelper;
 
 class Collect extends \common\models\collect\Collect
 {
@@ -810,5 +811,51 @@ class Collect extends \common\models\collect\Collect
 //                }
             }
         }
+    }
+
+    public function cancel_source($param,$data)
+    {
+        $vidArr = array_column($data['data'], 'id');
+        $vidStr = implode(',', $vidArr);
+
+        $allChapters = VideoChapter::find()->select(['id','video_id','resource_url'])->where(['video_id'=>$vidArr])->asArray()->all();
+        $allChapters = ArrayHelper::index($allChapters, null, 'video_id');
+
+        $retResult = [];
+        foreach($data['data'] as $k=>$v) {
+            $video_name = $v['title'];
+            $video_id = $v['id'];
+            $source = $param['source'];
+            $color = 'f-red';
+            $des = '没有对应线路视频';
+            $msg = '';
+            $tmp = '';
+
+            $retResult[$k]['color'] = $color;
+            $retResult[$k]['des'] = $des;
+            $retResult[$k]['msg'] = $msg;
+            $retResult[$k]['tmp'] = $tmp;
+            $retResult[$k]['vod_name'] = $video_name;
+
+            $chapters = $allChapters[$video_id]; //获取单个视频的所有集数
+            if (!isset($chapters) || !is_array($chapters) || count($chapters) <= 0)
+                continue;
+
+            foreach ($chapters as $cp)
+            {
+                $res_url_arr = json_decode($cp['resource_url'], true);
+                if (!ArrayHelper::keyExists($source, $res_url_arr, false))
+                    continue;
+
+                ArrayHelper::remove($res_url_arr, $source);
+                $updateDao = new VideoChapter();
+                $updateDao->oldAttributes = $cp;
+                $updateDao->updateAttributes(['resource_url' => json_encode($res_url_arr)]);
+            }
+            $des = '线路清空成功';
+            $retResult[$k]['des'] = $des;
+            $retResult[$k]['color'] = 'f-green';
+        }
+        return $retResult;
     }
 }

@@ -139,10 +139,11 @@ $(function(){
         $(this).addClass('on');
         var videoId = $(this).attr('data-video-id');
         var chapterId = $(this).attr('data-chapter-id');
-        var sourceId = $('#video-source').val();
+        var sourceId = $('.sourceTab .hover a').attr('data-source-id');
         var type = $(this).attr('data-type');
         
-        window.location.href = '/video/detail?video_id=' + videoId + '&chapter_id=' + chapterId
+        window.location.href = '/video/detail?video_id=' + videoId + '&chapter_id=' + chapterId+"&source_id="+sourceId;
+        // window.location.href = '/video/detail?video_id=' + videoId + '&chapter_id=' + chapterId;
     });
         
     //切换视频源
@@ -153,41 +154,49 @@ $(function(){
          window.location.href = "/video/detail?video_id="+videoId+"&chapter_id="+chapterId+"&source_id="+sourceId;
     });
     
-    $("#my-iframe").load(function (){
-        var interval = setInterval(showalert, 1000); 
-        function showalert() 
-        {
-            var time = $("#my-iframe").contents().find(".yzmplayer-ptime").text();
-            var dTime = $("#my-iframe").contents().find('.yzmplayer-dtime').text();
+    // $("#my-iframe").load(function (){
+    //     var interval = setInterval(showalert, 1000); 
+    //     function showalert() 
+    //     {
+    //         var time = $("#my-iframe").contents().find(".yzmplayer-ptime").text();
+    //         var dTime = $("#my-iframe").contents().find('.yzmplayer-dtime').text();
 
-            if (time == "" || dTime == ""  
-                || time == undefined || dTime == undefined 
-                || dTime == "00:00" || dTime == "0:00" || dTime == "0:0")
-                return ;
+    //         if (time == "" || dTime == ""  
+    //             || time == undefined || dTime == undefined 
+    //             || dTime == "00:00" || dTime == "0:00" || dTime == "0:0")
+    //             return ;
             
-            var videoId = $('.switch-next.selected').attr('data-video-id');
-            var chapterId = $('#next_chapter').val();
-            if(chapterId == 0)
-            {
-                clearInterval(interval);
-                return;
-            }
+    //         var videoId = $('.switch-next.selected').attr('data-video-id');
+    //         var chapterId = $('#next_chapter').val();
+    //         if(chapterId == 0)
+    //         {
+    //             clearInterval(interval);
+    //             return;
+    //         }
             
-            var sourceId = $('.on .next-source').attr('data-source-id');
-            var intStime = parseInt(time.split(':')[0] * 60) + parseInt(time.split(':')[1]);
-            var intDtime = parseInt(dTime.split(':')[0] * 60) + parseInt(dTime.split(':')[1]);
-            if(dTime.split(':').length == 3)
-            {
-               intStime = parseInt(time.split(':')[0] * 3600) + parseInt(time.split(':')[1] * 60) + parseInt(time.split(':')[2]); 
-               intDtime = parseInt(dTime.split(':')[0] * 3600) + parseInt(dTime.split(':')[1] * 60) + parseInt(dTime.split(':')[2]); 
-            }
+    //         var sourceId = $('.on .next-source').attr('data-source-id');
+    //         var intStime = parseInt(time.split(':')[0] * 60) + parseInt(time.split(':')[1]);
+    //         var intDtime = parseInt(dTime.split(':')[0] * 60) + parseInt(dTime.split(':')[1]);
+    //         if(dTime.split(':').length == 3)
+    //         {
+    //           intStime = parseInt(time.split(':')[0] * 3600) + parseInt(time.split(':')[1] * 60) + parseInt(time.split(':')[2]); 
+    //           intDtime = parseInt(dTime.split(':')[0] * 3600) + parseInt(dTime.split(':')[1] * 60) + parseInt(dTime.split(':')[2]); 
+    //         }
 
-             if ((intStime+10) >= intDtime)
-             {
-                 window.location.href = "/video/detail?video_id="+videoId+"&chapter_id="+chapterId+"&source_id="+sourceId;
-                 clearInterval(interval);
-             }
-        }
+    //          if ((intStime+10) >= intDtime)
+    //          {
+    //              window.location.href = "/video/detail?video_id="+videoId+"&chapter_id="+chapterId+"&source_id="+sourceId;
+    //              clearInterval(interval);
+    //          }
+    //     }
+    // });
+    
+    $('.func-swicthCap').click(function(){
+        var videoId = $(this).attr('data-video-id');
+        var chapterId = $(this).attr('data-chapter-id');
+        var sourceId = $('.sourceTab .hover a').attr('data-source-id');
+        
+        window.location.href = '/video/detail?video_id=' + videoId + '&chapter_id=' + chapterId+"&source_id="+sourceId;
     });
     
 });
@@ -259,7 +268,7 @@ $this->registerJs($js);
         {
             color: rgb(255, 85, 110);
         }
-        
+
         .c-videoplay {
             z-index: 930;
             position: absolute;
@@ -270,7 +279,7 @@ $this->registerJs($js);
             -o-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
         }
-        
+
         .c-player-icon {
             width: 4.0rem;
             height: 4.0rem;
@@ -282,13 +291,13 @@ $this->registerJs($js);
             background-repeat: no-repeat;
             cursor: pointer;
         }
-        
+
         .btn-add-play{
             z-index: 1000;
             display: block;
             bottom: 60px;
             right: 10px;
-            
+
             width: 80px;
             line-height: 2.5;
             /* background-color: rgb(51, 51, 51); */
@@ -300,7 +309,7 @@ $this->registerJs($js);
             background: rgb(51, 51, 51);
             opacity: 0.8;
         }
-        
+
         .btn-add-detail{
             z-index: 1000;
             display: block;
@@ -316,7 +325,7 @@ $this->registerJs($js);
             background: rgb(51, 51, 51);
             opacity: 0.8;
         }
-        
+
         .ad-arrow {
             display: inline-block;
             width: 6px;
@@ -325,19 +334,19 @@ $this->registerJs($js);
             border-top: 1px solid #fff;
             border-right: 1px solid #fff;
             -webkit-transform: rotate(
-                45deg
+                    45deg
             );
             transform: rotate(
-                45deg
+                    45deg
             );
             margin: 0 2px;
             vertical-align: 1px;
         }
-        
+
         .add-box a:hover{
             color: #FF556E;
         }
-        
+
         .wechat-block{
             width: 100%;
             height: 100%;
@@ -345,6 +354,31 @@ $this->registerJs($js);
             /* top: 0; */
             /* left: 0; */
             z-index: 1500;
+        }
+
+        .qy-svgicon-rightarrow_cu::before {
+            content: "\EAC2"
+        }
+
+        .qy-svgicon-rightarrow_xi::before {
+            content: "\EAC3"
+        }
+
+        .qy-svgicon-leftarrow_cu::before {
+            content: "\EAC4"
+        }
+
+        .qy-svgicon-leftarrow_xi::before {
+            content: "\EAC5"
+        }
+
+        .pointer-none{
+            cursor: not-allowed;
+            opacity: 0.3;
+        }
+        .pointer-none .func-inner{
+            cursor: not-allowed;
+            pointer-events: none;
         }
     </style>
 </head>
@@ -361,9 +395,9 @@ $this->registerJs($js);
             <?php if(!empty($data['advert'])) :?>
                 <?php foreach ($data['advert'] as $key => $advert): ?>
                     <?php if(!empty($advert) && intval($advert['position_id']) == intval(AdvertPosition::POSITION_VIDEO_TOP_PC)) :?>
-                    <a href="" target="_blank" class="video-top-ad">
-                        <img src="" style="width:100%;border-radius:5px;">
-                    </a>
+                        <a href="" target="_blank" class="video-top-ad">
+                            <img src="" style="width:100%;border-radius:5px;">
+                        </a>
                     <?php endif;?>
                 <?php endforeach;?>
             <?php endif;?>
@@ -374,6 +408,19 @@ $this->registerJs($js);
                             <div class="flash-box">
                                 <div class="iqp-player">
                                     <input type="hidden" id="next_chapter" value="<?= $data['info']['next_chapter'] ?>">
+                                    <input type="hidden" id="last_chapter" value="<?= $data['info']['last_chapter'] ?>">
+                                    <div class="wechat-block" id='wechat-block'>
+                                        <img src="" class="video-play-btn-iframe wechat-url" onerror="this.src='/images/video/load.gif'">
+                                        <div class="wechat_tip" style="
+                                                position: absolute;
+                                                left: 62%;
+                                                top: 43%;
+                                                font-size: 55px;
+                                                font-weight: 1000;
+                                                color: #FF556E;">
+
+                                        </div>
+                                    </div>
                                     <?php if($data['info']['resource_type'] == 1) :?>
                                         <div class="video-play-left-cover">
                                             <img src="<?= $data['info']['horizontal_cover'] ?>" alt=""
@@ -391,68 +438,57 @@ $this->registerJs($js);
                                         <?php if(!empty($data['advert'])) :?>
                                             <?php foreach ($data['advert'] as $key => $advert) : ?>
                                                 <?php if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_PLAY_BEFORE_PC) :?>
-                                            <!--        <div class="wechat-block">-->
-                                            <!--            <img src="" class="video-play-btn-iframe wechat-url" onerror="this.src='/images/video/load.gif'">-->
-                                            <!--            <div class="wechat_tip" style="-->
-                                            <!--                    position: absolute;-->
-                                            <!--                    left: 62%;-->
-                                            <!--                    top: 43%;-->
-                                            <!--                    font-size: 55px;-->
-                                            <!--                    font-weight: 1000;-->
-                                            <!--                    color: #FF556E;">-->
-            				    
-            				                            <!--</div>-->
-                                            <!--        </div>-->
-                                                    <div id="easiBox" style="height: 100%;" class="add-box" <?= strpos($advert['ad_image'], '.mp4') !== false ? "style='display:none'": ""?>>
-                                                        <!--<a href="" target="_blank" style="height: 83%;position: absolute;left: 0;top: 0;width: 45%;z-index: 900;" class="ad_url_link"></a>-->
-                                                        <!--<a href="" target="_blank" style="height: 83%;position: absolute;right: 0;top: 0;width: 45%;z-index: 900;" class="ad_url_link"></a>-->
-                                                        <div style="text-align: center;line-height: 40px;width: 200px;background: rgb(51, 51, 51);position: absolute;right: 10px;opacity: 0.8;z-index: 999;margin-top: 10px;border-radius: 30px;">
-                                                            <div style="font-size:13px;line-height:28px;">
-                                                                <a class="ad_url_link" href="" target="_blank" style="color:#fff;">视频加载中，
-                                                                    <span id="timer1" style="color:#FF556E"></span> 秒后开始播放
-                                                                </a>
+                                                    <?php if(strpos($advert['ad_image'], '.mp4') !== false) :?>
+                                                        <div id="easiBox" style="height: 100%;" class="add-box" <?= strpos($advert['ad_image'], '.mp4') !== false ? "style='display:none'": ""?>>
+                                                            <!--<a href="" target="_blank" style="height: 83%;position: absolute;left: 0;top: 0;width: 45%;z-index: 900;" class="ad_url_link"></a>-->
+                                                            <!--<a href="" target="_blank" style="height: 83%;position: absolute;right: 0;top: 0;width: 45%;z-index: 900;" class="ad_url_link"></a>-->
+                                                            <div style="text-align: center;line-height: 40px;width: 200px;background: rgb(51, 51, 51);position: absolute;right: 10px;opacity: 0.8;z-index: 999;margin-top: 10px;border-radius: 30px;">
+                                                                <div style="font-size:13px;line-height:28px;">
+                                                                    <a class="ad_url_link" href="" target="_blank" style="color:#fff;">视频加载中，
+                                                                        <span id="timer1" style="color:#FF556E"></span> 秒后开始播放
+                                                                    </a>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <a href="" target="_blank" class="ad_url_link btn-add-detail">
-                                                            点击查看广告详情 >
-                                                        </a>
-                                                        <a class="ad_url_link" href="" target="_blank">
-                                                        <video id="easi" style="width: 100%; height: 100%;object-fit: fill;" controls="controls" x5-playsinline=""playsinline="true"webkit-playsinline="true"x-webkit-airplay="true"x5-video-player-type="h5"x5-video-player-fullscreen=""x5-video-orientation="portraint">
-                                                            <!--<source src="<?= $advert['ad_image']?>" type="video/mp4">-->
-                                                        </video>
-                                                        </a>
-                                                        <div class="c-videoplay" id="btn-video-play">
-                                                            <i class="c-player-icon c-player-big"></i>
-                                                        </div>
-                                                        <a class="btn-add-play" href="javascript:void(0);" id="hide-add">
-                                                            跳过广告 >
-                                                        </a>
-                                                    </div>
-                                                    
-                                                    <div id="picBox" style="height: 100%;" class="add-box" <?= strpos($advert['ad_image'], '.mp4') === false ? "style='display:none'": ""?>>
-                                                        <div style="text-align: center;line-height: 40px;width: 200px;background: rgb(51, 51, 51);position: absolute;right: 10px;opacity: 0.8;z-index: 999;margin-top: 10px;border-radius: 30px;">
-                                                            <div style="font-size:13px;line-height:28px;">
-                                                                <a class="ad_url_link" href="" target="_blank" style="color:#fff;">视频加载中，
-                                                                    <span id="timer1" style="color:#FF556E">10</span> 秒后开始播放
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <a href="" target="_blank" class="ad_url_link btn-add-detail">
-                                                            点击查看广告详情 >
-                                                        </a>
-
-                                                        <div class="video-play-left-cover">
-                                                            <a href="" target="_blank" class="ad_url_link" style="height:100%">
-                                                                <img src=""
-                                                                 onerror="this.src='/images/video/load.gif'"
-                                                                 id="video-cover" class="video-play-btn-iframe">
+                                                            <a href="" target="_blank" class="ad_url_link btn-add-detail">
+                                                                点击查看广告详情 >
                                                             </a>
+                                                            <a class="ad_url_link" href="" target="_blank">
+                                                                <video id="easi" style="width: 100%; height: 100%;object-fit: fill;" controls="controls" x5-playsinline=""playsinline="true"webkit-playsinline="true"x-webkit-airplay="true"x5-video-player-type="h5"x5-video-player-fullscreen=""x5-video-orientation="portraint">
+                                                                    <source src="<?= $advert['ad_image']?>" type="video/mp4">
+                                                                </video>
+                                                            </a>
+                                                            <div class="c-videoplay" id="btn-video-play">
+                                                                <i class="c-player-icon c-player-big"></i>
+                                                            </div>
+                                                            <!--<a class="btn-add-play" href="javascript:void(0);" id="hide-add">-->
+                                                            <!--    跳过广告 >-->
+                                                            <!--</a>-->
                                                         </div>
-                                                        <a class="btn-add-play" href="javascript:void(0);" id="hide-add">
-                                                            跳过广告 >
-                                                        </a>
-                                                    </div>
-                                                    
+                                                    <?php else:?>
+                                                        <div id="picBox" style="height: 100%;" class="add-box" <?= strpos($advert['ad_image'], '.mp4') === false ? "style='display:none'": ""?>>
+                                                            <div style="text-align: center;line-height: 40px;width: 200px;background: rgb(51, 51, 51);position: absolute;right: 10px;opacity: 0.8;z-index: 999;margin-top: 10px;border-radius: 30px;">
+                                                                <div style="font-size:13px;line-height:28px;">
+                                                                    <a class="ad_url_link" href="" target="_blank" style="color:#fff;">视频加载中，
+                                                                        <span id="timer1" style="color:#FF556E">10</span> 秒后开始播放
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                            <a href="" target="_blank" class="ad_url_link btn-add-detail">
+                                                                点击查看广告详情 >
+                                                            </a>
+
+                                                            <div class="video-play-left-cover">
+                                                                <a href="" target="_blank" class="ad_url_link" style="height:100%">
+                                                                    <img src="<?= $advert['ad_image']?>"
+                                                                         onerror="this.src='/images/video/load.gif'"
+                                                                         id="video-cover" class="video-play-btn-iframe">
+                                                                </a>
+                                                            </div>
+                                                            <!--<a class="btn-add-play" href="javascript:void(0);" id="hide-add">-->
+                                                            <!--    跳过广告 >-->
+                                                            <!--</a>-->
+                                                        </div>
+                                                    <?php endif;?>
                                                 <?php endif;?>
                                             <?php endforeach;?>
                                         <?php endif;?>
@@ -461,71 +497,67 @@ $this->registerJs($js);
                                                 allowfullscreen="true" allowtransparency="true"
                                                 frameborder="0" scrolling="no" width="100%"
                                                 height="100%" scrolling="no"></iframe>
-                                        <!--                                            <div class="box" id="player1"-->
-                                        <!--                                                data-src="--><?//= $data['info']['resource_url']?><!--"></div>-->
                                     <?php endif;?>
                                 </div>
                             </div>
                         </div>
                         <div class="c"></div>
                         <div class="player-mnb">
-                            <!--<div class="player-mnb-left">-->
-                            <!--    <div class="qy-flash-func qy-flash-func-v1">-->
-                            <!--        <div class="func-item func-comment">-->
-                            <!--            <div class="func-inner">-->
-                            <!--                <i class="qy-svgicon qy-svgicon-comment-v1"><i class="bubble b1"></i><i class="bubble b2"></i><i class="bubble b3"></i></i>-->
-                            <!--                <span class="func-name">9844</span>-->
-                            <!--            </div>-->
-                            <!--        </div>-->
-                            <!--        <div class="func-item func-like-v1">-->
-                            <!--            <div class="func-inner">-->
-                            <!--                <span class="like-icon-box"><i title="" class="qy-svgicon qy-svgicon-dianzan"></i><i title="" class="like-heart-steps"></i></span>-->
-                            <!--                <span class="func-name"><?= $data['info']['total_views']?></span>-->
-                            <!--            </div>-->
-                            <!--        </div>-->
-                            <!--        <div class="func-item func-collect">-->
-                            <!--            <a href="javascript:void(0)" class="qy-func-collect-v1">-->
-                            <!--                <span class="collect">-->
-                            <!--                    <i class="qy-svgicon qy-svgicon-collect"></i>-->
-                            <!--                    <span class="txt">收藏</span>-->
-                            <!--                </span>-->
-                            <!--                <span class="collected" style="display: none;">-->
-                            <!--                    <i class="qy-svgicon qy-svgicon-collected"></i>-->
-                            <!--                    <span class="txt">已收藏</span>-->
-                            <!--                </span>-->
-                            <!--            </a>-->
-                            <!--        </div>-->
-                            <!--    </div>-->
-                            <!--</div>-->
-                            <div class="player-mnb-mid">
-                                <?php foreach ($data['info']['source'] as $key => $source): ?>
-                                    <div class="qy-func-collect-v1" style="margin-left: 20px; cursor: pointer">
-                                        <div class="<?= (empty($source_id) && $key == 0) ? 'on' : ''?> <?= $source['source_id'] == $source_id ? 'on' : ''?> collect">
-                                                <span class="tag-item">
-                                                    <span class="next-source txt"
-                                                          data-video-id="<?= $data['info']['video_id']?>"
-                                                          data-video-chapter-id="<?= $data['info']['play_chapter_id']?>"
-                                                          data-source-id="<?= $source['source_id']?>">
-                                                        <?= $source['name']?>
-                                                    </span>
-                                                </span>
+                            <div class="player-mnb-left">
+                                <div class="qy-flash-func qy-flash-func-v1">
+                                    <div class="func-item func-comment">
+                                        <div class="func-inner">
+                                            <i class="qy-svgicon qy-svgicon-comment-v1"><i class="bubble b1"></i><i class="bubble b2"></i><i class="bubble b3"></i></i>
+                                            <span class="func-name">9844</span>
                                         </div>
                                     </div>
-                                <?php endforeach;?>
+                                    <div class="func-item func-like-v1">
+                                        <div class="func-inner">
+                                            <span class="like-icon-box"><i title="" class="qy-svgicon qy-svgicon-dianzan"></i><i title="" class="like-heart-steps"></i></span>
+                                            <span class="func-name"><?= $data['info']['total_views']?></span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <!--<div class="player-mnb-right">-->
-                            <!--    <div class="qy-flash-func qy-flash-func-v1">-->
-                            <!--        <div class="func-item func-download">-->
-                            <!--            <div title="下载" class="func-inner"><span class="qy-play-icon func-dwn-icon"></span></div>-->
-                            <!--            <div class="qy-func-toast-v1 qy-func-toast-v2" style="display: none;">-->
-                            <!--                正在检测客户端-->
+                            <!--<div class="player-mnb-mid">-->
+                            <!--    <?php foreach ($data['info']['source'] as $key => $source): ?>-->
+                            <!--        <div class="qy-func-collect-v1" style="margin-left: 20px; cursor: pointer">-->
+                            <!--            <div class="<?= (empty($source_id) && $key == 0) ? 'on' : ''?> <?= $source['source_id'] == $source_id ? 'on' : ''?> collect">-->
+                            <!--                    <span class="tag-item">-->
+                            <!--                        <span class="next-source txt"-->
+                            <!--                              data-video-id="<?= $data['info']['video_id']?>"-->
+                            <!--                              data-video-chapter-id="<?= $data['info']['play_chapter_id']?>"-->
+                            <!--                              data-source-id="<?= $source['source_id']?>">-->
+                            <!--                            <?= $source['name']?>-->
+                            <!--                        </span>-->
+                            <!--                    </span>-->
                             <!--            </div>-->
                             <!--        </div>-->
-                            <!--    </div>-->
-                            <!--    <div class="func-item func-more">-->
-                            <!--        <div class="func-inner"><i class="func-more-icon"><i class="more-dot"></i></i></div>-->
-                            <!--    </div>-->
+                            <!--    <?php endforeach;?>-->
                             <!--</div>-->
+                            <div class="player-mnb-mid">
+                                <!--<?= json_encode($data['info']['test'], JSON_UNESCAPED_UNICODE) ?>-->
+                            </div>
+                            <div class="player-mnb-right">
+                                <div class="qy-flash-func qy-flash-func-v1">
+                                    <div class="func-item <?= $data['info']['last_chapter'] == 0 ? 'pointer-none': ''?>">
+                                        <div title="上一集" class="func-inner func-swicthCap"
+                                             data-video-id="<?= $data['info']['video_id']?>"
+                                             data-chapter-id="<?= $data['info']['last_chapter']?>">
+                                            <span class="qy-svgicon qy-svgicon-leftarrow_cu"></span>
+                                            <span class="func-name">上一集</span>
+                                        </div>
+                                    </div>
+                                    <div class="func-item <?= $data['info']['next_chapter'] == 0 ? 'pointer-none': ''?>">
+                                        <div title="下一集" class="func-inner func-swicthCap"
+                                             data-video-id="<?= $data['info']['video_id']?>"
+                                             data-chapter-id="<?= $data['info']['next_chapter']?>">
+                                            <span class="qy-svgicon qy-svgicon-rightarrow_cu"></span>
+                                            <span class="func-name">下一集</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -555,79 +587,110 @@ $this->registerJs($js);
                                                         更新至<?= count($data['info']['videos'])?>集
                                                     </p>
                                                 </div>
-                                                <div>
-                                                    <?php
-                                                    $page = ceil(count($data['info']['videos'])/30);
-                                                    $count = count($data['info']['videos']);
-                                                    $ontab = 0;
-                                                    foreach ($data['info']['videos'] as $index => $value){
-                                                        if ($data['info']['play_chapter_id'] != $value['chapter_id'])
-                                                            continue;
+                                                <div class="qy-episode-tab">
+                                                    <ul class="tab-bar TAB_CLICK sourceTab" id=".srctabShow">
+                                                        <?php foreach ($data['info']['filter'] as $key => $source): ?>
+                                                            <li class="bar-li <?= (empty($source_id) && $key == 0) || ($source['resId'] == $source_id) ? 'hover' : ''?>">
+                                                                <a href="javascript:void(0);"
+                                                                   class="bar-link"
+                                                                   data-source-id="<?= $source['resId']?>">
+                                                                    <?= $source['resName'] ?>
+                                                                </a>
+                                                            </li>
+                                                        <?php endforeach;?>
+                                                    </ul>
+                                                </div>
+                                                <div class="c"></div>
+                                                <?php foreach ($data['info']['filter'] as $key => $source): ?>
+                                                    <div class="srctabShow <?= (empty($source_id) && $key == 0) || ($source['resId'] == $source_id) ? 'dn' : 'nn'?>">
+                                                        <?php
+                                                        $page = ceil(count($source['data'])/30);
+                                                        $count = count($source['data']);
+                                                        $ontab = 1;
+                                                        foreach ($source['data'] as $index => $value){
+                                                            if ($data['info']['play_chapter_id'] != $value['chapter_id'])
+                                                                continue;
 
-                                                        $ontab = ceil(($index+1) / 30);
-                                                        break;
-                                                    }
-                                                    ?>
-                                                    <div class="qy-episode-tab">
-                                                        <ul class="tab-bar TAB_CLICK" id=".tabShow">
-                                                            <?php for($k=0; $k<$page; $k++){?>
-                                                                <li class="bar-li <?= $k+1 == $ontab? 'hover': ''?>">
-                                                                    <a href="javascript:void(0);" class="bar-link">
-                                                                        <?= $k*30 + 1?>-<?= ($k == ($page -1))? $count:$k*30 + 30?></a>
-                                                                </li>
-                                                            <?php }?>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="c"></div>
-                                                    <?php for($i=0; $i<$page; $i++){?>
-                                                        <ul class="qy-episode-num tabShow <?= (($i+1) == $ontab)? 'dn': 'nn'?>">
-                                                            <?php foreach ($data['info']['videos'] as $index => $value) : ?>
-                                                                <?php if($index>=$i*30 && $index < ($i*30+30)){?>
-                                                                    <li class="select-item switch-next-li switch-next <?= $data['info']['play_chapter_id'] == $value['chapter_id'] ? 'selected' : ''?>"
-                                                                        data-video-id="<?= $value['video_id']?>"
-                                                                        data-chapter-id="<?= $value['chapter_id']?>"
-                                                                        data-type="<?= $data['info']['catalog_style']?>">
-                                                                        <div class="select-link">
-                                                                            <?= $value['title']?>
-                                                                        </div>
-                                                                        <!--                                                                <div rseat="80521_listbox_positive" class="icon-tr">-->
-                                                                        <!--                                                                    <img src="images/s-new-12.png" alt="">-->
-                                                                        <!--                                                                </div>-->
+                                                            $ontab = ceil(($index+1) / 30);
+                                                            break;
+                                                        }
+                                                        ?>
+                                                        <div class="qy-episode-tab">
+                                                            <ul class="tab-bar TAB_CLICK" id=".tabShow<?=$key?>">
+                                                                <?php for($k=0; $k<$page; $k++){?>
+                                                                    <li class="bar-li <?= $k+1 == $ontab? 'hover': ''?>">
+                                                                        <a href="javascript:void(0);" class="bar-link">
+                                                                            <?= $k*30 + 1?>-<?= ($k == ($page -1))? $count:$k*30 + 30?></a>
                                                                     </li>
                                                                 <?php }?>
-                                                            <?php endforeach;?>
-                                                        </ul>
-                                                    <?php }?>
-                                                </div>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="c"></div>
+                                                        <?php for($i=0; $i<$page; $i++){?>
+                                                            <ul class="qy-episode-num tabShow<?=$key?> <?= (($i+1) == $ontab)? 'dn': 'nn'?>">
+                                                                <?php foreach ($source['data'] as $index => $value) : ?>
+                                                                    <?php if($index>=$i*30 && $index < ($i*30+30)){?>
+                                                                        <li class="select-item switch-next-li switch-next <?= $data['info']['play_chapter_id'] == $value['chapter_id'] ? 'selected' : ''?>"
+                                                                            data-video-id="<?= $value['video_id']?>"
+                                                                            data-chapter-id="<?= $value['chapter_id']?>"
+                                                                            data-type="<?= $data['info']['catalog_style']?>">
+                                                                            <div class="select-link">
+                                                                                <?= $value['title']?>
+                                                                            </div>
+                                                                        </li>
+                                                                    <?php }?>
+                                                                <?php endforeach;?>
+                                                            </ul>
+                                                        <?php }?>
+                                                    </div>
+                                                <?php endforeach;?>
                                                 <div class="c"></div>
                                             </div>
                                         </div>
                                     <?php } elseif($data['channel_id'] == '1'){?>
-                                        <div class="side-content v_scroll_plist_content" style="transform: translateY(0px);">
-                                            <ul class="qy-play-list" style="margin-bottom: 100px;">
-                                                <?php foreach ($data['info']['videos'] as $value) : ?>
-                                                    <li class="play-list-item switch-next-li switch-next <?= $data['info']['play_chapter_id'] == $value['chapter_id'] ? 'selected' : ''?>"
-                                                        data-video-id="<?= $value['video_id']?>"
-                                                        data-chapter-id="<?= $value['chapter_id']?>"
-                                                        data-type="<?= $data['info']['catalog_style']?>">
-                                                        <div class="mod-left">
-                                                            <div class="mod-img-link">
-                                                                <img src="<?= $value['cover']?>" class="mod-img">
-                                                                <i class="img-border"></i>
-                                                            </div>
-                                                        </div>
-                                                        <div class="mod-right">
-                                                            <h3 class="main-title">
-                                                                <span class="title-link"><?= $value['title']?></span>
-                                                            </h3>
-                                                            <div class="sub-title" style="">
-                                                                <i class="qy-svgicon qy-svgicon-hot"></i>
-                                                                <span class="count"><?= $data['info']['total_views']?></span>
-                                                            </div>
-                                                        </div>
+                                        <div class="qy-episode-tab">
+                                            <ul class="tab-bar TAB_CLICK sourceTab" id=".tabShow">
+                                                <?php foreach ($data['info']['filter'] as $key => $source): ?>
+                                                    <li class="bar-li <?= (empty($source_id) && $key == 0) || ($source['resId'] == $source_id) ? 'hover' : ''?>">
+                                                        <a href="javascript:void(0);"
+                                                           class="bar-link"
+                                                           data-source-id="<?= $source['resId']?>">
+                                                            <?= $source['resName'] ?>
+                                                        </a>
                                                     </li>
                                                 <?php endforeach;?>
                                             </ul>
+                                        </div>
+                                        <div class="h20"></div>
+                                        <div class="side-content v_scroll_plist_content" style="transform: translateY(0px);">
+                                            <?php foreach ($data['info']['filter'] as $key => $source): ?>
+                                                <ul class="qy-play-list tabShow
+                                                <?= (empty($source_id) && $key == 0) || ($source['resId'] == $source_id) ? 'dn' : 'nn'?>"
+                                                    style="margin-bottom: 100px;">
+                                                    <?php foreach ($source['data'] as $value) : ?>
+                                                        <li class="play-list-item switch-next-li switch-next <?= $data['info']['play_chapter_id'] == $value['chapter_id'] ? 'selected' : ''?>"
+                                                            data-video-id="<?= $value['video_id']?>"
+                                                            data-chapter-id="<?= $value['chapter_id']?>"
+                                                            data-type="<?= $data['info']['catalog_style']?>">
+                                                            <div class="mod-left">
+                                                                <div class="mod-img-link">
+                                                                    <img src="<?= $value['cover']?>" class="mod-img">
+                                                                    <i class="img-border"></i>
+                                                                </div>
+                                                            </div>
+                                                            <div class="mod-right">
+                                                                <h3 class="main-title">
+                                                                    <span class="title-link"><?= $value['title']?></span>
+                                                                </h3>
+                                                                <div class="sub-title" style="">
+                                                                    <i class="qy-svgicon qy-svgicon-hot"></i>
+                                                                    <span class="count"><?= $data['info']['total_views']?></span>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    <?php endforeach;?>
+                                                </ul>
+                                            <?php endforeach;?>
                                         </div>
                                     <?php } elseif($data['channel_id'] == '3'){?>
                                         <div class="side-content v_scroll_plist_content" style="transform: translateY(0px);">
@@ -637,9 +700,16 @@ $this->registerJs($js);
                                                 </p>
                                             </div>
                                             <div class="qy-episode-tab">
-                                                <ul class="tab-bar TAB_CLICK" id=".tabShow">
-                                                    <li class="bar-li hover"><a href="javascript:void(0);" class="bar-link">正片</a></li>
-                                                    <!--                                                        <li class="bar-li"><a href="javascript:void(0);" class="bar-link">看点</a></li>-->
+                                                <ul class="tab-bar TAB_CLICK sourceTab" id=".tabShow">
+                                                    <?php foreach ($data['info']['filter'] as $key => $source): ?>
+                                                        <li class="bar-li <?= (empty($source_id) && $key == 0) || ($source['resId'] == $source_id) ? 'hover' : ''?>">
+                                                            <a href="javascript:void(0);"
+                                                               class="bar-link"
+                                                               data-source-id="<?= $source['resId']?>">
+                                                                <?= $source['resName'] ?>
+                                                            </a>
+                                                        </li>
+                                                    <?php endforeach;?>
                                                 </ul>
                                             </div>
                                             <div class="h20"></div>
@@ -648,35 +718,39 @@ $this->registerJs($js);
                                                     <div class="side-content v_scroll_plist_content">
                                                         <div class="">
                                                             <div class="qy-player-side-list qy-advunder-show">
-                                                                <ul class="qy-play-list" style="margin-bottom: 100px;">
-                                                                    <?php foreach ($data['info']['videos'] as $value) : ?>
-                                                                        <li class="play-list-item switch-next-li switch-next <?= $data['info']['play_chapter_id'] == $value['chapter_id'] ? 'selected' : ''?>"
-                                                                            data-video-id="<?= $value['video_id']?>"
-                                                                            data-chapter-id="<?= $value['chapter_id']?>"
-                                                                            data-type="<?= $data['info']['catalog_style']?>">
-                                                                            <div class="mod-left">
-                                                                                <div class="mod-img-link">
-                                                                                    <img src="<?= $value['cover']?>" class="mod-img">
-                                                                                    <!--                                                                                        <div class="icon-tr"><img src="images/s-new-12.png"></div>-->
-                                                                                    <div class="icon-b">
-                                                                                        <i class="playing-icon" style="display: none;"></i>
-                                                                                        <span class="qy-mod-label"><?= $value['title']?></span>
+                                                                <?php foreach ($data['info']['filter'] as $key => $source): ?>
+                                                                    <ul class="qy-play-list tabShow
+                                                                    <?= (empty($source_id) && $key == 0) || ($source['resId'] == $source_id) ? 'dn' : 'nn'?>"
+                                                                        style="margin-bottom: 100px;">
+                                                                        <?php foreach ($source['data'] as $value) : ?>
+                                                                            <li class="play-list-item switch-next-li switch-next <?= $data['info']['play_chapter_id'] == $value['chapter_id'] ? 'selected' : ''?>"
+                                                                                data-video-id="<?= $value['video_id']?>"
+                                                                                data-chapter-id="<?= $value['chapter_id']?>"
+                                                                                data-type="<?= $data['info']['catalog_style']?>">
+                                                                                <div class="mod-left">
+                                                                                    <div class="mod-img-link">
+                                                                                        <img src="<?= $value['cover']?>" class="mod-img">
+                                                                                        <!--                                                                                        <div class="icon-tr"><img src="images/s-new-12.png"></div>-->
+                                                                                        <div class="icon-b">
+                                                                                            <i class="playing-icon" style="display: none;"></i>
+                                                                                            <span class="qy-mod-label"><?= $value['title']?></span>
+                                                                                        </div>
+                                                                                        <i class="img-border"></i>
                                                                                     </div>
-                                                                                    <i class="img-border"></i>
                                                                                 </div>
-                                                                            </div>
-                                                                            <div class="mod-right">
-                                                                                <h3 class="main-title">
-                                                                                    <span href="" class="title-link"><?= $value['title']?></span>
-                                                                                </h3>
-                                                                                <div class="sub-title" style="">
-                                                                                    <i class="qy-svgicon qy-svgicon-hot"></i>
-                                                                                    <span class="count"><?= $data['info']['total_views']?></span>
+                                                                                <div class="mod-right">
+                                                                                    <h3 class="main-title">
+                                                                                        <span href="" class="title-link"><?= $value['title']?></span>
+                                                                                    </h3>
+                                                                                    <div class="sub-title" style="">
+                                                                                        <i class="qy-svgicon qy-svgicon-hot"></i>
+                                                                                        <span class="count"><?= $data['info']['total_views']?></span>
+                                                                                    </div>
                                                                                 </div>
-                                                                            </div>
-                                                                        </li>
-                                                                    <?php endforeach;?>
-                                                                </ul>
+                                                                            </li>
+                                                                        <?php endforeach;?>
+                                                                    </ul>
+                                                                <?php endforeach;?>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -690,22 +764,40 @@ $this->registerJs($js);
                                                     更新至第<?= count($data['info']['videos'])?>集
                                                 </p>
                                             </div>
-                                            <ul class="qy-episode-txt" style="margin-bottom: 100px;">
-                                                <?php foreach ($data['info']['videos'] as $key => $value) : ?>
-                                                    <li class="select-item switch-next-li switch-next <?= $data['info']['play_chapter_id'] == $value['chapter_id'] ? 'selected' : ''?>"
-                                                        data-video-id="<?= $value['video_id']?>"
-                                                        data-chapter-id="<?= $value['chapter_id']?>"
-                                                        data-type="<?= $data['info']['catalog_style']?>">
-                                                        <div class="select-inline">
-                                                            <div class="select-title">
-                                                                <span class="select-pre"><?= $key+1?></span>
-                                                                <div href="" class="select-link"><?= $value['title']?></div>
+                                            <div class="qy-episode-tab">
+                                                <ul class="tab-bar TAB_CLICK sourceTab" id=".tabShow">
+                                                    <?php foreach ($data['info']['filter'] as $key => $source): ?>
+                                                        <li class="bar-li <?= (empty($source_id) && $key == 0) || ($source['resId'] == $source_id) ? 'hover' : ''?>">
+                                                            <a href="javascript:void(0);"
+                                                               class="bar-link"
+                                                               data-source-id="<?= $source['resId']?>">
+                                                                <?= $source['resName'] ?>
+                                                            </a>
+                                                        </li>
+                                                    <?php endforeach;?>
+                                                </ul>
+                                            </div>
+                                            <div class="c"></div>
+                                            <?php foreach ($data['info']['filter'] as $key => $source): ?>
+                                                <ul class="qy-episode-txt tabShow
+                                                <?= (empty($source_id) && $key == 0) || ($source['resId'] == $source_id) ? 'dn' : 'nn'?>"
+                                                    style="margin-bottom: 100px;">
+                                                    <?php foreach ($source['data'] as $key1 =>$value) : ?>
+                                                        <li class="select-item switch-next-li switch-next <?= $data['info']['play_chapter_id'] == $value['chapter_id'] ? 'selected' : ''?>"
+                                                            data-video-id="<?= $value['video_id']?>"
+                                                            data-chapter-id="<?= $value['chapter_id']?>"
+                                                            data-type="<?= $data['info']['catalog_style']?>">
+                                                            <div class="select-inline">
+                                                                <div class="select-title">
+                                                                    <span class="select-pre"><?= $key1+1?></span>
+                                                                    <div href="" class="select-link"><?= $value['title']?></div>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <i class="playon-icon"></i>
-                                                    </li>
-                                                <?php endforeach;?>
-                                            </ul>
+                                                            <i class="playon-icon"></i>
+                                                        </li>
+                                                    <?php endforeach;?>
+                                                </ul>
+                                            <?php endforeach;?>
                                         </div>
                                     <?php } ?>
                                 </div>
@@ -1008,32 +1100,57 @@ $this->registerJs($js);
     </ul>
 </div>
 <script src="/js/jquery.js"></script>
-<script src="/js/video.js"></script>
+<script src="/js/video.js?v=1.5"></script>
 <script src="/js/VideoSearch.js"></script>
+
 <script>
     let timer = null;
     let wechattimer = null
-	let picUrl = "/video/get-wechat";
-	let checkUrl = "/video/check-wechat";
-	let clearUrl = "/video/clear-catch";
+    let picUrl = "/video/get-wechat";
+    let checkUrl = "/video/check-wechat";
+    let clearUrl = "/video/clear-catch";
     $(document).ready(function(){
         // $(".wechat-block").remove("");
         if ($("#play_resource").val() != "")
             $("#my-iframe").attr('src', $("#play_resource").val());
-        //refreshWechat();
-        refreshAds();
+        refreshWechat();
+        // alert(document.getElementById('wechat-block').style.display);
+        if(document.getElementById('wechat-block') && document.getElementById('wechat-block').style.display!='none')
+        {
+            setTimeout(function(){
+                clearInterval(wechattimer);
+                document.getElementById('wechat-block').style.display='none';
+
+                if(document.getElementById('easiBox') && document.getElementById('easiBox').style.display!='none')
+                    $('#btn-video-play').trigger("click");
+
+                if(document.getElementById('picBox') && document.getElementById('picBox').style.display!='none')
+                    countPicAds();
+
+                setTimeout("document.getElementById('easiBox').style.display='none'",15000);
+                setTimeout("document.getElementById('picBox').style.display='none'",15000);
+            },15000);
+        }
+        else
+        {
+            setTimeout("document.getElementById('easiBox').style.display='none'",15000);
+            setTimeout("document.getElementById('picBox').style.display='none'",15000);
+        }
+        // $('#btn-video-play').trigger("click");
+        // countPicAds();
+        // refreshAds();
     });
-    
+
     function refreshAds()
     {
         var arrIndex = {};
-        
+
         arrIndex['page'] = "detail";
         var advertKey = 0;
         $.get('/video/advert', arrIndex, function(res) {
             if(!res.data.hasOwnProperty("advert"))
                 return false;
-                
+
             for (var prop in res.data.advert) {
                 console.log("obj." + prop + " = " + res.data.advert[prop]);
                 var adddata = res.data.advert[prop];
@@ -1057,14 +1174,14 @@ $this->registerJs($js);
                             // $(".add-box video").trigger('play');
                             // countVieoAds();
                             $('#btn-video-play').trigger("click");
-                            setTimeout("document.getElementById('easiBox').style.display='none'",30000);
-                            // $("#my-iframe").attr('src', $("#play_resource").val());
+                            setTimeout("document.getElementById('easiBox').style.display='none'",15000);
+                            $("#my-iframe").attr('src', $("#play_resource").val());
                         }
                         else
                         {
                             $("#easiBox").remove();
                             $(".add-box img").attr("src", adddata.ad_image);
-                            setTimeout("document.getElementById('picBox').style.display='none'",30000);
+                            setTimeout("document.getElementById('picBox').style.display='none'",15000);
                             countPicAds();
                         }
                     }
@@ -1072,42 +1189,46 @@ $this->registerJs($js);
             }
         })
     }
-    
+
     function refreshWechat()
     {
         var arrIndex = {};
-        $(".wechat-block").hide();
+        // $(".wechat-block").hide();
         $.get(picUrl, function(response) {
-			console.log(response);
-			let result = response.data;
-			if (result.status_code != "200") {
-			    $(".wechat-block").remove("");
-			    refreshAds();
-				return;
-			}
-			console.log(response);
-			$(".wechat-block").show();
+            console.log(response);
+            let result = response.data;
+            if (result.status_code != "200") {
+                $(".wechat-block").remove("");
+                //   refreshAds();
+                $('#btn-video-play').trigger("click");
+                countPicAds();
+                return;
+            }
+            console.log(response);
+            $(".wechat-block").show();
 
-			$('.wechat-url').attr('src', result.data.img_url)
-			$('.wechat_tip').html("<span>"+ result.data.weChatFlag +"</span>");
+            $('.wechat-url').attr('src', result.data.img_url)
+            $('.wechat_tip').html("<span>"+ result.data.weChatFlag +"</span>");
 
-			wechattimer = setInterval(function() {
+            wechattimer = setInterval(function() {
                 arrIndex['wechat_flag'] = result.data.weChatFlag;
-				$.get(checkUrl, arrIndex ,function(response) {
-					let scene = response.data.scene;
-    				console.log(response);
-					console.log(scene);
-					if(scene == "gotted")
-					{
-					    $(".wechat-block").remove("");
-					    arrIndex['catachkey'] = result.data.weChatFlag;
-					    $.get(clearUrl, arrIndex);
-					    clearInterval(wechattimer);
-					    refreshAds();
-					}
-				})
-			}, 2000)
-		})
+                $.get(checkUrl, arrIndex ,function(response) {
+                    let scene = response.data.scene;
+                    console.log(response);
+                    console.log(scene);
+                    if(scene == "gotted")
+                    {
+                        $(".wechat-block").remove("");
+                        arrIndex['catachkey'] = result.data.weChatFlag;
+                        $.get(clearUrl, arrIndex);
+                        clearInterval(wechattimer);
+                        // refreshAds();
+                        $('#btn-video-play').trigger("click");
+                        countPicAds();
+                    }
+                })
+            }, 2000)
+        })
     }
 
     $("#btn-video-play").click(function(){
@@ -1118,89 +1239,89 @@ $this->registerJs($js);
         duration = Math.round(elevideo.duration);
         if (isNaN(duration))
             duration = 10;
-            
+
         document.getElementById('timer1').innerHTML = duration;
-        
+
         $(".add-box video").trigger('play');
         elevideo.addEventListener('play', function () { //播放开始执行的函数
             duration = Math.round(elevideo.duration);
             if (isNaN(duration))
                 duration = 10;
-                
+
             if (elevideo.currentTime != 0){
                 duration = Math.round(elevideo.duration - elevideo.currentTime);
             }
-                
+
             console.log("开始播放");
             //10s后关闭广告视频
-            countDown(duration - 1,function(msg) { 
+            countDown(duration - 1,function(msg) {
                 if(msg == '0'){
                     if(document.getElementById('easiBox'))
-                        document.getElementById('easiBox').style.display='none'; 
+                        document.getElementById('easiBox').style.display='none';
                 }
-                document.getElementById('timer1').innerHTML = msg; 
-            }) 
+                document.getElementById('timer1').innerHTML = msg;
+            })
         });
-        
+
         elevideo.addEventListener('pause', function () { //暂停开始执行的函数
             duration = document.getElementById('timer1').innerHTML;
             clearInterval(timer);
             console.log("暂停播放");
         });
-        
+
         elevideo.addEventListener('ended', function () { //结束
-            document.getElementById('easiBox').style.display='none'; 
+            document.getElementById('easiBox').style.display='none';
             console.log("播放结束");
             // $("#my-iframe").attr('src', $("#play_resource").val());
         }, false);
     });
-    
+
     function countPicAds()
     {
         if($('.iqp-player #picBox').length > 0)
         {
             //8s后关闭广告图
             document.getElementById('timer1').innerHTML = 10;
-            countDown(9, function(msg) { 
+            countDown(9, function(msg) {
                 if(msg == 0){
                     //if(document.getElementById('picBox'))
                     document.getElementById('picBox').style.display='none';
                 }
                 console.log(msg);
-                document.getElementById('timer1').innerHTML = msg; 
+                document.getElementById('timer1').innerHTML = msg;
             });
         }
     }
-    
+
     function countDown(maxtime,fn){
-        timer = setInterval(function() { 
-            if(!!maxtime ){  
-                seconds = Math.floor(maxtime%60), 
-                msg = seconds;  
-                fn( msg ); 
-                --maxtime;  
-            } else {  
-                clearInterval(timer ); 
+        timer = setInterval(function() {
+            if(!!maxtime ){
+                seconds = Math.floor(maxtime%60),
+                    msg = seconds;
+                fn( msg );
+                --maxtime;
+            } else {
+                clearInterval(timer );
                 msg="0";
                 fn(msg);
-            }  
-        },1000); 
+            }
+        },1000);
     }
-    
+
     $("#hide-add").click(function(){
         if(document.getElementById('picBox'))
-            document.getElementById('picBox').style.display='none'; 
-        
+            document.getElementById('picBox').style.display='none';
+
         if(document.getElementById('easiBox'))
         {
             var elevideo = document.getElementById("easi");
             elevideo.pause()
-            document.getElementById('easiBox').style.display='none'; 
+            document.getElementById('easiBox').style.display='none';
         }
 
     });
-    
-    
+
+
 </script>
 </body>
 </html>

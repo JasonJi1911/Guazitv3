@@ -314,6 +314,18 @@ class VideoDao extends BaseDao
                     ->orderBy('display_order asc, id asc')
             ]);
             $video['chapters']     = $chapProvider->toArray();
+            foreach ($video['chapters'] as &$cap)
+            {
+                $resUrlArr = $cap['resource_url'];
+                foreach ($resUrlArr as $k=>$res)
+                {
+                    if (!empty($res))
+                    {
+                        $cap['source_id'] = $k;
+                        break;
+                    }
+                }
+            }
         }
 
         //获取额外的字段,传入的时候才进行查询,提高性能
