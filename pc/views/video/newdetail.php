@@ -395,8 +395,8 @@ $this->registerJs($js);
             <?php if(!empty($data['advert'])) :?>
                 <?php foreach ($data['advert'] as $key => $advert): ?>
                     <?php if(!empty($advert) && intval($advert['position_id']) == intval(AdvertPosition::POSITION_VIDEO_TOP_PC)) :?>
-                        <a href="" target="_blank" class="video-top-ad">
-                            <img src="" style="width:100%;border-radius:5px;">
+                        <a href="<?=$advert['ad_skip_url']?>" target="_blank" class="video-top-ad">
+                            <img src="<?=$advert['ad_image']?>" style="width:100%;border-radius:5px;">
                         </a>
                     <?php endif;?>
                 <?php endforeach;?>
@@ -444,15 +444,15 @@ $this->registerJs($js);
                                                             <!--<a href="" target="_blank" style="height: 83%;position: absolute;right: 0;top: 0;width: 45%;z-index: 900;" class="ad_url_link"></a>-->
                                                             <div style="text-align: center;line-height: 40px;width: 200px;background: rgb(51, 51, 51);position: absolute;right: 10px;opacity: 0.8;z-index: 999;margin-top: 10px;border-radius: 30px;">
                                                                 <div style="font-size:13px;line-height:28px;">
-                                                                    <a class="ad_url_link" href="" target="_blank" style="color:#fff;">视频加载中，
+                                                                    <a class="ad_url_link" href="<?=$advert['ad_skip_url']?>" target="_blank" style="color:#fff;">视频加载中，
                                                                         <span id="timer1" style="color:#FF556E"></span> 秒后开始播放
                                                                     </a>
                                                                 </div>
                                                             </div>
-                                                            <a href="" target="_blank" class="ad_url_link btn-add-detail">
+                                                            <a href="<?=$advert['ad_skip_url']?>" target="_blank" class="ad_url_link btn-add-detail">
                                                                 点击查看广告详情 >
                                                             </a>
-                                                            <a class="ad_url_link" href="" target="_blank">
+                                                            <a class="ad_url_link" href="<?=$advert['ad_skip_url']?>" target="_blank">
                                                                 <video id="easi" style="width: 100%; height: 100%;object-fit: fill;" controls="controls" x5-playsinline=""playsinline="true"webkit-playsinline="true"x-webkit-airplay="true"x5-video-player-type="h5"x5-video-player-fullscreen=""x5-video-orientation="portraint">
                                                                     <source src="<?= $advert['ad_image']?>" type="video/mp4">
                                                                 </video>
@@ -468,17 +468,17 @@ $this->registerJs($js);
                                                         <div id="picBox" style="height: 100%;" class="add-box" <?= strpos($advert['ad_image'], '.mp4') === false ? "style='display:none'": ""?>>
                                                             <div style="text-align: center;line-height: 40px;width: 200px;background: rgb(51, 51, 51);position: absolute;right: 10px;opacity: 0.8;z-index: 999;margin-top: 10px;border-radius: 30px;">
                                                                 <div style="font-size:13px;line-height:28px;">
-                                                                    <a class="ad_url_link" href="" target="_blank" style="color:#fff;">视频加载中，
+                                                                    <a class="ad_url_link" href="<?=$advert['ad_skip_url']?>" target="_blank" style="color:#fff;">视频加载中，
                                                                         <span id="timer1" style="color:#FF556E">10</span> 秒后开始播放
                                                                     </a>
                                                                 </div>
                                                             </div>
-                                                            <a href="" target="_blank" class="ad_url_link btn-add-detail">
+                                                            <a href="<?=$advert['ad_skip_url']?>" target="_blank" class="ad_url_link btn-add-detail">
                                                                 点击查看广告详情 >
                                                             </a>
 
                                                             <div class="video-play-left-cover">
-                                                                <a href="" target="_blank" class="ad_url_link" style="height:100%">
+                                                                <a href="<?=$advert['ad_skip_url']?>" target="_blank" class="ad_url_link" style="height:100%">
                                                                     <img src="<?= $advert['ad_image']?>"
                                                                          onerror="this.src='/images/video/load.gif'"
                                                                          id="video-cover" class="video-play-btn-iframe">
@@ -900,8 +900,8 @@ $this->registerJs($js);
             <?php if(!empty($data['advert'])) :?>
                 <?php foreach ($data['advert'] as $key => $advert) : ?>
                     <?php if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_VIDEO_BOTTOM_PC) :?>
-                        <a href="" target="_blank" class="video-bottom-add">
-                            <img src="" style="width:100%;">
+                        <a href="<?$advert['ad_skip_url']?>" target="_blank" class="video-bottom-add">
+                            <img src="<?$advert['ad_image']?>" style="width:100%;">
                         </a>
                     <?php endif;?>
                 <?php endforeach;?>
@@ -1127,14 +1127,14 @@ $this->registerJs($js);
                 if(document.getElementById('picBox') && document.getElementById('picBox').style.display!='none')
                     countPicAds();
 
-                setTimeout("document.getElementById('easiBox').style.display='none'",15000);
-                setTimeout("document.getElementById('picBox').style.display='none'",15000);
-            },15000);
+                setTimeout("document.getElementById('easiBox').style.display='none'",20000);
+                setTimeout("document.getElementById('picBox').style.display='none'",20000);
+            },25000);
         }
         else
         {
-            setTimeout("document.getElementById('easiBox').style.display='none'",15000);
-            setTimeout("document.getElementById('picBox').style.display='none'",15000);
+            setTimeout("document.getElementById('easiBox').style.display='none'",20000);
+            setTimeout("document.getElementById('picBox').style.display='none'",20000);
         }
         // $('#btn-video-play').trigger("click");
         // countPicAds();
@@ -1174,14 +1174,14 @@ $this->registerJs($js);
                             // $(".add-box video").trigger('play');
                             // countVieoAds();
                             $('#btn-video-play').trigger("click");
-                            setTimeout("document.getElementById('easiBox').style.display='none'",15000);
+                            setTimeout("document.getElementById('easiBox').style.display='none'",20000);
                             $("#my-iframe").attr('src', $("#play_resource").val());
                         }
                         else
                         {
                             $("#easiBox").remove();
                             $(".add-box img").attr("src", adddata.ad_image);
-                            setTimeout("document.getElementById('picBox').style.display='none'",15000);
+                            setTimeout("document.getElementById('picBox').style.display='none'",20000);
                             countPicAds();
                         }
                     }

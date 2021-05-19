@@ -502,7 +502,7 @@ class VideoLogic
         $taskLogic = new TaskLogic();
         $taskStatus = $taskLogic->taskStatus(Yii::$app->user->id, TaskInfo::TASK_ACTION_PLAY_VIDEO);
         $sourceFilter = $this->filterResourceChapter($videos, $sources, $sourceId);
-        $souceVideos = ArrayHelper::index($sourceFilter, 'resId')[$sourceId]['data'];
+//        $souceVideos = ArrayHelper::index($sourceFilter, 'resId')[$sourceId]['data'];
         $data = [
             'info' => array_merge($videoInfo,
                 [
@@ -517,8 +517,9 @@ class VideoLogic
 //                    'total_views'     => $chapterInfo['total_views'],
                     'play_limit'      => $chapterInfo['play_limit'],
                     'last_play_time'  => intval($lastPlayLInfo['lastPlayTime']),
-                    'next_chapter'    => ArrayHelper::index($souceVideos, 'chapter_id')[$chapterInfo['chapter_id']]['next_chapter'],
-                    'last_chapter'    => ArrayHelper::index($souceVideos, 'chapter_id')[$chapterInfo['chapter_id']]['last_chapter'],
+                    'next_chapter'    => ArrayHelper::index($videos, 'chapter_id')[$chapterInfo['chapter_id']]['next_chapter'],
+//                    'next_chapter'    => ArrayHelper::index($souceVideos, 'chapter_id')[$chapterInfo['chapter_id']]['next_chapter'],
+//                    'last_chapter'    => ArrayHelper::index($souceVideos, 'chapter_id')[$chapterInfo['chapter_id']]['last_chapter'],
                     'video_task_time' => $taskStatus ? 0 : 60, //TODO
                     'videos'          => $videos,
                     'source'          => $source,
@@ -526,6 +527,7 @@ class VideoLogic
                     'director'        => $director,
                     'actor'           => $actor,
                     'filter'          => $sourceFilter,
+                    'source_id'       => $sourceId,
                 ]),
             'guess_like'    => $guessLike, // 猜你喜欢
             'comments'      => $commentData, // 评论

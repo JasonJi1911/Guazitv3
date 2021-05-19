@@ -13,6 +13,7 @@ use yii\web\Cookie;
 use common\models\Activity;
 use common\models\ActivityLog;
 use common\helpers\RedisStore;
+use yii\helpers\ArrayHelper;
 
 class VideoController extends BaseController
 {
@@ -352,7 +353,11 @@ class VideoController extends BaseController
 
         //请求热门搜索信息
         $hot = Yii::$app->api->get('/search/hot-word');
-
+        $source_id = $data['info']['source_id'];
+        $sourceFilter = $data['info']['filter'];
+        $souceVideos = ArrayHelper::index($sourceFilter, 'resId')[$source_id]['data'];
+        $data['info']['next_chapter'] = ArrayHelper::index($souceVideos, 'chapter_id')[$data['info']['play_chapter_id']]['next_chapter'];
+        $data['info']['last_chapter'] = ArrayHelper::index($souceVideos, 'chapter_id')[$data['info']['play_chapter_id']]['last_chapter'];
         return $this->render('newframe', [
             'pageTab'       => $pageTab,
             'data'          => $data,
