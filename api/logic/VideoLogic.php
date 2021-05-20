@@ -501,7 +501,7 @@ class VideoLogic
         // 获取用户观看视频任务状态
         $taskLogic = new TaskLogic();
         $taskStatus = $taskLogic->taskStatus(Yii::$app->user->id, TaskInfo::TASK_ACTION_PLAY_VIDEO);
-        $sourceFilter = $this->filterResourceChapter($videosBak, $sources, $sourceId);
+        $sourceFilter = $this->filterResourceChapter($videosBak, $sources, $sourceId, $videoInfo['horizontal_cover']);
 //        $souceVideos = ArrayHelper::index($sourceFilter, 'resId')[$sourceId]['data'];
         $data = [
             'info' => array_merge($videoInfo,
@@ -556,7 +556,7 @@ class VideoLogic
         return $data;
     }
 
-    private function filterResourceChapter($videos, $sources, $sourceId)
+    private function filterResourceChapter($videos, $sources, $sourceId, $cover)
     {
         $data = [];
         $sourceArr = array_column($sources, 'name', 'source_id');
@@ -574,6 +574,7 @@ class VideoLogic
                 if (!is_array($data[$souid]['data'])) {
                     $data[$souid]['data'] = [];
                 }
+                $chap['cover'] = $cover;
                 array_push($data[$souid]['data'], $chap);
             }
             unset($chap['resource_url']); // 安全考虑，删除剧集播放连接，防止全部播放连接一次性全返回
