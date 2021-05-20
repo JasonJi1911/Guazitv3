@@ -458,7 +458,7 @@ class VideoLogic
         $purchaseInfo = $this->_purchaseInfo($videoId, $videoInfo, $chapterInfo['chapter_id'], $videos);
         // 重新格式化数据
         $videos = array_values($videos);
-        // $videosBak = $videos;
+        $videosBak = $videos;
         // 格式化章节信息
         foreach ($videos as $key => &$video) {
             if (mb_strlen($video['title']) > 6) {
@@ -470,7 +470,7 @@ class VideoLogic
             $video['mime_type']     = substr(strrchr($video['resource_url'][$sourceId], '.'), 1);
             $video['last_chapter']  = isset($videos[$key-1]) ? $videos[$key-1]['chapter_id'] : 0;
             $video['next_chapter']  = isset($videos[$key+1]) ? $videos[$key+1]['chapter_id'] : 0;
-            // unset($video['resource_url']); // 安全考虑，删除剧集播放连接，防止全部播放连接一次性全返回
+            unset($video['resource_url']); // 安全考虑，删除剧集播放连接，防止全部播放连接一次性全返回
         }
 
         // 演员信息
@@ -501,7 +501,7 @@ class VideoLogic
         // 获取用户观看视频任务状态
         $taskLogic = new TaskLogic();
         $taskStatus = $taskLogic->taskStatus(Yii::$app->user->id, TaskInfo::TASK_ACTION_PLAY_VIDEO);
-        $sourceFilter = $this->filterResourceChapter($videos, $sources, $sourceId);
+        $sourceFilter = $this->filterResourceChapter($videosBak, $sources, $sourceId);
 //        $souceVideos = ArrayHelper::index($sourceFilter, 'resId')[$sourceId]['data'];
         $data = [
             'info' => array_merge($videoInfo,
