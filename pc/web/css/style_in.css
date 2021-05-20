@@ -4093,7 +4093,7 @@ a.anchor{
     position: relative;
     float: left;
     min-width: 56px;
-    height: 44px;
+    height: auto;
     line-height: 44px;
     border-radius: 4px;
     color: #ccc;
