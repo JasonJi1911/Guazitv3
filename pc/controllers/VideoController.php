@@ -332,6 +332,8 @@ class VideoController extends BaseController
         $data = Yii::$app->api->get('/video/info', ['video_id' => $video_id, 'chapter_id'
             => $chapter_id, 'source_id' => $source_id, 'city'=> $city]);
 
+        if($chapter_id != '' && $data['info']['play_chapter_id'] != $chapter_id)
+            $this->redirect(array('/video/detail','video_id'=>$video_id,'source_id'=>$source_id,'chapter_id'=>$source_id));
         $channel_id = $data['channel_id'];
         $data['info']['actorvideos'] = [];
         if (isset($data['info']['actors'])) {

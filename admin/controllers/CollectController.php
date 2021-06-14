@@ -7,6 +7,7 @@ use admin\models\video\Video;
 use admin\models\video\VideoChannel;
 use admin\widgets\MyArrayDataProvider;
 use Yii;
+use yii\db\Query;
 use yii\helpers\Url;
 use common\helpers\Tool;
 use yii\web\Controller;
@@ -241,7 +242,9 @@ class CollectController extends BaseController
         if (!isset($param['page']))
             $param['page'] = 1;
 
-        $videoCount = Video::find()->count();
+        $videoCount = (new \yii\db\Query())
+            ->from(Video::tableName())
+            ->count();
 
         $recordcount = $videoCount;
         $page = $param['page'];
@@ -254,7 +257,8 @@ class CollectController extends BaseController
         $array_page['pagesize'] = $pagesize;
         $array_page['recordcount'] = $recordcount;
 
-        $array_data = Video::find()->select(['id','title'])->limit($pagesize)->offset(($page-1)*$pagesize)->asArray()->all();
+        $array_data = (new \yii\db\Query())
+            ->from(Video::tableName())->select(['id','title'])->limit($pagesize)->offset(($page-1)*$pagesize)->all();
         $res = ['code'=>1, 'msg'=>'json', 'page'=>$array_page, 'data'=>$array_data ];
         $collectModel = new Collect();
         $result = $collectModel->cancel_source($param,$res );

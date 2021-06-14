@@ -818,7 +818,9 @@ class Collect extends \common\models\collect\Collect
         $vidArr = array_column($data['data'], 'id');
         $vidStr = implode(',', $vidArr);
 
-        $allChapters = VideoChapter::find()->select(['id','video_id','resource_url'])->where(['video_id'=>$vidArr])->asArray()->all();
+        $allChapters = (new \yii\db\Query())
+            ->from(VideoChapter::tableName())->select(['id','video_id','resource_url'])->where(['video_id'=>$vidArr])->all();
+
         $allChapters = ArrayHelper::index($allChapters, null, 'video_id');
 
         $retResult = [];

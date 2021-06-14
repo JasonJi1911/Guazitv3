@@ -436,6 +436,11 @@ class VideoLogic
                 continue;
             }
 
+            // app端不返回html的链接，暂时使用
+            $reUrl = $chapterInfo['resource_url'][$item['source_id']];
+            if (Yii::$app->common->product == Common::PRODUCT_APP && strpos($reUrl,'.m3u8'))
+                continue;
+
             if (!$sourceId) {
                 $sourceId = $item['source_id'];
             }
