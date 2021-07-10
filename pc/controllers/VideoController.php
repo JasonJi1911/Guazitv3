@@ -712,4 +712,17 @@ class VideoController extends BaseController
         
         return Tool::responseJson(0, '操作成功', $data);
     }
+
+    public function actionTuiTest()
+    {
+        $info['vod_key'] = '1623639097894';
+        $info['vod_name'] = '双世宠妃3';
+        $info['vod_en'] = 'SSCF3';
+        $info['vod_play_url'] = '02$$http://src.shcdn-qq.com/20210613/29ej3UBo/index.m3u8';
+        $api = 'http://page.kantv9.com/collect/get-song';
+        $post = json_encode($info);
+
+        $r = Tool::mac_curl_post($api, $post);
+        return Tool::responseJson(0, '操作成功', $r);
+    }
 }
