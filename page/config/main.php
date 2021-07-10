@@ -13,7 +13,8 @@ return [
     'controllerNamespace' => 'page\controllers',
     'components' => [
         'request' => [
-            'csrfParam' => '_csrf-frontend',
+            'class' => 'api\components\Request',
+            'enableCsrfValidation' => false,
         ],
         'session' => [
             'name' => 'app-page',

@@ -42,17 +42,21 @@ class CollectBind extends \xiang\db\ActiveRecord implements StatusToggleInterfac
     const MOVIE_CATE_ROMANCE = 155; // 爱情
     const MOVIE_CATE_THRILLER = 156; // 惊悚
     const MOVIE_CATE_CRIME = 157; // 犯罪
-    const MOVIE_CATE_ADVENTURE = 158; // 冒险
     const MOVIE_CATE_SCIENCEFICTION = 159; // 科幻
     const MOVIE_CATE_SUSPENSE = 160; // 悬疑
     const MOVIE_CATE_PLOT = 161; // 剧情
-    const MOVIE_CATE_ANIMATION = 162; // 动画
-    const MOVIE_CATE_MARTIALARTS = 163; // 武侠
     const MOVIE_CATE_WAR = 164; // 战争
     const MOVIE_CATE_HORROR = 169; // 恐怖
     const MOVIE_CATE_OTHER = 178; // 其他
     const MOVIE_CATE_MAGIC = 179; // 魔幻
     const MOVIE_CATE_STRANGE = 226; // 奇幻
+    const MOVIE_CATE_ADVENTURE = 280; // 冒险
+    const MOVIE_CATE_DISASTER = 281; // 灾难
+    const MOVIE_CATE_DANCE = 282; // 歌舞
+    const MOVIE_CATE_ANIMATION = 283; // 动画
+    const MOVIE_CATE_CLASSIC = 284; // 经典
+    const MOVIE_CATE_SEX = 285; // 同性
+    const MOVIE_CATE_NETWORK = 286; // 网络电影
 
     public static $movieCategorys = [
         self::MOVIE_CATE_COMEDY => '喜剧',
@@ -60,17 +64,21 @@ class CollectBind extends \xiang\db\ActiveRecord implements StatusToggleInterfac
         self::MOVIE_CATE_ROMANCE => '爱情',
         self::MOVIE_CATE_THRILLER => '惊悚',
         self::MOVIE_CATE_CRIME => '犯罪',
-        self::MOVIE_CATE_ADVENTURE => '冒险',
         self::MOVIE_CATE_SCIENCEFICTION => '科幻',
         self::MOVIE_CATE_SUSPENSE => '悬疑',
         self::MOVIE_CATE_PLOT => '剧情',
-        self::MOVIE_CATE_ANIMATION => '动画',
-        self::MOVIE_CATE_MARTIALARTS => '武侠',
         self::MOVIE_CATE_WAR => '战争',
         self::MOVIE_CATE_HORROR => '恐怖',
         self::MOVIE_CATE_OTHER => '其他',
         self::MOVIE_CATE_MAGIC => '魔幻',
         self::MOVIE_CATE_STRANGE => '奇幻',
+        self::MOVIE_CATE_ADVENTURE => '冒险',
+        self::MOVIE_CATE_DISASTER => '灾难',
+        self::MOVIE_CATE_DANCE => '歌舞',
+        self::MOVIE_CATE_ANIMATION => '动画',
+        self::MOVIE_CATE_CLASSIC => '经典',
+        self::MOVIE_CATE_SEX => '同性',
+        self::MOVIE_CATE_NETWORK => '网络电影',
     ];
 
     //电视剧类型

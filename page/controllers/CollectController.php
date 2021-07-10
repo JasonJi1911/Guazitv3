@@ -11,8 +11,10 @@ use common\helpers\Tool;
 use yii\web\Controller;
 use admin\models\collect\Collect;
 use common\models\video\Actor;
+use common\models\video\Video;
 use common\helpers\RedisStore;
 use api\dao\CommonDao;
+use mysqli;
 
 class CollectController extends Controller
 {
@@ -130,5 +132,65 @@ class CollectController extends Controller
             echo($i);
             // sleep(5);
         }
+    }
+
+    public function actionGetSong()
+    {
+        $res['vod_key'] = Yii::$app->request->post('vod_key', '');
+        $res['vod_name'] = Yii::$app->request->post('vod_name', '');
+        $res['vod_en'] = Yii::$app->request->post('vod_en', '');
+        $res['vod_letter'] = Yii::$app->request->post('vod_letter', '');
+        $res['vod_chapter'] = Yii::$app->request->post('vod_chapter', '');
+        $res['vod_play_url'] = Yii::$app->request->post('vod_play_url', '');
+        $res['outdir'] = Yii::$app->request->post('outdir', '');
+
+        $mysql_conf = array(
+            'user' => 'beiwo2',
+            'password' => 'CRLmRnCrjXSbfGxS',
+            'port' => 3306,
+            'host' => '127.0.0.1',
+            'db' => 'beiwo2',
+            'charset' => 'utf8'
+        );
+
+        $conn = new mysqli($mysql_conf['host'], $mysql_conf['user'], $mysql_conf['password'], $mysql_conf['db'], $mysql_conf['port']);
+        // 检测连接
+        if ($conn->connect_error) {
+            echo("连接失败: " . $conn->connect_error);
+        }
+
+        // $area_list = $conn->query("SELECT * FROM sf_video_area")->fetch_assoc();
+
+        $param['isdownload'] = Collect::COLLECT_DOWNLOAD_NO;
+        $sql = "SELECT * FROM vod_Play_720 where final_title=".$res['vod_key'];
+        $db_result = $conn->query($sql);
+        $ifvodItem = $db_result->fetch_assoc();
+        if($ifvodItem)
+        {
+            $upSql = "UPDATE vod_Play_720 set dir='".$res['outdir']."' where final_title=".$res['vod_key'];
+            $ss = $conn->query($upSql);
+            $ifvodItem['vod_play_url'] = $res['vod_play_url'];
+            $collectModel = new Collect();
+            $param['source'] = 1;
+            $result = $collectModel->vod_ifvoddata($param, $ifvodItem);
+        }
+
+        $sql = "SELECT * FROM vod_Play_1080 where final_title=".$res['vod_key'];
+        $db_result = $conn->query($sql);
+        $ifvodItem = $db_result->fetch_assoc();
+        if($ifvodItem)
+        {
+            $upSql = "UPDATE vod_Play_1080 set dir='".$res['outdir']."' where final_title=".$res['vod_key'];
+            $ss = $conn->query($upSql);
+            $ifvodItem['vod_play_url'] = $res['vod_play_url'];
+            $collectModel = new Collect();
+            $param['source'] = 10;
+            $result = $collectModel->vod_ifvoddata($param, $ifvodItem);
+        }
+        $result['ss'] = $ss;
+
+        // $conn->close();
+        echo json_encode($result, JSON_UNESCAPED_UNICODE);
+//        return Tool::responseJson(0, '操作成功', $param);
     }
 }

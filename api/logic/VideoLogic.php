@@ -407,6 +407,29 @@ class VideoLogic
             throw new ApiException(ErrorCode::EC_VIDEO_CHAPTER_NOT_EXIST);
         }
 
+        // 获取源信息
+        $commonDao = new CommonDao();
+        //改动新版本
+        $sources = $commonDao->videoSource(Yii::$app->common->product);
+        if(!$chapterId)
+        {
+            $res_list = array_column($sources, 'source_id');
+            foreach ($videos as $video)
+            {
+                foreach ($video['resource_url'] as $k=>$v)
+                {
+                    if(empty($v))
+                        unset($video['resource_url'][$k]);
+                }
+                $url_res_list = array_keys($video['resource_url']);
+                if(!empty(array_intersect($res_list,$url_res_list)))
+                {
+                    $chapterId = $video['chapter_id'];
+                    break;
+                }
+            }
+        }
+
         // 获取上次播放记录,如果传入的id为空，则获取上次播放历史续播
         $lastPlayLInfo = $this->lastPlayInfo($videoId, $chapterId);
         // 根据章节id获取章节内容,没有此id默认获取第一章
@@ -420,12 +443,8 @@ class VideoLogic
             $sourceId = '';
         }
 
-        // 获取源信息
-        $commonDao = new CommonDao();
         // 旧版
-        // $sources = $commonDao->videoSource(); 
-        //改动新版本
-        $sources = $commonDao->videoSource(Yii::$app->common->product);
+        // $sources = $commonDao->videoSource();
 
         //APP端 全走视频流, 网页端全走IFrame嵌套
         $resourceType = Yii::$app->common->product == Common::PRODUCT_APP ? VideoChapter::RESOURCE_TYPE_DATA : VideoChapter::RESOURCE_TYPE_HTML;
