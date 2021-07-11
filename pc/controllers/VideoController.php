@@ -725,4 +725,18 @@ class VideoController extends BaseController
         $r = Tool::mac_curl_post($api, $post);
         return Tool::responseJson(0, '操作成功', $r);
     }
+
+    public function actionFeedBack()
+    {
+        $video_id = Yii::$app->request->get('video_id', "");
+        $chapter_id = Yii::$app->request->get('chapter_id', "");
+        $source_id = Yii::$app->request->get('source_id', "");
+        $ip = Tool::getIp();
+        //保存反馈信息
+        $data = Yii::$app->api->get('/video/feed-back', ['video_id' => $video_id, 'chapter_id' => $chapter_id
+            , 'source_id' => $source_id, 'ip'=>$ip]);
+
+        $data['para'] = ['video_id'=>$video_id, 'chapter_id'=>$chapter_id, 'source_id'=>$source_id];
+        return Tool::responseJson(0, '操作成功', $data);
+    }
 }

@@ -194,7 +194,8 @@ $(function(){
     $('.func-swicthCap').click(function(){
         var videoId = $(this).attr('data-video-id');
         var chapterId = $(this).attr('data-chapter-id');
-        var sourceId = $('.sourceTab .hover a').attr('data-source-id');
+        // var sourceId = $('.sourceTab .hover a').attr('data-source-id');
+        var sourceId = $(this).attr('data-source-id');;
         
         window.location.href = '/video/detail?video_id=' + videoId + '&chapter_id=' + chapterId+"&source_id="+sourceId;
     });
@@ -435,63 +436,6 @@ $this->registerJs($js);
                                             <?php endif;?>
                                         </video>
                                     <?php else:?>
-                                        <?php if(!empty($data['advert'])) :?>
-                                            <?php foreach ($data['advert'] as $key => $advert) : ?>
-                                                <?php if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_PLAY_BEFORE_PC) :?>
-                                                    <?php if(strpos($advert['ad_image'], '.mp4') !== false) :?>
-                                                        <div id="easiBox" style="height: 100%;" class="add-box" <?= strpos($advert['ad_image'], '.mp4') !== false ? "style='display:none'": ""?>>
-                                                            <!--<a href="" target="_blank" style="height: 83%;position: absolute;left: 0;top: 0;width: 45%;z-index: 900;" class="ad_url_link"></a>-->
-                                                            <!--<a href="" target="_blank" style="height: 83%;position: absolute;right: 0;top: 0;width: 45%;z-index: 900;" class="ad_url_link"></a>-->
-                                                            <div style="text-align: center;line-height: 40px;width: 200px;background: rgb(51, 51, 51);position: absolute;right: 10px;opacity: 0.8;z-index: 999;margin-top: 10px;border-radius: 30px;">
-                                                                <div style="font-size:13px;line-height:28px;">
-                                                                    <a class="ad_url_link" href="<?=$advert['ad_skip_url']?>" target="_blank" style="color:#fff;">视频加载中，
-                                                                        <span id="timer1" style="color:#FF556E"></span> 秒后开始播放
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                            <a href="<?=$advert['ad_skip_url']?>" target="_blank" class="ad_url_link btn-add-detail">
-                                                                点击查看广告详情 >
-                                                            </a>
-                                                            <a class="ad_url_link" href="<?=$advert['ad_skip_url']?>" target="_blank">
-                                                                <video id="easi" style="width: 100%; height: 100%;object-fit: fill;" controls="controls" x5-playsinline=""playsinline="true"webkit-playsinline="true"x-webkit-airplay="true"x5-video-player-type="h5"x5-video-player-fullscreen=""x5-video-orientation="portraint">
-                                                                    <source src="<?= $advert['ad_image']?>" type="video/mp4">
-                                                                </video>
-                                                            </a>
-                                                            <div class="c-videoplay" id="btn-video-play">
-                                                                <i class="c-player-icon c-player-big"></i>
-                                                            </div>
-                                                            <!--<a class="btn-add-play" href="javascript:void(0);" id="hide-add">-->
-                                                            <!--    跳过广告 >-->
-                                                            <!--</a>-->
-                                                        </div>
-                                                    <?php else:?>
-                                                        <div id="picBox" style="height: 100%;" class="add-box" <?= strpos($advert['ad_image'], '.mp4') === false ? "style='display:none'": ""?>>
-                                                            <div style="text-align: center;line-height: 40px;width: 200px;background: rgb(51, 51, 51);position: absolute;right: 10px;opacity: 0.8;z-index: 999;margin-top: 10px;border-radius: 30px;">
-                                                                <div style="font-size:13px;line-height:28px;">
-                                                                    <a class="ad_url_link" href="<?=$advert['ad_skip_url']?>" target="_blank" style="color:#fff;">视频加载中，
-                                                                        <span id="timer1" style="color:#FF556E">10</span> 秒后开始播放
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                            <a href="<?=$advert['ad_skip_url']?>" target="_blank" class="ad_url_link btn-add-detail">
-                                                                点击查看广告详情 >
-                                                            </a>
-
-                                                            <div class="video-play-left-cover">
-                                                                <a href="<?=$advert['ad_skip_url']?>" target="_blank" class="ad_url_link" style="height:100%">
-                                                                    <img src="<?= $advert['ad_image']?>"
-                                                                         onerror="this.src='/images/video/load.gif'"
-                                                                         id="video-cover" class="video-play-btn-iframe">
-                                                                </a>
-                                                            </div>
-                                                            <!--<a class="btn-add-play" href="javascript:void(0);" id="hide-add">-->
-                                                            <!--    跳过广告 >-->
-                                                            <!--</a>-->
-                                                        </div>
-                                                    <?php endif;?>
-                                                <?php endif;?>
-                                            <?php endforeach;?>
-                                        <?php endif;?>
                                         <input type="hidden" id="play_resource" value="<?= $data['info']['resource_url']?>" />
                                         <iframe name="my-iframe" id="my-iframe" src=""
                                                 allowfullscreen="true" allowtransparency="true"
@@ -505,16 +449,24 @@ $this->registerJs($js);
                         <div class="player-mnb">
                             <div class="player-mnb-left">
                                 <div class="qy-flash-func qy-flash-func-v1">
-                                    <div class="func-item func-comment">
-                                        <div class="func-inner">
-                                            <i class="qy-svgicon qy-svgicon-comment-v1"><i class="bubble b1"></i><i class="bubble b2"></i><i class="bubble b3"></i></i>
-                                            <span class="func-name">9844</span>
-                                        </div>
-                                    </div>
+                                    <!--<div class="func-item func-comment">-->
+                                    <!--    <div class="func-inner">-->
+                                    <!--        <i class="qy-svgicon qy-svgicon-comment-v1"><i class="bubble b1"></i><i class="bubble b2"></i><i class="bubble b3"></i></i>-->
+                                    <!--        <span class="func-name">9844</span>-->
+                                    <!--    </div>-->
+                                    <!--</div>-->
                                     <div class="func-item func-like-v1">
                                         <div class="func-inner">
                                             <span class="like-icon-box"><i title="" class="qy-svgicon qy-svgicon-dianzan"></i><i title="" class="like-heart-steps"></i></span>
                                             <span class="func-name"><?= $data['info']['total_views']?></span>
+                                        </div>
+                                    </div>
+                                    <div class="func-item func-like-v1">
+                                        <div class="func-inner">
+                                            <span class="like-icon-box">
+                                                <i title="" class="qy-svgicon qy-svgicon-report"></i>
+                                            </span>
+                                            <span class="func-name" id='err_feedback'>片源报错</span>
                                         </div>
                                     </div>
                                 </div>
@@ -543,7 +495,8 @@ $this->registerJs($js);
                                     <div class="func-item <?= $data['info']['last_chapter'] == 0 ? 'pointer-none': ''?>">
                                         <div title="上一集" class="func-inner func-swicthCap"
                                              data-video-id="<?= $data['info']['video_id']?>"
-                                             data-chapter-id="<?= $data['info']['last_chapter']?>">
+                                             data-chapter-id="<?= $data['info']['last_chapter']?>"
+                                             data-source-id="<?= $source_id?>">
                                             <span class="qy-svgicon qy-svgicon-leftarrow_cu"></span>
                                             <span class="func-name">上一集</span>
                                         </div>
@@ -551,9 +504,10 @@ $this->registerJs($js);
                                     <div class="func-item <?= $data['info']['next_chapter'] == 0 ? 'pointer-none': ''?>">
                                         <div title="下一集" class="func-inner func-swicthCap"
                                              data-video-id="<?= $data['info']['video_id']?>"
-                                             data-chapter-id="<?= $data['info']['next_chapter']?>">
-                                            <span class="qy-svgicon qy-svgicon-rightarrow_cu"></span>
+                                             data-chapter-id="<?= $data['info']['next_chapter']?>"
+                                             data-source-id="<?= $source_id?>">
                                             <span class="func-name">下一集</span>
+                                            <span class="qy-svgicon qy-svgicon-rightarrow_cu"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -590,7 +544,7 @@ $this->registerJs($js);
                                                 <div class="qy-episode-tab">
                                                     <ul class="tab-bar TAB_CLICK sourceTab" id=".srctabShow">
                                                         <?php foreach ($data['info']['filter'] as $key => $source): ?>
-                                                            <li class="bar-li <?= (empty($source_id) && $key == 0) || ($source['resId'] == $source_id) ? 'hover' : ''?>">
+                                                            <li class="bar-li <?= (empty($source_id) && $key == 0) || ($source['resId'] == $source_id) ? 'hover' : ''?>" id='srcTab-<?=$source['resId']?>'>
                                                                 <a href="javascript:void(0);"
                                                                    class="bar-link"
                                                                    data-source-id="<?= $source['resId']?>">
@@ -602,7 +556,7 @@ $this->registerJs($js);
                                                 </div>
                                                 <div class="c"></div>
                                                 <?php foreach ($data['info']['filter'] as $key => $source): ?>
-                                                    <div class="srctabShow <?= (empty($source_id) && $key == 0) || ($source['resId'] == $source_id) ? 'dn' : 'nn'?>">
+                                                    <div class="srctabShow <?= (empty($source_id) && $key == 0) || ($source['resId'] == $source_id) ? 'dn' : 'nn'?>" id='srctab-<?=$source['resId']?>'>
                                                         <?php
                                                         $page = ceil(count($source['data'])/30);
                                                         $count = count($source['data']);
@@ -630,10 +584,12 @@ $this->registerJs($js);
                                                             <ul class="qy-episode-num tabShow<?=$key?> <?= (($i+1) == $ontab)? 'dn': 'nn'?>">
                                                                 <?php foreach ($source['data'] as $index => $value) : ?>
                                                                     <?php if($index>=$i*30 && $index < ($i*30+30)){?>
-                                                                        <li class="select-item switch-next-li switch-next <?= $data['info']['play_chapter_id'] == $value['chapter_id'] ? 'selected' : ''?>"
+                                                                        <li class="select-item switch-next-li switch-next <?= $data['info']['play_chapter_id'] == $value['chapter_id']
+                                                                        && ((empty($source_id) && $key == 0) || ($source['resId'] == $source_id))? 'selected' : ''?>"
                                                                             data-video-id="<?= $value['video_id']?>"
                                                                             data-chapter-id="<?= $value['chapter_id']?>"
-                                                                            data-type="<?= $data['info']['catalog_style']?>">
+                                                                            data-type="<?= $data['info']['catalog_style']?>"
+                                                                            id='chap-<?=$source['resId']?>-<?=$value['chapter_id']?>'>
                                                                             <div class="select-link">
                                                                                 <?= $value['title']?>
                                                                             </div>
@@ -651,7 +607,7 @@ $this->registerJs($js);
                                         <div class="qy-episode-tab">
                                             <ul class="tab-bar TAB_CLICK sourceTab" id=".tabShow">
                                                 <?php foreach ($data['info']['filter'] as $key => $source): ?>
-                                                    <li class="bar-li <?= (empty($source_id) && $key == 0) || ($source['resId'] == $source_id) ? 'hover' : ''?>">
+                                                    <li class="bar-li <?= (empty($source_id) && $key == 0) || ($source['resId'] == $source_id) ? 'hover' : ''?>" id='srcTab-<?=$source['resId']?>'>
                                                         <a href="javascript:void(0);"
                                                            class="bar-link"
                                                            data-source-id="<?= $source['resId']?>">
@@ -666,12 +622,14 @@ $this->registerJs($js);
                                             <?php foreach ($data['info']['filter'] as $key => $source): ?>
                                                 <ul class="qy-play-list tabShow
                                                 <?= (empty($source_id) && $key == 0) || ($source['resId'] == $source_id) ? 'dn' : 'nn'?>"
-                                                    style="margin-bottom: 100px;">
+                                                    style="margin-bottom: 100px;" id='srctab-<?=$source['resId']?>'>
                                                     <?php foreach ($source['data'] as $value) : ?>
-                                                        <li class="play-list-item switch-next-li switch-next <?= $data['info']['play_chapter_id'] == $value['chapter_id'] ? 'selected' : ''?>"
+                                                        <li class="play-list-item switch-next-li switch-next <?= $data['info']['play_chapter_id'] == $value['chapter_id']
+                                                        && ((empty($source_id) && $key == 0) || ($source['resId'] == $source_id))? 'selected' : ''?>"
                                                             data-video-id="<?= $value['video_id']?>"
                                                             data-chapter-id="<?= $value['chapter_id']?>"
-                                                            data-type="<?= $data['info']['catalog_style']?>">
+                                                            data-type="<?= $data['info']['catalog_style']?>"
+                                                            id='chap-<?=$source['resId']?>-<?=$value['chapter_id']?>'>
                                                             <div class="mod-left">
                                                                 <div class="mod-img-link">
                                                                     <img src="<?= $value['cover']?>" class="mod-img">
@@ -702,7 +660,7 @@ $this->registerJs($js);
                                             <div class="qy-episode-tab">
                                                 <ul class="tab-bar TAB_CLICK sourceTab" id=".tabShow">
                                                     <?php foreach ($data['info']['filter'] as $key => $source): ?>
-                                                        <li class="bar-li <?= (empty($source_id) && $key == 0) || ($source['resId'] == $source_id) ? 'hover' : ''?>">
+                                                        <li class="bar-li <?= (empty($source_id) && $key == 0) || ($source['resId'] == $source_id) ? 'hover' : ''?>" id='srcTab-<?=$source['resId']?>'>
                                                             <a href="javascript:void(0);"
                                                                class="bar-link"
                                                                data-source-id="<?= $source['resId']?>">
@@ -721,12 +679,14 @@ $this->registerJs($js);
                                                                 <?php foreach ($data['info']['filter'] as $key => $source): ?>
                                                                     <ul class="qy-play-list tabShow
                                                                     <?= (empty($source_id) && $key == 0) || ($source['resId'] == $source_id) ? 'dn' : 'nn'?>"
-                                                                        style="margin-bottom: 100px;">
+                                                                        style="margin-bottom: 100px;" id='srctab-<?=$source['resId']?>'>
                                                                         <?php foreach ($source['data'] as $value) : ?>
-                                                                            <li class="play-list-item switch-next-li switch-next <?= $data['info']['play_chapter_id'] == $value['chapter_id'] ? 'selected' : ''?>"
+                                                                            <li class="play-list-item switch-next-li switch-next <?= $data['info']['play_chapter_id'] == $value['chapter_id']
+                                                                            && ((empty($source_id) && $key == 0) || ($source['resId'] == $source_id))? 'selected' : ''?>"
                                                                                 data-video-id="<?= $value['video_id']?>"
                                                                                 data-chapter-id="<?= $value['chapter_id']?>"
-                                                                                data-type="<?= $data['info']['catalog_style']?>">
+                                                                                data-type="<?= $data['info']['catalog_style']?>"
+                                                                                id='chap-<?=$source['resId']?>-<?=$value['chapter_id']?>'>
                                                                                 <div class="mod-left">
                                                                                     <div class="mod-img-link">
                                                                                         <img src="<?= $value['cover']?>" class="mod-img">
@@ -767,7 +727,7 @@ $this->registerJs($js);
                                             <div class="qy-episode-tab">
                                                 <ul class="tab-bar TAB_CLICK sourceTab" id=".tabShow">
                                                     <?php foreach ($data['info']['filter'] as $key => $source): ?>
-                                                        <li class="bar-li <?= (empty($source_id) && $key == 0) || ($source['resId'] == $source_id) ? 'hover' : ''?>">
+                                                        <li class="bar-li <?= (empty($source_id) && $key == 0) || ($source['resId'] == $source_id) ? 'hover' : ''?>" id='srcTab-<?=$source['resId']?>'>
                                                             <a href="javascript:void(0);"
                                                                class="bar-link"
                                                                data-source-id="<?= $source['resId']?>">
@@ -781,12 +741,14 @@ $this->registerJs($js);
                                             <?php foreach ($data['info']['filter'] as $key => $source): ?>
                                                 <ul class="qy-episode-txt tabShow
                                                 <?= (empty($source_id) && $key == 0) || ($source['resId'] == $source_id) ? 'dn' : 'nn'?>"
-                                                    style="margin-bottom: 100px;">
+                                                    style="margin-bottom: 100px;" id='srctab-<?=$source['resId']?>'>
                                                     <?php foreach ($source['data'] as $key1 =>$value) : ?>
-                                                        <li class="select-item switch-next-li switch-next <?= $data['info']['play_chapter_id'] == $value['chapter_id'] ? 'selected' : ''?>"
+                                                        <li class="select-item switch-next-li switch-next <?= $data['info']['play_chapter_id'] == $value['chapter_id']
+                                                        && ((empty($source_id) && $key == 0) || ($source['resId'] == $source_id))? 'selected' : ''?>"
                                                             data-video-id="<?= $value['video_id']?>"
                                                             data-chapter-id="<?= $value['chapter_id']?>"
-                                                            data-type="<?= $data['info']['catalog_style']?>">
+                                                            data-type="<?= $data['info']['catalog_style']?>"
+                                                            id='chap-<?=$source['resId']?>-<?=$value['chapter_id']?>'>
                                                             <div class="select-inline">
                                                                 <div class="select-title">
                                                                     <span class="select-pre"><?= $key1+1?></span>
@@ -900,8 +862,8 @@ $this->registerJs($js);
             <?php if(!empty($data['advert'])) :?>
                 <?php foreach ($data['advert'] as $key => $advert) : ?>
                     <?php if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_VIDEO_BOTTOM_PC) :?>
-                        <a href="<?$advert['ad_skip_url']?>" target="_blank" class="video-bottom-add">
-                            <img src="<?$advert['ad_image']?>" style="width:100%;">
+                        <a href="<?=$advert['ad_skip_url']?>" target="_blank" class="video-bottom-add">
+                            <img src="<?=$advert['ad_image']?>" style="width:100%;">
                         </a>
                     <?php endif;?>
                 <?php endforeach;?>
@@ -1099,10 +1061,22 @@ $this->registerJs($js);
         </li>
     </ul>
 </div>
+<?php foreach ($data['advert'] as $key => $advert) : ?>
+    <?php if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_PLAY_BEFORE_PC) :?>
+        <?php if(strpos($advert['ad_image'], '.mp4') !== false) {
+            $ad_type = 'mp4';
+            $ad_url = $advert['ad_image'];
+            $ad_link = $advert['ad_skip_url'];
+        }else{
+            $ad_type = 'img';
+            $ad_url = $advert['ad_image'];
+            $ad_link = $advert['ad_skip_url'];
+        }?>
+    <?php endif;?>
+<?php endforeach;?>
 <script src="/js/jquery.js"></script>
-<script src="/js/video.js?v=1.5"></script>
+<script src="/js/video.js"></script>
 <script src="/js/VideoSearch.js"></script>
-
 <script>
     let timer = null;
     let wechattimer = null
@@ -1110,10 +1084,10 @@ $this->registerJs($js);
     let checkUrl = "/video/check-wechat";
     let clearUrl = "/video/clear-catch";
     $(document).ready(function(){
-        // $(".wechat-block").remove("");
+        $(".wechat-block").remove("");
         if ($("#play_resource").val() != "")
-            $("#my-iframe").attr('src', $("#play_resource").val());
-        refreshWechat();
+            $("#my-iframe").attr('src', $("#play_resource").val() + "&ad_url=<?php echo $ad_url;?>&ad_link=<?php echo $ad_link;?>&ad_type=<?php echo $ad_type;?>");
+        // refreshWechat();
         // alert(document.getElementById('wechat-block').style.display);
         if(document.getElementById('wechat-block') && document.getElementById('wechat-block').style.display!='none')
         {
@@ -1121,21 +1095,21 @@ $this->registerJs($js);
                 clearInterval(wechattimer);
                 document.getElementById('wechat-block').style.display='none';
 
-                if(document.getElementById('easiBox') && document.getElementById('easiBox').style.display!='none')
-                    $('#btn-video-play').trigger("click");
+                // if(document.getElementById('easiBox') && document.getElementById('easiBox').style.display!='none')
+                //     $('#btn-video-play').trigger("click");
 
-                if(document.getElementById('picBox') && document.getElementById('picBox').style.display!='none')
-                    countPicAds();
+                // if(document.getElementById('picBox') && document.getElementById('picBox').style.display!='none')
+                //     countPicAds();
 
-                setTimeout("document.getElementById('easiBox').style.display='none'",20000);
-                setTimeout("document.getElementById('picBox').style.display='none'",20000);
-            },25000);
+                // setTimeout("document.getElementById('easiBox').style.display='none'",15000);
+                // setTimeout("document.getElementById('picBox').style.display='none'",15000);
+            },30000);
         }
-        else
-        {
-            setTimeout("document.getElementById('easiBox').style.display='none'",20000);
-            setTimeout("document.getElementById('picBox').style.display='none'",20000);
-        }
+        // else
+        // {
+        //     setTimeout("document.getElementById('easiBox').style.display='none'",15000);
+        //     setTimeout("document.getElementById('picBox').style.display='none'",15000);
+        // }
         // $('#btn-video-play').trigger("click");
         // countPicAds();
         // refreshAds();
@@ -1174,14 +1148,14 @@ $this->registerJs($js);
                             // $(".add-box video").trigger('play');
                             // countVieoAds();
                             $('#btn-video-play').trigger("click");
-                            setTimeout("document.getElementById('easiBox').style.display='none'",20000);
+                            setTimeout("document.getElementById('easiBox').style.display='none'",15000);
                             $("#my-iframe").attr('src', $("#play_resource").val());
                         }
                         else
                         {
                             $("#easiBox").remove();
                             $(".add-box img").attr("src", adddata.ad_image);
-                            setTimeout("document.getElementById('picBox').style.display='none'",20000);
+                            setTimeout("document.getElementById('picBox').style.display='none'",15000);
                             countPicAds();
                         }
                     }
@@ -1321,6 +1295,35 @@ $this->registerJs($js);
 
     });
 
+    $('.bar-link').click(function(){
+        var videoId = "<?= $data['info']['play_video_id']?>";
+        var chapterId = "<?= $data['info']['play_chapter_id']?>";
+        var sourceId = $(this).attr('data-source-id');
+
+        if(sourceId != undefined && sourceId != null)
+        {
+            $('#srcTab-'+sourceId).trigger('click');
+            if(document.getElementById('chap-'+sourceId +'-'+chapterId))
+                $('#chap-'+sourceId +'-'+chapterId).trigger('click');
+            else{
+                $('#srctab-'+sourceId +' .switch-next-li:first').trigger('click');
+            }
+        }
+
+    });
+
+    $('#err_feedback').click(function(){
+        var feedUrl = "/video/feed-back";
+        var feedIndex = {};
+        feedIndex['video_id'] = "<?= $data['info']['play_video_id']?>";
+        feedIndex['chapter_id'] = "<?= $data['info']['play_chapter_id']?>";
+        feedIndex['source_id'] = "<?= $source_id?>";
+        $.get(feedUrl, feedIndex ,function(response) {
+            var result = response.data;
+            alert(result.message);
+        });
+        console.log(feedIndex);
+    })
 
 </script>
 </body>

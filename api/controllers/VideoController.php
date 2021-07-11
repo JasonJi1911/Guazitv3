@@ -16,6 +16,7 @@ use api\models\video\UserWatchLog;
 use api\models\advert\AdvertPosition;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
+use common\models\video\VideoFeed;
 use Yii;
 use yii\helpers\ArrayHelper;
 
@@ -378,5 +379,36 @@ class VideoController extends BaseController
 
         $videoLogic = new VideoLogic();
         return $videoLogic->vipList($channelId);
+    }
+
+    public function actionFeedBack()
+    {
+        $video_id = $this->getParam('video_id', "");
+        $chapter_id = $this->getParam('chapter_id', "");
+        $source_id = $this->getParam('source_id', "");
+        $ip = $this->getParam('ip', "");
+
+        $feed_back = new VideoFeed();
+        $feed_back->video_id = $video_id;
+        $feed_back->chapter_id = $chapter_id;
+        $feed_back->source_id = $source_id;
+        $feed_back->ip = $ip;
+
+        $info = $feed_back::find()->andWhere(['video_id'=>$video_id, 'chapter_id'=>$chapter_id
+            , 'source_id'=>$source_id, 'ip'=>$ip])->asArray()->all();
+
+        $result = [];
+        if (!$info)
+        {
+            $feed_back->save();
+            $result['status'] = 0;
+            $result['message'] = '报错成功';
+        }
+        else
+        {
+            $result['status'] = 1;
+            $result['message'] = '您已经报错过该视频，请不要重复提交';
+        }
+        return $result;
     }
 }

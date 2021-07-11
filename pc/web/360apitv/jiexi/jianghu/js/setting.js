@@ -36,14 +36,25 @@ var YZM = {
 				config.dmrule = e.data.dmrule;
 				//config.group = YZM.getCookie('group_id');
 				danmuon = e.data.danmuon;
-				if (config.group < config.group_x && YZM.ads.state == 'on' && config.group != '') {
-					if (YZM.ads.set.state == '1') {
-						YZM.MYad.vod(YZM.ads.set.vod.url, YZM.ads.set.vod.link);
-					} else if (YZM.ads.set.state == '2') {
-						YZM.MYad.pic(YZM.ads.set.pic.link, YZM.ads.set.pic.time, YZM.ads.set.pic.img);
+				var adslists = config.bbslist;
+				danmuon = e.data.danmuon;
+				if (YZM.ads.state == 'on') {
+					var ad1 = adslists[0];
+					var isend = adslists.length > 1 ? false : true;
+					if(ad1.pic != ''){
+						YZM.MYad.pic(ad1.link, ad1.pic, isend);
+					}else if(ad1.video != ''){
+						YZM.MYad.vod(ad1.video, ad1.link,isend);
+					}
+					else{
+						var playUrl = config.url;
+						var newkey = config.startkey;
+						YZM.play(playUrl[newkey]);
 					}
 				} else {
-					YZM.play(config.url);
+					var playUrl = config.url;
+					var newkey = config.startkey;
+					YZM.play(playUrl[newkey]);
 				}
 			}
 		});
@@ -120,10 +131,10 @@ var YZM = {
 		YZM.headt = yzmck.get("headt");
 		if(config.url.indexOf("type=1")==-1)
 		{
-		if(YZM.headt==null)
-		{
-		    //YZM.headt='18';
-		}
+			if(YZM.headt==null)
+			{
+				//YZM.headt='18';
+			}
 		}
 		YZM.lastt = yzmck.get("lastt");
 		YZM.last_tip = parseInt(YZM.lastt) + 10;
@@ -222,7 +233,7 @@ var YZM = {
 			$(".yzmplayer-cplayer").append(cplayer);
 // 			$("#my-loading", parent.document).remove();
 
-            $("#my-loading").remove();
+			$("#my-loading").remove();
 			YZM.dp.play();
 			$(".close").on("click", function() {
 				$(".memory-play-wrap").remove();
@@ -312,7 +323,7 @@ var YZM = {
 					YZM.jump_f = 0
 				}
 			}
-			if (YZM.headt != null) //if (YZM.jump_f == 1) 
+			if (YZM.headt != null) //if (YZM.jump_f == 1)
 			{
 				YZM.dp.seek(YZM.headt);
 				YZM.dp.notice("已为您跳过片头");
@@ -434,7 +445,7 @@ var YZM = {
 					}
 				});
 			});
-var liyih = '<div class="dmrules"><a target="_blank" href="' + config.dmrule + '">弹幕礼仪 </a></div>';
+			var liyih = '<div class="dmrules"><a target="_blank" href="' + config.dmrule + '">弹幕礼仪 </a></div>';
 			$("div.yzmplayer-comment-box:last").append(liyih);
 			$(".yzmplayer-watching-number").text(up.usernum);
 			$(".yzmplayer-info-panel-item-title-amount .yzmplayer-info-panel-item-title").html("违规词");
@@ -503,50 +514,50 @@ var liyih = '<div class="dmrules"><a target="_blank" href="' + config.dmrule + '
 	'setCookie': function(c_name, value, expireHours) {
 		var exdate = new Date();
 		exdate.setHours(exdate.getHours() + expireHours);
-		
+
 		/** 判断是否支持window.sessionStorage如果支持就使用window.sessionStorage，避免cookie过长 */
 		if(window.sessionStorage) {
-		    window.sessionStorage.setItem('playtime',c_name + "=" + escape(value) + ((expireHours === null) ? "" : ";expires=" + exdate.toGMTString()));
+			window.sessionStorage.setItem('playtime',c_name + "=" + escape(value) + ((expireHours === null) ? "" : ";expires=" + exdate.toGMTString()));
 		}else{
-		    document.cookie = c_name + "=" + escape(value) + ((expireHours === null) ? "" : ";expires=" + exdate.toGMTString());
+			document.cookie = c_name + "=" + escape(value) + ((expireHours === null) ? "" : ";expires=" + exdate.toGMTString());
 		}
 	},
 	'getCookie': function(c_name) {
-	    
-	    if(window.sessionStorage){
-	        
-	        var _session =  window.sessionStorage.getItem('playtime');
-	        
-	        if(_session && _session.length > 0){
-	            
-	            c_start = _session.indexOf(c_name + "=");
-    			if (c_start !== -1) {
-    				c_start = c_start + c_name.length + 1;
-    				c_end = _session.indexOf(";", c_start);
-    				if (c_end === -1) {
-    					c_end = _session.length;
-    				};
-    				return unescape(_session.substring(c_start, c_end));
-    			}
-	        }
-	        
-	    }else{
-	        
-	        if (document.cookie.length > 0) {
-    			c_start = document.cookie.indexOf(c_name + "=");
-    			if (c_start !== -1) {
-    				c_start = c_start + c_name.length + 1;
-    				c_end = document.cookie.indexOf(";", c_start);
-    				if (c_end === -1) {
-    					c_end = document.cookie.length;
-    				};
-    				return unescape(document.cookie.substring(c_start, c_end));
-    			}
-		    }
-	    }
-	    
+
+		if(window.sessionStorage){
+
+			var _session =  window.sessionStorage.getItem('playtime');
+
+			if(_session && _session.length > 0){
+
+				c_start = _session.indexOf(c_name + "=");
+				if (c_start !== -1) {
+					c_start = c_start + c_name.length + 1;
+					c_end = _session.indexOf(";", c_start);
+					if (c_end === -1) {
+						c_end = _session.length;
+					};
+					return unescape(_session.substring(c_start, c_end));
+				}
+			}
+
+		}else{
+
+			if (document.cookie.length > 0) {
+				c_start = document.cookie.indexOf(c_name + "=");
+				if (c_start !== -1) {
+					c_start = c_start + c_name.length + 1;
+					c_end = document.cookie.indexOf(";", c_start);
+					if (c_end === -1) {
+						c_end = document.cookie.length;
+					};
+					return unescape(document.cookie.substring(c_start, c_end));
+				}
+			}
+		}
+
 		return "";
-		
+
 	},
 	'formatTime': function(seconds) {
 		return [parseInt(seconds / 60 / 60), parseInt(seconds / 60 % 60), parseInt(seconds % 60)].join(":").replace(
@@ -613,9 +624,9 @@ var liyih = '<div class="dmrules"><a target="_blank" href="' + config.dmrule + '
 			css += '</style>';
 			$('body').append(css).addClass("");
 			YZM.def();
-			//YZM.jump.head();				
+			//YZM.jump.head();
 		},
-		'adplay': function(url) {
+		'adplay': function(url, end) {
 			$('body').addClass("danmu-off");
 			YZM.ad = new yzmplayer({
 				autoplay: true,
@@ -624,19 +635,45 @@ var liyih = '<div class="dmrules"><a target="_blank" href="' + config.dmrule + '
 				logo: config.logo,
 				video: {
 					url: url,
-					pic: config.pic,
+					pic: '',
 					type: 'auto',
 				},
 			});
-			$('.yzmplayer-controller,.yzmplayer-cplayer,.yzmplayer-logo,#loading-box,.yzmplayer-controller-mask').remove();
-			$('.yzmplayer-mask').show();
+// 			$('.yzmplayer-controller,.yzmplayer-cplayer,.yzmplayer-logo,#loading-box,.yzmplayer-controller-mask').remove();
+// 			$('.yzmplayer-mask').show();
+// 			YZM.ad.on('timeupdate', function() {
+// 				if (YZM.ad.video.currentTime > YZM.ad.video.duration - 0.1) {
+// 					$('body').removeClass("danmu-off");
+// 					YZM.ad.destroy();
+// 					$("#ADplayer").remove();
+// 					$("#ADtip").remove();
+// 					YZM.play(config.url);
+// 				}
+// 			});
+// 			$('.yzmplayer-controller,.yzmplayer-cplayer,.yzmplayer-logo,#loading-box,.yzmplayer-controller-mask').remove();
+			$('.yzmplayer-mask,.yzmplayer-cplayer,.yzmplayer-logo,#loading-box,.yzmplayer-controller-mask').remove();
+// 			$('.yzmplayer-mask').show();
 			YZM.ad.on('timeupdate', function() {
 				if (YZM.ad.video.currentTime > YZM.ad.video.duration - 0.1) {
 					$('body').removeClass("danmu-off");
 					YZM.ad.destroy();
-					$("#ADplayer").remove();
-					$("#ADtip").remove();
-					YZM.play(config.url);
+					if(end){
+						$("#ADplayer").remove();
+						$("#ADtip").remove();
+						$("#ADmask").remove();
+						var playUrl2 = config.url;
+						var newkey2 = config.startkey;
+						YZM.play(playUrl2[newkey2]);
+					}else{
+						var adslist = config.bbslist;
+						var ad2 = adslist[1];
+						if(ad2.video == ''){
+							YZM.MYad.pic(ad2.link, ad2.pic, true);
+						}else{
+							YZM.MYad.vod(ad2.video, ad2.link,true);
+						}
+
+					}
 				}
 			});
 		},
@@ -684,19 +721,17 @@ var liyih = '<div class="dmrules"><a target="_blank" href="' + config.dmrule + '
 		}
 	},
 	'MYad': {
-		'vod': function(u, l) {
-			$("#ADtip").html('<a id="link" href="' + l + '" target="_blank">查看详情</a>');
-			$("#ADplayer").click(function() {
+		'vod': function(u, l, end) {
+// 			$("#ADtip").html('<a id="link" href="' + l + '" target="_blank">查看详情</a>');
+// 			$("#ADplayer").click(function() {
+// 				document.getElementById('link').click();
+// 			});
+// 			YZM.player.adplay(u);
+			$("#ADtip").html('<div style="top: 10px;text-align: center;line-height: 40px;width: 200px;background: rgb(51, 51, 51);position: absolute;right: 10px;opacity: 0.8;z-index: 999;border-radius: 30px;"><div style="font-size:13px;line-height:28px;"><a class="ad_url_link" href="'+ l +'" target="_blank" style="color:#fff;">广告剩余：<span id="time_ad" style="color:#FF556E">10</span></a></div></div><a href="'+ l +'" target="_blank" class="ad_url_link btn-add-detail" id="link" style="top: 50px;right:10px;background-color: rgb(255, 85, 110);">查看详情 ></a>');
+			$("#ADmask").click(function() {
 				document.getElementById('link').click();
 			});
-			YZM.player.adplay(u);
-		},
-		'pic': function(l, t, p) {
-			$("#ADtip").html('<a id="link" href="' + l + '" target="_blank">广告 <e id="time_ad">' + t + '</e></a><img src="' +
-				p + '">');
-			$("#ADtip").click(function() {
-				document.getElementById('link').click();
-			});
+			YZM.player.adplay(u,end);
 			var span = document.getElementById("time_ad");
 			var num = span.innerHTML;
 			var timer = null;
@@ -706,12 +741,63 @@ var liyih = '<div class="dmrules"><a target="_blank" href="' + config.dmrule + '
 					span.innerHTML = num;
 					if (num == 0) {
 						clearInterval(timer);
-						YZM.play(config.url);
-						$('#ADtip').remove();
 					}
 				}, 1000);
 			}, 1);
+		},
+		'pic': function(l, p, end) {
+// 			$("#ADtip").html('<a id="link" href="' + l + '" target="_blank">广告 <e id="time_ad">' + t + '</e></a><img src="' +
+// 				p + '">');
+// 			$("#ADtip").click(function() {
+// 				document.getElementById('link').click();
+// 			});
+// 			var span = document.getElementById("time_ad");
+// 			var num = span.innerHTML;
+// 			var timer = null;
+// 			setTimeout(function() {
+// 				timer = setInterval(function() {
+// 					num--;
+// 					span.innerHTML = num;
+// 					if (num == 0) {
+// 						clearInterval(timer);
+// 						YZM.play(config.url);
+// 						$('#ADtip').remove();
+// 					}
+// 				}, 1000);
+// 			}, 1);
+			$("#ADtip").html('<div style="top: 10px;text-align: center;line-height: 40px;width: 200px;background: rgb(51, 51, 51);position: absolute;right: 10px;opacity: 0.8;z-index: 999;border-radius: 30px;"><div style="font-size:13px;line-height:28px;"><a class="ad_url_link" href="'+ l +'" target="_blank" style="color:#fff;">广告剩余：<span id="time_ad" style="color:#FF556E">10</span></a></div></div><a href="'+ l +'" target="_blank" class="ad_url_link btn-add-detail" id="link" style="top: 50px;right:10px;background-color: rgb(255, 85, 110);">查看详情 ></a><img style="width:100%;height:100%;max-height:100%" src="' + p + '">');
+			$("#ADmask").click(function() {
+				document.getElementById('link').click();
+			});
+			console.dir(p);
+			var span = document.getElementById("time_ad");
+			var num = span.innerHTML;
+			var timer = null;
+			setTimeout(function() {
+				timer = setInterval(function() {
+					num--;
+					span.innerHTML = num;
+					if (num == 0) {
+						clearInterval(timer);
+						var adslist9 = config.bbslist;
+						var ad9 = adslist9[1];
+						if(end){
+							var playUrl7 = config.url;
+							var newkey7 = config.startkey;
+							YZM.play(playUrl7[newkey7]);
+							$('#ADtip').remove();
+							$('#ADmask').remove();
+						}else{
+							if(ad9.video == ''){
+								YZM.MYad.pic(ad9.link,ad9.pic, true);
+							}else{
+								YZM.MYad.vod(ad9.video, ad9.link, true);
+							}
 
+						}
+					}
+				}, 1000);
+			}, 1);
 		},
 		'pause': {
 			'play': function(l, p) {
@@ -719,9 +805,9 @@ var liyih = '<div class="dmrules"><a target="_blank" href="' + config.dmrule + '
 					var pause_ad_html = '<div id="player_pause"><div class="tip">关闭广告</div><a href="' + l +
 						'" target="_blank"><img src="' + p + '"></a></div>';
 					$('#player').before(pause_ad_html);
-				    $(".tip").click(function(){
-                        $("#player_pause").remove();
-                    });
+					$(".tip").click(function(){
+						$("#player_pause").remove();
+					});
 				}
 			},
 			'out': function() {
