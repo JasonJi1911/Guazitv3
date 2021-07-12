@@ -562,7 +562,7 @@ class Collect extends \common\models\collect\Collect
                 $videoDao->is_sensitive = 1;
                 $videoDao->play_limit = 1;
                 $videoDao->is_down = 0;
-                $videoDao->episode_num = $this->GetEpisodeNum($v['vod_play_url']);
+//                $videoDao->episode_num = $this->GetEpisodeNum($v['vod_play_url']);
                 $videoDao->total_views = 0;
                 $videoDao->total_favors = 0;
                 $videoDao->total_price = 0;
@@ -571,6 +571,7 @@ class Collect extends \common\models\collect\Collect
                 $info = $videoDao::find()->andWhere(['title'=>$v['vod_name'], 'status'=>1, 'channel_id'=>$videoDao->channel_id])->asArray()->one();
                 if (!$info)
                 {
+                    $videoDao->episode_num = $this->GetEpisodeNum($v['vod_play_url']);
                     if($param['isdownload'] == Collect::COLLECT_DOWNLOAD_YES)
                         $videoDao->cover = $this->ParseVideoCover($v['vod_pic']);
                     else
@@ -630,14 +631,11 @@ class Collect extends \common\models\collect\Collect
                     }
 
                     $this->ParseVideoChapter($info['id'], $v['vod_play_from'], $v['vod_play_url'], $param['source'], $videoDao->channel_id, $v['vod_name'],$filterStr);
-                    if ($videoDao->episode_num > $info['episode_num'])
-                        $newAttributes['episode_num'] = $videoDao->episode_num;
 
-                    if ($videoDao->channel_id != CollectBind::VIDEO_CHANNEL_MOVIE)
-                        $newAttributes['episode_num'] = VideoChapter::find()->where(['video_id'=>$info['id']])->count();
+                    $newAttributes['episode_num'] = $this->GetEpisodeNum($v['vod_play_url'], $info['episode_num']);
 
                     if (!empty($newAttributes))
-                    $updateDao->updateAttributes($newAttributes);
+                        $updateDao->updateAttributes($newAttributes);
 
                     $this->ParseVideoActor($info['id'], $v['vod_actor']);
                     $this->ParseVideoActor($info['id'], $v['vod_director'], 2);
@@ -936,9 +934,12 @@ class Collect extends \common\models\collect\Collect
                     || $channel_id == CollectBind::VIDEO_CHANNEL_ANIMATION
                     || $channel_id == CollectBind::VIDEO_CHANNEL_DOCUMENTARY)
                 {
-                    if (strpos($title,"第0") !== false){
-                        $title = str_replace("第0","第",$title);
-                    }
+//                    if (strpos($title,"第0") !== false){
+//                        $title = str_replace("第0","第",$title);
+//                    }
+                    $title = str_replace("第0","",$title);
+                    $title = str_replace("第","",$title);
+                    $title = str_replace("集","",$title);
                 }
                 else if ($channel_id == CollectBind::VIDEO_CHANNEL_MOVIE)
                 {
