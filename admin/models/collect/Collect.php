@@ -402,7 +402,7 @@ class Collect extends \common\models\collect\Collect
             $videoDao->description = $v['vod_content']?$v['vod_content']:$v['vod_name'];
             $videoDao->score = floatval($v['vod_score']) * 10;
             $videoDao->horizontal_cover = "http://img.guazitv8.com/video/horizontal_cover/20201016/041f3168d37575bab82f4bb1d97d9fff.gif";
-            $videoDao->status = 1;
+            $videoDao->status = 2;
             $videoDao->is_finished = $v['vod_isend'] == "1" ? $v['vod_isend'] : "2";
             $videoDao->is_sensitive = 1;
             $videoDao->play_limit = 1;
@@ -412,7 +412,7 @@ class Collect extends \common\models\collect\Collect
             $videoDao->total_price = 0;
             $videoDao->issue_date = time();
 
-            $info = $videoDao::find()->andWhere(['title'=>$v['vod_name'], 'status'=>1, 'channel_id'=>$videoDao->channel_id])->asArray()->one();
+            $info = $videoDao::find()->andWhere(['title'=>$v['vod_name'], 'channel_id'=>$videoDao->channel_id])->asArray()->one();
             if (!$info)
             {
                 $videoDao->episode_num = $this->GetEpisodeNum($v['vod_play_url']);

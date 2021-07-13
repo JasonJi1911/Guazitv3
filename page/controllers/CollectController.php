@@ -170,6 +170,7 @@ class CollectController extends Controller
             $upSql = "UPDATE vod_Play_720 set dir='".$res['outdir']."' where final_title=".$res['vod_key'];
             $ss = $conn->query($upSql);
             $ifvodItem['vod_play_url'] = $res['vod_play_url'];
+            $ifvodItem['vod_play_url'] = $ifvodItem['chapter_name']. "$" . explode("$", $res['vod_play_url'])[1];
             $collectModel = new Collect();
             $param['source'] = 1;
             $result = $collectModel->vod_ifvoddata($param, $ifvodItem);
@@ -183,6 +184,7 @@ class CollectController extends Controller
             $upSql = "UPDATE vod_Play_1080 set dir='".$res['outdir']."' where final_title=".$res['vod_key'];
             $ss = $conn->query($upSql);
             $ifvodItem['vod_play_url'] = $res['vod_play_url'];
+            $ifvodItem['vod_play_url'] = $ifvodItem['chapter_name']. "$" . explode("$", $res['vod_play_url'])[1];
             $collectModel = new Collect();
             $param['source'] = 10;
             $result = $collectModel->vod_ifvoddata($param, $ifvodItem);
