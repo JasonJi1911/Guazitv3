@@ -476,6 +476,7 @@ class Collect extends \common\models\collect\Collect
 
                 $this->ParseVideoChapter_Ifvod($info['id'], $v['vod_play_from'], $v['vod_play_url'], $param['source'], $videoDao->channel_id, $v['vod_name']);
                 $newAttributes['episode_num'] = $this->GetEpisodeNum($v['vod_play_url'], $info['episode_num']);
+                $newAttributes['score'] = floatval($v['vod_score']) * 10;
 
                 if (!empty($newAttributes))
                     $updateDao->updateAttributes($newAttributes);
