@@ -172,7 +172,8 @@ class CollectController extends Controller
             $ifvodItem['vod_play_url'] = $res['vod_play_url'];
             $ifvodItem['vod_play_url'] = $ifvodItem['chapter_name']. "$" . explode("$", $res['vod_play_url'])[1];
             $collectModel = new Collect();
-            $param['source'] = 1;
+//            $param['source'] = 1;
+            $param['source'] = $ifvodItem['source'];
             $result = $collectModel->vod_ifvoddata($param, $ifvodItem);
         }
 
@@ -186,7 +187,8 @@ class CollectController extends Controller
             $ifvodItem['vod_play_url'] = $res['vod_play_url'];
             $ifvodItem['vod_play_url'] = $ifvodItem['chapter_name']. "$" . explode("$", $res['vod_play_url'])[1];
             $collectModel = new Collect();
-            $param['source'] = 10;
+//            $param['source'] = 10;
+            $param['source'] = $ifvodItem['source'];
             $result = $collectModel->vod_ifvoddata($param, $ifvodItem);
         }
         $result['ss'] = $ss;

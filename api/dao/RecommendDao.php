@@ -5,6 +5,7 @@ use api\data\ActiveDataProvider;
 use api\models\video\Recommend;
 use api\models\video\Video;
 use api\helpers\Common;
+use api\models\video\VideoChapter;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
 use yii\helpers\ArrayHelper;
@@ -149,6 +150,36 @@ class RecommendDao extends BaseDao
             ]);
 
             $data = $videoDataProvider->toArray($fields);
+            foreach ($data as $k=>$dd)
+            {
+                $objChapters = VideoChapter::find();
+                $objChapters->andWhere(['video_id' => $dd['video_id']]);
+                $chapters = $objChapters->asArray()->all();
+                if (empty($chapters))
+                {
+                    unset($data[$k]);
+                    continue;
+                }
+
+                $isvalid = false;
+                foreach ($chapters as $cp)
+                {
+                    $chapterurlArr = json_decode($cp['resource_url'], true);
+                    foreach ($chapterurlArr as $val)
+                    {
+                        if(!empty($val))
+                        {
+                            $isvalid = true;
+                            break;
+                        }
+                    }
+                    if ($isvalid)
+                        break;
+                }
+                if (!$isvalid)
+                    unset($data[$k]);
+            }
+
             foreach ($data as &$it)
             {
                 $videoDao = new VideoDao();
