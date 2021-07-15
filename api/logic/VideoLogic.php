@@ -368,6 +368,36 @@ class VideoLogic
         //根据查询的video_id获取影片信息
         $seriesId = array_column($data['list'], 'video_id');
 
+        foreach ($seriesId as $k=>$dd)
+        {
+            $objChapters = VideoChapter::find();
+            $objChapters->andWhere(['video_id' => $dd]);
+            $chapters = $objChapters->asArray()->all();
+            if (empty($chapters))
+            {
+                unset($seriesId[$k]);
+                continue;
+            }
+
+            $isvalid = false;
+            foreach ($chapters as $cp)
+            {
+                $chapterurlArr = json_decode($cp['resource_url'], true);
+                foreach ($chapterurlArr as $val)
+                {
+                    if(!empty($val))
+                    {
+                        $isvalid = true;
+                        break;
+                    }
+                }
+                if ($isvalid)
+                    break;
+            }
+            if (!$isvalid)
+                unset($seriesId[$k]);
+        }
+
         // $videoDao = new VideoDao();
         $videos = $videoDao->batchGetVideo($seriesId, ['video_id', 'video_name', 'category', 'cover', 'horizontal_cover', 'intro', 'flag', 'score', 'play_times','title', 'area', 'year', 'tag', 'director', 'artist'], false, ['channel_id', 'actors_id', 'actors', 'director', 'artist', 'chapters']);
 
