@@ -444,18 +444,23 @@ class VideoLogic
         if(!$chapterId)
         {
             $res_list = array_column($sources, 'source_id');
-            foreach ($videos as $video)
+            foreach ($sources as $src)
             {
-                foreach ($video['resource_url'] as $k=>$v)
+                $src_id = $src['source_id'];
+                foreach ($videos as $video)
                 {
-                    if(empty($v))
-                        unset($video['resource_url'][$k]);
-                }
-                $url_res_list = array_keys($video['resource_url']);
-                if(!empty(array_intersect($res_list,$url_res_list)))
-                {
-                    $chapterId = $video['chapter_id'];
-                    break;
+                    foreach ($video['resource_url'] as $k=>$v)
+                    {
+                        if(empty($v))
+                            unset($video['resource_url'][$k]);
+                    }
+                    $url_res_list = array_keys($video['resource_url']);
+//                    if(!empty(array_intersect($res_list,$url_res_list)))
+                    if (in_array($src_id, $url_res_list))
+                    {
+                        $chapterId = $video['chapter_id'];
+                        break;
+                    }
                 }
             }
         }
