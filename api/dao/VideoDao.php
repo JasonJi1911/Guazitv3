@@ -592,6 +592,35 @@ class VideoDao extends BaseDao
                 'video_id',
             ]);
             $videoId = array_column($seriesList, 'video_id', 'video_id');
+            foreach ($videoId as $k=>$dd)
+            {
+                $objChapters = VideoChapter::find();
+                $objChapters->andWhere(['video_id' => $dd]);
+                $chapters = $objChapters->asArray()->all();
+                if (empty($chapters))
+                {
+                    unset($videoId[$k]);
+                    continue;
+                }
+
+                $isvalid = false;
+                foreach ($chapters as $cp)
+                {
+                    $chapterurlArr = json_decode($cp['resource_url'], true);
+                    foreach ($chapterurlArr as $val)
+                    {
+                        if(!empty($val))
+                        {
+                            $isvalid = true;
+                            break;
+                        }
+                    }
+                    if ($isvalid)
+                        break;
+                }
+                if (!$isvalid)
+                    unset($videoId[$k]);
+            }
             // 缓存
             $redis->setEx($key, json_encode($videoId));
         }
