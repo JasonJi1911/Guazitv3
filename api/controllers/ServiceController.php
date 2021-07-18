@@ -90,13 +90,13 @@ class ServiceController extends BaseController
                 return $checkInfo;
             }
 
-            $objIpAddress = new IpAddress();
-            $objIpAddress->ip = $ip;
-            $objIpAddress->area = $ipAddress['area'];
-            $objIpAddress->province = $ipAddress['province'];
-            $objIpAddress->city = $ipAddress['city'];
-            $objIpAddress->created_at = time();
-            $objIpAddress->save();
+//            $objIpAddress = new IpAddress();
+//            $objIpAddress->ip = $ip;
+//            $objIpAddress->area = $ipAddress['area'];
+//            $objIpAddress->province = $ipAddress['province'];
+//            $objIpAddress->city = $ipAddress['city'];
+//            $objIpAddress->created_at = time();
+//            $objIpAddress->save();
         }
 
         //为了区分 大陆和香港台湾,做一下特殊处理
