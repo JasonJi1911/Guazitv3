@@ -19,7 +19,7 @@ var YZM = {
 	}(),
 	'start': function() {
 		$.ajax({
-			url: "./admin/api.php",
+			url: "/360apitv/jiexi/admin/api.php",
 			dataType: "json",
 			success: function(e) {
 				YZM.waittime = e.data.waittime

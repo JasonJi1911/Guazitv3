@@ -354,7 +354,7 @@ $this->registerJs($js);
             position: absolute;
             /* top: 0; */
             /* left: 0; */
-            z-index: 1500;
+            z-index: 10000;
         }
 
         .qy-svgicon-rightarrow_cu::before {
@@ -437,10 +437,29 @@ $this->registerJs($js);
                                         </video>
                                     <?php else:?>
                                         <input type="hidden" id="play_resource" value="<?= $data['info']['resource_url']?>" />
-                                        <iframe name="my-iframe" id="my-iframe" src=""
-                                                allowfullscreen="true" allowtransparency="true"
-                                                frameborder="0" scrolling="no" width="100%"
-                                                height="100%" scrolling="no"></iframe>
+                                        <!--<iframe name="my-iframe" id="my-iframe" src=""-->
+                                        <!--        allowfullscreen="true" allowtransparency="true"-->
+                                        <!--        frameborder="0" scrolling="no" width="100%"-->
+                                        <!--        height="100%" scrolling="no"></iframe>-->
+                                        <?php foreach ($data['advert'] as $key => $advert) : ?>
+                                            <?php if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_PLAY_BEFORE_PC) :?>
+                                                <?php if(strpos($advert['ad_image'], '.mp4') !== false) {
+                                                    $ad_type = 'mp4';
+                                                    $ad_url = $advert['ad_image'];
+                                                    $ad_link = $advert['ad_skip_url'];
+                                                }else{
+                                                    $ad_type = 'img';
+                                                    $ad_url = $advert['ad_image'];
+                                                    $ad_link = $advert['ad_skip_url'];
+                                                }?>
+                                            <?php endif;?>
+                                        <?php endforeach;?>
+                                        <?php echo $this->render('/360apitv/jiexi/jianghu',[
+                                            'url'   =>      explode('v=',$data['info']['resource_url'])[1],
+                                            'ad_url' =>    $ad_url,
+                                            'ad_link'  =>   $ad_link,
+                                            'ad_type'  =>   $ad_type
+                                        ]);?>
                                     <?php endif;?>
                                 </div>
                             </div>
@@ -1061,19 +1080,6 @@ $this->registerJs($js);
         </li>
     </ul>
 </div>
-<?php foreach ($data['advert'] as $key => $advert) : ?>
-    <?php if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_PLAY_BEFORE_PC) :?>
-        <?php if(strpos($advert['ad_image'], '.mp4') !== false) {
-            $ad_type = 'mp4';
-            $ad_url = $advert['ad_image'];
-            $ad_link = $advert['ad_skip_url'];
-        }else{
-            $ad_type = 'img';
-            $ad_url = $advert['ad_image'];
-            $ad_link = $advert['ad_skip_url'];
-        }?>
-    <?php endif;?>
-<?php endforeach;?>
 <script src="/js/jquery.js"></script>
 <script src="/js/video.js"></script>
 <script src="/js/VideoSearch.js"></script>

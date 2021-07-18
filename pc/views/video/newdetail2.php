@@ -1,0 +1,583 @@
+<?php
+use yii\helpers\Url;
+use pc\assets\NewIndexStyleAsset;
+use common\models\advert\AdvertPosition;
+
+// $this->metaTags['keywords'] = '瓜子,tv,瓜子tv,澳洲瓜子tv,澳洲,新西兰,澳新,电影,电视剧,榜单,综艺,动画,记录片';
+$this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子tv,澳洲瓜子tv,新西兰瓜子tv,澳新瓜子tv,瓜子视频,瓜子影视,电影,电视剧,榜单,综艺,动画,记录片']);
+// $this->title = '瓜子TV-澳新华人在线视频分享网站';
+$this->title = $data['info']['video_name'].'-瓜子TV - 澳新华人在线视频分享平台,海量高清视频在线观看';
+NewIndexStyleAsset::register($this);
+
+?>
+
+<?php
+$channelName = '';
+if(isset($channel_id))
+{
+    foreach ($channels['list'] as $s_k => $s_v) {
+        if($s_v['channel_id'] == $channel_id) {
+            $channelName = $s_v['channel_name'];
+        }
+    }
+}
+else
+{
+    $channelName = '热搜';
+}
+?>
+
+<script src="/js/jquery.js"></script>
+<script src="/js/VideoSearch.js"></script>
+<script src="/js/video/MyPage.js" type="text/javascript" charset="utf-8"></script>
+<style>
+    body,html{
+        overflow-y: scroll !important;
+    }
+</style>
+<!--黑色区域-->
+<div class="box05">
+    <div>
+        <!--播放器位置-->
+        <div class="play">
+            <?php foreach ($data['advert'] as $key => $advert) : ?>
+                <?php if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_PLAY_BEFORE_PC) :?>
+                    <?php if(strpos($advert['ad_image'], '.mp4') !== false) {
+                        $ad_type = 'mp4';
+                        $ad_url = $advert['ad_image'];
+                        $ad_link = $advert['ad_skip_url'];
+                    }else{
+                        $ad_type = 'img';
+                        $ad_url = $advert['ad_image'];
+                        $ad_link = $advert['ad_skip_url'];
+                    }?>
+                <?php endif;?>
+            <?php endforeach;?>
+            <?php echo $this->render('/360apitv/jiexi/jianghu',[
+                'url'   =>      explode('v=',$data['info']['resource_url'])[1],
+                'ad_url' =>    $ad_url,
+                'ad_link'  =>   $ad_link,
+                'ad_type'  =>   $ad_type
+            ]);?>
+        </div>
+        <!--广告-->
+        <div class="AD-02">
+            <?php if(!empty($data['advert'])) :?>
+                <?php foreach ($data['advert'] as $key => $advert): ?>
+                    <?php if(!empty($advert) && intval($advert['position_id']) == intval(AdvertPosition::POSITION_VIDEO_TOP_PC)) :?>
+                        <a href="<?=$advert['ad_skip_url']?>" target="_blank">
+                            <img src="<?=$advert['ad_image']?>" />
+                        </a>
+                    <?php endif;?>
+                <?php endforeach;?>
+            <?php endif;?>
+        </div>
+        <!--评论，点赞，差评等按钮-->
+        <div class="BtnList">
+            <ul class="BtnList-boxL">
+                <li class="rBtn-01"><input type="button" id="" value="0"  onclick="window.location.href = '#GNbox-PL'" /></li>
+                <li class="rBtn-02"><input type="button" id="" value="0" /></li>
+                <li class="rBtn-03"><input type="button" id="" value="0" /></li>
+                <li class="rBtn-04"><input type="button" id="" value="<?= $data['info']['total_views']?>" /></li>
+                <li class="rBtn-05"><input type="button" id="" value="0" /></li>
+                <li class="rBtn-06"><input type="button" id="" value="手机看" /></li>
+                <li class="rBtn-07"><input type="button" id="err_feedback" value="片源报错" /></li>
+            </ul>
+        </div>
+
+        <div class="Altsjk">
+            <div class="Altsjk-01">
+                扫一扫，手机观看更便捷
+                <input class="GB" type="button" name="" id="" value="" />
+            </div>
+            <div class="Altsjk-02">
+                <img src="/images/NewVideo/ewm.jpg" />
+                <div class="Altsjk-02-a">
+                    <a href="<?= Url::to(['/site/share-down'])?>"><img src="/images/NewVideo/ipad.png" />iPhone客户端</a>
+                    <a href="<?= Url::to(['/site/share-down'])?>"><img src="/images/NewVideo/ipad.png" />iPad客户端</a>
+                    <a href="<?= Url::to(['/site/share-down'])?>"><img src="/images/NewVideo/anzhuo.png" />安卓客户端</a>
+                </div>
+            </div>
+            <div class="Altsjk-03">
+                没有吉祥视频APP？ <a href="<?= Url::to(['/site/share-down'])?>" target="_blank">立即下载</a>
+            </div>
+        </div>
+
+        <!--博主信息-->
+        <div class="BZbox02">
+            <div class="BZtop">
+                <div class="BZtx">
+                    <a href="javascript:;"><img src="/images/NewVideo/logon.png" /></a>
+                </div>
+                <div class="BZname">
+                    <a href="javascript:;">吉祥影视</a>
+                    <img src="/images/NewVideo/nan.png" />
+                    <img src="/images/NewVideo/nv.png" />
+                </div>
+                <div class="BZdz">
+                    <!--                    <img class="lv" src="img/lv_1.png" />-->
+                    <img class="dz" src="/images/NewVideo/dizi.png" /> 慕尼黑
+                </div>
+            </div>
+            <ul class="BZsj">
+                <li>粉丝：<span>0</span></li>
+                <li>作品：<span>0</span></li>
+                <li>获赞：<span>0</span></li>
+            </ul>
+            <div class="BZqm">
+                测试签名介绍测试签名介绍测试签名介绍测试签名介绍测试签名介绍
+            </div>
+            <div class="BZbown">
+                <a class="BtnSX" href="javascript:;">私信</a>
+                <a class="BtnZY" href="javascript:;">个人主页</a>
+            </div>
+            <!--关注按钮-->
+            <input class="BtnGZ" type="button" name="" id="" value="+关注" />
+        </div>
+    </div>
+</div>
+
+<!--白色区域-->
+<div class="box06">
+    <div>
+        <!--左侧-->
+        <div class="box06-L">
+            <!--横向广告-->
+            <div class="AD-03">
+                <?php if(!empty($data['advert'])) :?>
+                    <?php foreach ($data['advert'] as $key => $advert) : ?>
+                        <?php if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_VIDEO_BOTTOM_PC) :?>
+                            <a href="<?=$advert['ad_skip_url']?>" target="_blank">
+                                <img src="<?=$advert['ad_image']?>" />
+                            </a>
+                        <?php endif;?>
+                    <?php endforeach;?>
+                <?php endif;?>
+            </div>
+            <div class="play-name" name="zt">
+                <?= $data['info']['video_name']?>
+            </div>
+            <div class="GNbox">
+                <div class="GNbox-xq" name="zt">
+                    <span>详情</span>
+                </div>
+                <!--                <div class="GNbox-TJ" name="zt">-->
+                <!--                    <span>统计</span>-->
+                <!--                </div>-->
+                <div class="GNbox-type" name="zt">
+                    <?php foreach (explode('|',$data['info']['category']) as $cate) : ?>
+                        <span><?= $cate?></span>
+                    <?php endforeach;?>
+                    <span><?= $data['info']['year']?></span>
+                    <span><?= $data['info']['area']?></span>
+                </div>
+                <div class="GNbox-RD" name="zt">
+                    <?= $data['info']['total_views']?>
+                </div>
+                <div class="GNbox-PF">
+                    <span><?= $data['info']['score']?></span>分
+                </div>
+            </div>
+            <!--详情展开-->
+            <div class="GNbox-xq-K">
+                <div>
+                    <div class="GNbox-xq-img">
+                        <img src="<?= $data['info']['cover']?>" onerror="this.src='/images/newindex/default-cover.png'"/>
+                    </div>
+                    <div class="GNbox-xq-text" name="zt">
+                        <div>
+                            添加时间：<span>2021年7月1日</span>
+                        </div>
+                        <div>
+                            导演：<span>
+                                <?= $data['info']['director'] ?>
+                            </span>
+                        </div>
+                        <div>
+                            主演：<span>
+                                <?= implode('/', $data['info']['actors']) ?>
+                            </span>
+                        </div>
+                        <div>
+                            简介：<span><?= $data['info']['intro']?></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--小视频-->
+            <!--            <div class="GNbox-xspxq-K">-->
+            <!--                <p class="xsp" name="zt">-->
+            <!--                    简介:<span>测试小视频简介内容测试小视频简介内容测试小视频简介内容测试小视频简介内容测试小视频简介内容测试小视频简介内容</span>-->
+            <!--                </p>-->
+            <!--            </div>-->
+            <!--            <div class="GNbox-TJ-K">-->
+            <!--                统计图表区域-->
+            <!--            </div>-->
+            <!--集数多余50集显示-->
+
+            <div class="GNtab" name="zt">
+                <div class="GNtab-all">
+                    全部
+                </div>
+                <div class="GNtab-sq">
+                    收起
+                </div>
+                <div class="GNtab-a act">
+                    1-5055555555
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1000-1000
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1000-1000
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1000-1000
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1000-1000
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+                <div class="GNtab-a">
+                    1-50
+                </div>
+
+            </div>
+
+            <!--集数区域-->
+            <div class="GNtab-Box">
+                <!--集数最多50集-->
+                <div class="GNbox-JS act" name="zt">
+                    <a class="act" href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                </div>
+                <!--集数最多50集-->
+                <div class="GNbox-JS" name="zt">
+                    <a class="act" href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                </div>
+                <!--集数最多50集-->
+                <div class="GNbox-JS" name="zt">
+                    <a class="act" href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                    <a href="javascript:;">1</a>
+                </div>
+            </div>
+
+            <div class="GNbox-PL" id="GNbox-PL" name="zt">
+                评论区<span>(3)</span>
+            </div>
+            <!--评论输入区-->
+            <div class="GNbox-PLsr" name="zt">
+                <div>
+                    请在此发表意见
+                </div>
+                <textarea placeholder="注意，以下行为将被封号：严重剧透、发布广告、木马链接、宣传同类网站、辱骂工作人员等。"></textarea>
+                <div class="GNbox-PL-box">
+                    <input class="GNbox-Btnbq" type="button" name="" id="" value="" />
+                    <input class="GNbox-Btntp" type="button" name="" id="" value="发起投票" />
+                    <input class="GNbox-Btnfs" type="button" name="" id="" value="发送" />
+                </div>
+                <!--未登录时显示-->
+                <div class="GNbox-PLsr-no" name="zt">
+                    <div>
+                        <!--您还未登录，请登录后发表评论<br />-->
+                        功能暂未开放，敬请期待
+                        <input type="button" name="" id="" value="登录" style="display: none;" />
+                    </div>
+                </div>
+            </div>
+            <!--评论留言位置-->
+            <div class="GNbox-PL-text">
+                <div class="GNbox-PL-no" style="display: none;">
+                    功能暂未开放，敬请期待
+                </div>
+            </div>
+        </div>
+
+        <!--右侧-->
+        <div class="box06-R">
+
+            <div class="Title-04" name="zt">
+                <img src="/images/NewVideo/logo-02.png" />
+                <a href="javascript:;"><?= $channelName ?>·排行榜</a>
+            </div>
+            <!--电影排行榜   小视频没有排行-->
+            <div class="Movie-Ranking02" name="zt">
+                <?php foreach ($hotword['tab'] as $key => $tab): ?>
+                    <?php if($tab['title'] == $channelName) :?>
+                        <?php foreach ($tab['list'] as $key => $list): ?>
+                            <!--排名-->
+                            <div class="Ranking-box">
+                                <div class="Ranking-mun">
+                                    <?= $key+1?>
+                                </div>
+                                <div class="Ranking-text">
+                                    <div class="Ranking-name" name="zt">
+                                        <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
+                                            <?= $list['video_name']?>
+                                        </a>
+                                    </div>
+                                    <div class="Ranking-type" name="zt">
+                                        <div><?= $list['year'] ?></div>
+                                        <div><?= $list['area'] ?></div>
+                                        <?php foreach (explode('|',$list['category']) as $cate) : ?>
+                                            <div><?= $cate?></div>
+                                        <?php endforeach;?>
+                                    </div>
+                                </div>
+                                <div class="Ranking-score">
+                                    <?= $list['score'] ?>
+                                </div>
+                            </div>
+                        <?php endforeach;?>
+                    <?php endif;?>
+                <?php endforeach;?>
+            </div>
+
+            <div class="Title-04" name="zt">
+                <img src="/images/NewVideo/logo-02.png" />相关视频
+            </div>
+            <?php foreach ($data['guess_like'] as $key => $list) :?>
+                <?php if($key < 8) :?>
+                    <!--剧集-->
+                    <div class="JJXG">
+                        <div class="JJXG-L">
+                            <a href="<?= Url::to(['/video/detail', 'video_id' => $list['video_id']])?>">
+                                <img src="<?= $list['cover']?>"/>
+                            </a>
+                        </div>
+                        <div class="JJXG-R" name="zt">
+                            <a href="javascript:;"><?= $list['video_name']?></a>
+                            <div class="JJXG-R-tp" name="zt">
+                                <?php foreach (explode('|',$list['category']) as $cate) : ?>
+                                    <span><?= $cate?></span>
+                                <?php endforeach;?>
+                                <span><?= $list['year'] ?></span>
+                                <span><?= $list['area'] ?></span>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif;?>
+            <?php endforeach;?>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#err_feedback').click(function(){
+        //var feedUrl = "/video/feed-back";
+        //var feedIndex = {};
+        //feedIndex['video_id'] = "<?//= $data['info']['play_video_id']?>//";
+        //feedIndex['chapter_id'] = "<?//= $data['info']['play_chapter_id']?>//";
+        //feedIndex['source_id'] = "<?//= $source_id?>//";
+        //$.get(feedUrl, feedIndex ,function(response) {
+        //    var result = response.data;
+        //    alert(result.message);
+        //});
+        //console.log(feedIndex);
+        alert("功能维护中，敬请期待")
+    })
+</script>

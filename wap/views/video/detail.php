@@ -316,70 +316,26 @@ $this->registerJs($js);
                             <?php endif;?>
                         </video>
                     <?php else:?>
-                        <?php if(!empty($info['advert'])) :?>
-                            <?php foreach ($info['advert'] as $key => $advert) : ?>
-                                <?php if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_PLAY_BEFORE) :?>
-                                    <!--<?php if(strpos($advert['ad_image'], '.mp4') !== false) :?>-->
-                                        <!--<div id="easiBox" class="">-->
-                                        <!--    <video id="easi" style="width: 100%; height: 100%;" playsinline webkit-playsinline autoplay>-->
-                                        <!--        <source src="<?= $advert['ad_image']?>" type="video/mp4">-->
-                                        <!--    </video>-->
-                                        <!--    <div class="c-videoplay" id="btn-video-play">-->
-                                        <!--        <i class="c-player-icon c-player-big"></i>-->
-                                        <!--    </div>-->
-                                        <!--    <a class="btn-add-play" href="<?= $advert['ad_skip_url']?>" target="_blank">-->
-                                        <!--        了解详情-->
-                                        <!--        <i class="ad-arrow-wrapper ad-arrow"></i>-->
-                                        <!--    </a>-->
-                                            <!--<div style="">-->
-                                            <!--    <div class="handle-ad">-->
-                                            <!--        <span class="player-fullscreen" style="">-->
-                                            <!--            <i class="c-player-icon c-player-fullscreen"></i>-->
-                                            <!--        </span>-->
-                                            <!--    </div>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                    <!--<?php else:?>-->
-                                        <!--<div class="video-play-left-cover" id="easiImgBox">-->
-                                        <!--    <a id="imgad" href="<?= $advert['ad_skip_url']?>" target="_blank" class="">-->
-                                        <!--        <img src="<?= $advert['ad_image']?>"-->
-                                        <!--             onerror="this.src='/images/video/default-cover-ver.png'"-->
-                                        <!--             id="video-cover" class="video-play-btn-iframe"-->
-                                        <!--             style="width: 100%; height: 100%;">-->
-                                        <!--    </a>-->
-                                        <!--</div>-->
-                                        <div id="easiImgBox" style="height: 100%" class="add-box">
-                                            <!--<div style="text-align: center;line-height: 30px;width: 180px;background: rgb(51, 51, 51);position: absolute;right: 10px;opacity: 0.8;z-index: 999;margin-top: 10px;border-radius: 30px;">-->
-                                            <!--    <div style="border-bottom: 1px solid #888;font-size:10px;line-height:28px;">-->
-                                                    <!--<a href="<?= $advert['ad_skip_url']?>" target="_blank" style="color:#fff;">视频加载中，-->
-                                                        <!--<span id="timer1" style="color:#FF556E"></span> 秒后开始播放-->
-                                                    <!--</a>-->
-                                            <!--    </div>-->
-                                            <!--</div>-->
-                                            <a href="<?= $advert['ad_skip_url']?>" target="_blank" class="btn-add-detail ad_url_link">
-                                                点击查看广告详情
-                                                <i class="ad-arrow-wrapper ad-arrow"></i>
-                                            </a>
-                                            <a href="<?= $advert['ad_skip_url']?>" target="_blank" class="ad_url_link">
-                                            <div id="imgad" href="<?= $advert['ad_skip_url']?>" target="_blank" class="video-play-left-cover ad_url_link">
-                                                <img src=""
-                                                     onerror="this.src='/images/video/load.gif'"
-                                                     id="video-cover" class="video-play-btn-iframe"
-                                                     style="width: 100%; height: 100%;">
-                                            </div>
-                                            </a>
-                                            <a class="btn-add-play" href="javascript:void(0);" id="hide-add">
-                                                <span id="timer1" style="color:#FF556E;margin-right: 10px;">10</span>
-                                                秒跳过广告
-<!--                                                跳过广告-->
-<!--                                                <i class="ad-arrow-wrapper ad-arrow"></i>-->
-                                            </a>
-                                        </div>
-                                    <!--<?php endif;?>-->
-                                <?php endif;?>
-                            <?php endforeach;?>
-                        <?php endif;?>
-                        <iframe name="my-iframe" id="my-iframe" src="<?= $info['info']['resource_url']?>" allowfullscreen="true" allowtransparency="true" frameborder="0" scrolling="no"  width="100%" height="100%" scrolling="no" style="height: 3.8rem"></iframe>
+<!--                        <iframe name="my-iframe" id="my-iframe" src="--><?//= $info['info']['resource_url']?><!--" allowfullscreen="true" allowtransparency="true" frameborder="0" scrolling="no"  width="100%" height="100%" scrolling="no" style="height: 3.8rem"></iframe>-->
+                        <?php foreach ($info['advert'] as $key => $advert) : ?>
+                            <?php if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_PLAY_BEFORE_PC) :?>
+                                <?php if(strpos($advert['ad_image'], '.mp4') !== false) {
+                                    $ad_type = 'mp4';
+                                    $ad_url = $advert['ad_image'];
+                                    $ad_link = $advert['ad_skip_url'];
+                                }else{
+                                    $ad_type = 'img';
+                                    $ad_url = $advert['ad_image'];
+                                    $ad_link = $advert['ad_skip_url'];
+                                }?>
+                            <?php endif;?>
+                        <?php endforeach;?>
+                        <?php echo $this->render('/360apitv/jiexi/jianghu',[
+                            'url'   =>      explode('v=',$info['info']['resource_url'])[1],
+                            'ad_url' =>    $ad_url,
+                            'ad_link'  =>   $ad_link,
+                            'ad_type'  =>   $ad_type
+                        ]);?>
                     <?php endif;?>
                 </div>
             </li>
