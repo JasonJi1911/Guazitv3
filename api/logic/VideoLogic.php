@@ -427,7 +427,9 @@ class VideoLogic
     {
         //获取影片信息
         $videoDao = new VideoDao();
-        $videoInfo = $videoDao->videoInfo($videoId, ['channel_id', 'video_id', 'video_name', 'actors_id', 'area', 'score', 'category', 'type', 'year', 'intro', 'intro', 'cover', 'horizontal_cover', 'flag', 'tag', 'play_limit', 'total_views','episode_num', 'is_down', 'total_price']);
+        $videoInfo = $videoDao->videoInfo($videoId, ['channel_id', 'video_id', 'video_name', 'actors_id',
+            'area', 'score', 'category', 'type', 'year', 'intro', 'intro', 'cover', 'horizontal_cover',
+            'flag', 'tag', 'play_limit', 'total_views','episode_num', 'is_down', 'total_price', 'created_at']);
 
         if (!$videoInfo) { //视频不存在
             throw new ApiException(ErrorCode::EC_VIDEO_NOT_EXIST);

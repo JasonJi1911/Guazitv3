@@ -23,7 +23,10 @@ use yii\helpers\ArrayHelper;
 class VideoDao extends BaseDao
 {
     //影片字段,影片缓存的所有字段
-    private $_fields = ['video_id', 'channel_id', 'category_ids', 'video_name', 'intro', 'issue_date', 'score', 'category', 'type', 'flag', 'tag','play_times','cover', 'horizontal_cover', 'area', 'year', 'cats', 'episode_num', 'total_views', 'actors_id', 'play_limit', 'total_price', 'is_down', 'summary'];
+    private $_fields = ['video_id', 'channel_id', 'category_ids', 'video_name', 'intro', 'issue_date',
+        'score', 'category', 'type', 'flag', 'tag','play_times','cover', 'horizontal_cover', 'area',
+        'year', 'cats', 'episode_num', 'total_views', 'actors_id', 'play_limit', 'total_price', 'is_down',
+        'summary', 'created_at'];
 
     public static $chapterInfo = [];
 

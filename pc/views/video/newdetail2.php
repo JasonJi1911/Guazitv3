@@ -165,7 +165,7 @@ else
                 <!--                    <span>统计</span>-->
                 <!--                </div>-->
                 <div class="GNbox-type" name="zt">
-                    <?php foreach (explode('|',$data['info']['category']) as $cate) : ?>
+                    <?php foreach (explode(' ',$data['info']['category']) as $cate) : ?>
                         <span><?= $cate?></span>
                     <?php endforeach;?>
                     <span><?= $data['info']['year']?></span>
@@ -186,7 +186,7 @@ else
                     </div>
                     <div class="GNbox-xq-text" name="zt">
                         <div>
-                            添加时间：<span>2021年7月1日</span>
+                            添加时间：<span><?= date('Y年m月d日', $data['info']['created_at']) ?></span>
                         </div>
                         <div>
                             导演：<span>
@@ -195,7 +195,7 @@ else
                         </div>
                         <div>
                             主演：<span>
-                                <?= implode('/', $data['info']['actors']) ?>
+                                <?= implode('/', array_column($data['info']['actors'], 'actor_name')) ?>
                             </span>
                         </div>
                         <div>
@@ -523,7 +523,7 @@ else
                                     <div class="Ranking-type" name="zt">
                                         <div><?= $list['year'] ?></div>
                                         <div><?= $list['area'] ?></div>
-                                        <?php foreach (explode('|',$list['category']) as $cate) : ?>
+                                        <?php foreach (explode(' ',$list['category']) as $cate) : ?>
                                             <div><?= $cate?></div>
                                         <?php endforeach;?>
                                     </div>
