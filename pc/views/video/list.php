@@ -284,6 +284,13 @@ $(function(){
     $(window).scroll(function () {
         if (($(window).scrollTop()+488) >= $(document).height() - $(window).height()) {
             if(isFlag) {
+                    $('.category-item.selected').each(function(){
+                        var type = $(this).attr('data-type');
+                        var value = $(this).attr('data-value');
+                        
+                        //追加筛选参数
+                        arrIndex[type] = value;
+                    });
                     var arrScroll = arrIndex;
                     var pages = $('.video-list-box').attr('data-pages') || 1;
                     var page  = $('.video-list-box').attr('data-page') || 1;
