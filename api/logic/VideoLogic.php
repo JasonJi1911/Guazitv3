@@ -533,7 +533,7 @@ class VideoLogic
             $video['mime_type']     = substr(strrchr($video['resource_url'][$sourceId], '.'), 1);
             $video['last_chapter']  = isset($videos[$key-1]) ? $videos[$key-1]['chapter_id'] : 0;
             $video['next_chapter']  = isset($videos[$key+1]) ? $videos[$key+1]['chapter_id'] : 0;
-            unset($video['resource_url']); // 安全考虑，删除剧集播放连接，防止全部播放连接一次性全返回
+//            unset($video['resource_url']); // 安全考虑，删除剧集播放连接，防止全部播放连接一次性全返回
         }
 
         // 演员信息

@@ -53,11 +53,15 @@ else
                     }?>
                 <?php endif;?>
             <?php endforeach;?>
-            <?php echo $this->render('/360apitv/jiexi/jianghu',[
+            <?php echo $this->render('/MyPlayer/jianghu',[
                 'url'   =>      explode('v=',$data['info']['resource_url'])[1],
                 'ad_url' =>    $ad_url,
                 'ad_link'  =>   $ad_link,
-                'ad_type'  =>   $ad_type
+                'ad_type'  =>   $ad_type,
+                'videos'    =>  $data['info']['videos'],
+                'play_chapter_id'   => $data['info']['play_chapter_id'],
+                'source_id'         => $data['info']['source_id'],
+                'source'            =>  $data['info']['source']
             ]);?>
         </div>
         <!--广告-->
@@ -66,8 +70,10 @@ else
                 <?php foreach ($data['advert'] as $key => $advert): ?>
                     <?php if(!empty($advert) && intval($advert['position_id']) == intval(AdvertPosition::POSITION_VIDEO_TOP_PC)) :?>
                         <a href="<?=$advert['ad_skip_url']?>" target="_blank">
-                            <img src="<?=$advert['ad_image']?>" />
+                            <img src="<?=$advert['ad_image']?>" onerror="this.src='/images/NewVideo/GG03.png'"/>
                         </a>
+                    <?php else :?>
+                        <img src="/images/NewVideo/GG03.png"/>
                     <?php endif;?>
                 <?php endforeach;?>
             <?php endif;?>
@@ -125,7 +131,7 @@ else
                 <li>获赞：<span>0</span></li>
             </ul>
             <div class="BZqm">
-                测试签名介绍测试签名介绍测试签名介绍测试签名介绍测试签名介绍
+                此人很懒，没有更详细的介绍
             </div>
             <div class="BZbown">
                 <a class="BtnSX" href="javascript:;">私信</a>
@@ -222,249 +228,83 @@ else
                 <div class="GNtab-sq">
                     收起
                 </div>
-                <div class="GNtab-a act">
-                    1-5055555555
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
+                <?php
+                $page = ceil(count($data['info']['videos'])/50);
+                $count = count($data['info']['videos']);
+                $ontab = 0;
+                foreach ($data['info']['videos'] as $index => $value){
+                    if ($data['info']['play_chapter_id'] != $value['chapter_id'])
+                        continue;
 
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1000-1000
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1000-1000
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1000-1000
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1000-1000
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-                <div class="GNtab-a">
-                    1-50
-                </div>
-
+                    $ontab = ceil(($index+1) / 50);
+                    break;
+                }
+                ?>
+                <?php for($k=0; $k<$page; $k++){?>
+                    <div class="GNtab-a <?= $k+1 == $ontab? 'act': ''?>">
+                        <?= $k*50 + 1?>-<?= ($k == ($page -1))? $count:$k*50 + 50?>
+                    </div>
+                <?php } ?>
             </div>
 
             <!--集数区域-->
             <div class="GNtab-Box">
-                <!--集数最多50集-->
-                <div class="GNbox-JS act" name="zt">
-                    <a class="act" href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                </div>
-                <!--集数最多50集-->
-                <div class="GNbox-JS" name="zt">
-                    <a class="act" href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                </div>
-                <!--集数最多50集-->
-                <div class="GNbox-JS" name="zt">
-                    <a class="act" href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                    <a href="javascript:;">1</a>
-                </div>
+                <?php for($i=0; $i<$page; $i++){?>
+                    <div class="GNbox-JS <?= (($i+1) == $ontab)? 'act': ''?>" name="zt">
+                        <?php foreach ($data['info']['videos'] as $index => $value) : ?>
+                            <?php if($index>=$i*50 && $index < ($i*50+50)){
+                                $resource_arr = $value['resource_url'];
+                                $tmp_src = array_column($data['info']['source'], null, 'source_id');
+                                $quality = [];
+                                foreach ($resource_arr as $k => $v)
+                                    $quality[] = $tmp_src[$k]['name'].'#'.$v;
+
+                                $quality_str = implode('$$$', $quality);
+                                ?>
+                                <a class="<?= $data['info']['play_chapter_id'] == $value['chapter_id'] ? 'act' : ''?>"
+                                   href="javascript:;"
+                                   attr-id="<?= $value['chapter_id']?>"
+                                   attr-quality="<?= $quality_str?>">
+                                    <?= $value['title']?>
+                                </a>
+                            <?php }?>
+                        <?php endforeach;?>
+                    </div>
+                <?php }?>
             </div>
+
+            <script>
+                //  集数切换效果
+                $(".GNbox-JS>a").click(function() {
+                    $(this).addClass("act").siblings().removeClass("act");
+                    event.stopPropagation();
+                    var epi_id = $(this).attr('attr-id')
+                    var quality = $(this).attr('attr-quality')
+                    var quality_arr = quality.split('$$$')
+                    var new_video = { quality:[], pic: '', defaultQuality: 0, };
+                    for (x in quality_arr){
+                        var tmp_qua=quality_arr[x];
+                        console.log(tmp_qua);
+                        var tmp_arr = tmp_qua.split('#');
+                        // 		console.log(tmp_arr);
+                        new_video['quality'].push({
+                            'name': tmp_arr[0],
+                            'url': tmp_arr[1],
+                            'type': 'auto',
+                        });
+                    }
+                    initialPlayer(new_video)
+                    $("#player1 .player-box-JS>a").each(function(){
+                        $(this).removeClass("act");
+                        var tm1_id = $(this).attr('attr-id');
+                        if(epi_id == tm1_id)
+                        {
+                            $(this).addClass("act");
+                            selected_id = tm1_id;
+                        }
+                    });
+                });
+            </script>
 
             <div class="GNbox-PL" id="GNbox-PL" name="zt">
                 评论区<span>(3)</span>
