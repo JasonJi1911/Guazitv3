@@ -182,6 +182,7 @@ function initialUrl($url)
             playbackSpeed: [0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3, 5, 7.5, 10],
             video: e,
         });
+
         $("#player1 .dplayer-icons-left").append(txt1);
         $("#player1 .dplayer-video-wrap").append(txt2, txt6);
         $("#player1 .palyer-js-alt").append(txt3, txt4);
@@ -200,7 +201,8 @@ function initialUrl($url)
                 $(this).addClass("act");
             }
         });
-        dp.play();
+        $('.dplayer-video-wrap').trigger('click');
+        // dp.play();
     }
 
     //  集数alert 显示隐藏
@@ -293,13 +295,15 @@ function initialUrl($url)
             },
         ],
     });
+
     <?php if($ad_type == 'img') :?>
     var bb1 = dp.options.bbslist[0];
     var l = bb1.link;
+    console.log("image: "+bb1.pic);
     dp.switchVideo(
         {
             url: '',
-            pic: bb1.video,
+            pic: bb1.pic,
         }
     );
 
@@ -429,6 +433,7 @@ function initialUrl($url)
         initialPlayer(ini_video);
     });
     <?php elseif (empty($ad_type)) :?>
+    // dp.destroy();
     var ini_video = {
         quality: [
             <?php
