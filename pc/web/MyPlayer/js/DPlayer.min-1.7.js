@@ -2974,7 +2974,10 @@
 					key: "switchQuality",
 					value: function(e) {
 						var t = this;
-						if(e = "string" == typeof e ? parseInt(e) : e, this.qualityIndex !== e && !this.switchingQuality) {
+						if(this.switchingQuality){
+							t.template.videoWrap.removeChild(t.prevVideo), t.video.classList.add("dplayer-video-current"), t.prevVideo = null, t.switchingQuality = !1, t.events.trigger("quality_end")
+						}
+						if(e = "string" == typeof e ? parseInt(e) : e, this.qualityIndex !== e) {
 							this.qualityIndex = e, this.switchingQuality = !0, this.quality = this.options.video.quality[e], this.template.qualityButton.innerHTML = this.quality.name;
 							var a = this.video.paused;
 							this.video.pause();
