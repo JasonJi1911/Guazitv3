@@ -330,11 +330,15 @@ $this->registerJs($js);
                                 }?>
                             <?php endif;?>
                         <?php endforeach;?>
-                        <?php echo $this->render('/360apitv/jiexi/jianghu',[
+                        <?php echo $this->render('/Dplayer/jianghu',[
                             'url'   =>      explode('v=',$info['info']['resource_url'])[1],
                             'ad_url' =>    $ad_url,
                             'ad_link'  =>   $ad_link,
-                            'ad_type'  =>   $ad_type
+                            'ad_type'  =>   $ad_type,
+                            'videos'    =>  $info['info']['videos'],
+                            'play_chapter_id'   => $info['info']['play_chapter_id'],
+                            'source_id'         => $info['info']['source_id'],
+                            'source'            =>  $info['info']['source']
                         ]);?>
                     <?php endif;?>
                 </div>
