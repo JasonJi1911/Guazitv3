@@ -1431,12 +1431,6 @@
 				click: function(e) {
 					e.infoPanel.triggle()
 				}
-			}, {
-				text: "About author",
-				link: "https://diygod.me"
-			}, {
-				text: "DPlayer v".concat("1.26.0"),
-				link: "https://github.com/MoePlayer/DPlayer"
 			}]), e
 		};
 		var c = {

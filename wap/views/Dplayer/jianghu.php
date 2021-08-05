@@ -141,8 +141,8 @@ $type =initialUrl($url);
             video: e,
         });
 
-        // $('.dplayer-icons-left').trigger('click');
-        dp.play();
+        $('.dplayer-icons-left').trigger('click');
+        // dp.play();
     }
 
 </script>

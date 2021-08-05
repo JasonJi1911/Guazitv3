@@ -168,6 +168,10 @@ function initialUrl($url)
     var txt6 = "<div class='palyer-js-alt-right'></div>";
     var QXDvip = "<div class='QXD-vip'><div class='QXD-vip-01'>去广告.享高清</div><div class='QXD-vip-02'><a class='QXD-vip-02-a1' href='#'>开通VIP</a><a class='QXD-vip-02-a2' href='#'>金币开通</a></div></div>";
 
+    //  快进快退
+    var FastF="<div class='icon-forward'><div class='Fast-alt'>快进5秒</div><svg t='1628040141304' viewBox='0 0 1024 1024' version='1.1' xmlns='http://www.w3.org/2000/svg'><path d='M478.146133 458.110578L154.680178 234.984533C109.549511 213.396622 56.888889 242.187378 56.888889 285.368889v453.437155c0 43.1872 52.660622 71.977956 97.791289 50.384356l323.465955-230.3168C500.715378 548.076089 512 528.283022 512 508.489956c0-19.792356-11.284622-39.584711-33.853867-50.379378zM933.257244 458.110578L609.791289 234.984533C564.660622 213.396622 512 242.187378 512 285.368889v453.436444c0 43.1872 52.660622 71.977956 97.791289 50.384356l323.465955-230.3168c45.138489-21.5936 45.138489-79.172978 0-100.762311z'></path></svg></div>";
+    var FastR="<div class='icon-rewind'><div class='Fast-alt'>快退5秒</div><svg t='1628040141304' viewBox='0 0 1024 1024' version='1.1' xmlns='http://www.w3.org/2000/svg'><path d='M478.146133 458.110578L154.680178 234.984533C109.549511 213.396622 56.888889 242.187378 56.888889 285.368889v453.437155c0 43.1872 52.660622 71.977956 97.791289 50.384356l323.465955-230.3168C500.715378 548.076089 512 528.283022 512 508.489956c0-19.792356-11.284622-39.584711-33.853867-50.379378zM933.257244 458.110578L609.791289 234.984533C564.660622 213.396622 512 242.187378 512 285.368889v453.436444c0 43.1872 52.660622 71.977956 97.791289 50.384356l323.465955-230.3168c45.138489-21.5936 45.138489-79.172978 0-100.762311z'></path></svg></div>";
+
     function initialPlayer(e) {
         dp = new DPlayer({
             element: document.getElementById('player1'),
@@ -187,6 +191,7 @@ function initialUrl($url)
         $("#player1 .dplayer-video-wrap").append(txt2, txt6);
         $("#player1 .palyer-js-alt").append(txt3, txt4);
         $("#player1 .player-tab-Box").append(txt5);
+        $("#player1 .dplayer-icons.dplayer-icons-left").append(FastR ,FastF);
 
         //清晰度列表内生成VIP广告
         $("#player1 .dplayer-quality-list").prepend(QXDvip);
@@ -204,6 +209,15 @@ function initialUrl($url)
         $('.dplayer-video-wrap').trigger('click');
         // dp.play();
     }
+
+    //快进5秒
+    $("#player1").on('click', '.icon-forward', function() {
+        dp.seek(dp.video.currentTime + 5);
+    });
+    //后退5秒
+    $("#player1").on('click', '.icon-rewind', function() {
+        dp.seek(dp.video.currentTime - 5);
+    });
 
     //  集数alert 显示隐藏
     $("#player1").on('click', '.palyer-js', function() {
