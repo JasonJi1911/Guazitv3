@@ -126,7 +126,12 @@ function initialUrl($url)
     var txt1 = "<div class='palyer-js'>选集</div>";
     var txt2 = "<div class='palyer-js-alt'></div>";
     var txt3 = "<?php
-        echo "<div class='player-tab'><div class='player-tab-all'>全部</div><div class='player-tab-sq'>收起</div>";
+        if(count($videos) > 200){
+            echo "<div class='player-tab'><div class='player-tab-all'>全部</div><div class='player-tab-sq'>收起</div>";
+        }
+        else {
+            echo "<div class='player-tab'>";
+        }
         $page = ceil(count($videos)/50);
         $count = count($videos);
         $ontab = 0;

@@ -222,12 +222,15 @@ else
             <!--集数多余50集显示-->
 
             <div class="GNtab" name="zt">
-                <div class="GNtab-all">
-                    全部
-                </div>
-                <div class="GNtab-sq">
-                    收起
-                </div>
+                <?php if(count($data['info']['videos']) > 600): ?>
+                    <div class="GNtab-all">
+                        全部
+                    </div>
+                    <div class="GNtab-sq">
+                        收起
+                    </div>
+                <?php endif; ?>
+
                 <?php
                 $page = ceil(count($data['info']['videos'])/50);
                 $count = count($data['info']['videos']);
