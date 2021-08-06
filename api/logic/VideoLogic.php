@@ -534,6 +534,15 @@ class VideoLogic
             $video['last_chapter']  = isset($videos[$key-1]) ? $videos[$key-1]['chapter_id'] : 0;
             $video['next_chapter']  = isset($videos[$key+1]) ? $videos[$key+1]['chapter_id'] : 0;
 //            unset($video['resource_url']); // 安全考虑，删除剧集播放连接，防止全部播放连接一次性全返回
+            foreach ($sources as $ssc)
+            {
+                if ($video['resource_url'][$ssc['source_id']]){
+                    $ssc_url = $video['resource_url'][$ssc['source_id']];
+                    unset($video['resource_url'][$ssc['source_id']]);
+                    // array_push($video['resource_url'], [$ssc['source_id']=>$ssc_url]);
+                    $video['resource_url'][$ssc['source_id']] = $ssc_url;
+                }
+            }
         }
 
         // 演员信息
