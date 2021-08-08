@@ -2597,9 +2597,9 @@
 					if("INPUT" !== a && "TEXTAREA" !== a && "" !== n && "true" !== n) {
 						var o, r = e || window.event;
 						switch(r.keyCode) {
-							case 32:
-								r.preventDefault(), t.toggle();
-								break;
+							// case 32:
+							// 	r.preventDefault(), t.toggle();
+							// 	break;
 							case 37:
 								if(r.preventDefault(), t.options.live) break;
 								t.seek(t.video.currentTime - 5), t.controller.setAutoHide();

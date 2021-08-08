@@ -78,8 +78,8 @@ function initialUrl($url)
 ?>
 
 <link rel="stylesheet" href="/MyPlayer/css/base.css">
-<link rel="stylesheet" href="/MyPlayer/css/DPlayer.min.css">
-<script src="/MyPlayer/js/DPlayer.min-1.7.js" type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" href="/MyPlayer/css/DPlayer.min.css?v=2">
+<script src="/MyPlayer/js/DPlayer.min-1.7.js?v=5" type="text/javascript" charset="utf-8"></script>
 <style>
     .box {
         height: 500px;
@@ -122,9 +122,10 @@ function initialUrl($url)
 <script src="/MyPlayer/js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
 <script src="/MyPlayer/js/hls.min.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
+    // console.log(<?= json_encode($videos)?>);
     var selected_id = <?=$play_chapter_id?>;
     var txt1 = "<div class='palyer-js'>选集</div>";
-    var txt2 = "<div class='palyer-js-alt'></div>";
+    var txt2 = "<div class='palyer-js-alt' style='z-index:100;'></div>";
     var txt3 = "<?php
         if(count($videos) > 200){
             echo "<div class='player-tab'><div class='player-tab-all'>全部</div><div class='player-tab-sq'>收起</div>";
@@ -170,15 +171,24 @@ function initialUrl($url)
             echo "</div>";
         }
         ?>";
-    var txt6 = "<div class='palyer-js-alt-right'></div>";
+    var txt6 = "<div class='palyer-js-alt-right' style='z-index:100;'></div>";
     var QXDvip = "<div class='QXD-vip'><div class='QXD-vip-01'>去广告.享高清</div><div class='QXD-vip-02'><a class='QXD-vip-02-a1' href='#'>开通VIP</a><a class='QXD-vip-02-a2' href='#'>金币开通</a></div></div>";
 
     //  快进快退
     var FastF="<div class='icon-forward'><div class='Fast-alt'>快进5秒</div><svg t='1628040141304' viewBox='0 0 1024 1024' version='1.1' xmlns='http://www.w3.org/2000/svg'><path d='M478.146133 458.110578L154.680178 234.984533C109.549511 213.396622 56.888889 242.187378 56.888889 285.368889v453.437155c0 43.1872 52.660622 71.977956 97.791289 50.384356l323.465955-230.3168C500.715378 548.076089 512 528.283022 512 508.489956c0-19.792356-11.284622-39.584711-33.853867-50.379378zM933.257244 458.110578L609.791289 234.984533C564.660622 213.396622 512 242.187378 512 285.368889v453.436444c0 43.1872 52.660622 71.977956 97.791289 50.384356l323.465955-230.3168c45.138489-21.5936 45.138489-79.172978 0-100.762311z'></path></svg></div>";
     var FastR="<div class='icon-rewind'><div class='Fast-alt'>快退5秒</div><svg t='1628040141304' viewBox='0 0 1024 1024' version='1.1' xmlns='http://www.w3.org/2000/svg'><path d='M478.146133 458.110578L154.680178 234.984533C109.549511 213.396622 56.888889 242.187378 56.888889 285.368889v453.437155c0 43.1872 52.660622 71.977956 97.791289 50.384356l323.465955-230.3168C500.715378 548.076089 512 528.283022 512 508.489956c0-19.792356-11.284622-39.584711-33.853867-50.379378zM933.257244 458.110578L609.791289 234.984533C564.660622 213.396622 512 242.187378 512 285.368889v453.436444c0 43.1872 52.660622 71.977956 97.791289 50.384356l323.465955-230.3168c45.138489-21.5936 45.138489-79.172978 0-100.762311z'></path></svg></div>";
 
+    let dp1;
+    $(document).keyup(function(e){
+        switch(e.keyCode) {
+            case 32:
+                e.preventDefault();
+                dp1.toggle();
+                break;
+        }
+    });
     function initialPlayer(e) {
-        dp = new DPlayer({
+        dp1 = new DPlayer({
             element: document.getElementById('player1'),
             theme: '#FF5722',
             loop: false,
@@ -187,7 +197,7 @@ function initialUrl($url)
             preload: 'auto',
             logo: '/MyPlayer/img/logo.png',
             volume: 0.7,
-            autoplay: false,
+            autoplay: true,
             playbackSpeed: [0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3, 5, 7.5, 10],
             video: e,
         });
@@ -211,17 +221,17 @@ function initialUrl($url)
                 $(this).addClass("act");
             }
         });
-        $('.dplayer-video-wrap').trigger('click');
-        // dp.play();
+        // $('.dplayer-video-wrap').trigger('click');
+        dp1.play();
     }
 
     //快进5秒
     $("#player1").on('click', '.icon-forward', function() {
-        dp.seek(dp.video.currentTime + 5);
+        dp1.seek(dp.video.currentTime + 5);
     });
     //后退5秒
     $("#player1").on('click', '.icon-rewind', function() {
-        dp.seek(dp.video.currentTime - 5);
+        dp1.seek(dp.video.currentTime - 5);
     });
 
     //  集数alert 显示隐藏
@@ -255,6 +265,7 @@ function initialUrl($url)
                 'type': 'auto',
             });
         }
+        dp1.destroy();
         initialPlayer(new_video);
         $(".GNbox-JS>a").each(function(){
             $(this).removeClass("act");
@@ -269,9 +280,9 @@ function initialUrl($url)
     //  集数tab 全部显示
 
     $("#player1").on('click', '.player-tab-all', function() {
+        event.stopPropagation();
         $(this).hide().parents(".player-tab").addClass("player-all");
         $("#player1 .player-tab-sq").show();
-        event.stopPropagation();
     });
     $("#player1").on('click', '.player-tab-sq', function() {
         $(this).hide().parents(".player-tab").removeClass("player-all");
@@ -290,7 +301,6 @@ function initialUrl($url)
 
 </script>
 <script>
-    console.log(" %c 该项目基于Dplayer.js", 'color:red')
     var dp = new DPlayer({
         element: document.getElementById('player1'),
         theme: '#FF5722',
@@ -452,7 +462,7 @@ function initialUrl($url)
         initialPlayer(ini_video);
     });
     <?php elseif (empty($ad_type)) :?>
-    // dp.destroy();
+    dp.destroy();
     var ini_video = {
         quality: [
             <?php
