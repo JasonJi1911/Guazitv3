@@ -693,11 +693,11 @@ function initialUrl($url)
 
     //快进5秒
     $("#player1").on('click', '.icon-forward', function() {
-        dp1.seek(dp.video.currentTime + 5);
+        dp1.seek(dp1.video.currentTime + 5);
     });
     //后退5秒
     $("#player1").on('click', '.icon-rewind', function() {
-        dp1.seek(dp.video.currentTime - 5);
+        dp1.seek(dp1.video.currentTime - 5);
     });
 
     //  集数alert 显示隐藏
