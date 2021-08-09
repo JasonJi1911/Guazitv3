@@ -84,6 +84,68 @@ function initialUrl($url)
     .box {
         height: 500px;
     }
+    /*-------快进快退------*/
+
+    .icon-forward,
+    .icon-rewind {
+        padding: 7px;
+        display: inline-block;
+        position: relative;
+        width: 41px;
+        text-align: center;
+        opacity: 0.8;
+        cursor: pointer;
+    }
+
+    .icon-forward:hover,
+    .icon-rewind:hover {
+        opacity: 1;
+    }
+
+    .icon-forward>svg {
+        margin-bottom: -17px;
+    }
+
+    .icon-rewind {
+        transform: rotate(180deg);
+    }
+
+    .icon-rewind>svg {
+        margin-top: -15px;
+    }
+
+    .Fast-alt {
+        display: none;
+        position: absolute;
+        left: 50%;
+        margin-left: -40px;
+        width: 80px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        font-size: 12px;
+        color: #FFFFFF;
+        border-radius: 3px;
+        background-color: rgba(17, 17, 17, 0.9);
+    }
+
+    .icon-forward>.Fast-alt {
+        top: -30px;
+    }
+
+    .icon-forward:hover>.Fast-alt {
+        display: block;
+    }
+
+    .icon-rewind>.Fast-alt {
+        bottom: -30px;
+        transform: rotate(180deg);
+    }
+
+    .icon-rewind:hover>.Fast-alt {
+        display: block;
+    }
+    /*------广告倒计时   查看详情-------*/
 
     .ADMask{
         height: 70% !important;
@@ -99,9 +161,388 @@ function initialUrl($url)
         cursor: pointer;;
     }
 
-    .ADtip{
+    .AD-box {
+        position: absolute;
+        top: 30px;
+        right: 20px;
+        height: 30px;
+        border-radius: 30px;
+        overflow: hidden;
+        background-color: rgba(51, 51, 51, 1);
+        opacity: 0.5;
+        z-index: 1;
+        cursor: pointer;
+    }
+
+    .AD-box:hover {
+        opacity: 1;
+    }
+
+    .AD-box>a {
+        display: block;
+        height: 30px;
+        line-height: 30px;
+        padding: 0px 20px;
+        font-size: 14px;
+        color: #FFFFFF;
+    }
+
+    .AD-box>a>span {
+        display: inline-block;
+        min-width: 34px;
+        color: #FF5722;
+    }
+
+    .ADxq-box {
+        position: absolute;
+        bottom: 100px;
+        right: 20px;
+        height: 30px;
+        border-radius: 30px;
+        overflow: hidden;
+        background-color: #FF5722;
+        opacity: 0.6;
+    }
+
+    .ADxq-box:hover {
+        opacity: 1;
+    }
+
+    .ADxq-box>a {
+        display: block;
+        height: 30px;
+        line-height: 30px;
+        padding: 0px 20px;
+        font-size: 14px;
+        color: #FFFFFF;
+    }
+
+    .ADxq-box>a:hover {
+        color: rgba(255, 255, 255, 1);
+    }
+
+    .ADxq-box>a>svg {
+        margin-left: 5px;
+        width: 20px;
+        margin-bottom: -11px;
+        overflow: hidden;
+    }
+
+    .ADxq-box>a>svg>path {
+        width: 30px;
+        overflow: hidden;
+    }
+    /*-----声音------*/
+
+    .dplayer .dplayer-controller .dplayer-icons .dplayer-icon {
+        margin-right: 0px;
+    }
+
+    .dplayer .dplayer-controller .dplayer-icons .dplayer-icon.dplayer-volume-icon {
+        width: 48px;
+    }
+    /*选集样式*/
+
+    .palyer-js {
+        position: relative;
+        top: 3px;
+        display: inline-block;
+        margin: 0 20px;
+        width: 50px;
         height: 100%;
+        font-size: 18px;
+        text-align: center;
+        color: rgba(255, 255, 255, 0.8);
+        cursor: pointer;
+    }
+
+    .palyer-js:hover {
+        color: rgba(255, 255, 255, 1);
+    }
+
+    .palyer-js-alt {
+        position: absolute;
+        bottom: 0;
+        right: -800px;
+        margin-left: -100px;
+        width: 470px;
+        height: 100%;
+        padding: 0px 30px 20px 40px;
+        box-sizing: border-box;
+        overflow-y: auto;
+        background-color: rgba(28, 28, 28, 0.9);
+        z-index: 3;
+    }
+
+    .palyer-js-alt-right {
+        position: absolute;
+        right: -40px;
+        top: 50%;
+        margin-top: -40px;
+        width: 20px;
+        height: 80px;
+        background-color: rgba(0, 0, 0, 0.5);
+        background-image: url(img/right-W.png);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 14px auto;
+        z-index: 4;
+    }
+
+    .palyer-js-alt.act {
+        animation-name: DH03;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+
+    .palyer-js-alt-right.act {
+        animation-name: DH04;
+        animation-duration: 0.5s;
+        animation-fill-mode: forwards;
+    }
+
+    @keyframes DH03 {
+        0% {
+            right: -800px;
+        }
+        100% {
+            right: -20px;
+        }
+    }
+
+    @keyframes DH04 {
+        0% {
+            right: -370px;
+        }
+        100% {
+            right: 430px;
+        }
+    }
+
+    .palyer-js-alt-right:hover {
+        background-color: rgba(0, 0, 0, 0.7);
+        background-image: url(img/right-O.png);
+    }
+
+    .player-tab {
+        position: relative;
+        margin-top: 20px;
+        padding: 10px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.8);
+        background-color: rgba(0, 0, 0, 0.5);
+        overflow: hidden;
+    }
+
+    .player-tab.player-all {
+        height: auto;
+    }
+
+    .player-tab>div.player-tab-a {
+        float: left;
+        margin-right: 10px;
+        margin-left: 10px;
+        text-aliplayer-: center;
+        cursor: pointer;
+    }
+
+    .player-tab>div.player-tab-a:hover {
+        color: #FF5722;
+    }
+
+    .player-tab>div.act {
+        color: #FF5722;
+    }
+
+    .player-tab-all,
+    .player-tab-sq {
+        margin-left: 10px;
+        float: right;
+        padding-right: 20px;
+        height: 40px;
+        line-height: 40px;
+        color: #999999;
+        background-position: right center;
+        background-repeat: no-repeat;
+        background-size: 16px;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .player-tab-all {
+        background-image: url(img/icon-down.png);
+    }
+
+    .player-tab-all:hover {
+        color: #FF5722;
+        background-image: url(img/icon-down-o.png);
+    }
+
+    .player-tab-sq {
+        display: none;
+        background-image: url(img/up.png);
+    }
+
+    .player-tab-sq:hover {
+        color: #FF5722;
+        background-image: url(img/up-o.png);
+    }
+
+    .player-box-TJ-K {
+        display: none;
+        min-height: 150px;
+        margin-top: 20px;
+    }
+
+    .player-box-JS {
+        display: none;
+        margin-top: 20px;
+        flex-wrap: wrap;
+        -webkit-box-pack: justify;
+    }
+
+    .player-box-JS.act {
+        display: -webkit-flex;
+        display: flex;
+    }
+
+    .player-box-JS>a {
+        display: block;
+        box-sizing: border-box;
+        padding: 0px 20px;
+        min-width: calc((100% - 50px)/5);
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        font-size: 16px;
+        text-aliplayer-: center;
+        color: rgba(255, 255, 255, 0.8);
+        background-color: rgba(0, 0, 0, 0.5);
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+
+    .player-box-JS>a:hover {
+        color: #FF5722;
+    }
+
+    .player-box-JS>a.act {
+        color: #FFFFFF;
+        background-color: #FF5722;
+    }
+
+    .QXD-vip {
+        background-color: #2a2a32;
+        /*background-color: #1c1d2f;*/
+        padding-bottom: 10px;
+        margin-bottom: 5px;
+    }
+
+    .QXD-vip-01 {
+        height: 40px;
+        line-height: 40px;
+        font-size: 14px;
+        color: #FF5722;
+        text-align: center;
+    }
+
+    .QXD-vip-02 {
+        text-align: center;
+        height: 30px;
+        line-height: 30px;
+    }
+
+    .QXD-vip-02>a {
+        display: inline-block;
+        padding: 0px 10px;
+        margin: 0px 5px;
+        color: #FF5722;
+        font-size: 12px;
+        box-sizing: border-box;
+    }
+
+    .QXD-vip-02-a1 {
+        background: linear-gradient(#fdeec7, #ffc1a2);
+        border: solid 1px #1c1d2f;
+    }
+
+    .QXD-vip-02-a2 {
+        border: solid 1px #FF5722;
+    }
+
+    .QXD-vip-02-a2:hover {
+        background-color: #FF5722;
+        color: #FFFFFF;
+    }
+
+    .dplayer-quality-item.QXDvip {
+        background-image: url(img/QXDvip.png);
+        background-repeat: no-repeat;
+        background-position: 100px center;
+    }
+    /*--------倍速----------*/
+
+    .BSbox input {
+        font-family: "微软雅黑";
+        appearance: none;
+        border: none;
+        border-radius: 0;
+        background-color: rgba(0, 0, 0, 0);
+        -webkit-border-radius: 0;
+        -webkit-border: none;
+        outline: none;
+    }
+
+    .BSbox {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .BSbth {
+        display: inline-block;
+        padding: 7px;
+        font-size: 17px;
+        margin-right: 5px;
+        color: #FFFFFF;
+        opacity: 0.8;
+    }
+
+    .BSbth:hover,
+    .BSbth.act {
+        opacity: 1;
+    }
+
+    .BSlist {
+        display: none;
+        position: absolute;
+        left: 50%;
+        margin-left: -35px;
+        bottom: 38px;
+        width: 70px;
+        padding: 10px 0px;
+        border-radius: 3px;
+        background-color: rgba(28, 28, 28, 0.9);
+        z-index: 3;
+    }
+
+    .BSlist.act {
+        display: block;
+    }
+
+    .BSlist>input {
+        display: block;
         width: 100%;
+        height: 40px;
+        font-size: 14px;
+        color: #EEEEEE;
+        cursor: pointer;
+    }
+
+    .BSlist>input:hover {
+        background-color: rgba(51, 51, 51, 1);
     }
 
     .Dplayer_box, .player_av, .box{
@@ -183,18 +624,34 @@ function initialUrl($url)
     var QXDvip = "<div class='QXD-vip'><div class='QXD-vip-01'>去广告.享高清</div><div class='QXD-vip-02'><a class='QXD-vip-02-a1' href='#'>开通VIP</a><a class='QXD-vip-02-a2' href='#'>金币开通</a></div></div>";
 
     //  快进快退
-    var FastF="<div class='icon-forward'><div class='Fast-alt'>快进5秒</div><svg t='1628040141304' viewBox='0 0 1024 1024' version='1.1' xmlns='http://www.w3.org/2000/svg'><path d='M478.146133 458.110578L154.680178 234.984533C109.549511 213.396622 56.888889 242.187378 56.888889 285.368889v453.437155c0 43.1872 52.660622 71.977956 97.791289 50.384356l323.465955-230.3168C500.715378 548.076089 512 528.283022 512 508.489956c0-19.792356-11.284622-39.584711-33.853867-50.379378zM933.257244 458.110578L609.791289 234.984533C564.660622 213.396622 512 242.187378 512 285.368889v453.436444c0 43.1872 52.660622 71.977956 97.791289 50.384356l323.465955-230.3168c45.138489-21.5936 45.138489-79.172978 0-100.762311z'></path></svg></div>";
-    var FastR="<div class='icon-rewind'><div class='Fast-alt'>快退5秒</div><svg t='1628040141304' viewBox='0 0 1024 1024' version='1.1' xmlns='http://www.w3.org/2000/svg'><path d='M478.146133 458.110578L154.680178 234.984533C109.549511 213.396622 56.888889 242.187378 56.888889 285.368889v453.437155c0 43.1872 52.660622 71.977956 97.791289 50.384356l323.465955-230.3168C500.715378 548.076089 512 528.283022 512 508.489956c0-19.792356-11.284622-39.584711-33.853867-50.379378zM933.257244 458.110578L609.791289 234.984533C564.660622 213.396622 512 242.187378 512 285.368889v453.436444c0 43.1872 52.660622 71.977956 97.791289 50.384356l323.465955-230.3168c45.138489-21.5936 45.138489-79.172978 0-100.762311z'></path></svg></div>";
+    var FastF = "<div class='icon-forward'><div class='Fast-alt'>快进5秒</div><svg t='1628216546598' viewBox='0 0 1024 1024' version='1.1' xmlns='http://www.w3.org/2000/svg'><path d='M924.8 334.7c-22.5-53.1-54.6-100.8-95.6-141.8-40.9-40.9-88.6-73.1-141.8-95.6C632.4 74 574 62.2 513.8 62.2s-118.5 12-173.5 35.2C287.2 119.9 239.5 152 198.5 193c-40.9 40.9-73.1 88.6-95.6 141.8-23.3 55-35.1 113.4-35.1 173.6S79.7 627 103 682c22.5 53.1 54.6 100.8 95.6 141.8 40.9 40.9 88.6 73.1 141.8 95.6 55 23.3 113.4 35.1 173.6 35.1s118.6-11.8 173.6-35.1c53.1-22.5 100.8-54.6 141.8-95.6 40.9-40.9 73.1-88.6 95.6-141.8 23.3-55 35.1-113.4 35.1-173.6s-12-118.7-35.3-173.7zM770.9 765.3C702.2 834 611 871.8 513.9 871.8s-188.3-37.8-257-106.4c-68.6-68.6-106.4-159.9-106.4-257s37.8-188.3 106.4-257c68.6-68.6 159.9-106.4 257-106.4s188.3 37.8 257 106.4c68.6 68.6 106.4 159.9 106.4 257s-37.8 188.3-106.4 256.9z'></path><path d='M692.5 491.5l-77.7-50.9-77.7-50.9c-14.6-9.6-32.9 2.4-32.9 21.6v57.1l-42.5-27.8-77.7-50.9c-14.6-9.6-32.9 2.4-32.9 21.6l0.1 101.9 0.1 101.9c0 19.2 18.3 31.2 32.9 21.6l77.6-51 42.4-27.9v57.3c0 19.2 18.3 31.2 32.9 21.6l77.6-51 77.6-51c14.9-9.6 14.9-33.6 0.2-43.2z'></path></svg></div>";
+    var FastR = "<div class='icon-rewind'><div class='Fast-alt'>快退5秒</div><svg t='1628216546598' viewBox='0 0 1024 1024' version='1.1' xmlns='http://www.w3.org/2000/svg'><path d='M924.8 334.7c-22.5-53.1-54.6-100.8-95.6-141.8-40.9-40.9-88.6-73.1-141.8-95.6C632.4 74 574 62.2 513.8 62.2s-118.5 12-173.5 35.2C287.2 119.9 239.5 152 198.5 193c-40.9 40.9-73.1 88.6-95.6 141.8-23.3 55-35.1 113.4-35.1 173.6S79.7 627 103 682c22.5 53.1 54.6 100.8 95.6 141.8 40.9 40.9 88.6 73.1 141.8 95.6 55 23.3 113.4 35.1 173.6 35.1s118.6-11.8 173.6-35.1c53.1-22.5 100.8-54.6 141.8-95.6 40.9-40.9 73.1-88.6 95.6-141.8 23.3-55 35.1-113.4 35.1-173.6s-12-118.7-35.3-173.7zM770.9 765.3C702.2 834 611 871.8 513.9 871.8s-188.3-37.8-257-106.4c-68.6-68.6-106.4-159.9-106.4-257s37.8-188.3 106.4-257c68.6-68.6 159.9-106.4 257-106.4s188.3 37.8 257 106.4c68.6 68.6 106.4 159.9 106.4 257s-37.8 188.3-106.4 256.9z'></path><path d='M692.5 491.5l-77.7-50.9-77.7-50.9c-14.6-9.6-32.9 2.4-32.9 21.6v57.1l-42.5-27.8-77.7-50.9c-14.6-9.6-32.9 2.4-32.9 21.6l0.1 101.9 0.1 101.9c0 19.2 18.3 31.2 32.9 21.6l77.6-51 42.4-27.9v57.3c0 19.2 18.3 31.2 32.9 21.6l77.6-51 77.6-51c14.9-9.6 14.9-33.6 0.2-43.2z'></path></svg></div>";
+
+    //  倍速
+    var BSbox = "<div class='BSbox'><div class='BSbth'>倍速</div><div class='BSlist'><input type='button' value='0.5' /><input type='button' value='0.75' /><input type='button' value='正常' /><input type='button' value='1.25' /><input type='button' value='1.5' /></div></div>";
 
     let dp1;
+    //空格键切换播放暂停状态
     $(document).keyup(function(e){
         switch(e.keyCode) {
             case 32:
                 e.preventDefault();
+                // dp.toggle();
                 dp1.toggle();
                 break;
         }
     });
+
+    //点击隐藏倍速框
+    $(document).click(function(e) {
+        var $target = $(e.target);
+        // 点击下拉菜单以外的地方切换样式
+        if(!$target.is('.BSbox *') && !$target.is('.BSbox')) {
+            $('#player1 .BSbth').removeClass("act");
+            $('#player1 .BSlist').removeClass("act");
+        }
+    });
+
     function initialPlayer(e) {
         dp1 = new DPlayer({
             element: document.getElementById('player1'),
@@ -214,7 +671,8 @@ function initialUrl($url)
         $("#player1 .dplayer-video-wrap").append(txt2, txt6);
         $("#player1 .palyer-js-alt").append(txt3, txt4);
         $("#player1 .player-tab-Box").append(txt5);
-        $("#player1 .dplayer-icons.dplayer-icons-left").append(FastR ,FastF);
+        $("#player1 .dplayer-icon.dplayer-play-icon").after(FastR ,FastF);
+        $("#player1 .dplayer-quality").before(BSbox);
 
         //清晰度列表内生成VIP广告
         $("#player1 .dplayer-quality-list").prepend(QXDvip);
@@ -307,6 +765,23 @@ function initialUrl($url)
         event.stopPropagation();
     });
 
+    // 点击弹出倍速框
+    $("#player1").on('click', '.BSbth', function() {
+        $(this).toggleClass("act");
+        $("#player1 .BSlist").toggleClass("act");
+    });
+
+    //选择倍速以后，隐藏倍速框
+    $("#player1").on('click', '.BSlist>input', function() {
+        var speed = $(this).attr('value');
+        if(speed == '正常')
+            speed = 1;
+        dp1.speed(speed);
+        dp1.notice('视频速率已调整到' + speed + "倍", 2000);
+        $("#player1 .BSbth").toggleClass("act");
+        $("#player1 .BSlist").toggleClass("act");
+    });
+
 </script>
 <script>
     var dp = new DPlayer({
@@ -344,13 +819,9 @@ function initialUrl($url)
         }
     );
 
-    $("#player1").append('<div id="time_div" style="top: 10px;text-align: center;line-height: 40px;width: 200px;' +
-        'background: rgb(51, 51, 51);position: absolute;right: 10px;opacity: 0.8;z-index: 999;border-radius: 30px;">' +
-        '<div style="font-size:13px;line-height:28px;"><a class="ad_url_link" href="'+ l +'" target="_blank" style="' +
-        'color:#fff;">广告剩余：<span id="time_ad" style="color:#FF556E">10</span></a></div></div>' +
-        '<a href="'+ l +'" target="_blank" class="ad_url_link btn-add-detail" id="link" style="top: 50px;right:10px;' +
-        'background-color: rgb(255, 85, 110);position: absolute;color: white;width: 100px;height: auto;text-align: center;' +
-        'padding: 8px;border-radius: 20px;">查看详情 ></a><div class="ADMask" id="ADMask"></div>');
+    $("#player1").append('<div class="AD-box" id="AD-box"><a href="' + l +'">广告剩余：<span id="time_ad">100</span>S</a></div>' +
+        '<div class="ADxq-box" id="ADxq-box"><a id="link" target="_blank" href="' + l + '">查看详情<svg t="1628136750461" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M572.197 505.905a19.707 19.707 0 0 1-5.976 13.397L300.215 785.31c-3.438 3.438-8.558 5.705-13.129 5.705s-9.728-2.304-13.129-5.705l-28.562-28.562c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129L469.98 505.905 245.395 281.32c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l28.562-28.562c3.438-3.438 8.558-5.705 13.129-5.705s9.728 2.304 13.129 5.705l266.277 266.277a19.534 19.534 0 0 1 5.714 13.465z m219.428 0a19.707 19.707 0 0 1-5.976 13.397L519.643 785.31c-3.438 3.438-8.558 5.705-13.129 5.705s-9.728-2.304-13.129-5.705l-28.562-28.562c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l224.585-224.585L464.823 281.32c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l28.562-28.562c3.438-3.438 8.558-5.705 13.129-5.705s9.728 2.304 13.129 5.705L785.92 492.777a19.534 19.534 0 0 1 5.714 13.465z"></path></svg></a></div>' +
+        '<div class="ADMask" id="ADMask"></div>');
 
     $("#ADMask").click(function() {
         document.getElementById('link').click();
@@ -365,8 +836,8 @@ function initialUrl($url)
             span.innerHTML = num;
             if (num == 0) {
                 clearInterval(timer);
-                $('#ADtip').remove();
-                $('#link').remove();
+                $('#AD-box').remove();
+                $('#ADxq-box').remove();
                 $('#ADMask').remove();
                 dp.destroy();
                 var ini_video = {
@@ -403,78 +874,74 @@ function initialUrl($url)
         }, 1000);
     }, 1);
     <?php elseif ($ad_type == 'mp4') :?>
-        var adslists = dp.options.bbslist;
-        console.log(adslists)
-        var bb1 = adslists[0];
-        var l = bb1.link;
-        dp.switchVideo(
-            {
-                url: bb1.video,
-                pic: '',
-                type: 'auto'
-            }
-        );
+    var adslists = dp.options.bbslist;
+    console.log(adslists)
+    var bb1 = adslists[0];
+    var l = bb1.link;
+    dp.switchVideo(
+        {
+            url: bb1.video,
+            pic: '',
+            type: 'auto'
+        }
+    );
 
-        $("#player1").append('<div id="time_div" style="top: 10px;text-align: center;line-height: 40px;width: 200px;' +
-            'background: rgb(51, 51, 51);position: absolute;right: 10px;opacity: 0.8;z-index: 999;border-radius: 30px;">' +
-            '<div style="font-size:13px;line-height:28px;"><a class="ad_url_link" href="'+ l +'" target="_blank" style="' +
-            'color:#fff;">广告剩余：<span id="time_ad" style="color:#FF556E">10</span></a></div></div>' +
-            '<a href="'+ l +'" target="_blank" class="ad_url_link btn-add-detail" id="link" style="top: 50px;right:10px;' +
-            'background-color: rgb(255, 85, 110);position: absolute;color: white;width: 100px;height: auto;text-align: center;' +
-            'padding: 8px;border-radius: 20px;">查看详情 ></a><div class="ADMask" id="ADMask"></div>');
+    $("#player1").append('<div class="AD-box" id="AD-box"><a href="' + l +'">广告剩余：<span id="time_ad">100</span>S</a></div>' +
+        '<div class="ADxq-box" id="ADxq-box"><a id="link" target="_blank" href="' + l + '">查看详情<svg t="1628136750461" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M572.197 505.905a19.707 19.707 0 0 1-5.976 13.397L300.215 785.31c-3.438 3.438-8.558 5.705-13.129 5.705s-9.728-2.304-13.129-5.705l-28.562-28.562c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129L469.98 505.905 245.395 281.32c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l28.562-28.562c3.438-3.438 8.558-5.705 13.129-5.705s9.728 2.304 13.129 5.705l266.277 266.277a19.534 19.534 0 0 1 5.714 13.465z m219.428 0a19.707 19.707 0 0 1-5.976 13.397L519.643 785.31c-3.438 3.438-8.558 5.705-13.129 5.705s-9.728-2.304-13.129-5.705l-28.562-28.562c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l224.585-224.585L464.823 281.32c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l28.562-28.562c3.438-3.438 8.558-5.705 13.129-5.705s9.728 2.304 13.129 5.705L785.92 492.777a19.534 19.534 0 0 1 5.714 13.465z"></path></svg></a></div>' +
+        '<div class="ADMask" id="ADMask"></div>');
 
-        $("#ADMask").on('click', function() {
-            document.getElementById('link').click();
-            $('#link').trigger('click');
-        });
+    $("#ADMask").on('click', function() {
+        document.getElementById('link').click();
+        $('#link').trigger('click');
+    });
 
-        dp.on('loadedmetadata', function () {
-            document.getElementById('time_ad').innerText = Math.floor(dp.video.duration);
-        });
-        dp.on('timeupdate', function () {
-            document.getElementById('time_ad').innerText = Math.floor(dp.video.duration - dp.video.currentTime);
-        });
-        // dp.play();
-        $('.dplayer-video-wrap').trigger('click');
-        dp.on('ended', function () {
-            console.log('bbs player ended');
-            $('#time_div').remove();
-            $('#link').remove();
-            $('#ADMask').hide();
-            $('#ADMask').append('<span id="time_ad" style="color:#FF556E">10</span>')
-            dp.destroy();
-        });
-        dp.on('destroy', function () {
-            var ini_video = {
-                quality: [
-                    <?php
-                    $default_qua = 0;
-                    foreach ($videos as $k => $val){
-                        if($val['chapter_id'] == $play_chapter_id){
-                            $chapter = $val;
-                            $src_array = $val['resource_url'];
-                        }
+    dp.on('loadedmetadata', function () {
+        document.getElementById('time_ad').innerText = Math.floor(dp.video.duration);
+    });
+    dp.on('timeupdate', function () {
+        document.getElementById('time_ad').innerText = Math.floor(dp.video.duration - dp.video.currentTime);
+    });
+    // dp.play();
+    $('.dplayer-video-wrap').trigger('click');
+    dp.on('ended', function () {
+        console.log('bbs player ended');
+        $('#AD-box').remove();
+        $('#ADxq-box').remove();
+        $('#ADMask').hide();
+        $('#ADMask').append('<span id="time_ad" style="color:#FF556E">10</span>')
+        dp.destroy();
+    });
+    dp.on('destroy', function () {
+        var ini_video = {
+            quality: [
+                <?php
+                $default_qua = 0;
+                foreach ($videos as $k => $val){
+                    if($val['chapter_id'] == $play_chapter_id){
+                        $chapter = $val;
+                        $src_array = $val['resource_url'];
                     }
-                    foreach ($source as $key => $src) {
-                        if (empty($src_array[$src['source_id']])) { // source_id不在视频里面或者没有视频播放连接
-                            continue;
-                        }
-                        $src_id = $src['source_id'];
-                        $src_url = $src_array[$src_id];
-                        $type = initialUrl($src_url);
-                        echo "{
-                                    name: '".$src['name']."',
-                                    url: '".$type."',
-                                    type: 'auto',
-                                },";
+                }
+                foreach ($source as $key => $src) {
+                    if (empty($src_array[$src['source_id']])) { // source_id不在视频里面或者没有视频播放连接
+                        continue;
                     }
-                    ?>
-                ],
-                pic: '',
-                defaultQuality: <?php echo $default_qua;?>,
-            };
-            initialPlayer(ini_video);
-        });
+                    $src_id = $src['source_id'];
+                    $src_url = $src_array[$src_id];
+                    $type = initialUrl($src_url);
+                    echo "{
+                                name: '".$src['name']."',
+                                url: '".$type."',
+                                type: 'auto',
+                            },";
+                }
+                ?>
+            ],
+            pic: '',
+            defaultQuality: <?php echo $default_qua;?>,
+        };
+        initialPlayer(ini_video);
+    });
     <?php elseif (empty($ad_type)) :?>
     dp.destroy();
     var ini_video = {
