@@ -257,10 +257,18 @@ else
                         <?php foreach ($data['info']['videos'] as $index => $value) : ?>
                             <?php if($index>=$i*50 && $index < ($i*50+50)){
                                 $resource_arr = $value['resource_url'];
-                                $tmp_src = array_column($data['info']['all_source'], null, 'source_id');
+                                // $tmp_src = array_column($data['info']['all_source'], null, 'source_id');
                                 $quality = [];
-                                foreach ($resource_arr as $k => $v)
-                                    $quality[] = $tmp_src[$k]['name'].'#'.$v;
+                                foreach ($data['info']['all_source'] as $key => $src) {
+                                    if (empty(trim($resource_arr[$src['source_id']]))) { // source_id不在视频里面或者没有视频播放连接
+                                        continue;
+                                    }
+                                    $src_id = $src['source_id'];
+                                    $src_url = $resource_arr[$src_id];
+                                    $quality[] = $src['name'].'#'.$src_url;
+                                }
+                                // foreach ($resource_arr as $k => $v)
+                                //     $quality[] = $tmp_src[$k]['name'].'#'.$v;
 
                                 $quality_str = implode('$$$', $quality);
                                 ?>
