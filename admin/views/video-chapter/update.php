@@ -7,7 +7,7 @@ use yii\helpers\Html;
 
 $this->title = '更新剧集：' . Yii::$app->video->title;
 $this->params['breadcrumbs'][] = ['label' => '影片管理', 'url' => ['video/index']];
-$this->params['breadcrumbs'][] = ['label' => Yii::$app->video->title . '剧集列表', 'url' => ['video/index', 'video_id' => Yii::$app->video->id, 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => Yii::$app->video->title . '剧集列表', 'url' => ['video-chapter/index', 'video_id' => Yii::$app->video->id, 'id' => $model->id]];
 $this->params['breadcrumbs'][] = $this->title;;
 ?>
 

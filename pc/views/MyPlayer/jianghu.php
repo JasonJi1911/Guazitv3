@@ -108,6 +108,7 @@ function initialUrl($url)
 
     .icon-rewind {
         transform: rotate(180deg);
+        margin-right: 0px;
     }
 
     .icon-rewind>svg {
@@ -189,8 +190,9 @@ function initialUrl($url)
 
     .AD-box>a>span {
         display: inline-block;
-        min-width: 34px;
+        min-width: 16px;
         color: #FF5722;
+        text-align: center;
     }
 
     .ADxq-box {
@@ -499,15 +501,19 @@ function initialUrl($url)
         position: relative;
         display: inline-block;
         cursor: pointer;
+        height: 100%;
     }
 
     .BSbth {
         display: inline-block;
-        padding: 7px;
-        font-size: 17px;
+        padding: 8px;
+        font-size: 18px;
         margin-right: 5px;
-        color: #FFFFFF;
+        color: #fff;
         opacity: 0.8;
+        line-height: 22px;
+        vertical-align: middle;
+        font-weight: 500;
     }
 
     .BSbth:hover,
