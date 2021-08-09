@@ -372,7 +372,7 @@ function initialUrl($url)
                             }
                         }
                         foreach ($source as $key => $src) {
-                            if (!in_array($src['source_id'], array_keys($val['resource_url'])) || empty($src_array[$src['source_id']])) { // source_id不在视频里面或者没有视频播放连接
+                            if (empty($src_array[$src['source_id']])) { // source_id不在视频里面或者没有视频播放连接
                                 continue;
                             }
                             $src_id = $src['source_id'];
@@ -448,7 +448,7 @@ function initialUrl($url)
                         }
                     }
                     foreach ($source as $key => $src) {
-                        if (!in_array($src['source_id'], array_keys($val['resource_url'])) || empty($src_array[$src['source_id']])) { // source_id不在视频里面或者没有视频播放连接
+                        if (empty($src_array[$src['source_id']])) { // source_id不在视频里面或者没有视频播放连接
                             continue;
                         }
                         $src_id = $src['source_id'];
@@ -480,7 +480,7 @@ function initialUrl($url)
                 }
             }
             foreach ($source as $key => $src) {
-                if (!in_array($src['source_id'], array_keys($val['resource_url'])) || empty($src_array[$src['source_id']])) { // source_id不在视频里面或者没有视频播放连接
+                if (empty($src_array[$src['source_id']])) { // source_id不在视频里面或者没有视频播放连接
                     continue;
                 }
                 $src_id = $src['source_id'];
