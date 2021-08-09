@@ -61,7 +61,7 @@ else
                 'videos'    =>  $data['info']['videos'],
                 'play_chapter_id'   => $data['info']['play_chapter_id'],
                 'source_id'         => $data['info']['source_id'],
-                'source'            =>  $data['info']['source']
+                'source'            =>  $data['info']['all_source']
             ]);?>
         </div>
         <!--广告-->
@@ -257,7 +257,7 @@ else
                         <?php foreach ($data['info']['videos'] as $index => $value) : ?>
                             <?php if($index>=$i*50 && $index < ($i*50+50)){
                                 $resource_arr = $value['resource_url'];
-                                $tmp_src = array_column($data['info']['source'], null, 'source_id');
+                                $tmp_src = array_column($data['info']['all_source'], null, 'source_id');
                                 $quality = [];
                                 foreach ($resource_arr as $k => $v)
                                     $quality[] = $tmp_src[$k]['name'].'#'.$v;

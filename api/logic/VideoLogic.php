@@ -598,6 +598,7 @@ class VideoLogic
                     'video_task_time' => $taskStatus ? 0 : 60, //TODO
                     'videos'          => $videos,
                     'source'          => $source,
+                    'all_source'        => $sources,
                     'actors'          => array_values($actors),
                     'director'        => $director,
                     'actor'           => $actor,
