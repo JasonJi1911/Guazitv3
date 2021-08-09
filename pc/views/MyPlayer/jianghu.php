@@ -372,6 +372,9 @@ function initialUrl($url)
                             }
                         }
                         foreach ($source as $key => $src) {
+                            if (!in_array($src['source_id'], array_keys($val['resource_url'])) || empty($src_array[$src['source_id']])) { // source_id不在视频里面或者没有视频播放连接
+                                continue;
+                            }
                             $src_id = $src['source_id'];
                             $src_url = $src_array[$src_id];
                             $type = initialUrl($src_url);
@@ -392,75 +395,78 @@ function initialUrl($url)
         }, 1000);
     }, 1);
     <?php elseif ($ad_type == 'mp4') :?>
-    var adslists = dp.options.bbslist;
-    console.log(adslists)
-    var bb1 = adslists[0];
-    var l = bb1.link;
-    dp.switchVideo(
-        {
-            url: bb1.video,
-            pic: '',
-            type: 'auto'
-        }
-    );
+        var adslists = dp.options.bbslist;
+        console.log(adslists)
+        var bb1 = adslists[0];
+        var l = bb1.link;
+        dp.switchVideo(
+            {
+                url: bb1.video,
+                pic: '',
+                type: 'auto'
+            }
+        );
 
-    $("#player1").append('<div id="time_div" style="top: 10px;text-align: center;line-height: 40px;width: 200px;' +
-        'background: rgb(51, 51, 51);position: absolute;right: 10px;opacity: 0.8;z-index: 999;border-radius: 30px;">' +
-        '<div style="font-size:13px;line-height:28px;"><a class="ad_url_link" href="'+ l +'" target="_blank" style="' +
-        'color:#fff;">广告剩余：<span id="time_ad" style="color:#FF556E">10</span></a></div></div>' +
-        '<a href="'+ l +'" target="_blank" class="ad_url_link btn-add-detail" id="link" style="top: 50px;right:10px;' +
-        'background-color: rgb(255, 85, 110);position: absolute;color: white;width: 100px;height: auto;text-align: center;' +
-        'padding: 8px;border-radius: 20px;">查看详情 ></a><div class="ADMask" id="ADMask"></div>');
+        $("#player1").append('<div id="time_div" style="top: 10px;text-align: center;line-height: 40px;width: 200px;' +
+            'background: rgb(51, 51, 51);position: absolute;right: 10px;opacity: 0.8;z-index: 999;border-radius: 30px;">' +
+            '<div style="font-size:13px;line-height:28px;"><a class="ad_url_link" href="'+ l +'" target="_blank" style="' +
+            'color:#fff;">广告剩余：<span id="time_ad" style="color:#FF556E">10</span></a></div></div>' +
+            '<a href="'+ l +'" target="_blank" class="ad_url_link btn-add-detail" id="link" style="top: 50px;right:10px;' +
+            'background-color: rgb(255, 85, 110);position: absolute;color: white;width: 100px;height: auto;text-align: center;' +
+            'padding: 8px;border-radius: 20px;">查看详情 ></a><div class="ADMask" id="ADMask"></div>');
 
-    $("#ADMask").on('click', function() {
-        document.getElementById('link').click();
-        $('#link').trigger('click');
-    });
+        $("#ADMask").on('click', function() {
+            document.getElementById('link').click();
+            $('#link').trigger('click');
+        });
 
-    dp.on('loadedmetadata', function () {
-        document.getElementById('time_ad').innerText = Math.floor(dp.video.duration);
-    });
-    dp.on('timeupdate', function () {
-        document.getElementById('time_ad').innerText = Math.floor(dp.video.duration - dp.video.currentTime);
-    });
-    // dp.play();
-    $('.dplayer-video-wrap').trigger('click');
-    dp.on('ended', function () {
-        console.log('bbs player ended');
-        $('#time_div').remove();
-        $('#link').remove();
-        $('#ADMask').hide();
-        $('#ADMask').append('<span id="time_ad" style="color:#FF556E">10</span>')
-        dp.destroy();
-    });
-    dp.on('destroy', function () {
-        var ini_video = {
-            quality: [
-                <?php
-                $default_qua = 0;
-                foreach ($videos as $k => $val){
-                    if($val['chapter_id'] == $play_chapter_id){
-                        $chapter = $val;
-                        $src_array = $val['resource_url'];
+        dp.on('loadedmetadata', function () {
+            document.getElementById('time_ad').innerText = Math.floor(dp.video.duration);
+        });
+        dp.on('timeupdate', function () {
+            document.getElementById('time_ad').innerText = Math.floor(dp.video.duration - dp.video.currentTime);
+        });
+        // dp.play();
+        $('.dplayer-video-wrap').trigger('click');
+        dp.on('ended', function () {
+            console.log('bbs player ended');
+            $('#time_div').remove();
+            $('#link').remove();
+            $('#ADMask').hide();
+            $('#ADMask').append('<span id="time_ad" style="color:#FF556E">10</span>')
+            dp.destroy();
+        });
+        dp.on('destroy', function () {
+            var ini_video = {
+                quality: [
+                    <?php
+                    $default_qua = 0;
+                    foreach ($videos as $k => $val){
+                        if($val['chapter_id'] == $play_chapter_id){
+                            $chapter = $val;
+                            $src_array = $val['resource_url'];
+                        }
                     }
-                }
-                foreach ($source as $key => $src) {
-                    $src_id = $src['source_id'];
-                    $src_url = $src_array[$src_id];
-                    $type = initialUrl($src_url);
-                    echo "{
-                                name: '".$src['name']."',
-                                url: '".$type."',
-                                type: 'auto',
-                            },";
-                }
-                ?>
-            ],
-            pic: '',
-            defaultQuality: <?php echo $default_qua;?>,
-        };
-        initialPlayer(ini_video);
-    });
+                    foreach ($source as $key => $src) {
+                        if (!in_array($src['source_id'], array_keys($val['resource_url'])) || empty($src_array[$src['source_id']])) { // source_id不在视频里面或者没有视频播放连接
+                            continue;
+                        }
+                        $src_id = $src['source_id'];
+                        $src_url = $src_array[$src_id];
+                        $type = initialUrl($src_url);
+                        echo "{
+                                    name: '".$src['name']."',
+                                    url: '".$type."',
+                                    type: 'auto',
+                                },";
+                    }
+                    ?>
+                ],
+                pic: '',
+                defaultQuality: <?php echo $default_qua;?>,
+            };
+            initialPlayer(ini_video);
+        });
     <?php elseif (empty($ad_type)) :?>
     dp.destroy();
     var ini_video = {
@@ -474,6 +480,9 @@ function initialUrl($url)
                 }
             }
             foreach ($source as $key => $src) {
+                if (!in_array($src['source_id'], array_keys($val['resource_url'])) || empty($src_array[$src['source_id']])) { // source_id不在视频里面或者没有视频播放连接
+                    continue;
+                }
                 $src_id = $src['source_id'];
                 $src_url = $src_array[$src_id];
                 $type = initialUrl($src_url);
