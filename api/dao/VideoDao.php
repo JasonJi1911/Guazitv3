@@ -19,6 +19,7 @@ use common\helpers\RedisStore;
 use common\helpers\Tool;
 use common\models\IpAddress;
 use yii\helpers\ArrayHelper;
+use yii;
 
 class VideoDao extends BaseDao
 {
@@ -316,6 +317,21 @@ class VideoDao extends BaseDao
                     ->orderBy('display_order asc, id asc')
             ]);
             $video['chapters']     = $chapProvider->toArray();
+            //改动新版本
+            $sources = $commonDao->videoSource(Yii::$app->common->product);
+            foreach ($video['chapters'] as $k=>$cp)
+            {
+                $can_play = false;
+                $chapterurlArr = $cp['resource_url'];
+                foreach ($chapterurlArr as $kk=>$val)
+                {
+                    if (in_array($kk, array_column($sources, 'source_id'))){
+                        $can_play = true;
+                    }
+                }
+                if (!$can_play)
+                    unset($video['chapters'][$k]);
+            }
         }
 
         //获取额外的字段,传入的时候才进行查询,提高性能

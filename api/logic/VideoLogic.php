@@ -539,6 +539,7 @@ class VideoLogic
                 unset($videos[$key]);
                 continue;
             }
+            $can_play = false;
             foreach ($sources as $ssc)
             {
                 if ($video['resource_url'][$ssc['source_id']]){
@@ -546,8 +547,11 @@ class VideoLogic
                     unset($video['resource_url'][$ssc['source_id']]);
                     // array_push($video['resource_url'], [$ssc['source_id']=>$ssc_url]);
                     $video['resource_url'][$ssc['source_id']] = $ssc_url;
+                    $can_play = true;
                 }
             }
+            if(!$can_play)
+                unset($videos[$key]);
         }
 
         // 演员信息
