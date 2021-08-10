@@ -81,6 +81,10 @@ function initialUrl($url)
 <link rel="stylesheet" href="/MyPlayer/css/DPlayer.min.css?v=2">
 <script src="/MyPlayer/js/DPlayer.min-1.7.js?v=5" type="text/javascript" charset="utf-8"></script>
 <style>
+    .selected_quantity{
+        color: #FF5722;
+    }
+
     .box {
         height: 500px;
     }
@@ -692,6 +696,21 @@ function initialUrl($url)
             {
                 $(this).addClass("act");
             }
+        });
+
+        $("#player1 .dplayer-quality-item").each(function(){
+            var data_index = $(this).attr('data-index');
+            if(data_index == "0")
+                $(this).addClass("selected_quantity");
+        });
+        //清晰度带vip标识    紧紧演示  可删除
+        dp1.on('quality_start', function (e) {
+            $("#player1 .dplayer-quality-item").removeClass('selected_quantity');
+            $("#player1 .dplayer-quality-item").each(function(){
+                var qua_name = $(this).text();
+                if(qua_name == e.name)
+                    $(this).addClass("selected_quantity");
+            });
         });
         // $('.dplayer-video-wrap').trigger('click');
         dp1.play();
