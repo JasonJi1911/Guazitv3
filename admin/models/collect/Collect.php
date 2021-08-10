@@ -407,7 +407,7 @@ class Collect extends \common\models\collect\Collect
             $videoDao->is_sensitive = 1;
             $videoDao->play_limit = 1;
             $videoDao->is_down = 0;
-            $videoDao->total_views = 0;
+            $videoDao->total_views = 10000;
             $videoDao->total_favors = 0;
             $videoDao->total_price = 0;
             $videoDao->issue_date = time();
@@ -500,8 +500,15 @@ class Collect extends \common\models\collect\Collect
         $category_list = $category::find()->asArray()->all();
 
         $filterStr = '';
-        if ($param['filter'] == self::COLLECT_FILTER_NEWUP)
-            $filterStr = $param['filter_from'];
+        if ($param['filter'] == self::COLLECT_FILTER_NEWUP && strpos($param['filter_from'], 'src=') !== false)
+        {
+            $condition_arr1 = explode('&', $param['filter_from']);
+            foreach($condition_arr1 as $contition_para1)
+            {
+                if(strpos($contition_para1, 'src=') !== false)
+                    $filterStr = explode('=', $contition_para1)[1];
+            }
+        }
 
 //        $filter_arr = explode(',',$config['filter']);
         $retResult = [];
@@ -521,6 +528,29 @@ class Collect extends \common\models\collect\Collect
             foreach ($type_list as $type) {
                 if ($type['type_name'] == $v['type_name'])
                     $videoDao->channel_id = $type['video_channel'];
+            }
+
+            if($param['filter'] == self::COLLECT_FILTER_NEWUP && strpos($param['filter_from'], '=') !== false)
+            {
+                $condition_str = $param['filter_from'];
+                $condition_arr = explode('&', $condition_str);
+                $isvalid = true;
+                foreach ($condition_arr as $condition_para)
+                {
+                    $condition= explode('=', $condition_para)[0];
+                    $condition_val = explode('=', $condition_para)[1];
+                    if($v[$condition] != $condition_val)
+                    {
+                        $isvalid = false;
+                        break;
+                    }
+                }
+                if(!$isvalid)
+                {
+                    $des = '不满足过滤条件';
+                    $retResult[$k]['des'] = $des;
+                    continue;
+                }
             }
 
             if (empty($videoDao->channel_id)) {
