@@ -318,7 +318,12 @@ class VideoLogic
         $videoDao = new VideoDao();
         $videos = $videoDao->batchGetVideo($seriesId, ['video_id', 'video_name', 'category', 'cover', 'horizontal_cover', 'intro', 'flag', 'score', 'play_times','title', 'area', 'year', 'tag', 'director', 'artist'], false, ['channel_id', 'actors_id', 'actors', 'director', 'artist', 'chapters']);
 
-        foreach ($videos as &$videoInfo) {
+        foreach ($videos as $k=>&$videoInfo) {
+            if(empty($videoInfo['chapters']))
+            {
+                unset($videos[$k]);
+                continue;
+            }
             $videoInfo['cats'] = implode('/', explode(' ', $videoInfo['category']));
         }
 
@@ -403,7 +408,12 @@ class VideoLogic
         // $videoDao = new VideoDao();
         $videos = $videoDao->batchGetVideo($seriesId, ['video_id', 'video_name', 'category', 'cover', 'horizontal_cover', 'intro', 'flag', 'score', 'play_times','title', 'area', 'year', 'tag', 'director', 'artist'], false, ['channel_id', 'actors_id', 'actors', 'director', 'artist', 'chapters']);
 
-        foreach ($videos as &$videoInfo) {
+        foreach ($videos as $k=>&$videoInfo) {
+            if(empty($videoInfo['chapters']))
+            {
+                unset($videos[$k]);
+                continue;
+            }
             $videoInfo['cats'] = implode('/', explode(' ', $videoInfo['category']));
         }
 
