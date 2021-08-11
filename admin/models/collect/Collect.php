@@ -496,7 +496,7 @@ class Collect extends \common\models\collect\Collect
     {
         $collectBind = new CollectBind();
         $category = new VideoCategory();
-        $type_list = $collectBind::find()->asArray()->all();
+        $type_list = $collectBind::find()->andWhere(['collect_id'=>$param['collect_id']])->asArray()->all();
         $category_list = $category::find()->asArray()->all();
 
         $filterStr = '';

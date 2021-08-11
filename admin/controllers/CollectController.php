@@ -7,6 +7,7 @@ use admin\models\video\Video;
 use admin\models\video\VideoChannel;
 use admin\widgets\MyArrayDataProvider;
 use Yii;
+use yii\db\Exception;
 use yii\db\Query;
 use yii\helpers\Url;
 use common\helpers\Tool;
@@ -229,6 +230,24 @@ class CollectController extends BaseController
         else
         {
             return Tool::responseJson(1, '类型绑定失败');
+        }
+    }
+
+    public function actionCancelBind()
+    {
+        $collect_id = Yii::$app->request->get('collectid');
+        $type_id = Yii::$app->request->get('typeid');
+
+        try {
+            $collectBind = CollectBind::findOne(['collect_id' => $collect_id, 'type_id' => $type_id]);
+            if ($collectBind) {
+                $collectBind->delete();
+            }
+            return Tool::responseJson(0, '解绑成功');
+        }
+        catch (Exception $ex)
+        {
+            return Tool::responseJson(1, '解绑失败');
         }
     }
 

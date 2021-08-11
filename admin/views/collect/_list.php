@@ -17,7 +17,15 @@ $this->params['breadcrumbs'][] = $this->title;
 $js = <<<JS
     $('.bindModel').on('click', function (){
        $('#typeid').val($(this).attr("data-typeid")); 
-       $('#typename').val($(this).attr("data-typename")); 
+       $('#typename').val($(this).attr("data-typename"));
+       var bindName = $(this).text().trim();
+       if(bindName == "绑定")
+       {
+            $('#cancelBind').attr("disabled", true);;
+       }
+       else {
+            $('#cancelBind').attr("disabled", false);;
+       }
     });
 
     $('#bind').on('click', function() {
@@ -39,7 +47,24 @@ $js = <<<JS
             $('#bindModal').modal('hide');
         })
     });
-
+    
+    $('#cancelBind').on('click', function() {
+        var collectid = $('#collectid').val();
+        var typeid = $('#typeid').val();
+        
+        $.get('/collect/cancel-bind', {typeid: typeid, collectid: collectid}, function(s) {
+            console.log(s);
+            console.log(s.data.channelName);
+            if (s.errno != 0) {
+                alert(s.error);
+                return;
+            }
+            // window.location.reload();
+            alert('解绑成功')
+            $('#type_' + typeid + ' i').text(' '+'绑定');
+            $('#bindModal').modal('hide');
+        })
+    });
 JS;
 
 $this->registerJs($js);
@@ -69,6 +94,9 @@ $this->registerJs($js);
                 </div>
             </div>
             <div class="modal-footer">
+                <button class="btn btn-danger" title="" type="button" id="cancelBind" data-clipboard-text="">
+                    解绑
+                </button>
                 <button class="btn btn-primary" title="" type="button" id="bind" data-clipboard-text="">
                     保存
                 </button>
