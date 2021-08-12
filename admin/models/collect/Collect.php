@@ -534,14 +534,15 @@ class Collect extends \common\models\collect\Collect
             {
                 $condition_str = $param['filter_from'];
                 $condition_arr = explode('&', $condition_str);
-                $isvalid = true;
+                $isvalid = false;
                 foreach ($condition_arr as $condition_para)
                 {
                     $condition= explode('=', $condition_para)[0];
                     $condition_val = explode('=', $condition_para)[1];
-                    if($v[$condition] != $condition_val)
+                    $condition_val_arr = explode(',', $condition_val);
+                    if(in_array($v[$condition], $condition_val_arr))
                     {
-                        $isvalid = false;
+                        $isvalid = true;
                         break;
                     }
                 }
