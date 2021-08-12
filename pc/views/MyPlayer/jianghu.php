@@ -1,4 +1,5 @@
 <?php
+use yii\helpers\Url;
 define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
 define('FCPATH', Yii::$app->BasePath);
 error_reporting(E_ALL ^ E_NOTICE);
