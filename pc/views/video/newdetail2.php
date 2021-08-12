@@ -273,9 +273,9 @@ else
                                 $quality_str = implode('$$$', $quality);
                                 ?>
                                 <a class="<?= $data['info']['play_chapter_id'] == $value['chapter_id'] ? 'act' : ''?>"
-                                   href="javascript:;"
-                                   attr-id="<?= $value['chapter_id']?>"
-                                   attr-quality="<?= $quality_str?>">
+                                   href="<?= Url::to(['video/detail', 'video_id'=>$value['video_id'], 'chapter_id'=>$value['chapter_id']])?>"
+<!--                                   attr-id="--><?//= $value['chapter_id']?><!--"-->
+<!--                                   attr-quality="--><?//= $quality_str?><!--">-->
                                     <?= $value['title']?>
                                 </a>
                             <?php }?>

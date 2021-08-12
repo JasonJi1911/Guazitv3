@@ -288,7 +288,7 @@ function initialUrl($url)
         width: 20px;
         height: 80px;
         background-color: rgba(0, 0, 0, 0.5);
-        background-image: url(img/right-W.png);
+        background-image: url(/MyPlayer/img/right-W.png);
         background-position: center;
         background-repeat: no-repeat;
         background-size: 14px auto;
@@ -327,7 +327,7 @@ function initialUrl($url)
 
     .palyer-js-alt-right:hover {
         background-color: rgba(0, 0, 0, 0.7);
-        background-image: url(img/right-O.png);
+        background-image: url(/MyPlayer/img/right-O.png);
     }
 
     .player-tab {
@@ -378,22 +378,22 @@ function initialUrl($url)
     }
 
     .player-tab-all {
-        background-image: url(img/icon-down.png);
+        background-image: url(/MyPlayer/img/icon-down.png);
     }
 
     .player-tab-all:hover {
         color: #FF5722;
-        background-image: url(img/icon-down-o.png);
+        background-image: url(/MyPlayer/img/icon-down-o.png);
     }
 
     .player-tab-sq {
         display: none;
-        background-image: url(img/up.png);
+        background-image: url(/MyPlayer/img/up.png);
     }
 
     .player-tab-sq:hover {
         color: #FF5722;
-        background-image: url(img/up-o.png);
+        background-image: url(/MyPlayer/img/up-o.png);
     }
 
     .player-box-TJ-K {
@@ -484,7 +484,7 @@ function initialUrl($url)
     }
 
     .dplayer-quality-item.QXDvip {
-        background-image: url(img/QXDvip.png);
+        background-image: url(/MyPlayer/img/QXDvip.png);
         background-repeat: no-repeat;
         background-position: 100px center;
     }
@@ -624,7 +624,7 @@ function initialUrl($url)
 
                     $quality_str = implode('$$$', $quality);
 
-                    echo "<a class='".$epiAct."' href='javascript:;' attr-id='".$value['chapter_id']."' attr-quality='".$quality_str."'>".$value['title']."</a>";
+                    echo "<a class='".$epiAct."' href='".Url::to(['video/detail', 'video_id'=>$value['video_id'], 'chapter_id'=>$value['chapter_id']])."'>".$value['title']."</a>";
                 }
             }
             echo "</div>";
@@ -740,33 +740,33 @@ function initialUrl($url)
         event.stopPropagation();
     });
     //  集数切换效果
-    $("#player1").on('click', '.player-box-JS>a', function() {
-        $(this).addClass("act").siblings().removeClass("act");
-        event.stopPropagation();
-        selected_id = $(this).attr('attr-id');
-        var quality = $(this).attr('attr-quality');
-        var quality_arr = quality.split('$$$');
-        var new_video = { quality:[], pic: '', defaultQuality: 0, };
-        for (x in quality_arr){
-            var tmp_qua=quality_arr[x];
-            var tmp_arr = tmp_qua.split('#');
-            new_video['quality'].push({
-                'name': tmp_arr[0],
-                'url': tmp_arr[1],
-                'type': 'auto',
-            });
-        }
-        dp1.destroy();
-        initialPlayer(new_video);
-        $(".GNbox-JS>a").each(function(){
-            $(this).removeClass("act");
-            var tm1_id = $(this).attr('attr-id');
-            if(selected_id == tm1_id)
-            {
-                $(this).addClass("act");
-            }
-        });
-    });
+    // $("#player1").on('click', '.player-box-JS>a', function() {
+    //     $(this).addClass("act").siblings().removeClass("act");
+    //     event.stopPropagation();
+    //     selected_id = $(this).attr('attr-id');
+    //     var quality = $(this).attr('attr-quality');
+    //     var quality_arr = quality.split('$$$');
+    //     var new_video = { quality:[], pic: '', defaultQuality: 0, };
+    //     for (x in quality_arr){
+    //         var tmp_qua=quality_arr[x];
+    //         var tmp_arr = tmp_qua.split('#');
+    //         new_video['quality'].push({
+    //             'name': tmp_arr[0],
+    //             'url': tmp_arr[1],
+    //             'type': 'auto',
+    //         });
+    //     }
+    //     dp1.destroy();
+    //     initialPlayer(new_video);
+    //     $(".GNbox-JS>a").each(function(){
+    //         $(this).removeClass("act");
+    //         var tm1_id = $(this).attr('attr-id');
+    //         if(selected_id == tm1_id)
+    //         {
+    //             $(this).addClass("act");
+    //         }
+    //     });
+    // });
 
     //  集数tab 全部显示
 
