@@ -487,7 +487,7 @@ function initialUrl($url)
     .dplayer-quality-item.QXDvip {
         background-image: url(/MyPlayer/img/QXDvip.png);
         background-repeat: no-repeat;
-        background-position: 100px center;
+        background-position: 20px center;
     }
     /*--------倍速----------*/
 
@@ -679,7 +679,7 @@ function initialUrl($url)
         });
 
         $("#player1 .dplayer-icons-left").append(txt1);
-        $("#player1 .dplayer-video-wrap").append(txt2, txt6);
+        $("#player1").append(txt2, txt6);
         $("#player1 .palyer-js-alt").append(txt3, txt4);
         $("#player1 .player-tab-Box").append(txt5);
         $("#player1 .dplayer-icon.dplayer-play-icon").after(FastR ,FastF);
@@ -690,14 +690,14 @@ function initialUrl($url)
 
         //清晰度带vip标识    紧紧演示  可删除
         $("#player1 .dplayer-quality-item").addClass("QXDvip");
-        $("#player1 .player-box-JS>a").each(function(){
-            $(this).removeClass("act");
-            var tm1_id = $(this).attr('attr-id');
-            if(selected_id == tm1_id)
-            {
-                $(this).addClass("act");
-            }
-        });
+        // $("#player1 .player-box-JS>a").each(function(){
+        //     $(this).removeClass("act");
+        //     var tm1_id = $(this).attr('attr-id');
+        //     if(selected_id == tm1_id)
+        //     {
+        //         $(this).addClass("act");
+        //     }
+        // });
 
         $("#player1 .dplayer-quality-item").each(function(){
             var data_index = $(this).attr('data-index');
