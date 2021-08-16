@@ -51,7 +51,7 @@ $(document).ready(function() {
 $(document).ready(function() {
 	var imgGeshu = $("#imgList a").length - 1;
 	//设置变量速度为3秒
-	var speed = 3000;
+	var speed = 8000;
 	//循环变量为1，是避免定时器再等第一章图片
 	var m = 1;
 	//设置定时器的函数和时间

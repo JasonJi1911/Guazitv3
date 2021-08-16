@@ -33,13 +33,17 @@ class Video extends \common\models\video\Video
             'type',
             'flag' => function(){
                 if ($this->type == self::STATUS_DISABLED) {
-                    $chapter_num = $this->getChapterNum($this->id);
-                    if ($this->is_finished == self::STATUS_FINISHED) {
+                    $chapter_num = $this->getChapterNum($this->id, $this->channel_id);
+                    if($this->channel_id==3){//综艺
+                        $flag = '更新至' . $chapter_num . '期';
+                    }else{
+                        if ($this->is_finished == self::STATUS_FINISHED) {
 //                        $flag = $this->episode_num . '集全';
-                        $flag = $chapter_num . '集全';
-                    } else {
+                            $flag = $chapter_num . '集全';
+                        } else {
 //                        $flag = '更新至' . $this->episode_num . '集';
-                        $flag = '更新至' . $chapter_num . '集';
+                            $flag = '更新至' . $chapter_num . '集';
+                        }
                     }
                 } else {
                     if (\Yii::$app->common->product == Common::PRODUCT_PC) {
@@ -144,9 +148,17 @@ class Video extends \common\models\video\Video
     /**
      * 获取连续剧最大集数
      */
-    public function getChapterNum($videoId){
+    public function getChapterNum($videoId,$channelId){
         $videoDao = new VideoDao();
-        $maxnum = $videoDao->getMaxChapterNum($videoId);
+        $chapter = $videoDao->getMaxChapter($videoId);
+        $maxnum = "";
+        if($chapter){
+            if($channelId == 3){//综艺
+                $maxnum = $chapter['title'];
+            }else{
+                $maxnum = $chapter['display_order'];
+            }
+        }
         return $maxnum;
     }
 }

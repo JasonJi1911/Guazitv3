@@ -21,6 +21,7 @@ $(function(){
         var _width = $(window).width();
         if(_width < 1366){
             tvNum = 5;
+            page_size = "24";//一行6个
         }else if(_width < 1680){
             page_size = "24";//一行6个
         }else if(_width < 1900){

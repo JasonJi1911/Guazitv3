@@ -933,6 +933,21 @@ class VideoDao extends BaseDao
     }
 
     /*
+     * 获取指定连续剧最大集数-display_order
+     */
+    public function getMaxChapter($video_id){
+        $maxnum = VideoChapter::find()
+            ->andWhere(['video_id' => $video_id ])
+            ->max('display_order');
+        $chapter = VideoChapter::find()
+            ->select('id,video_id,title,display_order')
+            ->andWhere(['video_id' => $video_id ])
+            ->andWhere(['display_order' => $maxnum ])
+            ->one();
+        return $chapter;
+    }
+
+    /*
      * 根据$country_code获取国家信息
      */
     public function findCountryInfo($country_code){
