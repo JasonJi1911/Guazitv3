@@ -43,14 +43,11 @@ AppAsset::register($this);
     <!--    http://img.guazitv.tv/LOGO.ico-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <!-- Global site tag (gtag.js) - Google Analytics -->
-<!--    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R9BCW62LFW"></script>-->
-<!--    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6TXJP66KCH"></script>-->
-    <script async src="/js/video/gtag_id_G-6TXJP66KCH.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R9BCW62LFW"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-
         gtag('config', 'G-R9BCW62LFW');
     </script>
     

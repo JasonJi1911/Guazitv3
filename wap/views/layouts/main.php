@@ -38,15 +38,11 @@ AppAsset::register($this);
     <link href="/images/video/logo-02.png" rel="Shortcut Icon" type="image/x-icon">
     <link href="/images/video/logo-02.png" rel="Bookmark">
     <!-- Global site tag (gtag.js) - Google Analytics -->
-<!--    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R9BCW62LFW"></script>-->
-<!--    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6TXJP66KCH"></script>-->
-    <script async src="/js/video/gtag_id_G-6TXJP66KCH.js"></script>
-    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R9BCW62LFW"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-
         gtag('config', 'G-R9BCW62LFW');
     </script>
 <!--    <script>-->
