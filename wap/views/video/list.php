@@ -2,8 +2,8 @@
 use yii\helpers\Url;
 
 // $this->title = '瓜子TV-澳新华人在线视频分享网站';
-$this->title = '视频列表-瓜子TV|澳洲瓜子tv|澳新瓜子|澳新tv|澳新瓜子tv - m.guazitv.tv';
-$this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子,tv,瓜子tv,澳洲瓜子tv,澳洲,新西兰,澳新,电影,电视剧,榜单,综艺,动画,记录片']);
+$this->title = '吉祥视频';
+$this->registerMetaTag(['name' => 'keywords', 'content' => '吉祥,视频,吉祥视频,澳洲吉祥视频,澳洲,新西兰,澳新,电影,电视剧,榜单,综艺,动画,记录片']);
 
 $js = <<<JS
 $(function(){
@@ -122,7 +122,7 @@ $this->registerJs($js);
 </style>
 <header class="video-header video-list-header">
     <div class="video-header-top clearfix">
-        <a href="<?= Url::to(['/'])?>" class="logo fl">瓜子TV</a>
+        <a href="<?= Url::to(['/'])?>" class="logo fl">吉祥视频</a>
         <div class="search-cont fr">
             <div class="search-notice"><?= empty($hot['tab'][0]['list'][0]['video_name']) ? '': $hot['tab'][0]['list'][0]['video_name']?></>
         </div>
@@ -130,23 +130,25 @@ $this->registerJs($js);
 </header>
 
 <?php foreach ($info['search_box'] as $cates): ?>
-    <div class="video-select-box swiper-container">
-        <div class="select-item swiper-wrapper cate-list-scroll">
-            <?php if($cates['field'] == 'tag') :?>
-                <?php foreach ($cates['list'] as $key => $cate): ?>
-                    <?php if(empty($tag) && $key == 0) :?>
-                        <a href="javascript:void(0);" class="swiper-slide on swiper-slide-li" data-value="<?= $cate['value']?>" data-type="<?= $cates['field']?>"><?= $cate['display']?></a>
-                    <?php else:?>
-                        <a href="javascript:void(0);" class="swiper-slide <?= $cate['value'] == $tag ? 'on' : ''?> swiper-slide-li" data-value="<?= $cate['value']?>" data-type="<?= $cates['field']?>"><?= $cate['display']?></a>
-                    <?php endif;?>
-                <?php endforeach;?>
-            <?php else:?>
-                <?php foreach ($cates['list'] as $key => $cate): ?>
-                    <a href="javascript:void(0);" class="swiper-slide <?= $key == 0 ? 'on' : ''?> swiper-slide-li" data-value="<?= $cate['value']?>" data-type="<?= $cates['field']?>"><?= $cate['display']?></a>
-                <?php endforeach;?>
-            <?php endif;?>
+    <?php if($cates['field'] != 'status'):?>
+        <div class="video-select-box swiper-container">
+            <div class="select-item swiper-wrapper cate-list-scroll">
+                <?php if($cates['field'] == 'tag') :?>
+                    <?php foreach ($cates['list'] as $key => $cate): ?>
+                        <?php if(empty($tag) && $key == 0) :?>
+                            <a href="javascript:void(0);" class="swiper-slide on swiper-slide-li" data-value="<?= $cate['value']?>" data-type="<?= $cates['field']?>"><?= $cate['display']?></a>
+                        <?php else:?>
+                            <a href="javascript:void(0);" class="swiper-slide <?= $cate['value'] == $tag ? 'on' : ''?> swiper-slide-li" data-value="<?= $cate['value']?>" data-type="<?= $cates['field']?>"><?= $cate['display']?></a>
+                        <?php endif;?>
+                    <?php endforeach;?>
+                <?php else:?>
+                    <?php foreach ($cates['list'] as $key => $cate): ?>
+                        <a href="javascript:void(0);" class="swiper-slide <?= $key == 0 ? 'on' : ''?> swiper-slide-li" data-value="<?= $cate['value']?>" data-type="<?= $cates['field']?>"><?= $cate['display']?></a>
+                    <?php endforeach;?>
+                <?php endif;?>
+            </div>
         </div>
-    </div>
+    <?php endif;?>
 <?php endforeach;?>
 
 <input type="hidden" id="channel-id" value="<?= $channel_id?>">
@@ -173,9 +175,12 @@ $this->registerJs($js);
 
 <div class="video-index-notice">
      <p style="padding-bottom: 5px;text-align: center;">
-        <a class="browser browser1" href="http://m.guazitv.tv">手机端</a>
-        <a class="browser" href="http://www.guazitv.tv">电脑端</a></p>
-    <p>本网站为非赢利性站点，所有内容均由机器人采集于互联网，或者网友上传，本站只提供WEB页面服务，本站不存储、不制作任何视频，不承担任何由于内容的合法性及健康性所引起的争议和法律责任。若本站收录内容侵犯了您的权益，请附说明联系邮箱，本站将第一时间处理。站长邮箱：guazitv@163.com</p>
+        <a class="browser browser1" href="https://m.jxsp.tv/">手机端</a>
+        <a class="browser" href="https://www.jxsp.tv">电脑端</a></p>
+    <p>版权声明：如果来函说明本网站提供内容本人或法人版权所有。本网站在核实后，有权先行撤除，以保护版权拥有者的权益。
+        &nbsp; 邮箱地址： jxsptv@gmail.com
+    </p>
+    <p style="text-align:center;">Copyright 2020-2021 jxsp.tv Allrights Reserved.</p>
 </div>
 <!--<div class="video-footer">
     <ul class="clearfix footer-top">

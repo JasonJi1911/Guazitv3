@@ -1,138 +1,566 @@
 <?php
-
 use yii\helpers\Url;
-use pc\assets\StyleInAsset;
+use pc\assets\NewIndexStyleAsset;
 
-// $this->title = '瓜子TV-澳新华人在线视频分享网站';
+$this->registerMetaTag(['name' => 'keywords', 'content' => '吉祥tv,澳洲吉祥tv,新西兰吉祥tv,澳新吉祥tv,吉祥视频,吉祥影视,电影,电视剧,榜单,综艺,动画,记录片']);
+$this->title = '';
+NewIndexStyleAsset::register($this);
 
-StyleInAsset::register($this);
+$js = <<<SCRIPT
+$(function(){
+    $('#backToTop').click(function() {
+        $('html,body').stop(true, false).animate({
+            scrollTop: 0
+        })
+    });      
+});
+                        
+SCRIPT;
+$this->registerJs($js);
 
+header('X-Frame-Options:Deny');
+header("Access-Control-Allow-Origin:*");
 ?>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!DOCTYPE html>
+<html id="topMD">
 <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <style>
-        .wp .browser{
-            padding: 0 10px;
-        }
-    
-        .wp .browser1:after{
-            content: '|';
-            position: relative;
-            /*left: 10px;*/
-            color: hsla(0,0%,100%,.3);
-        }
-    
-        .wp .browser:hover{
-            color: #FF556E;
-            border-right: #0c203a;
-        }
-    </style>
-    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1336, maximum-scale=1, user-scalable=no">
 </head>
-<body>
+<script src="/js/jquery.js"></script>
+<script>
+    $(document).ready(function(){
+        var mobile_flag = isMobile();
+        if(mobile_flag){
+            window.location = 'https://m.jxsp.tv/';
+        }
+        $('#v_navTopLogo').click(function(){
+            window.location.href = '/video/index';
+        });
+        $("#keywords").focus(function(){
+            if(window.localStorage.hasOwnProperty("searchwords")){
+                searchwords = window.localStorage.getItem("searchwords");
+                if(searchwords.length > 0){
+                    $("#searchHtitle").css("display","block");
+                }else{
+                    $("#searchHtitle").css("display","none");
+                }
+            }else{
+                $("#searchHtitle").css("display","none");
+            }
+            $(".searchMenuBox").css('display','block');
+        });
+        $("#keywords").blur(function(){
+            setTimeout(function(){
+                $(".searchMenuBox").css('display','none');
+            }, 1000);
+        });
+    });
 
-<?php
-$channelName = '';
-$subTitle = '';
-$searchTip = '';
-if(isset($channel_id))
-{
-    foreach ($channels['list'] as $s_k => $s_v) {
-        if($s_v['channel_id'] == $channel_id) {
-            $channelName = $s_v['channel_name'];
+    function isMobile() {
+        var userAgentInfo = navigator.userAgent;
+        var mobileAgents = [ "Android", "iPhone", "SymbianOS", "Windows Phone"];//, "iPad","iPod"
+        var mobile_flag = false;
+        //根据userAgent判断是否是手机
+        for (var v = 0; v < mobileAgents.length; v++) {
+            if (userAgentInfo.indexOf(mobileAgents[v]) > 0) {
+                mobile_flag = true;
+                break;
+            }
+        }
+        var screen_width = window.screen.width;
+        var screen_height = window.screen.height;
+        //根据屏幕分辨率判断是否是手机
+        if(screen_width < 500 && screen_height < 800){
+            mobile_flag = true;
+        }
+        return mobile_flag;
+    }
+
+    //视频封面图片没有的，根据背景色显示默认图片
+    function imgerrorUrl(that, position){
+        var bodycolor = $("body").attr("class");
+        console.log();
+        if(bodycolor.indexOf("ZT-black")>=0){
+            if(position=="H"){//横向、黑色
+                that.src = "../../images/newindex/znwuC-b.png"
+            }else{//纵向-V、黑色
+                that.src = "../../images/newindex/znwuG-b.png"
+            }
+        }else{
+            if(position=="H"){//横向、白色
+                that.src = "../../images/newindex/znwuC-g.png"
+            }else{//纵向-V、白色
+                that.src = "../../images/newindex/znwuG-g.png"
+            }
         }
     }
+</script>
+<?php
+$headclass = "";
+$bodyid = "";
+switch ($pageTab){
+    case "newindex" : case "channel" : case "help" :
+        $bodyid    = "indexTS";
+        $headclass = "bkgBlack";
+        break;
+    case "hotplay":
+        $bodyid    = "indexTS";
+        $headclass = "bkgBlack";
+        break;
+    case "list" : case "searchresult" : case "seek" : case "newdetail":
+        $bodyid    = "";
+        $headclass = "bkgWhite";
+        break;
 }
-else
-{
-    $channelName = '热搜';
-}
-$subTitle = ' · '.$channelName;
-$subTitle = $pageTab == "hotplay"? " · 热播":$subTitle;
-$subTitle = $pageTab == "list"? "":$subTitle;
-$subTitle = $pageTab == "searchresult"? "":$subTitle;
-$subTitle = $pageTab == "collaboration"? " · 商务合作":$subTitle;
-
-if ($channel_id == '0')
-    $channelName = "热搜";
-
-if (isset($hotword))
-{
-    foreach ($hotword['tab'] as $key => $tab){
-        if($tab['title'] == $channelName)
-            $searchTip = empty($tab['list'][0]['video_name']) ? '' : $tab['list'][0]['video_name'];
-    }
-}
-
-$version = Yii::$app->api->get('/search/app-version');
-$tvpath = $version['tvdata'];
-
 ?>
-<header class="qy-header home2020 aura2">
-    <div class="header-wrap">
-        <div class="header-inner">
-            <div id="nav_logo" class="qy-logo">
-                <a href="/video/index" class="logo-link" title="瓜子TV"><img src="/images/NewVideo/logo.png" alt="">
-                    瓜子TV<?= $subTitle?></a>
-            </div>
-            <div class="qy-nav">
-                <div class="nav-channel">
+<body id="<?= $bodyid?>" name="zt" >
+<!-- 顶部导航 begin -->
+<?php
+$name_zt = "";
+$class_zt_black = "";
+if($pageTab != "newdetail") {//顶部导航默认透明或白色
+    $name_zt = "zt";
+    $class_zt_black = " ";
+}else{//顶部导航默认黑色
+    $name_zt = "";
+    $class_zt_black = " ZT-black";
+}?>
+<div class="navTopBox <?= $headclass?> <?= $class_zt_black?>" name="<?= $name_zt?>">
+    <ul class="navTop">
+        <li class="navTopLogo" id="v_navTopLogo">
+            <a href="/video/index">
+                <span id="head-city" class="navTopWZ">美国</span>
+                <script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>
+                <script src="/js/video/country.js"></script>
+<!--                <script>-->
+<!--                    $.get('/video/get-city', [], function(res) {-->
+<!--                        console.log(JSON.stringify(res));-->
+<!--                        if(res.data.city.trim()!=""){-->
+<!--                            $("#head-city").text(res.data.city);-->
+<!--                        }-->
+<!--                    });-->
+<!--                </script>-->
+            </a>
+        </li>
+        <li class="navTopMenuBox">
+            <div class="navTopMenu">
+                <div class="navTopMenu-text<?= $class_zt_black?>" name="<?= $name_zt?>">
+                    导&nbsp;航
+                </div>
+                <div class="navTopMenu-oneTop<?= $class_zt_black?>" name="<?= $name_zt?>">
+                    &nbsp;
+                </div>
+                <ul class="navTopMenu-one">
+                    <!--导航菜单--一级-->
+                    <li class="<?= $class_zt_black?>" name="<?= $name_zt?>">
+                        <a href="<?= Url::to(['/video/index'])?>" >
+                            首页
+                        </a>
+                    </li>
                     <?php if(!empty($channels)) :?>
-                        <?php foreach ($channels['list'] as $channel) :?>
-                            <?php if($channel['channel_name'] != "首页") :?>
-                                <a href="<?= Url::to(['/video/channel', 'channel_id' => $channel['channel_id']])?>"
-                                   class="nav-link nav-index J-nav-channel"><?= $channel['channel_name']?></a>
+                        <?php foreach ($channels['channeltags'] as $channel) :?>
+                            <li class="<?= $class_zt_black?>" name="<?= $name_zt?>">
+                                <?php if($channel['channel_name'] != '首页'): ?>
+                                    <a class="
+                                    <?if(!empty($channel['tags'])) :?>
+                                        navTopMenu-oneRig
+                                    <?php endif;?>
+                                    " href="<?= Url::to(['/video/list', 'channel_id' => $channel['channel_id']])?>" >
+                                        <?= $channel['channel_name']?>
+                                    </a>
+                                    <!--导航菜单--二级-->
+                                    <ul class="navTopMenu-two <?= $class_zt_black?>" name="<?= $name_zt?>">
+                                        <?php foreach ($channel['tags'] as $tag) :?>
+                                            <li><a href="<?= Url::to(['list', 'channel_id' => $channel['channel_id'], 'tag' => $tag['cat_id']])?>"><?= $tag['name']?></a></li>
+                                        <?php endforeach;?>
+                                    </ul>
+                                <?php endif;?>
+                            </li>
+                        <?php endforeach;?>
+                    <?php endif;?>
+                </ul>
+            </div>
+        </li>
+        <li class="navTopSearchBox">
+            <div class="navTopSearch <?= $class_zt_black?>" name="<?= $name_zt?>">
+                <input type="text" class="navTopSearchText" id="keywords" placeholder="<?= empty($hotword['tab'][0]['list'][0]['video_name']) ? '': $hotword['tab'][0]['list'][0]['video_name']?>" />
+                <input type="hidden" id="v_keywords0" value="<?= empty($hotword['tab'][0]['list'][0]['video_name']) ? '': $hotword['tab'][0]['list'][0]['video_name']?>"
+                <!--输入框点击弹出菜单-->
+                <ul class="searchMenuBox <?= $class_zt_black?>" name="<?= $name_zt?>" style="display: none;">
+                    <li class="clrGrey" id="searchHtitle" style="display:none;">
+                        搜索历史：
+                        <input class="clrGrey-btn" type="button" onclick="clearwords()" value="清空历史" />
+                    </li>
+                    <li class="clrGrey-list <?= $class_zt_black?>" name="<?= $name_zt?>"" id="searchHistory">
+<!--                        <a href="javascript:;">测试搜索历史</a>-->
+                    </li>
+                    <li class="clrGrey">热门搜索：</li>
+                    <?php if(!empty($hotword['tab'])) :?>
+                        <?php foreach ($hotword['tab'] as $key => $tab): ?>
+                            <?php if($key == 0) :?>
+                                <?php foreach ($tab['list'] as $key => $list): ?>
+                                    <?php $clr = "";
+                                        if($key==0){
+                                            $clr = "clr01";
+                                        }else if($key==1){
+                                            $clr = "clr02";
+                                        }else if($key==2){
+                                            $clr = "clr03";
+                                        }else{
+                                            $clr = "";
+                                        }
+                                    ?>
+                                    <?php if($key < 10) :?>
+                                    <li class="searchMenu <?= $class_zt_black?>" name="<?= $name_zt?>" >
+                                        <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
+                                            <span class="searchMenu-sapn <?=$clr?> "><?= $key + 1?></span><?= $list['video_name']?>
+                                        </a>
+                                    </li>
+                                    <?php endif;?>
+                                <?php endforeach;?>
                             <?php endif;?>
                         <?php endforeach;?>
                     <?php endif;?>
-                </div>
+                </ul>
+                <a href="<?= Url::to(['/video/hot-play'])?>" class="navTopSearchA <?= $class_zt_black?>" name="<?= $name_zt?>">&nbsp;</a>
+                <input type="button" class="navTopSearchBtn <?= $class_zt_black?>" name="<?= $name_zt?>" onclick="savewords();" id="" value="" />
             </div>
-            <div class="qy-search">
-                <div class="search-box">
-                    <input type="hidden" id="is-keyword" value="<?= $keyword?>">
-                    <span class="search-box-in">
-                         <input id="keywords" autocomplete="off"
-                                placeholder="<?= $searchTip?>"
-                                type="text" class="search-box-input" value="<?= $keyword?>"></a>
-                    </span>
-                    <span class="search-box-out">
-                        <span id="J-search-btn" type="button"
-                              class="search-box-btn">
-                            <i class="qy-svgicon qy-svgicon-search"></i>
-                            <em class="search-box-btnTxt">搜索</em>
-                        </span>
-                    </span>
+        </li>
+        <li class="navTopBtnBox">
+            <div id="vipbtn" class="navTopBtn " onclick="showwarning();">
+                <div class="navTopBtnImg">
+                    &nbsp;
                 </div>
-                <div id="J-search-result-wrap" class="search-result" style="">
-                    <div class="search-result-con">
-                        <div id="J-search-result-hot" class="search-result-hot" style="">
-                            <div class="search-result-title">热门搜索</div>
-                            <?php foreach ($hotword['tab'] as $key => $tab): ?>
-                                <?php if($tab['title'] == $channelName) :?>
-                                    <?php foreach ($tab['list'] as $key => $list): ?>
-                                        <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>"
-                                           class="search-result-item">
-                                            <div class="search-result-simple">
-                                                <em class="search-result-num search-result-num1"><?= $key + 1?></em>
-                                                <span class="search-result-text"><?= $list['video_name']?></span>
-                                            </div>
-                                        </a>
-                                    <?php endforeach;?>
-                                <?php endif;?>
-                            <?php endforeach;?>
+                <div class="navTopBtnName">
+                    升级VIP
+                </div>
+                <!--登录显示-->
+                <div class="VIPHui" style="display: none;">
+                    惠
+                </div>
+                <!--菜单-->
+                <ul class="VIPmenuBOX <?= $class_zt_black?>" name="<?= $name_zt?>" style="display: none;">
+                    <li class="VIPmenuBOX-li">
+                        <div class="VIPmenuBOX-liText">
+                            还不是VIP？会员
+                        </div>
+                        <div class="VIPmenuBOX-liBtn">
+                            <input type="button" id="" value="立即开通" />
+                        </div>
+                    </li>
+                    <li class="VIPmenuBOX-A <?= $class_zt_black?>" name="<?= $name_zt?>">
+                        <a href="javascript:;">
+                            <img src="/images/newindex/adguanggao.png" /> 过滤广告
+                        </a>
+                    </li>
+                    <li class="VIPmenuBOX-A <?= $class_zt_black?>" name="<?= $name_zt?>">
+                        <a href="javascript:;">
+                            <img src="/images/newindex/hdchaoqing.png" /> 观看超清视频
+                        </a>
+                    </li>
+                    <li class="VIPmenuBOX-A <?= $class_zt_black?>" name="<?= $name_zt?>">
+                        <a href="javascript:;">
+                            <img src="/images/newindex/xiazai.png" /> 下载视频
+                        </a>
+                    </li>
+                    <li class="VIPmenuBOX-A <?= $class_zt_black?>" name="<?= $name_zt?>">
+                        <a href="javascript:;">
+                            <img src="/images/newindex/pianku.png" /> 求片
+                        </a>
+                    </li>
+                    <li class="VIPmenuBOX-A <?= $class_zt_black?>" name="<?= $name_zt?>">
+                        <a href="javascript:;">
+                            <img src="/images/newindex/Vipbiaoshi.png" /> 尊贵身份标识
+                        </a>
+                    </li>
+                    <!--登录后显示-->
+                    <div class="LSmenuBottom">
+                        <div class="LSmenuBottom-rg">
+                            <a href="javascript:;">前往会员专区&nbsp;》</a>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+            <div class="navTopBtn" onclick="showwarning();">
+                <div class="navTopBtnImg">
+                    &nbsp;
+                </div>
+                <div class="navTopBtnName">
+                    福利
+                </div>
+                <div class="VIPmenuTop <?= $class_zt_black?>" name="<?= $name_zt?>">
+                    &nbsp;
+                </div>
+                <!--菜单-->
+                <ul class="FLmenuBox <?= $class_zt_black?>" name="<?= $name_zt?>" style="display: none;">
+                    <li class="FLmenuBox-li">
+                        <a href="javascript:;">
+                            <div class="FLmenuBox-liImg">
+                                <img src="/images/newindex/qiandao.png" />
+                            </div>
+                            <div class="FLmenuBox-liText">
+                                每日签到
+                            </div>
+                        </a>
+                    </li>
+                    <li class="FLmenuBox-li">
+                        <a href="javascript:;">
+                            <div class="FLmenuBox-liImg">
+                                <img src="/images/newindex/renwu.png" />
+                            </div>
+                            <div class="FLmenuBox-liText">
+                                日常任务
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="navTopBtn" onclick="showwarning();">
+                <div class="navTopBtnImg">
+                    &nbsp;
+                </div>
+                <div class="navTopBtnName">
+                    上传
+                </div>
+                <div class="VIPmenuTop <?= $class_zt_black?>" name="<?= $name_zt?>">
+                    &nbsp;
+                </div>
+                <!--菜单-->
+                <ul class="FLmenuBox <?= $class_zt_black?>" name="<?= $name_zt?>" style="display: none;">
+                    <li class="FLmenuBox-li">
+                        <a href="javascript:;">
+                            <div class="FLmenuBox-liImg">
+                                <img src="/images/newindex/Sdianying.png" />
+                            </div>
+                            <div class="FLmenuBox-liText">
+                                上传视频
+                            </div>
+                        </a>
+                    </li>
+                    <li class="FLmenuBox-li">
+                        <a href="javascript:;">
+                            <div class="FLmenuBox-liImg">
+                                <img src="/images/newindex/Sjuji.png" />
+                            </div>
+                            <div class="FLmenuBox-liText">
+                                上传剧集
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="navTopBtn" onclick="showwarning();">
+                <div class="navTopBtnImg">
+                    &nbsp;
+                </div>
+                <div class="navTopBtnName">
+                    观看历史
+                </div>
+                <div class="VIPmenuTop <?= $class_zt_black?>" name="<?= $name_zt?>">
+                    &nbsp;
+                </div>
+                <!--菜单-->
+                <div class="LSmenuBox <?= $class_zt_black?>" name="<?= $name_zt?>" style="display: none;">
+                    <!--未登录   显示-->
+                    <div class="LSmenu-No">
+                        暂无历史
+                    </div>
+                    <!--登录显示-->
+                    <ul class="LSmenu <?= $class_zt_black?>" name="<?= $name_zt?>" style="display: none;">
+                        <li>
+                            <a href="javascript:;">
+                                <div>爱，死亡和机器人第2季</div>
+                                <div>测试集数</div>
+                                <div>
+                                    <span>5</span>
+                                    <span>天前</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">
+                                <div>测试名称</div>
+                                <div>测试集数</div>
+                                <div>
+                                    <span>5</span>
+                                    <span>天前</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">
+                                <div>测试名称</div>
+                                <div>测试集数</div>
+                                <div>
+                                    <span>5</span>
+                                    <span>天前</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:;">
+                                <div>测试名称</div>
+                                <div>测试集数</div>
+                                <div>
+                                    <span>5</span>
+                                    <span>天前</span>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="LSmenuBottom">
+                        <div class="LSmenuBottom-lf">
+                            &nbsp;
+                        </div>
+                        <div class="LSmenuBottom-rg">
+                            <a href="javascript:;">查看更多&nbsp;》</a>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</header>
+            <div class="navTopBtn" onclick="showwarning();">
+                <div class="navTopBtnImg">
+                    &nbsp;
+                </div>
+                <div class="navTopBtnName">
+                    通知
+                </div>
+                <div class="VIPmenuTop <?= $class_zt_black?>" name="<?= $name_zt?>">
+                    &nbsp;
+                </div>
+                <!--菜单未登录显示-->
+                <ul class="FLmenuBox <?= $class_zt_black?>" name="<?= $name_zt?>" style="display: none;">
+                    <li class="FLmenuBox-li">
+                        <a href="javascript:;">
+                            <div class="FLmenuBox-liImg">
+                                <img src="/images/newindex/xiaoxi.png" />
+                            </div>
+                            <div class="FLmenuBox-liText">
+                                消息
+                            </div>
+                        </a>
+                    </li>
+                    <li class="FLmenuBox-li">
+                        <a href="javascript:;">
+                            <div class="FLmenuBox-liImg">
+                                <img src="/images/newindex/guanzu.png" />
+                            </div>
+                            <div class="FLmenuBox-liText">
+                                关注&收藏
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <!--登录显示-->
+                <div class="LSmenuBox lf <?= $class_zt_black?>" name="<?= $name_zt?>" style="display: none;">
+                    <ul class="XX-tabA <?= $class_zt_black?>" name="<?= $name_zt?>">
+                        <li class="tabA">消息</li>
+                        <li>关注&收藏</li>
+                    </ul>
+                    <div class="XX-tabBox">
+                        <div class="tabBox">
+                            <div class="LSmenu-No">
+                                暂无历史1
+                            </div>
+                        </div>
+                        <div>
+                            <div class="LSmenu-No">
+                                暂无历史2
+                            </div>
+                        </div>
+                    </div>
 
+                    <div class="LSmenuBottom">
+                        <div class="LSmenuBottom-lf">
+                            &nbsp;
+                        </div>
+                        <div class="LSmenuBottom-rg">
+                            <a href="javascript:;">更多&nbsp;》</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--未登录显示-->
+            <div class="navTopLogon" onclick="showwarning();">
+                <div class="navTopLogonImg-no">
+                    <img src="/images/newindex/logon.png" />
+                </div>
+                <div class="navTopLogonName <?= $class_zt_black?>" name="<?= $name_zt?>">
+                    登录
+                </div>
+            </div>
+            <!--登录显示-->
+            <div class="navTopLogon" style="display: none;">
+                <div class="navTopLogonImg">
+                    <img src="/images/newindex/logon.png" />
+                </div>
+                <div class="navTopLogon-GRXX <?= $class_zt_black?>" name="<?= $name_zt?>">
+                    <div class="navTopLogon-GRXX-box">
+                        <ul class="navTopLogon-box01">
+                            <li class="navTopLogon-name">用户名称用户名称用户名称用户名称用户名称用户名称</li>
+                            <li class="navTopLogon-Gender"><img src="/images/newindex/nan.png" /></li>
+                        </ul>
+                        <ul class="navTopLogon-box02">
+                            <li class="navTopLogon-icon01"><img src="/images/newindex/jinbi.png" /></li>
+                            <li class="navTopLogon-text">76</li>
+                            <li class="navTopLogon-text">还不是VIP会员</li>
+                            <li class="navTopLogon-rank">LV.<span>22</span></li>
+                            <li class="navTopLogon-icon01"><img src="/images/newindex/shangsheng.png" /></li>
+                            <li class="navTopLogon-Progress">
+                                <div>
+                                    <div class="Progress">&nbsp;</div>
+                                </div>
+                            </li>
+                            <li class="navTopLogon-experience"><span>76</span>/<span>200</span></li>
+                        </ul>
+                    </div>
+                    <ul class="navTopLogon-box03">
+                        <li>
+                            <a class="navTopLogon-A" href="javascript:;">个人中心</a>
+                        </li>
+                        <li><input class="navTopLogon-btn" type="" name="" id="" value="退出" /></li>
+                    </ul>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<!-- 顶部导航 end -->
 <?php switch ($pageTab) {
+    case "newindex":
+        echo $this->render('newindex',[
+            'data'          => $data,
+            'channels'      => $channels,
+            'channel_id'    => $channel_id,
+            'hotword'       => $hotword
+        ]);
+        break;
+    case "list":
+        echo $this->render('list', [
+            'info'      => $info,
+            'hotword'   => $hotword,
+            'channel_id'=> $channel_id,
+            'keyword'   => $keyword,
+        ]);
+        break;
+    case "searchresult":
+        echo $this->render('searchresult',[
+            'info'          => $info,
+            'keyword'       => $keyword,
+            'channels'      => $channels,
+            'channel_id'    => $channel_id,
+            'hotword'       => $hotword
+        ]);
+        break;
+    case "seek":
+        echo $this->render('seek',[
+            'data'      => $data,
+            'channels'  => $channels,
+            'hotword'   => $hotword
+        ]);
+        break;
     case "channel":
         echo $this->render('channel',[
             'data'          => $data,
@@ -152,14 +580,6 @@ $tvpath = $version['tvdata'];
             'channel_id'    => $channel_id,
         ]);
         break;
-    case "list":
-        echo $this->render('list', [
-            'info'      => $info,
-            'hotword'       => $hotword,
-            'channel_id'=> $channel_id,
-            'keyword'   => $keyword,
-        ]);
-        break;
     case "hotsearch":
         echo $this->render('hotsearch', [
             'data' => $data,
@@ -169,15 +589,6 @@ $tvpath = $version['tvdata'];
     case "hotplay":
         echo $this->render('hotplay',[
             'data'          => $data,
-            'channels'      => $channels,
-            'channel_id'    => $channel_id,
-            'hotword'       => $hotword
-        ]);
-        break;
-    case "searchresult":
-        echo $this->render('searchresult',[
-            'info'          => $info,
-            'keyword'       => $keyword,
             'channels'      => $channels,
             'channel_id'    => $channel_id,
             'hotword'       => $hotword
@@ -196,28 +607,147 @@ $tvpath = $version['tvdata'];
             'hotword'       => $hotword,
         ]);
         break;
+    case "help":
+        echo $this->render('help',[
+            'feedbackinfo'  => $feedbackinfo,
+            'helptab'       => $helptab
+        ]);
+        break;
 } ?>
 
-<footer class="qy-footer">
-    <div class="wp">
-        <a class="browser" href="<?= Url::to(['collaboration'])?>">商务合作</a>
-        <a class="browser1" href="###"></a>
-        <a class="browser" href="<?= Url::to(['map'])?>">网站地图</a>
-        <a class="browser1" href="###"></a>
-        <a class="browser" href="http://m.guazitv.tv">手机端</a>
-        <a class="browser1" href="###"></a>
-        <a class="browser" href="http://www.guazitv.tv">电脑端</a>
-        <a class="browser1" href="###"></a>
-        <a class="browser" href="<?= Url::to(['site/share-down'])?>">APP下载</a>
-        <a class="browser1" href="###"></a>
-        <!--<a class="browser" href="http://app.guazitv6.com/guazi-tv-1.0.1-debug.apk">电视TV版下载</a>-->
-        <a class="browser" href="<?= !empty($tvpath["file_path"])?$tvpath["file_path"]:"###" ?>">电视TV版下载</a>
+<!--底部导航-->
+<div class="foot" name="zt">
+    <div class="footBox">
+        <div>
+            <ul class="footNav">
+                <li>
+                    <a href="javascript:;">
+                        <img src="/images/newindex/dizi.png" />
+                        <img id="v_countryimg" src="/images/newindex/US.png" />
+                        <span id="v_countryname">美国</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= Url::to(['/video/help', 'tab' => 'aboutUs'])?>">关于我们</a>
+                </li>
+                <li>
+                    <a href="<?= Url::to(['/video/help', 'tab' => 'question'])?>">常见问题</a>
+                </li>
+                <li>
+                    <a href="<?= Url::to(['/video/help', 'tab' => 'feedback'])?>">在线反馈</a>
+                </li>
+                <li>
+                    <a href="<?= Url::to(['/video/help', 'tab' => 'contact'])?>">联系我们</a>
+                </li>
+                <li>
+                    <a href="<?= Url::to(['/video/help', 'tab' => 'terms'])?>">服务条款</a>
+                </li>
+                <li>
+<!--                    <a href="javascript:;">诚聘英才</a>-->
+                </li>
+<!--                <li>-->
+<!--                    <a href="javascript:;">充值中心</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <a href="javascript:;">广告投放</a>-->
+<!--                </li>-->
+<!--                <li>-->
+<!--                    <a href="javascript:;">充值协议</a>-->
+<!--                </li>-->
+            </ul>
+            <div class="footSM">
+                版权声明：如果来函说明本网站提供内容本人或法人版权所有。本网站在核实后，有权先行撤除，以保护版权拥有者的权益。<br /> 邮箱地址：
+                jxsptv@gmail.com &nbsp;
+                jxsp.tv 版权所有，未经授权禁止链接、复制或建立
+            </div>
+            <div class="footPH">
+                Copyright 2020-2021 jxsp.tv Allrights Reserved.
+            </div>
+        </div>
+
+        <div class="footKF">
+            <a href="<?= Url::to(['/video/help', 'tab' => 'contact'])?>">
+                <img src="/images/newindex/kefu.png" /><br /> 联系客服
+            </a>
+        </div>
+
+        <div class="footXZ">
+            <a href="javascript:void(0)" onclick="showwarning();"><img src="/images/newindex/android.png" /></a>
+            <a href="javascript:void(0)" onclick="showwarning();"><img src="/images/newindex/ios.png" /></a>
+        </div>
     </div>
-    <div class="wp">
-        <p>本网站为非赢利性站点，所有内容均由机器人采集于互联网，或者网友上传，本站只提供WEB页面服务，本站不存储、不制作任何视频，不承担任何由于内容的合法性及健康性所引起的争议和法律责任。<br />若本站收录内容侵犯了您的权益，请附说明联系邮箱，本站将第一时间处理。站长邮箱：guazitv@163.com</p>
+</div>
+<!--右侧导航-->
+<div class="rigNav" name="zt">
+    <div class="rigNav-top" id="backToTop">
+        <span>返回顶部</span>
+        <a href="javascript:;">&nbsp;</a>
     </div>
-</footer>
-<script src="/js/jquery.js"></script>
-<script src="/js/VideoSearch.js"></script>
+    <div class="rigNav-icon01" id="HF">
+        <span>一键换肤</span>
+        <a href="javascript:;">&nbsp;</a>
+    </div>
+    <div class="rigNav-icon04"><!--求片-->
+        <span onclick="rightUrl('seek')">求片</span>
+        <a href="<?= Url::to(['/video/seek'])?>">&nbsp;</a>
+    </div>
+    <div class="rigNav-icon05"><!--帮助中心-->
+        <span onclick="rightUrl('help')">帮助中心</span>
+        <a href="<?= Url::to(['/video/help', 'tab' => ''])?>">&nbsp;</a>
+    </div>
+    <div class="rigNav-icon02"><!--app下载 tab=>appdownload-->
+        <span onclick="showwarning();">下载APP</span>
+        <a href="javascript:void(0)" onclick="showwarning();">&nbsp;</a>
+    </div>
+    <div class="rigNav-icon03"><!--升级vip-->
+        <span>功能开发中</span>
+        <a href="javascript:;">&nbsp;</a>
+    </div>
+</div>
+<!--开发中alert-->
+<div class="alt" id="alt07" style="display: none;">
+    <div class="alt-box07">
+        <div class="alt-p">
+            <img src="/images/newindex/development.png"/>
+        </div>
+        <!--最大宽度500px  最小360px 会员-->
+        <div class="alt-content" name="zt">
+            <div class="alt-content-text" name="zt">
+                <h3>功能暂未开放</h3>
+                <p>功能努力开发中，敬请期待！</p>
+            </div>
+            <div class="alt-bth-box02" name="zt">
+                <!--这里的按钮最多两个    多余的可删除   隐藏-->
+                <input class="bth-off" type="button" id="" onclick="closewarning();" value="离开" />
+                <input class="bth-on" type="button" id="" onclick="closewarning();" value="确认" />
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/video/newindex.js"></script>
+<script src="/js/video/searchHistory.js"></script>
+<script>
+    $(function(){
+        $("#keywords").focus(function(){
+            findwords();
+        });
+    });
+
+    //提示功能开发中
+    function showwarning(){
+        $("#alt07").css("display","block");
+    }
+    //关闭提示
+    function closewarning(){
+        $("#alt07").css("display","none");
+    }
+    function rightUrl(urlid){
+        if(urlid=='seek'){
+            window.location.href = '/video/seek';
+        }else if(urlid=='help'){
+            window.location.href = '/video/help';
+        }
+    }
+</script>
 </body>
 </html>

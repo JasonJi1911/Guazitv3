@@ -4,8 +4,8 @@ use yii\helpers\Url;
 $this->registerJsFile('/js/common.js', ['depends' => 'wap\assets\AppAsset']);
 
 // $this->title = '瓜子TV-澳新华人在线视频分享网站';
-$this->title = '热搜结果-瓜子TV|澳洲瓜子tv|澳新瓜子|澳新tv|澳新瓜子tv - m.guazitv.tv';
-$this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子,tv,瓜子tv,澳洲瓜子tv,澳洲,新西兰,澳新,电影,电视剧,榜单,综艺,动画,记录片']);
+$this->title = '热搜结果-吉祥视频|澳洲吉祥视频|澳新吉祥|澳新视频|澳新吉祥视频';
+$this->registerMetaTag(['name' => 'keywords', 'content' => '吉祥,视频,吉祥视频,澳洲吉祥视频,澳洲,新西兰,澳新,电影,电视剧,榜单,综艺,动画,记录片']);
 
 $js = <<<JS
 $(function(){

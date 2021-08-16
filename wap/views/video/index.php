@@ -2,8 +2,8 @@
 use yii\helpers\Url;
 
 // $this->title = '瓜子TV-澳新华人在线视频分享网站';
-$this->title = '瓜子TV|澳洲瓜子tv|澳新瓜子|澳新tv|澳新瓜子tv - m.guazitv.tv';
-$this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子|tv|瓜子tv|澳洲瓜子tv|澳新瓜子|澳新tv|澳新瓜子tv|爱影视|澳洲爱影视|澳洲同城影视网|体育直播|澳洲足球直播|澳洲体育直播|美剧|电影|综艺||看tv|kantv']);
+$this->title = '吉祥视频';
+$this->registerMetaTag(['name' => 'keywords', 'content' => '吉祥|视频|吉祥视频|澳洲吉祥视频|澳新吉祥|澳新视频|澳新吉祥视频|爱影视|澳洲爱影视|澳洲同城影视网|体育直播|澳洲足球直播|澳洲体育直播|美剧|电影|综艺']);//|看tv|kantv
 
 header('X-Frame-Options:Deny');
 ?>
@@ -13,7 +13,7 @@ header('X-Frame-Options:Deny');
 		var mobile_flag = isMobile();
 
 		if(mobile_flag == false){
-			window.location = 'http://www.guazitv.tv/';
+			window.location = 'https://www.jxsp.tv';
 		}
 		
 		if ($("#jBox1").length > 0) {
@@ -145,7 +145,7 @@ header('X-Frame-Options:Deny');
 
 <header class="video-header">
     <div class="video-header-top clearfix">
-        <a class="logo fl">瓜子TV</a>
+        <a class="logo fl">吉祥视频</a>
         <div class="search-cont fr">
             <div class="search-notice"><?php if(!empty($channels['hot_word'])) : ?><?= $channels['hot_word'][0]?><?php endif;?></div>
         </div>
@@ -156,7 +156,7 @@ header('X-Frame-Options:Deny');
             <?php if(!empty($channels)) : ?>
                 <?php foreach ($channels['list'] as $key => $channel): ?>
                     <li class="swiper-slide on swiper-slide-li">
-                        <a href="<?= Url::to(['index', 'channel_id' => $channel['channel_id']])?>"><?= $channel['channel_name']?></a>
+                        <a href="<?= Url::to(['/video/index', 'channel_id' => $channel['channel_id']])?>"><?= $channel['channel_name']?></a>
                         <span class="line <?= $channel['channel_id'] == $channel_id ? 'line_show' : ''?>"></span>
                         <?php if ($channel['channel_id'] == $channel_id) : ?>
                             <input type="hidden" value="<?= $key ?>" id="nav-channel">
@@ -167,7 +167,7 @@ header('X-Frame-Options:Deny');
         </ul>
     </div>
 </header>
-
+<input id="v_channelid" type="hidden" value="<?=$channel_id?>" />
 <div class="video-banner swiper-container video-banner-caroul alter-banner" id="video-list-banner">
     <ul class="swiper-wrapper clearfix">
         <?php if(!empty($data['banner'])) : ?>
@@ -282,15 +282,19 @@ header('X-Frame-Options:Deny');
     <?php endforeach;?>
 <?php endif; ?>
 <div class="addtohomescreen" style="position: fixed;bottom: 1px;left: 50%;transform: translateX(-50%);width: 75%;max-width: 75%;display: block;">
-    <img src="http://img.guazitv8.com/addtohomescreen.png" alt="" style="width: 100%;">
+    <img src="/images/video/addtohomescreen.png" alt="" style="width: 100%;">
   </div>
 <div class="video-index-notice">
      <p style="padding-bottom: 5px;text-align: center;">
         <a class="browser browser1" href="<?= Url::to(['map'])?>">网站地图</a>
-        <a class="browser browser1" href="http://m.guazitv.tv">手机端</a>
-        <a class="browser browser1" href="http://www.guazitv.tv">电脑端</a>
-        <a class="browser" href="<?= Url::to(['site/share-down'])?>">APP下载</a></p>
-    <p>本网站为非赢利性站点，所有内容均由机器人采集于互联网，或者网友上传，本站只提供WEB页面服务，本站不存储、不制作任何视频，不承担任何由于内容的合法性及健康性所引起的争议和法律责任。若本站收录内容侵犯了您的权益，请附说明联系邮箱，本站将第一时间处理。站长邮箱：guazitv@163.com</p>
+        <a class="browser browser1" href="https://m.jxsp.tv/">手机端</a>
+        <a class="browser " href="https://www.jxsp.tv">电脑端</a>
+<!--        <a class="browser" href="--><?//= Url::to(['site/share-down'])?><!--">APP下载</a>-->
+     </p>
+    <p>版权声明：如果来函说明本网站提供内容本人或法人版权所有。本网站在核实后，有权先行撤除，以保护版权拥有者的权益。
+        &nbsp; 邮箱地址： jxsptv@gmail.com
+    </p>
+    <p style="text-align:center;">Copyright 2020-2021 jxsp.tv Allrights Reserved.</p>
 </div>
 <!--<div class="video-footer">
     <ul class="clearfix footer-top">
@@ -334,7 +338,8 @@ header('X-Frame-Options:Deny');
     
     $(window).load(function(){
 	    var arrIndex = {};
-		arrIndex['channel_id']= 0;
+	    var channel_id = $("#v_channelid").val();
+		arrIndex['channel_id']= channel_id;
 		
 		$.get('/video/index-banner', arrIndex, function(res) {
             $('.alter-banner').html(res); // 更新内容

@@ -28,6 +28,12 @@ class VideoController extends BaseController
         if ($region_code == 'VIC' && $city != '墨尔本')
             $city = '墨尔本';
 
+        if ($region_code == 'SA' && $city != '阿德莱德')
+            $city = '阿德莱德';
+
+        if ($region_code == 'WA' && $city != '珀斯')
+            $city = '珀斯';
+
         return $city;
     }
 
@@ -81,8 +87,8 @@ class VideoController extends BaseController
 
         $city = "";
         $redis = new RedisStore();
-//        $ip = Tool::getIp();
-        $ip = "203.220.95.25";
+        $ip = Tool::getIp();
+
         $cityCache=$redis->get(md5($ip."_city"));
         if (empty($cityCache)) {
             $ipAddress = Tool::getIpAddressFromStack($ip);
@@ -103,36 +109,39 @@ class VideoController extends BaseController
 
         //获取热搜
         $hotword = Yii::$app->api->get('/search/hot-word');
-        
+
         $version = Yii::$app->api->get('/search/app-version');
 
         if(!$data) {
             return $this->redirect('/site/error');
         }
         $view = Yii::$app->view->params['isIndex'] = '1';
-        return $this->render('newindex',[
+        $pageTab = "newindex";
+        return $this->render('newframe',[
             'data'          => $data,
             'channels'      => $channels,
             'channel_id'    => $channel_id,
             'hotword'       => $hotword,
             'tick'          => $tick,
             'tvpath'        => $version['tvdata'],
-            'city'=> $city
+            'city'          => $city,
+            'pageTab'       => $pageTab
+
         ]);
     }
-    
-     /**
+
+    /**
      * 首页banner局部视图
      */
     public function actionIndexBanner()
     {
-       //获取频道信息
+        //获取频道信息
         $channel_id = Yii::$app->request->get('channel_id', 0);
 
         $city = "";
         $redis = new RedisStore();
-//        $ip = Tool::getIp();
-        $ip = "203.220.95.25";
+        $ip = Tool::getIp();
+
         $cityCache=$redis->get(md5($ip."_city"));
         if (empty($cityCache)) {
             $ipAddress = Tool::getIpAddressFromStack($ip);
@@ -149,19 +158,19 @@ class VideoController extends BaseController
         $data = Yii::$app->api->get('/video/banner', ['channel_id' => $channel_id, 'city'=> $city]);
         return $this->renderPartial('indexbanner', ['data' => $data]);
     }
-    
+
     /**
      * 广告局部刷新
      */
     public function actionAdvert()
     {
-       //获取频道信息
+        //获取频道信息
         $page = Yii::$app->request->get('page', "home");
 
         $city = "";
         $redis = new RedisStore();
-//        $ip = Tool::getIp();
-        $ip = "203.220.95.25";
+        $ip = Tool::getIp();
+
         $cityCache=$redis->get(md5($ip."_city"));
         if (empty($cityCache)) {
             $ipAddress = Tool::getIpAddressFromStack($ip);
@@ -186,13 +195,13 @@ class VideoController extends BaseController
 
         return Tool::responseJson(0, '操作成功', $data);
     }
-    
+
     public function actionGetCity()
     {
         $city = "";
         $redis = new RedisStore();
-//        $ip = Tool::getIp();
-        $ip = "203.220.95.25";
+        $ip = Tool::getIp();
+
         $cityCache=$redis->get(md5($ip."_city"));
         if (empty($cityCache)) {
             $ipAddress = Tool::getIpAddressFromStack($ip);
@@ -205,14 +214,14 @@ class VideoController extends BaseController
         else {
             $city = $cityCache;
         }
-        
+
         $data['city'] = $city;
         $data['cityctche'] = $cityCache;
         $data['random'] = rand(10000, 99999);
 
         return Tool::responseJson(0, '操作成功', $data);
     }
-  
+
     /**
      * 视频类目页
      */
@@ -225,8 +234,8 @@ class VideoController extends BaseController
 
         $city = "";
         $redis = new RedisStore();
-//        $ip = Tool::getIp();
-        $ip = "203.220.95.25";
+        $ip = Tool::getIp();
+
         $cityCache=$redis->get(md5($ip."_city"));
         if (empty($cityCache)) {
             $ipAddress = Tool::getIpAddressFromStack($ip);
@@ -313,8 +322,8 @@ class VideoController extends BaseController
         $channels = Yii::$app->api->get('/video/channels');
         $city = "";
         $redis = new RedisStore();
-//        $ip = Tool::getIp();
-        $ip = "203.220.95.25";
+        $ip = Tool::getIp();
+
         $cityCache=$redis->get(md5($ip."_city"));
         if (empty($cityCache)) {
             $ipAddress = Tool::getIpAddressFromStack($ip);
@@ -330,10 +339,10 @@ class VideoController extends BaseController
         //请求视频信息
         // $data = Yii::$app->api->get('/video/info', ['video_id' => $video_id, 'chapter_id' => $chapter_id, 'source_id' => $source_id]);
         $data = Yii::$app->api->get('/video/info', ['video_id' => $video_id, 'chapter_id'
-            => $chapter_id, 'source_id' => $source_id, 'city'=> $city]);
+        => $chapter_id, 'source_id' => $source_id, 'city'=> $city]);
 
-        if($chapter_id != '' && $data['info']['play_chapter_id'] != $chapter_id)
-            $this->redirect(array('/video/detail','video_id'=>$video_id,'source_id'=>$source_id,'chapter_id'=>$source_id));
+
+
         $channel_id = $data['channel_id'];
         $data['info']['actorvideos'] = [];
         if (isset($data['info']['actors'])) {
@@ -344,10 +353,10 @@ class VideoController extends BaseController
                 array_push($data['info']['actorvideos'], $acVideos['list']);
             }
         }
-        
+
 //        array_merge($data['info'], ['actorvideos' => $actorVideos]);
 //        $data['info']['actorvideos'] = $actorVideos;
-        if(!$data 
+        if(!$data
             || !isset($data['info'])
             || !isset($data['info']['source'])) {
             return $this->redirect('/site/error');
@@ -381,19 +390,22 @@ class VideoController extends BaseController
         //获取影片系列、剧集、源信息
         $channel_id = Yii::$app->request->get('channel_id', '');
         $keyword = Yii::$app->request->get('keyword', '');
-        $sort = Yii::$app->request->get('sort', 'hot');
+        $sort = Yii::$app->request->get('sort', 'new');
+        $sorttype = Yii::$app->request->get('sorttype', 'desc');//排序高低
         $tag = Yii::$app->request->get('tag', '');
         $area = Yii::$app->request->get('area', '');
         $year = Yii::$app->request->get('year', '');
         $play_limit = Yii::$app->request->get('play_limit', '');
         $page_num = Yii::$app->request->get('page_num', 1);
+        $page_size = Yii::$app->request->get('page_size', 32);
+        $status = Yii::$app->request->get('status', 0); // 剧集是否完结：全部 / 更新中
 
         //请求频道、搜索信息
         $channels = Yii::$app->api->get('/video/channels');
 
         //请求影片筛选信息
-        $info = Yii::$app->api->get('/video/filter', ['channel_id' => $channel_id, 'tag' => $tag, 'sort' => $sort, 'area' => $area,
-            'play_limit' => $play_limit, 'year' => $year, 'page_num' => $page_num, 'page_size' =>24 ,'type' => 1]);
+        $info = Yii::$app->api->get('/video/filters', ['channel_id' => $channel_id, 'tag' => $tag, 'sort' => $sort, 'sorttype' => $sorttype, 'area' => $area,
+            'play_limit' => $play_limit, 'year' => $year, 'page_num' => $page_num, 'page_size' =>$page_size ,'type' => 1, 'status' => $status]);
         //请求热门搜索信息
         $hot = Yii::$app->api->get('/search/hot-word');
 
@@ -415,19 +427,25 @@ class VideoController extends BaseController
         //获取影片系列、剧集、源信息
         $channel_id = Yii::$app->request->get('channel_id', 0);
         $sort = Yii::$app->request->get('sort', '');
+        $sorttype = Yii::$app->request->get('sorttype', 'desc');//排序高低
         $tag = Yii::$app->request->get('tag', '');
         $area = Yii::$app->request->get('area', '');
         $year = Yii::$app->request->get('year', '');
         $play_limit = Yii::$app->request->get('play_limit', '');
         $page_num = Yii::$app->request->get('page_num', 1);
+        $page_size = Yii::$app->request->get('page_size', 32);
+        $status = Yii::$app->request->get('status', 0); // 剧集是否完结：全部 / 更新中
 
         //请求影片筛选信息
-        $data = Yii::$app->api->get('/video/filter', ['channel_id' => $channel_id, 'tag' => $tag, 'sort' => $sort, 'area' => $area,
-            'play_limit' => $play_limit, 'year' => $year, 'page_num' => $page_num, 'page_size' =>24 ,'type' => 1]);
+//        $data = Yii::$app->api->get('/video/filter', ['channel_id' => $channel_id, 'tag' => $tag, 'sort' => $sort, 'area' => $area,
+//            'play_limit' => $play_limit, 'year' => $year, 'page_num' => $page_num, 'page_size' =>24 ,'type' => 1]);
+
+        $data = Yii::$app->api->get('/video/filters', ['channel_id' => $channel_id, 'tag' => $tag, 'sort' => $sort, 'sorttype' => $sorttype, 'area' => $area,
+            'play_limit' => $play_limit, 'year' => $year, 'page_num' => $page_num, 'page_size' =>$page_size ,'type' => 1, 'status' => $status]);
 
         return Tool::responseJson(0, '操作成功', $data);
     }
-    
+
     /**
      * 视频筛选接口new
      */
@@ -435,17 +453,21 @@ class VideoController extends BaseController
     {
         $keyword = Yii::$app->request->get('keyword');
         $channel_id = Yii::$app->request->get('channel_id', 0);
-        $sort = Yii::$app->request->get('sort', '');
+        $sort = Yii::$app->request->get('sort', 'new');
+        $sorttype = Yii::$app->request->get('sorttype', 'desc');//排序高低
         $tag = Yii::$app->request->get('tag', '');
         $area = Yii::$app->request->get('area', '');
         $year = Yii::$app->request->get('year', '');
         $play_limit = Yii::$app->request->get('play_limit', '');
         $page_num = Yii::$app->request->get('page_num', 1);
+        $page_size = Yii::$app->request->get('page_size', 32);
+        $tvNum = Yii::$app->request->get('tvNum', 7);//集数的显示个数
+        $status = Yii::$app->request->get('status', 0); // 剧集是否完结：全部 / 更新中
 
         //搜索首页信息
-        $data = Yii::$app->api->get('/search/new-result', ['keyword' => $keyword, 'channel_id' => $channel_id, 'tag' => $tag, 'sort' => $sort,
-            'area' => $area, 'play_limit' => $play_limit, 'year' => $year, 'page_num' => $page_num, 'page_size' =>24 ,'type' => 1]);
-
+        $data = Yii::$app->api->get('/search/new-result', ['keyword' => $keyword, 'channel_id' => $channel_id, 'tag' => $tag, 'sort' => $sort,'sorttype' => $sorttype,
+            'area' => $area, 'play_limit' => $play_limit, 'year' => $year, 'page_num' => $page_num, 'page_size' =>$page_size ,'type' => 1, 'status' => $status]);
+        $data['tvNum'] = $tvNum;//集数的显示个数
         return $this->renderPartial('partialresult', ['info' => $data]);
     }
 
@@ -531,7 +553,7 @@ class VideoController extends BaseController
             'hotword'       => $hotword
         ]);
     }
-    
+
     /**
      * 春晚直播
      **/
@@ -549,19 +571,22 @@ class VideoController extends BaseController
         $pageTab = "searchresult";
         $keyword = Yii::$app->request->get('keyword', '');
         $channel_id = Yii::$app->request->get('channel_id', 0);
-        $sort = Yii::$app->request->get('sort', 'hot');
+        $sort = Yii::$app->request->get('sort', 'new');
+        $sorttype = Yii::$app->request->get('sorttype', 'desc');//排序高低
         $tag = Yii::$app->request->get('tag', '');
         $area = Yii::$app->request->get('area', '');
         $year = Yii::$app->request->get('year', '');
         $play_limit = Yii::$app->request->get('play_limit', '');
         $page_num = Yii::$app->request->get('page_num', 1);
+        $page_size = Yii::$app->request->get('page_size', 32);
+        $status = Yii::$app->request->get('status', 0); // 剧集是否完结：全集 / 更新中
 
         $channels = Yii::$app->api->get('/video/channels');
         $hotword = Yii::$app->api->get('/search/hot-word');
 
         //搜索首页信息
-        $info = Yii::$app->api->get('/search/new-result', ['keyword' => $keyword, 'channel_id' => $channel_id, 'tag' => $tag, 'sort' => $sort, 'area' => $area,
-            'play_limit' => $play_limit, 'year' => $year, 'page_num' => $page_num, 'page_size' =>24 ,'type' => 1]);
+        $info = Yii::$app->api->get('/search/new-result', ['keyword' => $keyword, 'channel_id' => $channel_id, 'tag' => $tag, 'sort' => $sort, 'sorttype' => $sorttype,
+            'area' => $area, 'play_limit' => $play_limit, 'year' => $year, 'page_num' => $page_num, 'page_size' =>$page_size ,'type' => 1, 'status' => $status]);
 
         return $this->render('newframe',[
             'pageTab'       => $pageTab,
@@ -571,7 +596,7 @@ class VideoController extends BaseController
             'hotword'       => $hotword
         ]);
     }
-    
+
     public function actionMap()
     {
         $pageTab = "map";
@@ -593,7 +618,7 @@ class VideoController extends BaseController
             'hotword'       => $hotword
         ]);
     }
-    
+
     public function actionCollaboration()
     {
         $pageTab = "collaboration";
@@ -622,11 +647,11 @@ class VideoController extends BaseController
             'hotword'       => $hotword,
         ]);
     }
-    
+
     public function actionGetWechat()
     {
         $cacheKey = rand(100000, 999999);;
-        
+
         $cookie1 = \Yii::$app->request->cookies;
         $wechatTime=$cookie1->get("wechatTime");
         if(!empty($wechatTime->value)){
@@ -634,11 +659,11 @@ class VideoController extends BaseController
             $return['msg'] = "用户已经扫码";
             return Tool::responseJson(0, '操作成功', $return);
         }
-        
+
         $city = "";
         $redis = new RedisStore();
-//        $ip = Tool::getIp();
-        $ip = "203.220.95.25";
+        $ip = Tool::getIp();
+
         $cityCache=$redis->get(md5($ip."_city"));
         if (empty($cityCache)) {
             $ipAddress = Tool::getIpAddressFromStack($ip);
@@ -651,13 +676,13 @@ class VideoController extends BaseController
         else {
             $city = $cityCache;
         }
-        
+
         if ($city != "悉尼") {
             $return['status_code'] = 500;
             $return['msg'] = "非悉尼用户不用扫码";
             return Tool::responseJson(0, '操作成功', $return);
         }
-        
+
 
         $picUrl = "/images/NewVideo/wechatLIVEQR.png";
 
@@ -667,7 +692,7 @@ class VideoController extends BaseController
         $return['data'] = $data;
         return Tool::responseJson(0, '操作成功', $return);
     }
-    
+
     public function actionCheckWechat()
     {
         $cacheKey =  Yii::$app->request->get('wechat_flag', "scene");
@@ -698,7 +723,7 @@ class VideoController extends BaseController
         $redis->connect('127.0.0.1', 6381);
         $redis->auth("guazity1987");
         $redis->del($cacheKey);
-        
+
         $cookie1 = \Yii::$app->request->cookies;
         $wechatTime=$cookie1->get("wechatTime");
         if(empty($wechatTime->value)){
@@ -709,21 +734,8 @@ class VideoController extends BaseController
             $cookie -> value =time();   //cookie的值
             \Yii::$app->response->getCookies()->add($cookie);
         }
-        
+
         return Tool::responseJson(0, '操作成功', $data);
-    }
-
-    public function actionTuiTest()
-    {
-        $info['vod_key'] = '1623639097894';
-        $info['vod_name'] = '双世宠妃3';
-        $info['vod_en'] = 'SSCF3';
-        $info['vod_play_url'] = '02$$http://src.shcdn-qq.com/20210613/29ej3UBo/index.m3u8';
-        $api = 'http://page.kantv9.com/collect/get-song';
-        $post = json_encode($info);
-
-        $r = Tool::mac_curl_post($api, $post);
-        return Tool::responseJson(0, '操作成功', $r);
     }
 
     public function actionFeedBack()
@@ -731,12 +743,100 @@ class VideoController extends BaseController
         $video_id = Yii::$app->request->get('video_id', "");
         $chapter_id = Yii::$app->request->get('chapter_id', "");
         $source_id = Yii::$app->request->get('source_id', "");
+        $reason = Yii::$app->request->get('reason', "");
         $ip = Tool::getIp();
         //保存反馈信息
         $data = Yii::$app->api->get('/video/feed-back', ['video_id' => $video_id, 'chapter_id' => $chapter_id
-            , 'source_id' => $source_id, 'ip'=>$ip]);
+            , 'source_id' => $source_id, 'ip'=>$ip, 'reason' => $reason]);
 
-        $data['para'] = ['video_id'=>$video_id, 'chapter_id'=>$chapter_id, 'source_id'=>$source_id];
+        $data['para'] = ['video_id'=>$video_id, 'chapter_id'=>$chapter_id, 'source_id'=>$source_id, 'reason' => $reason];
         return Tool::responseJson(0, '操作成功', $data);
+    }
+
+    /*
+     * 求片
+     */
+    public function actionSeek(){
+        $pageTab = 'seek';
+
+        //请求频道、搜索信息
+        $channels = Yii::$app->api->get('/video/channels');
+        //获取热搜
+        $hotword = Yii::$app->api->get('/search/hot-word');
+        //获取地区
+        $data = Yii::$app->api->get('/video/seek');
+
+        return $this->render('newframe',[
+            'pageTab'       => $pageTab,
+            'channels'      => $channels,
+            'hotword'       => $hotword,
+            'data'          => $data
+        ]);
+    }
+
+    /*
+     * 提交求片信息
+     * $video_name 片名
+     * $channel_id 频道id
+     * $area_id 地区id
+     * $year 年代
+     * $director_name 导演名称
+     * $actor_name 主演名称
+     */
+    public function actionSaveSeek(){
+        $video_name    = Yii::$app->request->get('video_name', "");
+        $channel_id    = Yii::$app->request->get('channel_id', 0);
+        $area_id       = Yii::$app->request->get('area_id', 0);
+        $year          = Yii::$app->request->get('year', "");
+        $director_name = Yii::$app->request->get('director_name', "");
+        $actor_name    = Yii::$app->request->get('actor_name', "");
+        $result = Yii::$app->api->get('/video/save-seek',['video_name' => $video_name,'channel_id' => $channel_id,'area_id' => $area_id, 'year'=>$year, 'director_name'=>$director_name, 'actor_name'=>$actor_name]);
+
+        return $result;
+    }
+    /*
+     * 帮助中心
+     */
+    public function actionHelp(){
+        $pageTab = 'help';
+
+        $helptab = Yii::$app->request->get('tab', "");
+        //请求频道、搜索信息
+        $channels = Yii::$app->api->get('/video/channels');
+        //获取热搜
+        $hotword = Yii::$app->api->get('/search/hot-word');
+        //在线反馈信息
+        $feedbackinfo = Yii::$app->api->get('/video/feedbackinfo');
+
+        return $this->render('newframe',[
+            'pageTab'       => $pageTab,
+            'channels'      => $channels,
+            'hotword'       => $hotword,
+            'feedbackinfo'  => $feedbackinfo,
+            'helptab'       => $helptab
+        ]);
+    }
+
+    /*
+     * 保存反馈信息
+     */
+    public function actionSaveFeedbackinfo(){
+        $country     = Yii::$app->request->get('country', 0);
+        $internets    = Yii::$app->request->get('internets', 0);
+        $systems      = Yii::$app->request->get('systems', 0);
+        $browsers     = Yii::$app->request->get('browsers', 0);
+        $description = Yii::$app->request->get('description', "");
+        $result = Yii::$app->api->get('/video/save-feedbackinfo',['country' => $country,'internets' => $internets,'systems' => $systems, 'browsers'=>$browsers, 'description'=>$description]);
+        return $result;
+    }
+
+    /*
+     * 获取国家信息
+     */
+    public function actionGetCountry(){
+        $country_code = Yii::$app->request->get('country_code', "");
+        $country_name = Yii::$app->request->get('country_name', "");
+        $result = Yii::$app->api->get('/video/get-country',['country_code' => $country_code, 'country_name' => $country_name]);
+        return Tool::responseJson(0, '操作成功', $result);
     }
 }

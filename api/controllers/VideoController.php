@@ -18,6 +18,7 @@ use common\helpers\RedisKey;
 use common\helpers\RedisStore;
 use common\models\video\VideoFeed;
 use Yii;
+use yii\base\BaseObject;
 use yii\helpers\ArrayHelper;
 
 class VideoController extends BaseController
@@ -32,8 +33,28 @@ class VideoController extends BaseController
         $fields = ['channel_id', 'channel_name'];
 
         $commonDao = new CommonDao();
-        $data['list'] = $commonDao->videoChannel($fields);
+        $channelList = $commonDao->videoChannel($fields);
+        $data['list'] = [];
+//        $data['list'] = $channelList;
 
+        /* 在原频道列表基础上对应加类型 begin */
+        $channelLogic = new ChannelLogic();
+        $data['channeltags'] = [];
+        $VideoDao = new VideoDao();
+        foreach ($channelList as $channel) {
+            // 获取频道对应的分类数据
+            $tagFields = ['cat_id', 'name','channel_id'];
+            $channelTags = $channelLogic->channelCategory($channel['channel_id'], $tagFields);
+            $channel['tags'] = $channelTags;
+            array_push($data['channeltags'], $channel);
+            /* 查询每个频道24小时内的更新剧集数 begin */
+            //表video 以上架时间为准
+            $channelNum = $VideoDao->findVideoNumByChannelId($channel['channel_id']);
+            $channel['num'] = $channelNum;
+            array_push($data['list'], $channel);
+            /* 查询每个频道24小时内的更新剧集数 end */
+        }
+        /* 在原频道列表基础上对应加类型 end */
         $videoLogic = new VideoLogic();
         $data['hot_word'] =  $videoLogic->searchWord();;
 
@@ -150,6 +171,7 @@ class VideoController extends BaseController
     }
 
 
+
     /**
      * 视频筛选
      * @return array
@@ -182,6 +204,45 @@ class VideoController extends BaseController
         // 根据条件取视频信息
         $videoDao = new VideoDao();
         $video = $videoDao->filterVideoList($channelId, $sort, $tag, $area, $year, $type, $playLimit, $page, $pageSize);
+
+        $data = array_merge($data, $video);
+        return $data;
+    }
+
+    /**
+     * 视频筛选
+     * @return array
+     */
+    public function actionFilters()
+    {
+        $channelId = $this->getParam('channel_id', ''); // 频道
+        $sort      = $this->getParam('sort', 'new'); // 排序
+        $sorttype  = $this->getParam('sorttype', 'desc'); // 排序高低
+        $tag       = $this->getParam('tag', ''); // 标签
+        $area      = $this->getParam('area', ''); // 地区
+        $year      = $this->getParam('year', ''); // 年代
+        $page      = $this->getParam('page_num', DEFAULT_PAGE_NUM); // 页面 当传入1时，返回检索项
+        $pageSize  = $this->getParam('page_size', 10);
+        $type      = $this->getParam('type', 0); // 类型 当传入1时，位点击分类进入，服务端要返回所有频道筛选项
+        $playLimit = $this->getParam('play_limit', '');
+        $status    = $this->getParam('status', 0); // 剧集是否完结：全部 / 更新中
+
+        $area      = !empty($area) ? $area : '';
+        $year      = !empty($year) ? $year : '';
+        $tag       = !empty($tag) ? $tag : '';
+        $playLimit = !empty($playLimit) ? $playLimit : '';
+        $channelId = !empty($channelId) ? $channelId : '';
+
+        // 筛选项
+        $data = [];
+        // 当请求为第一页时，返回筛选页头部信息
+        if ($page == 1) {
+            $videoLogic = new VideoLogic();
+            $data = $videoLogic->filterHeaders($channelId, $sort, $tag, $area, $year, $type, $playLimit, $status);
+        }
+        // 根据条件取视频信息
+        $videoDao = new VideoDao();
+        $video = $videoDao->filterVideoList2($channelId, $sort, $sorttype, $tag, $area, $year, $type, $playLimit, $page, $pageSize, $status);
 
         $data = array_merge($data, $video);
         return $data;
@@ -387,15 +448,17 @@ class VideoController extends BaseController
         $chapter_id = $this->getParam('chapter_id', "");
         $source_id = $this->getParam('source_id', "");
         $ip = $this->getParam('ip', "");
+        $reason = $this->getParam('reason', "");
 
         $feed_back = new VideoFeed();
         $feed_back->video_id = $video_id;
         $feed_back->chapter_id = $chapter_id;
         $feed_back->source_id = $source_id;
         $feed_back->ip = $ip;
+        $feed_back->reason = $reason;
 
         $info = $feed_back::find()->andWhere(['video_id'=>$video_id, 'chapter_id'=>$chapter_id
-            , 'source_id'=>$source_id, 'ip'=>$ip])->asArray()->all();
+            , 'source_id'=>$source_id, 'ip'=>$ip, 'reason'=>$reason])->asArray()->all();
 
         $result = [];
         if (!$info)
@@ -410,5 +473,79 @@ class VideoController extends BaseController
             $result['message'] = '您已经报错过该视频，请不要重复提交';
         }
         return $result;
+    }
+
+    /*
+     * 求片-查询频道和地区
+     */
+    public function actionSeek(){
+        $videoDao = new VideoDao();
+        $data = $videoDao->findAreasAndChannels();
+        return $data;
+    }
+    /*
+     * 提交求片信息
+     * $video_name 片名
+     * $channel_id 频道id
+     * $area_id 地区id
+     * $year 年代
+     * $director_name 导演名称
+     * $actor_name 主演名称
+     */
+    public function actionSaveSeek(){
+        $video_name    = $this->getParam('video_name',"");
+        $channel_id    = $this->getParam('channel_id',0);
+        $area_id       = $this->getParam('area_id',0);
+        $year          = $this->getParam('year',"");
+        $director_name = $this->getParam('director_name',"");
+        $actor_name    = $this->getParam('actor_name',"");
+        $videoDao = new VideoDao();
+        $result = $videoDao->saveSeekInfo($video_name,$channel_id,$area_id,$year,$director_name,$actor_name);
+        return $result;
+    }
+
+    /*
+     * 查询反馈条件信息
+     */
+    public function actionFeedbackinfo(){
+        $videoDao = new VideoDao();
+        $data = $videoDao->findFeedbackinfo();
+        return $data;
+    }
+
+    /*
+     * 保存反馈信息
+     */
+    public function actionSaveFeedbackinfo(){
+        $country    = $this->getParam('country',0);
+        $internets    = $this->getParam('internets',0);
+        $systems    = $this->getParam('systems',0);
+        $browsers    = $this->getParam('browsers',0);
+        $description = $this->getParam('description',"");
+        $videoDao = new VideoDao();
+        $result = $videoDao->saveFeedbackinfo($country,$internets,$systems,$browsers,$description);
+
+        return $result;
+    }
+
+    /*
+     * 获取国家信息
+     */
+    public function actionGetCountry(){
+        $country_code = $this->getParam('country_code',"");
+        $country_name = $this->getParam('country_name',"");
+        $videoDao = new VideoDao();
+        $data = $videoDao->findCountryInfo($country_code);
+        if(!$data){
+            if($country_name){
+                $data['country_name'] = $country_name;
+                $data['country_code'] = $country_code;
+            }else{
+                $data['country_name'] = "全球";
+                $data['country_code'] = "GL";
+            }
+            $data['imgname'] = "GLgq.png";
+        }
+        return $data;
     }
 }

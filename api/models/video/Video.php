@@ -2,6 +2,7 @@
 namespace api\models\video;
 
 use api\dao\CommonDao;
+use api\dao\VideoDao;
 use api\helpers\Common;
 use common\helpers\OssHelper;
 use common\helpers\RedisKey;
@@ -32,10 +33,13 @@ class Video extends \common\models\video\Video
             'type',
             'flag' => function(){
                 if ($this->type == self::STATUS_DISABLED) {
+                    $chapter_num = $this->getChapterNum($this->id);
                     if ($this->is_finished == self::STATUS_FINISHED) {
-                        $flag = $this->episode_num . '集全';
+//                        $flag = $this->episode_num . '集全';
+                        $flag = $chapter_num . '集全';
                     } else {
-                        $flag = '更新至' . $this->episode_num . '集';
+//                        $flag = '更新至' . $this->episode_num . '集';
+                        $flag = '更新至' . $chapter_num . '集';
                     }
                 } else {
                     if (\Yii::$app->common->product == Common::PRODUCT_PC) {
@@ -135,5 +139,14 @@ class Video extends \common\models\video\Video
     public static function currentProduct()
     {
         return \Yii::$app->common->product;
+    }
+
+    /**
+     * 获取连续剧最大集数
+     */
+    public function getChapterNum($videoId){
+        $videoDao = new VideoDao();
+        $maxnum = $videoDao->getMaxChapterNum($videoId);
+        return $maxnum;
     }
 }

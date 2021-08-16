@@ -31,14 +31,17 @@ AppAsset::register($this);
     <meta charset="<?= Yii::$app->charset ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!--<meta name="keywords" content="瓜子TV-澳新华人在线视频分享网站">-->
-    <meta name="description" content="瓜子视频（瓜子TV）是澳大利亚、新西兰华人影视视频分享平台，网站包含最新的电视剧、美剧、日韩剧、华语电影、好莱坞电影、以及各种动漫和重大体育赛事直播。在这里，一定有你想看的一切！">
+    <meta name="description" content="吉祥视频">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" >
-    <link rel="shortcut icon" type="image/x-icon" href="http://img.guazitv8.com/LOGO.ico">
-    <link href="http://img.guazitv8.com/LOGO.png" rel="apple-touch-icon-precomposed">
-    <link href="http://img.guazitv8.com/LOGO.png" rel="Shortcut Icon" type="image/x-icon">
-    <link href="http://img.guazitv8.com/LOGO.png" rel="Bookmark">
+    <link rel="shortcut icon" type="image/x-icon" href="/images/video/logo_ico.ico">
+    <link href="/images/video/logo-02.png" rel="apple-touch-icon-precomposed">
+    <link href="/images/video/logo-02.png" rel="Shortcut Icon" type="image/x-icon">
+    <link href="/images/video/logo-02.png" rel="Bookmark">
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R9BCW62LFW"></script>
+<!--    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R9BCW62LFW"></script>-->
+<!--    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6TXJP66KCH"></script>-->
+    <script async src="/js/video/gtag_id_G-6TXJP66KCH.js"></script>
+    
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}

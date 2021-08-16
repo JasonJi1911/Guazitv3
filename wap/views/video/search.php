@@ -2,8 +2,8 @@
 use yii\helpers\Url;
 
 // $this->title = '瓜子TV-澳新华人在线视频分享网站';
-$this->title = '热搜-瓜子TV|澳洲瓜子tv|澳新瓜子|澳新tv|澳新瓜子tv - m.guazitv.tv';
-$this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子,tv,瓜子tv,澳洲瓜子tv,澳洲,新西兰,澳新,电影,电视剧,榜单,综艺,动画,记录片']);
+$this->title = '吉祥视频';
+$this->registerMetaTag(['name' => 'keywords', 'content' => '吉祥|视频|吉祥视频|澳洲吉祥视频|澳新吉祥|澳新视频|澳新吉祥视频|爱影视|澳洲爱影视|澳洲同城影视网|体育直播|澳洲足球直播|澳洲体育直播|美剧|电影|综艺']);//||看tv|kantv
 
 $js = <<<JS
 $(function(){
@@ -154,7 +154,17 @@ $this->registerJs($js);
                 <?php foreach ($tab['list'] as $key => $list): ?>
                     <dd>
                         <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>" class="clearfix">
-                            <span class="fl rank-item-num"><?= $key+1?></span>
+                            <?php $colornum = "";
+                            if($key==0){
+                                $colornum = "clrnum01";
+                            }else if($key==1){
+                                $colornum = "clrnum02";
+                            }else if($key==2){
+                                $colornum = "clrnum03";
+                            }else{
+                                $colornum = "";
+                            }?>
+                            <span class="fl rank-item-num <?=$colornum?>"><?= $key+1?></span>
                             <p class="fl rank-item-name"><?= $list['video_name']?></p>
                             <span class="fr fontArial rank-item-eval">评分：<?= $list['score']?></span>
                         </a>

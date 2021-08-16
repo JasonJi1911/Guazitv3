@@ -4,9 +4,9 @@ use pc\assets\NewIndexStyleAsset;
 use common\models\advert\AdvertPosition;
 
 // $this->metaTags['keywords'] = '瓜子,tv,瓜子tv,澳洲瓜子tv,澳洲,新西兰,澳新,电影,电视剧,榜单,综艺,动画,记录片';
-$this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子tv,澳洲瓜子tv,新西兰瓜子tv,澳新瓜子tv,瓜子视频,瓜子影视,电影,电视剧,榜单,综艺,动画,记录片']);
+$this->registerMetaTag(['name' => 'keywords', 'content' => '吉祥tv,澳洲吉祥tv,新西兰吉祥tv,澳新吉祥tv,吉祥视频,吉祥影视,电影,电视剧,榜单,综艺,动画,记录片']);
 // $this->title = '瓜子TV-澳新华人在线视频分享网站';
-$this->title = $data['info']['video_name'].'-瓜子TV - 澳新华人在线视频分享平台,海量高清视频在线观看';
+$this->title = $data['info']['video_name'].'-吉祥TV - 澳新华人在线视频分享平台,海量高清视频在线观看';
 NewIndexStyleAsset::register($this);
 
 ?>
@@ -97,11 +97,12 @@ else
                 <input class="GB" type="button" name="" id="" value="" />
             </div>
             <div class="Altsjk-02">
-                <img src="/images/NewVideo/ewm.jpg" />
+                <img src="/images/newindex/jxewm.png" />
                 <div class="Altsjk-02-a">
-                    <a href="<?= Url::to(['/site/share-down'])?>"><img src="/images/NewVideo/ipad.png" />iPhone客户端</a>
-                    <a href="<?= Url::to(['/site/share-down'])?>"><img src="/images/NewVideo/ipad.png" />iPad客户端</a>
-                    <a href="<?= Url::to(['/site/share-down'])?>"><img src="/images/NewVideo/anzhuo.png" />安卓客户端</a>
+<!--                    --><?//= Url::to(['/site/share-down'])?>
+                    <a href="javascript:void(0);" onclick="showwarning();"><img src="/images/NewVideo/ipad.png" />iPhone客户端</a>
+                    <a href="javascript:void(0);" onclick="showwarning();"><img src="/images/NewVideo/ipad.png" />iPad客户端</a>
+                    <a href="javascript:void(0);" onclick="showwarning();"><img src="/images/NewVideo/anzhuo.png" />安卓客户端</a>
                 </div>
             </div>
             <div class="Altsjk-03">
@@ -192,7 +193,10 @@ else
                     </div>
                     <div class="GNbox-xq-text" name="zt">
                         <div>
-                            添加时间：<span><?= date('Y年m月d日', $data['info']['created_at']) ?></span>
+                            添加时间：<span><?= date("Y年m月d日",$data['info']['created_at']) ?></span>
+                        </div>
+                        <div>
+                            更新：<span><?= $data['info']['summary'] ?></span>
                         </div>
                         <div>
                             导演：<span>
@@ -272,7 +276,7 @@ else
 
                                 $quality_str = implode('$$$', $quality);
                                 ?>
-                                <a class="<?= $data['info']['play_chapter_id'] == $value['chapter_id'] ? 'act' : ''?>"
+                                <a class="<?= $data['info']['play_chapter_id'] == $value['chapter_id'] ? 'act' : ''?> <?= $value['latest']==1 ? 'icon_spot':'' ?>"
                                    href="<?= Url::to(['video/detail', 'video_id'=>$value['video_id'], 'chapter_id'=>$value['chapter_id']])?>"
 <!--                                   attr-id="--><?//= $value['chapter_id']?><!--"-->
 <!--                                   attr-quality="--><?//= $quality_str?><!--">-->
@@ -403,7 +407,7 @@ else
                         <div class="JJXG-R" name="zt">
                             <a href="javascript:;"><?= $list['video_name']?></a>
                             <div class="JJXG-R-tp" name="zt">
-                                <?php foreach (explode('|',$list['category']) as $cate) : ?>
+                                <?php foreach (explode(' ',$list['category']) as $cate) : ?>
                                     <span><?= $cate?></span>
                                 <?php endforeach;?>
                                 <span><?= $list['year'] ?></span>
@@ -417,18 +421,47 @@ else
     </div>
 </div>
 
+<!--片源报错alert-->
+<div class="alt" id="alt04">
+    <div class="alt04-box" name="zt" style="height:300px;">
+        <div class="hlp-t03" name="zt">
+            片源报错<!--<span class="clrOrangered">(您需要先登录才能提交反馈)</span>-->
+        </div>
+        <div class="seekbox02-text" name="zt">
+            报错原因
+        </div>
+        <div class="seekbox-tta seek-bottom">
+            <textarea placeholder="请输入报错原因 最多50字" name="zt" id="v_reason"></textarea>
+        </div>
+
+        <div class="seekbox-text03 seek-bottom" name="zt">
+            <span id="v_feedresult" style="color:red;"></span>
+            <input class="seek-btn" type="button" name="" id="v_feedsubmit" value="提交" />
+        </div>
+    </div>
+    <!--关闭按钮-->
+    <input class="alt-GB" type="button" id="" value="X" />
+</div>
 <script>
+    //片源报错
     $('#err_feedback').click(function(){
-        //var feedUrl = "/video/feed-back";
-        //var feedIndex = {};
-        //feedIndex['video_id'] = "<?//= $data['info']['play_video_id']?>//";
-        //feedIndex['chapter_id'] = "<?//= $data['info']['play_chapter_id']?>//";
-        //feedIndex['source_id'] = "<?//= $source_id?>//";
-        //$.get(feedUrl, feedIndex ,function(response) {
-        //    var result = response.data;
-        //    alert(result.message);
-        //});
-        //console.log(feedIndex);
-        alert("功能维护中，敬请期待")
+        $("#alt04").show();
     })
+    //提交
+    $('#v_feedsubmit').click(function(){
+        var feedUrl = "/video/feed-back";
+        var feedIndex = {};
+        feedIndex['video_id'] = "<?= $data['info']['play_video_id']?>";
+        feedIndex['chapter_id'] = "<?= $data['info']['play_chapter_id']?>";
+        feedIndex['source_id'] = "<?= $source_id?>";
+        feedIndex['reason'] = $("#v_reason").val();
+        $.get(feedUrl, feedIndex ,function(response) {
+            var result = response.data;
+            $("#v_feedresult").text(result.message);
+            // alert(result.message);
+        });
+        //console.log(feedIndex);
+        // alert("功能维护中，敬请期待")
+    })
+
 </script>

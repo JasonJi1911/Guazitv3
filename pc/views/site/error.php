@@ -49,6 +49,8 @@ AppAsset::register($this);
                 }
             }
         }
+
+        window.location.href = "/video/index";//https://www.jxsp.tv
     </script>
 </head>
 <!-- END HEAD -->

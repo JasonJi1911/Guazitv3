@@ -13,11 +13,19 @@ use api\models\video\HotRecommend;
 use api\models\video\HotRecommendList;
 use api\models\video\Video;
 use api\models\video\VideoActor;
+use api\models\video\VideoArea;
+use api\models\video\VideoChannel;
 use api\models\video\VideoChapter;
+use api\models\video\VideoFeedback;
+use api\models\video\VideoFeedbackinfo;
+use api\models\video\VideoFeedcountry;
+use api\models\video\VideoSeek;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
 use common\helpers\Tool;
 use common\models\IpAddress;
+use console\models\AnalyzeApiLog;
+use yii\base\BaseObject;
 use yii\helpers\ArrayHelper;
 use yii;
 
@@ -523,6 +531,95 @@ class VideoDao extends BaseDao
         return $data;
     }
 
+
+    /**
+     * 视频筛选
+     * @param $channelId
+     * @param $sort
+     * @param $sorttype
+     * @param $tag
+     * @param $area
+     * @param $year
+     * @param $type
+     * @param $page
+     * @param $playLimit
+     * @param $pageSize
+     * @return array|mixed
+     */
+    public function filterVideoList2($channelId, $sort, $sorttype, $tag, $area, $year, $type, $playLimit, $page, $pageSize, $status)
+    {
+        // 不传channel_id时，默认获取第一个
+        if (empty($channelId)) {
+            $commonDao = new CommonDao();
+            $videoChannel = $commonDao->videoChannel(['channel_id', 'channel_name'], true); //获取频道并建立索引
+            $channelId = reset($videoChannel)['channel_id'];
+        }
+        $this->checkFilterParams($channelId, $tag, $area);
+
+        $key = RedisKey::videoFilterList([$channelId, $sort, $tag, $area, $year, $type, $page, $pageSize, $playLimit,$sorttype, $status]);
+
+        $redis = new RedisStore();
+        if ($data = $redis->get($key)) {
+            return json_decode($data, true);
+        }
+
+        $order = $sort == 'new' ? 'created_at' : ($sort == 'score' ? 'score' : 'total_views');
+
+        // 根据条件查询
+        if($status == 1 || $status == 2){
+            $dataProvider = new ActiveDataProvider([
+                'query' => Video::find()
+                    ->select('id')
+                    ->andFilterWhere(['channel_id' => $channelId])
+                    ->andFilterWhere(['like', 'category_ids' , $tag])
+                    ->andFilterWhere(['area' => $area])
+                    ->andFilterWhere(['year' => $year])
+                    ->andFilterWhere(['play_limit' => $playLimit])
+                    ->andFilterWhere(['is_finished' => $status])
+                    ->andFilterWhere(['id in (select video_id from sf_video_chapter)'])
+                    ->orderBy("{$order} {$sorttype}")
+            ]);
+        }else{
+            $dataProvider = new ActiveDataProvider([
+                'query' => Video::find()
+                    ->select('id')
+                    ->andFilterWhere(['channel_id' => $channelId])
+                    ->andFilterWhere(['like', 'category_ids' , $tag])
+                    ->andFilterWhere(['area' => $area])
+                    ->andFilterWhere(['year' => $year])
+                    ->andFilterWhere(['play_limit' => $playLimit])
+                    ->orderBy("{$order} {$sorttype}")
+            ]);
+        }
+
+        //根据条件查询 视频id
+        $data = $dataProvider->setPagination(['page_num' => $page, 'page_size' => $pageSize])->toArray([
+            'video_id',
+        ]);
+
+        $ids = ArrayHelper::getColumn($data['list'], 'video_id');
+
+        $list = $this->batchGetVideo($ids, [
+            'video_id',
+            'video_name',
+            'tag',
+            'flag',
+            'play_times',
+            'cover',
+            'score',
+            'horizontal_cover',
+            'intro',
+            'category',
+        ], true, ['channel_id', 'actors_id', 'actors', 'director', 'artist', 'chapters']);
+
+        $data['list'] = array_values($list);
+
+        // 写入缓存
+        $redis->setEx($key, json_encode($data, JSON_UNESCAPED_UNICODE), 600);
+
+        return $data;
+    }
+
     /**
      * 切换频道时，判断tag，area是否存在当前频道下，不存在则重置为空
      * @param $channelId
@@ -710,4 +807,138 @@ class VideoDao extends BaseDao
         $videoChapter->save();
     }
 
+    /*
+     * 查询频道和地区
+     */
+    public function findAreasAndChannels(){
+        $data = [];
+        // 地区
+        $areas = new ActiveDataProvider([
+            'query' =>  VideoArea::find()
+        ]);
+        $channels = new ActiveDataProvider([
+            'query' =>  VideoChannel::find()
+        ]);
+
+        $data['areas'] = $areas->toArray();
+        $data['channels'] = $channels->toArray();
+        return $data;
+    }
+
+    /*
+     * 提交求片信息
+     */
+    public function saveSeekInfo($video_name,$channel_id,$area_id,$year,$director_name,$actor_name){
+        $seek = new VideoSeek();
+        $seek->video_name = $video_name;
+        $seek->channel_id = $channel_id;
+        $seek->area_id = $area_id;
+        $seek->year = $year;
+        $seek->director_name = $director_name;
+        $seek->actor_name = $actor_name;
+        $result = $seek->insert();
+        return $result;
+    }
+
+    /*
+     * 在线反馈信息查询
+     */
+    public function findFeedbackinfo(){
+        $data = [];
+        $internet = new ActiveDataProvider([
+                    'query' => VideoFeedbackinfo::find()
+                        ->where(['type' => 1])
+                        ->orderBy('id asc')
+                    ]);
+        $data['internet'] = $internet->toArray();
+        $system = new ActiveDataProvider([
+                    'query' => VideoFeedbackinfo::find()
+                        ->where(['type' => 2])
+                        ->orderBy('id asc')
+                  ]);
+        $data['system'] = $system->toArray();
+        $browser = new ActiveDataProvider([
+                    'query' => VideoFeedbackinfo::find()
+                        ->where(['type' => 3])
+                        ->orderBy('id asc')
+                   ]);
+        $data['browser'] = $browser->toArray();
+        $country = new ActiveDataProvider([
+            'query' => VideoFeedcountry::find()
+        ]);
+        $data['country'] = $country->toArray();
+        return $data;
+    }
+
+    /*
+     * 保存反馈信息
+     */
+    public function saveFeedbackinfo($country,$internets,$systems,$browsers,$description){
+        $feedback = new VideoFeedback();
+        $feedback->country = $country;
+        $feedback->internets = $internets;
+        $feedback->systems = $systems;
+        $feedback->browsers = $browsers;
+        $feedback->description = $description;
+        $result = $feedback->insert();
+        return $result;
+    }
+
+    /*
+     * 查询各个频道24小时内更新剧集数
+     */
+    public function findVideoNumByChannelId($channel_id){
+        $time24 = strtotime("-1 day");
+        $num = Video::find()
+               ->andWhere(['channel_id' => $channel_id ])
+               ->andFilterWhere(['and',['>=' , 'created_at', $time24]])
+               ->count();
+        return $num;
+    }
+
+    /*
+     * 查询指定剧的24小时更新总数
+     */
+    public function findVideoChapterNumByVideoId($video_id){
+        $time24 = strtotime("-1 day");
+        $num = VideoChapter::find()
+            ->andWhere(['video_id' => $video_id ])
+            ->andFilterWhere(['and',['>=' , 'created_at', $time24]])
+            ->count();
+        return $num;
+    }
+
+    /*
+     * 查询指定剧在24小时内更新数据
+     */
+    public function findVideoChapterByVideoId($video_id){
+        $time24 = strtotime("-1 day");
+        $num = VideoChapter::find()
+            ->select('id,video_id,title')
+            ->andWhere(['video_id' => $video_id ])
+            ->andFilterWhere(['and',['>=' , 'created_at', $time24]])
+            ->all();
+        return $num;
+    }
+
+    /*
+     * 获取指定连续剧最大集数-display_order
+     */
+    public function getMaxChapterNum($video_id){
+        $maxnum = VideoChapter::find()
+            ->select('id,video_id')
+            ->andWhere(['video_id' => $video_id ])
+            ->max('display_order');
+        return $maxnum;
+    }
+
+    /*
+     * 根据$country_code获取国家信息
+     */
+    public function findCountryInfo($country_code){
+        $country = VideoFeedcountry::find()
+                    ->andWhere(['country_code' => $country_code ])
+                    ->one();
+        return $country;
+    }
 }

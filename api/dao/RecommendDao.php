@@ -4,8 +4,9 @@ namespace api\dao;
 use api\data\ActiveDataProvider;
 use api\models\video\Recommend;
 use api\models\video\Video;
-use api\helpers\Common;
 use api\models\video\VideoChapter;
+use api\models\video\Actor;
+use api\helpers\Common;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
 use yii\helpers\ArrayHelper;
@@ -185,8 +186,18 @@ class RecommendDao extends BaseDao
                 $videoDao = new VideoDao();
                 $videoInfo = $videoDao->videoInfo($it['video_id'], $fields);
                 $actorsId = $videoInfo['actors_id'] ? explode(',', $videoInfo['actors_id']) : [];
-                $actors = $videoDao->actorsInfo($actorsId);
+                //演员信息，根据type区分演员和导演
+                $actorlist = $videoDao->actorsInfo($actorsId);
+                $director = $actors = [];
+                foreach ($actorlist as &$actor) {  //循环影片所有的演员信息
+                    if ($actor['type'] == Actor::TYPE_ACTOR) {
+                        $actors[]   = $actor;
+                    } else {
+                        $director[] = $actor;
+                    }
+                }
                 $it['actors'] = array_values($actors);
+                $it['director'] = array_values($director);
                 $it['year'] = $videoInfo['year'];
             }
 

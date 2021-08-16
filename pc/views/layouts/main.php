@@ -30,11 +30,22 @@ AppAsset::register($this);
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="瓜子TV是澳大利亚、新西兰华人影视视频分享平台，网站包含最新的电视剧、美剧、日韩剧、华语电影、好莱坞电影、以及各种动漫和重大体育赛事直播。在这里，一定有你想看的一切！">
-    <link rel="shortcut icon" type="image/x-icon" href="http://img.rysp.tv/LOGO.ico">
+    <meta name="keywords" content="视频,视频分享,视频搜索,视频播放,视频社区">
+    <meta name="description" content="分发，上传，社区一体的在线视频平台">
+    <link rel="shortcut icon" type="image/x-icon" href="/images/newindex/logo-02.png">
+    <link rel="icon" sizes="16x16 32x32 64x64" href="/images/newindex/logo_ico.ico">
+    <link rel="icon" type="image/png" sizes="196x196" href="/images/newindex/logo-02.png">
+    <link rel="icon" type="image/png" sizes="160x160" href="/images/newindex/logo-02.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/images/newindex/logo-02.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/images/newindex/logo-02.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/newindex/logo-02.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/newindex/logo-02.png">
+    <!--    http://img.guazitv.tv/LOGO.ico-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R9BCW62LFW"></script>
+<!--    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R9BCW62LFW"></script>-->
+<!--    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6TXJP66KCH"></script>-->
+    <script async src="/js/video/gtag_id_G-6TXJP66KCH.js"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -61,37 +72,37 @@ AppAsset::register($this);
           "@type": "SiteNavigationElement",
           "position": 1,
           "name": "首页",
-          "url":"http://rysp.tv/"
+          "url":"http://guazitv.tv/"
         },
         {
           "@type": "SiteNavigationElement",
           "position": 2,
           "name": "电影",
-          "url":"http://rysp.tv/video/channel?channel_id=1"
+          "url":"http://guazitv.tv/video/channel?channel_id=1"
         },
         {
           "@type": "SiteNavigationElement",
           "position": 3,
           "name": "连续剧",
-          "url":"http://rysp.tv/video/channel?channel_id=2"
+          "url":"http://guazitv.tv/video/channel?channel_id=2"
         },
         {
           "@type": "SiteNavigationElement",
           "position": 4,
           "name": "动漫",
-          "url":"http://rysp.tv/video/channel?channel_id=4"
+          "url":"http://guazitv.tv/video/channel?channel_id=4"
         },
         {
           "@type": "SiteNavigationElement",
           "position": 5,
           "name": "综艺",
-          "url":"http://rysp.tv/video/channel?channel_id=3"
+          "url":"http://guazitv.tv/video/channel?channel_id=3"
         },
         {
           "@type": "SiteNavigationElement",
           "position": 6,
           "name": "纪录片",
-          "url":"http://rysp.tv/video/channel?channel_id=32"
+          "url":"http://guazitv.tv/video/channel?channel_id=32"
         }
       ]
     }
