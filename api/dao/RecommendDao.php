@@ -199,6 +199,15 @@ class RecommendDao extends BaseDao
                 $it['actors'] = array_values($actors);
                 $it['director'] = array_values($director);
                 $it['year'] = $videoInfo['year'];
+
+                /* 首页video检查created_at在24小时内为最新 begin */
+                $time24 = strtotime("-1 day");//24小时之前的时间戳
+                if($it['created_at'] >= $time24){
+                    $it['video_newest'] = '1';//是最新
+                }else{
+                    $it['video_newest'] = '0';
+                }
+                /* 首页video检查created_at在24小时内为最新 end */
             }
 
             // 缓存推荐位视频id

@@ -234,8 +234,11 @@ NewIndexStyleAsset::register($this);
                                     </div>
                                     <div class="Movie-J">
                                         <img src="/images/newindex/tuijian.png" />
+                                        <input type="hidden" value="$list['video_newest']" />
                                     </div>
-                                    <!--                                    <div class="Movie-X">新</div>-->
+                                    <?php if($list['video_newest']=='1'):?>
+                                        <div class="Movie-X">新</div>
+                                    <?php endif;?>
                                 </a>
                                 <a class="Movie-name02" name="zt" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
                                     <?= $list['video_name']?>
@@ -248,7 +251,7 @@ NewIndexStyleAsset::register($this);
                                     </div>
                                     <div>
                                         <?= $list['flag']?>
-                                        <!--                                更新01-->
+                                        <!-- 更新01 -->
                                     </div>
                                 </div>
                             </li>
@@ -374,7 +377,9 @@ NewIndexStyleAsset::register($this);
                                     <div class="Movie-J">
                                         <img src="/images/newindex/tuijian.png" />
                                     </div>
-                                    <!--                                    <div class="Movie-X">新</div>-->
+                                    <?php if($list['video_newest']=='1'):?>
+                                        <div class="Movie-X">新</div>
+                                    <?php endif;?>
                                 </a>
                                 <a class="Movie-name02" name="zt" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
                                     <?= $list['video_name']?>
@@ -389,7 +394,7 @@ NewIndexStyleAsset::register($this);
                                     </div>
                                     <div>
                                         <?= $list['flag']?>
-                                        <!--                                更新01-->
+                                        <!-- 更新01-->
                                     </div>
                                 </div>
                             </li>
