@@ -11,9 +11,11 @@ use api\models\video\Actor;
 use api\models\video\Banner;
 use api\models\video\HotRecommend;
 use api\models\video\HotRecommendList;
+use api\models\video\Industry;
 use api\models\video\Video;
 use api\models\video\VideoActor;
 use api\models\video\VideoArea;
+use api\models\video\VideoAduser;
 use api\models\video\VideoChannel;
 use api\models\video\VideoChapter;
 use api\models\video\VideoFeedback;
@@ -842,6 +844,7 @@ class VideoDao extends BaseDao
 
     /*
      * 在线反馈信息查询
+     * 国家、行业
      */
     public function findFeedbackinfo(){
         $data = [];
@@ -866,7 +869,11 @@ class VideoDao extends BaseDao
         $country = new ActiveDataProvider([
             'query' => VideoFeedcountry::find()
         ]);
-        $data['country'] = $country->toArray();
+        $data['country'] = $country->toArray();//国家
+        $industry = new ActiveDataProvider([
+            'query' => Industry::find()
+        ]);
+        $data['industry'] = $industry->toArray();//行业
         return $data;
     }
 
@@ -955,5 +962,22 @@ class VideoDao extends BaseDao
                     ->andWhere(['country_code' => $country_code ])
                     ->one();
         return $country;
+    }
+
+    /*
+     * 注册广告商
+     */
+    public function saveAdcenter($type,$realname,$telephone,$country,$address,$industry,$wechatNO,$email){
+        $adcenter = new VideoAduser();
+        $adcenter->type = $type;
+        $adcenter->realname = $realname;
+        $adcenter->telephone = $telephone;
+        $adcenter->country = $country;
+        $adcenter->address = $address;
+        $adcenter->industry = $industry;
+        $adcenter->wechatNO = $wechatNO;
+        $adcenter->email = $email;
+        $result = $adcenter->insert();
+        return $result;
     }
 }

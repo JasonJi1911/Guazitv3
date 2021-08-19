@@ -2,7 +2,7 @@
 use yii\helpers\Url;
 use pc\assets\NewIndexStyleAsset;
 
-$this->title = '排行榜';
+//$this->title = '排行榜';
 NewIndexStyleAsset::register($this);
 
 $js = <<<JS

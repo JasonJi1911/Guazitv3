@@ -3,7 +3,7 @@ use yii\helpers\Url;
 use pc\assets\NewIndexStyleAsset;
 
 //$this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子tv,澳洲瓜子tv,新西兰瓜子tv,澳新瓜子tv,瓜子视频,瓜子影视,电影,电视剧,榜单,综艺,动画,记录片']);
-$this->title = '首页';
+//$this->title = '首页';
 NewIndexStyleAsset::register($this);
 
 ?>
@@ -234,7 +234,6 @@ NewIndexStyleAsset::register($this);
                                     </div>
                                     <div class="Movie-J">
                                         <img src="/images/newindex/tuijian.png" />
-                                        <input type="hidden" value="$list['video_newest']" />
                                     </div>
                                     <?php if($list['video_newest']=='1'):?>
                                         <div class="Movie-X">新</div>

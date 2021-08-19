@@ -2,17 +2,8 @@
 use yii\helpers\Url;
 use pc\assets\NewIndexStyleAsset;
 
-$this->title = '';
+//$this->title = '';
 NewIndexStyleAsset::register($this);
-
-$js = <<<SCRIPT
-$(function(){
-    
-});
-                        
-SCRIPT;
-$this->registerJs($js);
-
 ?>
 <!--首页大轮播-->
 <div id="playBox" class="play-box">

@@ -45,4 +45,6 @@ function showcountry(){
         $("#v_countryname").html("全球");
         $("#v_countryimg").attr("src","/images/newindex/GLgq.png");
     }
+    $("#head-city").show();
+    $("#v_countryname").parent().show();
 }

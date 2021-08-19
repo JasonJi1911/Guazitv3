@@ -2,10 +2,10 @@
 use yii\helpers\Url;
 use pc\assets\NewIndexStyleAsset;
 
-$this->title = '吉祥视频';
+//$this->title = '吉祥视频';
 NewIndexStyleAsset::register($this);
-$name = '吉祥视频';
-$logo = '吉祥';
+$name = LOGONAME.'视频';
+$logo = LOGONAME;
 
 $js = <<<JS
 $(function(){    

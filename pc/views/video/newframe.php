@@ -2,8 +2,15 @@
 use yii\helpers\Url;
 use pc\assets\NewIndexStyleAsset;
 
-$this->registerMetaTag(['name' => 'keywords', 'content' => '吉祥tv,澳洲吉祥tv,新西兰吉祥tv,澳新吉祥tv,吉祥视频,吉祥影视,电影,电视剧,榜单,综艺,动画,记录片']);
-$this->title = '';
+$this->registerMetaTag(['name' => 'keywords', 'content' => LOGONAME.'视频,澳洲'.LOGONAME.'视频,新西兰'.LOGONAME.'视频,澳新'.LOGONAME.'视频,'.LOGONAME.'影视,电影,电视剧,榜单,综艺,动画,记录片']);
+
+switch ($pageTab) {
+    case "newdetail" :
+        $this->title = $data['info']['video_name'] . '-' . LOGONAME . '视频';
+        break;
+    default :
+        $this->title = LOGONAME. '视频';
+}
 NewIndexStyleAsset::register($this);
 
 $js = <<<SCRIPT
@@ -100,11 +107,7 @@ header("Access-Control-Allow-Origin:*");
 $headclass = "";
 $bodyid = "";
 switch ($pageTab){
-    case "newindex" : case "channel" : case "help" :
-        $bodyid    = "indexTS";
-        $headclass = "bkgBlack";
-        break;
-    case "hotplay":
+    case "newindex" : case "channel" : case "help" : case "hotplay" : case "adcenter" :
         $bodyid    = "indexTS";
         $headclass = "bkgBlack";
         break;
@@ -130,7 +133,7 @@ if($pageTab != "newdetail") {//顶部导航默认透明或白色
     <ul class="navTop">
         <li class="navTopLogo" id="v_navTopLogo">
             <a href="/video/index">
-                <span id="head-city" class="navTopWZ">美国</span>
+                <span id="head-city" class="navTopWZ" style="display: none;"></span>
                 <script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>
                 <script src="/js/video/country.js"></script>
 <!--                <script>-->
@@ -613,6 +616,11 @@ if($pageTab != "newdetail") {//顶部导航默认透明或白色
             'helptab'       => $helptab
         ]);
         break;
+    case "adcenter" :
+        echo $this->render('adcenter',[
+            'data'  => $data
+        ]);
+        break;
 } ?>
 
 <!--底部导航-->
@@ -621,10 +629,10 @@ if($pageTab != "newdetail") {//顶部导航默认透明或白色
         <div>
             <ul class="footNav">
                 <li>
-                    <a href="javascript:;">
+                    <a href="javascript:;" style="display: none;">
                         <img src="/images/newindex/dizi.png" />
-                        <img id="v_countryimg" src="/images/newindex/US.png" />
-                        <span id="v_countryname">美国</span>
+                        <img id="v_countryimg" src="" />
+                        <span id="v_countryname"></span>
                     </a>
                 </li>
                 <li>
@@ -637,19 +645,19 @@ if($pageTab != "newdetail") {//顶部导航默认透明或白色
                     <a href="<?= Url::to(['/video/help', 'tab' => 'feedback'])?>">在线反馈</a>
                 </li>
                 <li>
+                    <a href="<?= Url::to(['/video/adcenter'])?>">广告投放</a>
+                </li>
+                <li>
                     <a href="<?= Url::to(['/video/help', 'tab' => 'contact'])?>">联系我们</a>
                 </li>
                 <li>
                     <a href="<?= Url::to(['/video/help', 'tab' => 'terms'])?>">服务条款</a>
                 </li>
-                <li>
-<!--                    <a href="javascript:;">诚聘英才</a>-->
-                </li>
 <!--                <li>-->
-<!--                    <a href="javascript:;">充值中心</a>-->
+<!--                    <a href="javascript:;">诚聘英才</a>-->
 <!--                </li>-->
 <!--                <li>-->
-<!--                    <a href="javascript:;">广告投放</a>-->
+<!--                    <a href="javascript:;">充值中心</a>-->
 <!--                </li>-->
 <!--                <li>-->
 <!--                    <a href="javascript:;">充值协议</a>-->

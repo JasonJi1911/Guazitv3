@@ -548,4 +548,22 @@ class VideoController extends BaseController
         }
         return $data;
     }
+    /*
+     * 注册广告商
+     */
+    public function actionSaveAdcenter(){
+        $type = $this->getParam('type', "");
+        $realname = $this->getParam('realname', "");
+        $telephone = $this->getParam('telephone', "");
+        $country = $this->getParam('country', "");
+        $address = $this->getParam('address', "");
+        $industry = $this->getParam('industry', "");
+        $wechatNO = $this->getParam('wechatNO', "");
+        $email = $this->getParam('email', "");
+
+        $videoDao = new VideoDao();
+        $result = $videoDao->saveAdcenter($type,$realname,$telephone,$country,$address,$industry,$wechatNO,$email);
+
+        return $result;
+    }
 }

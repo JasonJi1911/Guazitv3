@@ -2,7 +2,7 @@
 use yii\helpers\Url;
 use pc\assets\NewIndexStyleAsset;
 
-$this->title = '筛选结果';
+//$this->title = '筛选结果';
 NewIndexStyleAsset::register($this);
 
 $js = <<<JS

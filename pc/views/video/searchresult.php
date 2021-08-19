@@ -2,7 +2,7 @@
 use yii\helpers\Url;
 use pc\assets\NewIndexStyleAsset;
 
-$this->title = '吉祥视频';
+//$this->title = '吉祥视频';
 NewIndexStyleAsset::register($this);
 
 $js = <<<JS

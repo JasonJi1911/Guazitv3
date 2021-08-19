@@ -839,4 +839,44 @@ class VideoController extends BaseController
         $result = Yii::$app->api->get('/video/get-country',['country_code' => $country_code, 'country_name' => $country_name]);
         return Tool::responseJson(0, '操作成功', $result);
     }
+    /*
+     * 广告中心
+     */
+    public function actionAdcenter(){
+
+        $pageTab = 'adcenter';
+
+//        $helptab = Yii::$app->request->get('tab', "");
+        //请求频道、搜索信息
+        $channels = Yii::$app->api->get('/video/channels');
+        //获取热搜
+        $hotword = Yii::$app->api->get('/search/hot-word');
+        //在线反馈信息
+        $data = Yii::$app->api->get('/video/feedbackinfo');
+
+        return $this->render('newframe',[
+            'pageTab'  => $pageTab,
+            'channels' => $channels,
+            'hotword'  => $hotword,
+            'data'     => $data
+        ]);
+    }
+
+    /*
+     * 注册广告商
+     */
+    public function actionSaveAdcenter(){
+        $type = Yii::$app->request->get('type', "");
+        $realname = Yii::$app->request->get('realname', "");
+        $telephone = Yii::$app->request->get('telephone', "");
+        $country = Yii::$app->request->get('country', "");
+        $address = Yii::$app->request->get('address', "");
+        $industry = Yii::$app->request->get('industry', "");
+        $wechatNO = Yii::$app->request->get('wechatNO', "");
+        $email = Yii::$app->request->get('email', "");
+
+        $result = Yii::$app->api->get('/video/save-adcenter',['type' => $type,'realname' => $realname,'telephone' => $telephone,
+            'country'=>$country, 'address'=>$address, 'industry'=>$industry,'wechatNO'=>$wechatNO,'email'=>$email]);
+        return Tool::responseJson(0, '提交成功', $result);
+    }
 }
