@@ -38,6 +38,18 @@ else
 </style>
 <!--黑色区域-->
 <div class="box05">
+    <!--播放器上面加广告-->
+    <?php if(!empty($data['advert'])) :?>
+        <?php foreach ($data['advert'] as $key => $advert) : ?>
+            <?php if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_VIDEO_TOP_PC) :?>
+                <div class="play-box video-add-column">
+                    <a href="<?=$advert['ad_skip_url']?>" target="_blank">
+                        <img src="<?=$advert['ad_image']?>" />
+                    </a>
+                </div>
+            <?php endif;?>
+        <?php endforeach;?>
+    <?php endif;?>
     <div>
         <!--播放器位置-->
         <div class="play">
@@ -69,14 +81,19 @@ else
         <div class="AD-02">
             <?php if(!empty($data['advert'])) :?>
                 <?php foreach ($data['advert'] as $key => $advert): ?>
-                    <?php if(!empty($advert) && intval($advert['position_id']) == intval(AdvertPosition::POSITION_VIDEO_TOP_PC)) :?>
-                        <a href="<?=$advert['ad_skip_url']?>" target="_blank">
-                            <img src="<?=$advert['ad_image']?>" onerror="this.src='/images/NewVideo/GG03.png'"/>
-                        </a>
-                    <?php else :?>
-                        <img src="/images/NewVideo/GG03.png"/>
-                    <?php endif;?>
+                    <?php $adtab = false;
+                    if(!empty($advert) && intval($advert['position_id']) == intval(AdvertPosition::POSITION_VIDEO_RIGHT_PC)){
+                        $adtab = true;
+                        break;
+                    }?>
                 <?php endforeach;?>
+                <?php if($adtab) :?>
+                    <a href="<?=$advert['ad_skip_url']?>" target="_blank">
+                        <img src="<?=$advert['ad_image']?>" onerror="this.src='/images/NewVideo/GG03.png'"/>
+                    </a>
+                <?php else :?>
+                    <img src="/images/NewVideo/GG03.png"/>
+                <?php endif;?>
             <?php endif;?>
         </div>
         <!--评论，点赞，差评等按钮-->

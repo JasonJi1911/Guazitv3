@@ -263,6 +263,12 @@ NewIndexStyleAsset::register($this);
                     <?php endif;?>
                 <?php endforeach;?>
             </ul>
+        <?php  else: ?>
+            <div class="play-box video-add-column">
+                <a href="<?=$labels['ad_skip_url']?>" target="_blank">
+                    <img src="<?=$labels['ad_image']?>" alt="">
+                </a>
+            </div>
         <?php endif; ?>
     <?php endforeach;?>
 <?php endif; ?>

@@ -42,9 +42,16 @@ class ChannelLogic
         // 获取广告
         $advertLogic = new AdvertLogic();
         //        $advert = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX);
-        $adposition = Yii::$app->common->product == Common::PRODUCT_PC
-            ? AdvertPosition::POSITION_VIDEO_INDEX_PC : AdvertPosition::POSITION_VIDEO_INDEX;
-        $advert = $advertLogic->advertByPosition($adposition, $city);
+//        $adposition = Yii::$app->common->product == Common::PRODUCT_PC ? AdvertPosition::POSITION_VIDEO_INDEX_PC : AdvertPosition::POSITION_VIDEO_INDEX;
+//        $advert = $advertLogic->advertByPosition($adposition, $city);
+        $advertArray = [];
+        if(Yii::$app->common->product == Common::PRODUCT_PC ){
+            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX_PC1, $city));
+            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX_PC2, $city));
+            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX_PC3, $city));
+            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX_PC4, $city));
+            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX_PC5, $city));
+        }
         // 广告循环key
         $advertKey = 0;
         foreach ($channelList as $index => $channel) {
@@ -80,12 +87,19 @@ class ChannelLogic
             // 推荐位频道下影片
             $recommend['list'] = $videoRecommend->recommendVideo($recommend['recommend_id'], $this->videoFields);
             // 每两个推荐位插入广告
-            if ($advert) {
-                if ($index != 0 && $index % 2 == 0) {
-                    $advertKey = isset($advert[$advertKey]) ? $advertKey : 0;
-                    array_push($data['label'], $advert[$advertKey]);
-                    $advertKey ++;
+//            if ($advert) {
+//                if ($index != 0 && $index % 2 == 0) {
+//                    $advertKey = isset($advert[$advertKey]) ? $advertKey : 0;
+//                    array_push($data['label'], $advert[$advertKey]);
+//                    $advertKey ++;
+//                }
+//            }
+            // 每个推荐位对应插入广告-20210823
+            if ($advertArray) {
+                if ($advertArray[$advertKey]) {
+                    array_push($data['label'], $advertArray[$advertKey]);
                 }
+                $advertKey++;
             }
             array_push($data['label'], $recommend);
         }
@@ -136,9 +150,22 @@ class ChannelLogic
         // 获取广告
         $advertLogic = new AdvertLogic();
         // $advert = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX);
-        $adposition = Yii::$app->common->product == Common::PRODUCT_PC
-            ? AdvertPosition::POSITION_VIDEO_INDEX_PC : AdvertPosition::POSITION_VIDEO_INDEX;
-        $advert = $advertLogic->advertByPosition($adposition, $city);
+//        $adposition = Yii::$app->common->product == Common::PRODUCT_PC
+//            ? AdvertPosition::POSITION_VIDEO_INDEX_PC : AdvertPosition::POSITION_VIDEO_INDEX;
+//        $advert = $advertLogic->advertByPosition($adposition, $city);
+        $advertArray = [];
+        if(Yii::$app->common->product == Common::PRODUCT_PC ){
+            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC1, $city));
+            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC2, $city));
+            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC3, $city));
+            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC4, $city));
+            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC5, $city));
+            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC6, $city));
+            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC7, $city));
+            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC8, $city));
+            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC9, $city));
+            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC10, $city));
+        }
         // 广告循环key
         $advertKey = 0;
         $label = [];
@@ -154,12 +181,19 @@ class ChannelLogic
                 continue;
             }
             // 添加广告
-            if ($advert) {
-                if ($index != 0 && $index % 2 == 0) {
-                    $advertKey = isset($advert[$advertKey]) ? $advertKey : 0;
-                    array_push($label, $advert[$advertKey]);
-                    $advertKey ++;
+//            if ($advert) {
+//                if ($index != 0 && $index % 2 == 0) {
+//                    $advertKey = isset($advert[$advertKey]) ? $advertKey : 0;
+//                    array_push($label, $advert[$advertKey]);
+//                    $advertKey ++;
+//                }
+//            }
+            // 每个推荐位对应插入广告-20210823
+            if ($advertArray) {
+                if ($advertArray[$advertKey]) {
+                    array_push($label, $advertArray[$advertKey]);
                 }
+                $advertKey++;
             }
              // 添加返回值
             array_push($label, $item);

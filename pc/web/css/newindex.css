@@ -1,5 +1,4 @@
 /*去除默认样式*/
-
 img {
 	border: none;
 	background: rgba(255, 255, 255, 0);
@@ -89,7 +88,6 @@ select {
 
 
 /*-------全局样式-------*/
-
 body {
 	min-width: 1336px;
 }
@@ -156,7 +154,6 @@ body {
 
 
 /*-------头部导航--------*/
-
 .navTopBox {
 	position: fixed;
 	left: 0;
@@ -222,7 +219,6 @@ body {
 
 
 /*---------logo---------------*/
-
 .navTopLogo {
 	position: absolute;
 	top: 16px;
@@ -249,7 +245,6 @@ body {
 
 
 /*---------导航按钮-------------------*/
-
 .navTopMenuBox {
 	position: absolute;
 	top: 11px;
@@ -304,7 +299,6 @@ body {
 
 
 /*-------------一级菜单--------------------*/
-
 .navTopMenu-oneTop {
 	display: none;
 	position: absolute;
@@ -412,7 +406,6 @@ body {
 
 
 /*--------搜索----------*/
-
 .navTopSearchBox {
 	padding-left: 360px;
 	padding-right: 360px;
@@ -470,7 +463,6 @@ body {
 
 
 /*搜索菜单*/
-
 .searchMenuBox {
 	/*display: none; 放在页面里*/
 	position: absolute;
@@ -536,7 +528,6 @@ body {
 
 
 /*----------头部导航按钮-----------------*/
-
 .navTopBtnBox {
 	position: absolute;
 	top: 11px;
@@ -578,7 +569,6 @@ body {
 
 
 /*--------头部导航按钮背景---------*/
-
 .navTopBtnBox>.navTopBtn:nth-of-type(1)>div:first-of-type {
 	background-image: url(../images/newindex/VIP-1.png);
 }
@@ -853,7 +843,6 @@ body {
 
 
 /*--------------*/
-
 .XX-tabA {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
@@ -882,7 +871,6 @@ body {
 
 
 /*---------------头部登录按钮--------------*/
-
 .navTopLogon-no {
 	float: left;
 	margin-left: 40px;
@@ -993,7 +981,6 @@ body {
 
 
 /*个人信息*/
-
 .navTopLogon:hover .navTopLogon-GRXX {
 	display: block;
 }
@@ -1150,7 +1137,6 @@ body {
 
 
 /*-------轮播--------------*/
-
 .play-box {
 	position: relative;
 	width: 100%;
@@ -1159,7 +1145,6 @@ body {
 
 
 /*设置边框下的图片*/
-
 .play-box img {
 	display: block;
 	width: 100%;
@@ -1167,7 +1152,6 @@ body {
 
 
 /*设置超链接下的所有图片不显示*/
-
 .play-box #imgList a {
 	width: 100%;
 	display: block;
@@ -1182,9 +1166,7 @@ body {
 	/*默认透明度过渡时间为0.5s*/
 }
 
-
 /*设置当前图片显示*/
-
 #imgList a.current {
 	opacity: 1;
 	/*默认图片显示*/
@@ -1192,9 +1174,7 @@ body {
 	/*默认高度为自动*/
 }
 
-
 /*设置列表ul*/
-
 .iconList ul {
 	padding-top: 82px;
 	padding-bottom: 10px;
@@ -1206,14 +1186,12 @@ body {
 
 
 /*轮播图片最大高度*/
-
 #imgList a>img {
 	max-height: 670px;
 }
 
 
 /*设置列表ul下的li*/
-
 .iconList ul li {
 	height: 12.5%;
 	font-size: 14px;
@@ -1235,7 +1213,6 @@ body {
 
 
 /*当图片变化时，图标也跟着变化*/
-
 .iconList ul li.current a {
 	font-weight: bold;
 	font-size: 22px;
@@ -1250,7 +1227,6 @@ body {
 
 
 /*设置图标绝对定位*/
-
 .iconList {
 	position: absolute;
 	top: 0;
@@ -1262,7 +1238,6 @@ body {
 
 
 /*--------------------*/
-
 .sort {
 	padding: 15px 40px;
 	background-color: #F9F9F9;
@@ -1459,7 +1434,6 @@ body {
 }
 
 /*今日热点*/
-
 .RD-box {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -1516,7 +1490,6 @@ body {
 
 
 /*-------热点轮播--------------*/
-
 .play-box02 {
 	position: relative;
 	width: 100%;
@@ -1525,7 +1498,6 @@ body {
 
 
 /*设置边框下的图片*/
-
 .play-box02 img {
 	display: block;
 	width: 100%;
@@ -1534,7 +1506,6 @@ body {
 
 
 /*设置超链接下的所有图片不显示*/
-
 .play-box02 #imgList02 a {
 	width: 100%;
 	display: block;
@@ -1551,7 +1522,6 @@ body {
 
 
 /*设置当前图片显示*/
-
 #imgList02 a.current02 {
 	display: block;
 	opacity: 1;
@@ -1568,7 +1538,6 @@ body {
 
 
 /*设置图标绝对定位*/
-
 .iconList02 {
 	position: absolute;
 	bottom: 11px;
@@ -1580,7 +1549,6 @@ body {
 
 
 /*设置列表ul*/
-
 .iconList02 ul {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
@@ -1591,7 +1559,6 @@ body {
 
 
 /*设置列表ul下的li*/
-
 .iconList02 ul li {
 	border-radius: 20px;
 	height: 4px;
@@ -1601,7 +1568,6 @@ body {
 
 
 /*当图片变化时，图标也跟着变化*/
-
 .iconList02 ul li.current02 {
 	background-color: #FF5722;
 }
@@ -1667,7 +1633,6 @@ body {
 
 
 /*--------电影和电影排行榜-----------*/
-
 .Movie-box {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -2087,7 +2052,6 @@ body {
 
 
 /*--------体育-----------*/
-
 .Sports-box {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -2126,7 +2090,6 @@ body {
 
 
 /*-----华人------*/
-
 .HrBox {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -2214,7 +2177,6 @@ body {
 
 
 /*-------------*/
-
 .foot {
 	margin-top: 30px;
 	padding: 40px 0px;
@@ -2334,7 +2296,6 @@ body {
 
 
 /*-------------*/
-
 .rigNav {
 	position: fixed;
 	bottom: 20px;
@@ -3219,7 +3180,6 @@ body {
 
 
 /*--------筛选条件和广告---------*/
-
 .box01 {
 	display: grid;
 	grid-template-columns: auto 500px;
@@ -3423,7 +3383,6 @@ body {
 
 
 /*--------分页--------*/
-
 .page {
 	margin: 60px auto;
 	text-align: center;
@@ -3485,7 +3444,6 @@ body {
 
 
 /*----------搜索结果页--------------*/
-
 .SScondition {
 	margin-top: 20px;
 	margin-left: 20px;
@@ -3659,7 +3617,6 @@ body {
 
 
 /*----------播放页-----------*/
-
 .box05 {
 	width: 100%;
 	padding-top: 80px;
@@ -4249,7 +4206,6 @@ body {
 
 
 /*白色区域*/
-
 .box06 {
 	padding: 20px 0;
 	overflow: hidden;
@@ -4779,7 +4735,6 @@ body {
 
 
 /*------------排行榜页--------------*/
-
 .RANbox-title {
 	position: relative;
 	height: 300px;
@@ -5144,7 +5099,6 @@ body {
 
 
 /*------------求片--------------*/
-
 .seekbox {
 	margin-bottom: -30px;
 	min-height: 950px;
@@ -5337,7 +5291,6 @@ body {
 }
 
 /*-------------帮助中心-------------------*/
-
 .helpbox01 {
 	display: none;
 	margin: 0 auto;
@@ -5978,7 +5931,6 @@ body {
 
 
 /*个人中心*/
-
 .per-box {
 	padding: 0px 40px;
 	min-height: 640px;
@@ -8056,7 +8008,6 @@ body {
 
 
 /*落地页*/
-
 .Title-01>div {
 	display: inline-block;
 }
@@ -8097,7 +8048,6 @@ body {
 }
 
 /*他人主页*/
-
 .mt-20 {
 	margin-top: 20px;
 }
@@ -8313,7 +8263,6 @@ body {
 }
 
 /*上传视频*/
-
 .upl-box {
 	padding-top: 100px;
 }
@@ -8629,7 +8578,6 @@ body {
 
 
 /*上传剧集*/
-
 .upl-gz {
 	overflow: hidden;
 	margin-bottom: 7px;
@@ -8862,7 +8810,6 @@ body {
 
 
 /*---------vip中心--------------*/
-
 .vip-top {
 	position: relative;
 	min-height: 300px;
@@ -9735,7 +9682,6 @@ body {
 
 
 /*------充值记录--------------*/
-
 .vip-top .RANbox-title-icon {
 	padding-top: 60px;
 }
@@ -9773,9 +9719,7 @@ body {
 	color: #999999;
 }
 
-
 /*-----20210730修改----------*/
-
 .Movie .oth-time {
 	bottom: 0;
 	color: #FF972A;
@@ -9872,9 +9816,6 @@ body {
 	border: none;
 }
 
-
-
-
 /*广告中心*/
 .RANbox-title.AD{
 	background-image: url(../images/newindex/vip-center-background.png);
@@ -9911,7 +9852,6 @@ body {
 	background-repeat: no-repeat;
 	background-size: 100% 100%;*/
 }
-
 
 .ADbox .RANbox-box02 {
 	margin: 20px auto;
@@ -10516,15 +10456,14 @@ body {
 .ss_no>h2>a:hover{
 	color: #FF5722;
 }
-/*---------最新剧集  红点标识---------*/
 
+/*---------最新剧集  红点标识---------*/
 .icon_spot{
 	background-image: url(../images/newindex/icon_spot.png);
 	background-position: right top;
 	background-repeat: no-repeat;
 }
 /*--------主题颜色切换----------*/
-
 body.ZT-black,
 .bkgWhite.ZT-black,
 .searchMenuBox.ZT-black,

@@ -546,6 +546,7 @@ if($pageTab != "newdetail") {//顶部导航默认透明或白色
             'hotword'   => $hotword,
             'channel_id'=> $channel_id,
             'keyword'   => $keyword,
+            'advert'    => $advert
         ]);
         break;
     case "searchresult":
@@ -554,7 +555,8 @@ if($pageTab != "newdetail") {//顶部导航默认透明或白色
             'keyword'       => $keyword,
             'channels'      => $channels,
             'channel_id'    => $channel_id,
-            'hotword'       => $hotword
+            'hotword'       => $hotword,
+            'advert'        => $advert
         ]);
         break;
     case "seek":

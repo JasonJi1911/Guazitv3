@@ -147,7 +147,7 @@ class VideoController extends BaseController
             ? AdvertPosition::POSITION_VIDEO_TOP_PC : AdvertPosition::POSITION_VIDEO_TOP_PC;
         $videoBottomPos = Yii::$app->common->product == Common::PRODUCT_PC
             ? AdvertPosition::POSITION_VIDEO_BOTTOM_PC : AdvertPosition::POSITION_VIDEO_BOTTOM_PC;
-            
+
         $data = [];
         
         if ($page == "home") {
@@ -164,7 +164,14 @@ class VideoController extends BaseController
                 'playlikebottom' => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_LIKE_BOTTOM, $city),
                 'videotop' => (object)$advertLogic->advertByPosition($videoTopPos, $city),
                 'videobottom' => (object)$advertLogic->advertByPosition($videoBottomPos, $city),
+                'videoright' => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_RIGHT_PC, $city)
             ];
+        }else if($page == "searchresult"){
+            $advert = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_SEARCH_PC, $city);
+            $data['advert'] = $advert;
+        }else if($page == "list"){
+            $advert = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_LIST_PC, $city);
+            $data['advert'] = $advert;
         }
         
         return $data;

@@ -853,6 +853,7 @@ class VideoLogic
             (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_LIKE_BOTTOM, $city),
             (object)$advertLogic->advertByPosition($videoTopPos, $city),
             (object)$advertLogic->advertByPosition($videoBottomPos, $city),
+            (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_RIGHT_PC, $city)
         ];
 
         return $data;

@@ -409,13 +409,17 @@ class VideoController extends BaseController
         //请求热门搜索信息
         $hot = Yii::$app->api->get('/search/hot-word');
 
+        //右侧广告
+        $advert = Yii::$app->api->get('/video/advert', ['page' => $pageTab, 'city'=> '']);
+
         return $this->render('newframe', [
             'pageTab'       => $pageTab,
             'info'          => $info,
             'hotword'       => $hot,
 //            'channel_id'    => $channel_id,
             'keyword'       => $keyword,
-            'channels'      => $channels
+            'channels'      => $channels,
+            'advert'        => $advert['advert']
         ]);
     }
 
@@ -588,12 +592,16 @@ class VideoController extends BaseController
         $info = Yii::$app->api->get('/search/new-result', ['keyword' => $keyword, 'channel_id' => $channel_id, 'tag' => $tag, 'sort' => $sort, 'sorttype' => $sorttype,
             'area' => $area, 'play_limit' => $play_limit, 'year' => $year, 'page_num' => $page_num, 'page_size' =>$page_size ,'type' => 1, 'status' => $status]);
 
+        //右侧广告
+        $advert = Yii::$app->api->get('/video/advert', ['page' => $pageTab, 'city'=> '']);
+
         return $this->render('newframe',[
             'pageTab'       => $pageTab,
             'keyword'       => $keyword,
             'info'          => $info,
             'channels'      => $channels,
-            'hotword'       => $hotword
+            'hotword'       => $hotword,
+            'advert'        => $advert['advert']
         ]);
     }
 

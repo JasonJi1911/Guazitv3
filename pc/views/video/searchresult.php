@@ -308,7 +308,11 @@ $this->registerJs($js);
         <?php endforeach;?>
     </div>
     <div class="AD-01" name="zt">
-        <a href="javascript:;"><img src="/images/newindex/AD0-1.png" /></a>
+        <?php if(isset($advert['advert_id'])):?>
+            <a href="<?=$advert['ad_skip_url']?>" target="_blank"><img src="<?=$advert['ad_image']?>" /></a>
+        <?php else :?>
+            <a href="javascript:;"><img src="/images/newindex/AD0-1.png" /></a>
+        <?php endif;?>
         <div class="GGtext">
             广告
         </div>
