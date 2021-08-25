@@ -18,6 +18,11 @@ define('WAP_HOST_PATH', 'http://' . WAP_HOST_NAME);
 define('VIP_SWITCH', true); // 会员开关
 define('COUPON_SWITCH', true); // 卡券开关
 
+//视频网站名称
+define('LOGONAME','吉祥');
+//广告图片链接前缀(当前域名)
+define('ADVERTURL','https://img.kantv9.com/');
+
 return [
     'sign_secret_key' => [ //签名key
         'product_app' => [  //app

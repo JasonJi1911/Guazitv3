@@ -473,62 +473,62 @@ $(document).ready(function() {
 	});
 });
 
-//首页图片高度统一
-$(document).ready(function(e) {
-	//	热点图片
-	var indexedImgHgt01 = $(".RD-img").width() / 640 * 360 / 2;
-	$(".RD-img>img").height(indexedImgHgt01);
-	//	视频图片
-	var indexedImgHgt02 = $(".HrBox-D").width() / 640 * 360;
-	$(".HrBox-img").height(indexedImgHgt02);
-	//	电影图片
-	var indexedImgHgt03 = $(".Movie-list").width() / 420 * 600;
-	$(".Movie-list .Movie-img").height(indexedImgHgt03);
-	//	热点轮播图片
-	var indexedImgHgt04 = $(".RD-banner .RD-img").width() / 655 * 375;
-	$(".RD-banner .RD-img>img").height(indexedImgHgt04);
-	//	个人中心视频图片
-	var indexedImgHgt05 = 200 / 640 * 360;
-	$(".per-tab-box .RANbox-list-xx>li:first-of-type img ").height(indexedImgHgt05);
-	//	个人中心剧集图片
-	var indexedImgHgt05 = 120 / 420 * 600;
-	$(".per-tab-box .RANbox-list-xx.per-img>li:first-of-type img ").height(indexedImgHgt05);
-
-	//	排行榜剧集图片
-	var indexedImgHgt06 = 150 / 420 * 600;
-	$(".RANbox-box02 .RANbox-list-xx>li:first-of-type img ").height(indexedImgHgt06);
-	var indexedImgHgt07 = 120 / 420 * 600;
-	$(".RAN-z-box01>li:nth-of-type(2) img ").height(indexedImgHgt07);
-
-	//	视频列表图片
-	var indexedImgHgt08 = $(".act .oth-list>li").width() / 640 * 360;
-	$(".othSp>a>img").height(indexedImgHgt08);
-	//	剧集列表图片
-	var indexedImgHgt09 = $(".act .oth-list>li").width() / 420 * 600;
-	$(".othJj>a>img").height(indexedImgHgt09);
-
-	//窗口大小改变   首页图片高度统一
-	window.onresize = function() {
-		//	热点图片
-		var indexedImgHgt01 = $(".RD-img").width() / 640 * 360 / 2;
-		$(".RD-img>img").height(indexedImgHgt01);
-		//	视频图片
-		var indexedImgHgt02 = $(".HrBox-D").width() / 640 * 360;
-		$(".HrBox-img").height(indexedImgHgt02);
-		//	电影图片
-		var indexedImgHgt03 = $(".Movie-list").width() / 420 * 600;
-		$(".Movie-list .Movie-img").height(indexedImgHgt03);
-		//	热点轮播图片
-		var indexedImgHgt04 = $(".RD-banner .RD-img").width() / 655 * 375;
-		$(".RD-banner .RD-img>img").height(indexedImgHgt04);
-		//	视频列表图片
-		var indexedImgHgt08 = $(".act .oth-list>li").width() / 640 * 360;
-		$(".othSp>a>img").height(indexedImgHgt08);
-		//	剧集列表图片
-		var indexedImgHgt09 = $(".act .oth-list>li").width() / 420 * 600;
-		$(".othJj>a>img").height(indexedImgHgt09);
-	};
-});
+// //首页图片高度统一
+// $(document).ready(function(e) {
+// 	//	热点图片
+// 	var indexedImgHgt01 = $(".RD-img").width() / 640 * 360 / 2;
+// 	$(".RD-img>img").height(indexedImgHgt01);
+// 	//	视频图片
+// 	var indexedImgHgt02 = $(".HrBox-D").width() / 640 * 360;
+// 	$(".HrBox-img").height(indexedImgHgt02);
+// 	//	电影图片
+// 	var indexedImgHgt03 = $(".Movie-list").width() / 420 * 600;
+// 	$(".Movie-list .Movie-img").height(indexedImgHgt03);
+// 	//	热点轮播图片
+// 	var indexedImgHgt04 = $(".RD-banner .RD-img").width() / 655 * 375;
+// 	$(".RD-banner .RD-img>img").height(indexedImgHgt04);
+// 	//	个人中心视频图片
+// 	var indexedImgHgt05 = 200 / 640 * 360;
+// 	$(".per-tab-box .RANbox-list-xx>li:first-of-type img ").height(indexedImgHgt05);
+// 	//	个人中心剧集图片
+// 	var indexedImgHgt05 = 120 / 420 * 600;
+// 	$(".per-tab-box .RANbox-list-xx.per-img>li:first-of-type img ").height(indexedImgHgt05);
+//
+// 	//	排行榜剧集图片
+// 	var indexedImgHgt06 = 150 / 420 * 600;
+// 	$(".RANbox-box02 .RANbox-list-xx>li:first-of-type img ").height(indexedImgHgt06);
+// 	var indexedImgHgt07 = 120 / 420 * 600;
+// 	$(".RAN-z-box01>li:nth-of-type(2) img ").height(indexedImgHgt07);
+//
+// 	//	视频列表图片
+// 	var indexedImgHgt08 = $(".act .oth-list>li").width() / 640 * 360;
+// 	$(".othSp>a>img").height(indexedImgHgt08);
+// 	//	剧集列表图片
+// 	var indexedImgHgt09 = $(".act .oth-list>li").width() / 420 * 600;
+// 	$(".othJj>a>img").height(indexedImgHgt09);
+//
+// 	//窗口大小改变   首页图片高度统一
+// 	window.onresize = function() {
+// 		//	热点图片
+// 		var indexedImgHgt01 = $(".RD-img").width() / 640 * 360 / 2;
+// 		$(".RD-img>img").height(indexedImgHgt01);
+// 		//	视频图片
+// 		var indexedImgHgt02 = $(".HrBox-D").width() / 640 * 360;
+// 		$(".HrBox-img").height(indexedImgHgt02);
+// 		//	电影图片
+// 		var indexedImgHgt03 = $(".Movie-list").width() / 420 * 600;
+// 		$(".Movie-list .Movie-img").height(indexedImgHgt03);
+// 		//	热点轮播图片
+// 		var indexedImgHgt04 = $(".RD-banner .RD-img").width() / 655 * 375;
+// 		$(".RD-banner .RD-img>img").height(indexedImgHgt04);
+// 		//	视频列表图片
+// 		var indexedImgHgt08 = $(".act .oth-list>li").width() / 640 * 360;
+// 		$(".othSp>a>img").height(indexedImgHgt08);
+// 		//	剧集列表图片
+// 		var indexedImgHgt09 = $(".act .oth-list>li").width() / 420 * 600;
+// 		$(".othJj>a>img").height(indexedImgHgt09);
+// 	};
+// });
 
 //落地页面
 $(document).ready(function() {

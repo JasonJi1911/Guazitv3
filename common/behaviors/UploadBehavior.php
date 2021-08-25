@@ -119,7 +119,7 @@ class UploadBehavior extends Behavior
                     return;
                 }
 
-                $model->$attribute = $imgPath;
+                $model->$attribute = ADVERTURL.$imgPath;
             }
         }
     }

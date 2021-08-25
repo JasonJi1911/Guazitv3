@@ -226,3 +226,9 @@ html {
 .icon-rewind:hover>.Fast-alt{
     display: block;
 }
+.dplayer .dplayer-controller .dplayer-icons .dplayer-icon.dplayer-quality-icon{
+    opacity: 0.8;
+}
+.dplayer .dplayer-controller .dplayer-icons .dplayer-icon.dplayer-quality-icon:hover{
+    opacity: 1;
+}

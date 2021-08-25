@@ -93,7 +93,7 @@ NewIndexStyleAsset::register($this);
                     </a>
                 </li>
                 <li>
-                    <a href="javascript:;" onclick="showwarning();">
+                    <a href="<?= Url::to(['/video/adcenter'])?>">
                         <div class="ADlink">
                             &nbsp;
                         </div>
