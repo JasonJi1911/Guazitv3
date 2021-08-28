@@ -2,6 +2,7 @@
 
 namespace common\behaviors;
 
+use common\models\advert\Advert;
 use Yii;
 use yii\base\Behavior;
 use yii\base\InvalidParamException;
@@ -119,7 +120,10 @@ class UploadBehavior extends Behavior
                     return;
                 }
 
-                $model->$attribute = ADVERTURL.$imgPath;
+                if($model instanceof Advert)
+                    $model->$attribute = ADVERTURL.$imgPath;
+                else
+                    $model->$attribute = $imgPath;
             }
         }
     }
