@@ -966,12 +966,12 @@ class Collect extends \common\models\collect\Collect
                     || $channel_id == CollectBind::VIDEO_CHANNEL_ANIMATION
                     || $channel_id == CollectBind::VIDEO_CHANNEL_DOCUMENTARY)
                 {
-//                    if (strpos($title,"第0") !== false){
-//                        $title = str_replace("第0","第",$title);
-//                    }
-                    $title = str_replace("第0","",$title);
-                    $title = str_replace("第","",$title);
-                    $title = str_replace("集","",$title);
+                    $title = str_replace('第','',$title);
+                    $title = str_replace('集','',$title);
+
+                    if(strlen($title) == 1){
+                        $title = '0'.$title;
+                    }
                 }
                 else if ($channel_id == CollectBind::VIDEO_CHANNEL_MOVIE)
                 {

@@ -117,13 +117,13 @@ class RecommendDao extends BaseDao
         $redisKey = RedisKey::recommendVideo($recommendId);
         $redis = new RedisStore();
 
-        // if ($str = $redis->get($redisKey)) {
-        //     $videoIds = json_decode($str, true);
+         if ($str = $redis->get($redisKey)) {
+             $videoIds = json_decode($str, true);
 
-        //     $videoDao = new VideoDao();
-        //     $data = $videoDao->batchGetVideo($videoIds, $fields, false, ['actors']);
-        // } else {
-        {
+             $videoDao = new VideoDao();
+             $data = $videoDao->batchGetVideo($videoIds, $fields, false, ['actors']);
+         } else {
+//        {
             // 查询对象
             $objVideo = Video::find();
             // 获取推荐位信息
