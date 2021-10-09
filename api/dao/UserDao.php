@@ -2,18 +2,22 @@
 namespace api\dao;
 
 use api\data\ActiveDataProvider;
+use api\exceptions\LoginException;
+use api\helpers\ErrorCode;
 use api\models\Expend;
 use api\models\user\TaskInfo;
 use api\models\user\User;
 use api\models\user\UserAssets;
 use api\models\user\UserCoupon;
 use api\models\user\UserAuthApp;
+use api\models\user\UserMessage;
+use api\models\user\UserRelations;
 use api\models\user\UserVip;
+use api\models\video\Comment;
 use api\models\video\Video;
 use api\models\video\VideoFavorite;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
-use common\helpers\Tool;
 use common\models\SettingRules;
 use yii\helpers\ArrayHelper;
 use Yii;
@@ -200,4 +204,357 @@ class UserDao extends BaseDao
 
         return $data;
     }
+
+    /*
+     * 根据条件查询user
+     */
+    public function finduserInfo($param){
+        $userlist = User::find();
+        if($param['email']){
+            $userlist = $userlist->andWhere(['email' => $param['email']]);
+        }else if($param['mobile']){
+            $userlist = $userlist->andWhere(['mobile' => $param['mobile']]);
+        }
+        if($param['security_question']){
+            $userlist->andWhere(['security_question' => $param['security_question'] ]);
+        }
+        if($param['security_answer']){
+            $userlist->andWhere(['security_answer' => $param['security_answer'] ]);
+        }
+        $user = $userlist->one();
+        if($param['password_hash']){
+            $tab = $user->validatePassword($param['password_hash']);
+            if(!$tab){
+                return [];
+            }
+        }
+        return $user->toArray();
+    }
+
+    /*
+     * 根据uid查用户信息
+     */
+    public function finduserByuid($uid){
+        $userlist = User::find()->andWhere(['uid'=>$uid])->asArray()->one();
+        return $userlist;
+    }
+
+    /*
+     * 修改密码
+     */
+    public function modifypassword($uid,$password){
+        $user = new User();
+        $user->oldAttributes = User::find()->andWhere(['uid' => $uid])->asArray()->one();
+        $param['password_hash'] = $password;
+        $rows = $user->updateAttributes($param);
+        return $rows;
+    }
+    /*
+     * PC查vip
+     */
+    public function validuservipPC($uid){
+        $userVip = UserVip::find()
+            ->andWhere(['uid' => $uid ])
+            ->andWhere(['and',['>=' , 'end_time', time()]])
+            ->one();
+        if (!$userVip) {
+            return [];
+        }
+        return $userVip->toArray();
+    }
+
+    /*
+     * 根据条件查询user
+     */
+    public function finduserById($uid,$other_uid,$type){
+        if(!$uid){
+            return [];
+        }
+        $userlist['user'] = User::find()->andWhere(['uid' => $other_uid])->asArray()->one();
+        //查询该uid是否是用户的关注者 / 黑名单
+        $relation = UserRelations::find()
+            ->andWhere(['uid' => $uid])
+            ->andWhere(['other_uid' => $other_uid])
+            ->andWhere(['type' => $type])
+            ->andWhere(['status' => 1])
+            ->asArray()->one();
+        $userlist['relation'] = $relation;
+        //粉丝量
+        $userlist['user']['fans'] = UserRelations::find()
+            ->andWhere(['other_uid' => $other_uid])
+            ->andWhere(['type' => 1])
+            ->andWhere(['status' => 1])->count();
+        return $userlist;
+    }
+    /*
+     * 关注 / 拉黑
+     */
+    public function addRelations($uid,$other_uid,$type){
+        $objrelation = new UserRelations();
+        $userrelation = UserRelations::find()
+            ->andWhere(['uid' => $uid])
+            ->andWhere(['other_uid' => $other_uid])
+            ->andWhere(['type' => $type])->asArray()->one();
+        if ($userrelation){
+            $objrelation->oldAttributes = $userrelation;
+            if ($userrelation['status'] == UserRelations::STATUS_YES){
+                $param['status'] = UserRelations::STATUS_NO;
+                if($type==1){//uid-follow--;other_uid-fans_num--
+                    User::updateAllCounters(['follow_num' => -1],
+                        ['uid' => $uid]);
+                    User::updateAllCounters(['fans_num' => -1],
+                        ['uid' => $other_uid]);
+                }
+                $status = 0;
+            }else{
+                $param['status'] = UserRelations::STATUS_YES;
+                if($type==1){//uid-follow++;other_uid-fans_num++
+                    User::updateAllCounters(['follow_num' => +1],
+                        ['uid' => $uid]);
+                    User::updateAllCounters(['fans_num' => +1],
+                        ['uid' => $other_uid]);
+                }
+                $status = 1;
+            }
+            $objrelation->updateAttributes($param);
+        } else {
+            $objrelation->uid        = $uid;
+            $objrelation->other_uid  = $other_uid;
+            $objrelation->type       = $type;
+            $objrelation->status     = UserRelations::STATUS_YES;
+            $objrelation->created_at = time();
+            $objrelation->insert();
+            if($type==1){//uid-follow++;other_uid-fans_num++
+                User::updateAllCounters(['follow_num' => +1],
+                    ['uid' => $uid]);
+                User::updateAllCounters(['fans_num' => +1],
+                    ['uid' => $other_uid]);
+            }
+            $status = 1;
+        }
+        return [
+            'status' => $status
+        ];
+    }
+
+
+    /*
+     * 关注名单 或 黑名单
+     * $type-1-关注；2-黑名单
+     */
+    public function findRelationsByCondition($uid,$type,$order,$searchword,$page_num=1){
+//        $pageSize = 10;
+        $users = UserRelations::find()
+            ->andWhere(['uid' => $uid])
+            ->andWhere(['type' => $type])
+            ->andWhere(['status' => 1])
+            ->orderBy(['created_at' => SORT_DESC])->asArray()->all();
+        $uu = User::find()->andWhere(['in','uid',array_column($users,'other_uid')])
+            ->andWhere(['like','nickname',$searchword]);
+        if($order=='relations'){
+            $uu = $uu->orderBy(['follow_num' => SORT_DESC]);
+        }else if($order=='fans'){
+            $uu = $uu->orderBy(['fans_num' => SORT_DESC]);
+        }
+//        $uu = $uu->asArray()->all();
+        $dataProvider = new ActiveDataProvider([
+            'query' => $uu
+        ]);
+        $data = $dataProvider->setPagination(['page_num'=>$page_num])->toArray();
+        $uu = $data['list'];
+        if($uu){
+            foreach ($uu as $k=>$u){
+                $u['other_uid'] = $u['uid'];
+                $u['uid'] = $uid;
+                $u['fannum'] = $u['fans_num'];
+                $uu[$k] = $u;
+            }
+            $uu[0]['total_page'] = $data['total_page'];//总页数
+        }
+        return $uu;
+    }
+
+    /*
+     * 粉丝名
+     */
+    public function findFansByCondition($uid,$order,$searchword,$page_num=1){
+//        $pageSize = 10;
+        $users = UserRelations::find()
+            ->andWhere(['other_uid' => $uid])
+            ->andWhere(['type' => 1])
+            ->andWhere(['status' => 1])
+            ->orderBy(['created_at' => SORT_DESC])->asArray()->all();
+        $uu = User::find()->andWhere(['in','uid',array_column($users,'uid')])
+            ->andWhere(['like','nickname',$searchword]);
+        if($order=='relations'){
+            $uu = $uu->orderBy(['follow_num' => SORT_DESC]);
+        }else if($order=='fans'){
+            $uu = $uu->orderBy(['fans_num' => SORT_DESC]);
+        }
+//        $uu = $uu->asArray()->all();
+        $dataProvider = new ActiveDataProvider([
+            'query' => $uu
+        ]);
+        $data = $dataProvider->setPagination(['page_num'=>$page_num])->toArray();
+        $uu = $data['list'];
+        if($uu){
+            foreach ($uu as $k=>$u){
+                $r = UserRelations::find()
+                    ->andWhere(['uid' => $uid])
+                    ->andWhere(['other_uid' => $u['uid']])
+                    ->andWhere(['type' => 1])
+                    ->andWhere(['status' => 1])->asArray()->one();
+                if($r){
+                    $u['tab'] = 1;//互关
+                }else{
+                    $u['tab'] = 0;
+                }
+                $u['other_uid'] = $uid;
+                $u['fannum'] = $u['fans_num'];
+                $uu[$k] = $u;
+            }
+            $uu[0]['total_page'] = $data['total_page'];//总页数
+        }
+        return $uu;
+    }
+
+
+    /*
+     * 评论列表
+     * @return array
+     */
+    public function commentListPC($uid,$page_num=1){
+        $user = User::find()->andWhere(['uid' => $uid])->asArray()->one();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => Comment::find()->andWhere(['uid' => $uid])
+        ]);
+        $data = $dataProvider->setPagination(['page_num' => $page_num])->toArray(['comment_id', 'uid', 'content', 'video_id', 'created_at', 'likes_num']);
+        if ($data['list']) {
+            $videoId = array_column($data['list'], 'video_id');
+            $videoDao = new VideoDao();
+            $videoInfo = $videoDao->batchGetVideo($videoId, ['video_id', 'video_name', 'cover', 'flag'], true);
+            foreach ($data['list'] as &$comment) {
+                $comment['avatar']    = $user['avatar'];
+                $comment['username']  = $user['nickname'];
+                $comment['gender']    = $user['gender'];
+                $comment['score']     = 0;
+                $comment['grade']     = 1;
+                $comment['film_name'] = $videoInfo[$comment['video_id']]['video_name'];
+                $comment['date']      = date('Y-m-d', $comment['created_at']);
+                unset($comment['created_at']);
+            }
+            $data['list'][0]['total_page'] = $data['total_page'];//总页数
+        }
+        return $data['list'];
+    }
+    /*
+     * 回复评论列表
+     * @return array
+     */
+    public function replyListPC($uid,$page_num=1){
+        //取所有我的评论id
+        $commentlist = Comment::find()->andWhere(['uid' => $uid])->asArray()->all();
+
+        //取（pid=我的评论id） 的评论，即回复
+        $dataProvider = new ActiveDataProvider([
+            'query' => Comment::find()
+                ->where(['in', 'pid', array_column($commentlist, 'id')])
+        ]);
+        $data = $dataProvider->setPagination(['page_num' => $page_num])->toArray(['comment_id', 'uid', 'content', 'video_id', 'created_at', 'likes_num']);
+        if ($data['list']) {
+            $videoId = array_column($data['list'], 'video_id');
+            $videoDao = new VideoDao();
+            $videoInfo = $videoDao->batchGetVideo($videoId, ['video_id', 'video_name', 'cover', 'flag'], true);
+            foreach ($data['list'] as &$comment) {
+                $user = User::find()->andWhere(['uid' => $comment['uid'] ])->asArray()->one();
+//                $comment['id']    = $comment['id'];
+                $comment['avatar']    = $user['avatar'];
+                $comment['username']  = $user['nickname'];
+                $comment['gender']    = $user['gender'];
+                $comment['score']     = 0;
+                $comment['grade']     = 1;
+                $comment['film_name'] = $videoInfo[$comment['video_id']]['video_name'];
+                $comment['date']      = date('Y-m-d', $comment['created_at']);
+                unset($comment['created_at']);
+            }
+            $data['list'][0]['total_page'] = $data['total_page'];//总页数
+        }
+        return $data['list'];
+    }
+
+    /*
+     * 系统消息
+     * @return array
+     * @throws \api\exceptions\LoginException
+     */
+    public function messagePC($uid,$page_num=1){
+        if (!$uid) {
+            throw new LoginException(ErrorCode::EC_USER_TOKEN_EXPIRE);
+        }
+        // 所有消息置位已读
+        // UserMessage::updateAll(['status' => UserMessage::STATUS_YES], ['uid' => $uid]);
+        $dataProvider = new ActiveDataProvider([
+            'query' => UserMessage::find()
+                ->andWhere(['uid' => $uid])
+                ->andWhere(['status' => UserMessage::STATUS_NO])
+                ->orderBy(['created_at' => SORT_DESC])
+        ]);
+        $data = $dataProvider->setPagination(['page_num' => $page_num])->toArray();
+
+        foreach ($data['list'] as &$v) {
+            $v['title']   = UserMessage::$messageMap[$v['type']];
+            $v['content'] = $v['type'] ==  UserMessage::TYPE_MESSAGE ? $v['content'] : '回复内容：' . $v['content'];
+            $v['date']    = $v['created_at'];
+            unset($v['created_at']);
+            unset($v['type']);
+        }
+        if($data['list']){
+            $data['list'][0]['total_page'] = $data['total_page'];//总页数
+        }
+        Yii::warning($data['list']);
+        return $data['list'];
+    }
+    /*
+     * 点赞
+     */
+    public function addlikesNumPC($comment_id,$cal){
+        $id = intval($comment_id);
+        if($cal=='plus'){
+            Comment::updateAllCounters(['likes_num' => +1],
+                ['id' => $id]);
+        }else{
+            Comment::updateAllCounters(['likes_num' => -1],
+                ['id' => $id]);
+        }
+        $comment = Comment::find()->select('likes_num')->andWhere(['id'=>$id])->asArray()->one();
+        if(!$comment){
+            return 0;
+        }
+        return $comment['likes_num'];
+    }
+    /*
+     * 删除系统消息
+     */
+    public function removeMessagePC($message_id){
+        $m = UserMessage::find()->andWhere(['id'=>$message_id])->asArray()->one();
+        $message = new UserMessage();
+        $message->oldAttributes = $m;
+        $param['status'] = UserMessage::STATUS_YES;
+        $param['deleted_at'] = time();
+        $row = $message->updateAttributes($param);
+        return $row;
+    }
+    /*
+     * 删除评论
+     */
+    public function removeCommentPC($comment_id){
+        $comment = new Comment();
+        $c = Comment::find()->andWhere(['id'=>$comment_id])->asArray()->one();
+        $comment->oldAttributes = $c;
+        $param['deleted_at'] = time();
+        $row = $comment->updateAttributes($param);
+        return $row;
+    }
+
 }

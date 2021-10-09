@@ -13,6 +13,7 @@ use api\dao\CommentDao;
 use api\dao\CommonDao;
 use api\dao\TopicDao;
 use api\dao\VideoDao;
+use api\dao\UserDao;
 use api\data\ActiveDataProvider;
 use api\exceptions\ApiException;
 use api\helpers\ErrorCode;
@@ -309,7 +310,6 @@ class VideoLogic
     {
         $commentLogic = new CommentLogic();
         $commentList  = $commentLogic->commentList($videoId, $chapterId, 1);
-
         $comments = $commentList['list'];
         return array_slice($comments, 0, 3);
     }
@@ -622,13 +622,13 @@ class VideoLogic
      * @return array
      * @throws ApiException
      */
-    public function playInfo($videoId, $chapterId, $sourceId, $city='')
+    public function playInfo($videoId, $chapterId, $sourceId, $city='', $uid='')
     {
         //获取影片信息
         $videoDao = new VideoDao();
         $videoInfo = $videoDao->videoInfo($videoId, ['channel_id', 'video_id', 'video_name', 'actors_id',
             'area', 'score', 'category', 'type', 'year', 'intro', 'intro', 'cover', 'horizontal_cover',
-            'flag', 'tag', 'play_limit', 'total_views','episode_num', 'is_down', 'total_price', 'created_at','summary']);
+            'flag', 'tag', 'play_limit', 'total_views','episode_num', 'is_down', 'total_price', 'created_at','summary','total_favors']);
 
         if (!$videoInfo) { //视频不存在
             throw new ApiException(ErrorCode::EC_VIDEO_NOT_EXIST);
@@ -727,9 +727,10 @@ class VideoLogic
                 'name'         => $item['name'],
                 'icon'         => $toUrl->toUrl(),
                 //'icon'         => $item['icon'],
-                'resource_url' => $this->parseUrl($chapterInfo['resource_url'][$item['source_id']], Yii::$app->common->product, $item['source_id'], $sources),
+                'resource_url' => $this->parseUrl($chapterInfo['resource_url'][$item['source_id']], Yii::$app->common->product, $item['source_id'], $sources, $uid),
                 'resource_type' => $resourceType,
-                'checked'      => $sourceId == $item['source_id'] ? 1 : 0
+                'checked'      => $sourceId == $item['source_id'] ? 1 : 0,
+                'play_limit'   => $item['play_limit']
             ];
         }
 
@@ -798,12 +799,30 @@ class VideoLogic
                 'category', 'year', 'area']
             , 12, [$videoInfo['video_id']]);
         // 评论信息
-        $commentData = $this->videoInfoComment($videoId, $chapterInfo['chapter_id']);
+//        $commentData = $this->videoInfoComment($videoId, $chapterInfo['chapter_id']);
+        $commentLogic = new CommentLogic();
+        $commentList  = $commentLogic->commentListPC($videoId, $chapterId, 1);
+        $commentData = $commentList;
         // 获取用户观看视频任务状态
         $taskLogic = new TaskLogic();
         $taskStatus = $taskLogic->taskStatus(Yii::$app->user->id, TaskInfo::TASK_ACTION_PLAY_VIDEO);
         $sourceFilter = $this->filterResourceChapter($videosBak, $sources, $sourceId, $videoInfo['horizontal_cover']);
 //        $souceVideos = ArrayHelper::index($sourceFilter, 'resId')[$sourceId]['data'];
+
+        //判断登录用户是否收藏本视频
+        $fav_status = 0;
+        $videoFav = VideoFavorite::find()
+            ->andWhere(['uid' => $uid])
+            ->andWhere(['video_id' => $videoId])->asArray()->one();
+        if($videoFav){
+            $fav_status = $videoFav['status'];
+        }
+        //总收藏数
+        $video_total = Video::find()->select("total_favors")->andWhere(['id'=>$videoId])->asArray()->one();
+
+        //获取总评论数
+        $commentcount = VideoChapter::find()->select("total_comment")->andWhere(['id'=>$chapterId])->asArray()->one();
+
         $data = [
             'info' => array_merge($videoInfo,
                 [
@@ -812,7 +831,7 @@ class VideoLogic
                     'play_chapter_id' => $chapterInfo['chapter_id'],
                     'chapter_title'   => $chapterInfo['title'],
                     'play_video_id'   => $chapterInfo['video_id'],
-                    'resource_url'    => $this->parseUrl($chapterInfo['resource_url'][$sourceId], Yii::$app->common->product, $sourceId, $sources),
+                    'resource_url'    => $this->parseUrl($chapterInfo['resource_url'][$sourceId], Yii::$app->common->product, $sourceId, $sources,$uid),
                     'resource_type'   => $resourceType,
                     'total_comment'   => VideoChapter::getTotalComment($chapterInfo['chapter_id']), // 获取评论总数
 //                    'total_views'     => $chapterInfo['total_views'],
@@ -830,11 +849,14 @@ class VideoLogic
                     'actor'           => $actor,
                     'filter'          => $sourceFilter,
                     'source_id'       => $sourceId,
+                    'fav_status'      => $fav_status,
+                    'total_favors'    => $video_total['total_favors']
                 ]),
             'guess_like'    => $guessLike, // 猜你喜欢
             'comments'      => $commentData, // 评论
             "purchase_info" => $purchaseInfo, // 是否可播放信息
             'channel_id'    => $videoInfo['channel_id'],
+            'commentcount' => $commentcount['total_comment']
         ];
 
         //添加广告
@@ -917,7 +939,7 @@ class VideoLogic
      * @param $product
      * @return string
      */
-    public function parseUrl($url, $product, $source = 0, $sourcesList = []) {
+    public function parseUrl($url, $product, $source = 0, $sourcesList = [],$uid='') {
         if ($source == 0 || empty($sourcesList))
             $player = VIDEO_JIXI_URL_LOCAL;
 
@@ -965,7 +987,23 @@ class VideoLogic
 
         } else if($product == Common::PRODUCT_PC){
             //            return '/360apitv/jiexi/jianghu.php?v='.urlencode($url);
-            return $player.urlencode($url);
+            if ($sourcesList[$source]['play_limit'] == 1) {
+                if($uid){
+                    $userdao = new UserDao();
+                    $vip = $userdao->validuservipPC($uid);
+                    if($vip){
+                        return urlencode($url);
+                    }else{
+                        return '';
+                    }
+                }else{
+                    return '';
+                }
+            }else
+            {
+                return urlencode($url);
+            }
+//            return $player.urlencode($url);
 //            return $url;
         } else {
             // return VIDEO_JIXI_URL_WAP.'?v='.urlencode($url);

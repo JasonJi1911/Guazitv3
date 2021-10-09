@@ -6,6 +6,13 @@
 use pc\assets\AppAsset;
 use yii\helpers\Html;
 
+$this->registerMetaTag(['name' => 'keywords', 'content' => LOGONAME.'视频,'.LOGONAME.'TV,北美视频分享网,北美华人影视视频,美国影视网,加拿大影视网,美国'.LOGONAME.'视频,加拿大'.LOGONAME.'视频,北美华人在线追剧,海外华人,免费视频,国产剧,在线视频,电视剧,综艺']);
+$this->registerMetaTag(['name' => 'description', 'content' => LOGONAME.'视频('.PC_HOST_NAME.')为中文在线影视分享平台汇集了最新热门的电影,国产剧,港台剧,欧美剧,韩剧,日剧,综艺,动漫,纪录片等免费在线观看,为北美及全球的华人提供海量高清影视视频,打造免费、无广告的在线影视播放平台']);
+$this->title = LOGONAME. '视频,'.LOGONAME.'TV,北美'.LOGONAME.'视频,北美影视网,北美华人视频网站,北美华人影视视频,北美华人海外在线观看';
+$this->registerMetaTag(['name' => 'robots', 'content' => 'index,follow']);
+$this->registerMetaTag(['name' => 'GOOGLEBOT', 'content' => 'index,follow']);
+$this->registerMetaTag(['name' => 'Author', 'content' => PC_HOST_NAME]);
+
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
@@ -30,8 +37,8 @@ AppAsset::register($this);
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="keywords" content="视频,视频分享,视频搜索,视频播放,视频社区">
-    <meta name="description" content="分发，上传，社区一体的在线视频平台">
+<!--    <meta name="keywords" content="视频,视频分享,视频搜索,视频播放,视频社区">-->
+<!--    <meta name="description" content="分发，上传，社区一体的在线视频平台">-->
     <link rel="shortcut icon" type="image/x-icon" href="/images/newindex/logo-02.png">
     <link rel="icon" sizes="16x16 32x32 64x64" href="/images/newindex/logo_ico.ico">
     <link rel="icon" type="image/png" sizes="196x196" href="/images/newindex/logo-02.png">

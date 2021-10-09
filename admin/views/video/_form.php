@@ -9,6 +9,7 @@ use admin\models\video\Video;
 use yii\helpers\Html;
 use admin\models\video\VideoArea;
 use admin\models\video\VideoYear;
+use admin\models\video\VideoSource;
 
 \metronic\assets\MultipleSelect2Asset::register($this);
 
@@ -16,7 +17,6 @@ $horizontal_cover_width = ADMIN_COMIC_HORIZONTAL_WIDTH * 4;
 $horizontal_cover_height = ADMIN_COMIC_HORIZONTAL_HEIGHT * 4;
 
 ?>
-
 <?php $form = ActiveForm::begin() ?>
 
 <?= $form->field($model, 'title')->wrapper(['width' => 3, 'maxlength' => true]) ?>
@@ -98,6 +98,10 @@ $horizontal_cover_height = ADMIN_COMIC_HORIZONTAL_HEIGHT * 4;
 
 <?= $form->field($model, 'description')->textarea(['rows' => 5])->wrapper(['width' => 5]) ?>
 
+<?php foreach ($model->chapterSource as $i => $s){?>
+    <input type="hidden" name="Video[chapters][<?=$i?>][id]" value="<?=$s['id']?>" />
+    <?= $form->field($model, "chapters[$i][resource_url]")->textarea(['value' => $s['resource_url'],'rows' => 5])->wrapper(['width' => 5])->hint('填写完整可播放连接,格式：标题+$+链接')->label($s['name']) ?>
+<?php }?>
 
 <?php ActiveForm::end() ?>
 <script type="text/javascript">

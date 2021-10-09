@@ -12,6 +12,7 @@ class Video extends \common\models\video\Video
     public $category;
 
     public $client;
+    public $chapters;
 
     public function fields()
     {
@@ -24,7 +25,7 @@ class Video extends \common\models\video\Video
     public function rules()
     {
         return [
-            [['actors', 'category', 'client', ], 'safe'],
+            [['actors', 'category', 'client', 'chapters'], 'safe'],
             [['channel_id','is_down', 'type', 'area', 'year', 'score', 'likes_num', 'status', 'is_finished', 'is_sensitive'], 'integer'],
             [['description', 'title', 'is_finished', 'is_down', 'score', 'total_views', 'total_favors', 'total_price', ], 'required'],
             [['category_ids', 'keywords', 'publish_clients',], 'string', 'max' => 128],
@@ -158,6 +159,57 @@ class Video extends \common\models\video\Video
             Yii::$app->db->createCommand()->batchInsert(VideoActor::tableName(), ['video_id', 'actor_id', 'created_at'], $data)->execute();
         }
 
+        //修改章节线路
+        if($this->chapters){
+            $chapterlist = [];
+            foreach ($this->chapters as $c){
+                if($c['resource_url']){
+                    $sourceAr = explode("\r\n",$c['resource_url']);
+                    foreach($sourceAr as $s){
+                        if($s){
+                            $source = explode("$",$s);
+                            if($source[0]){//title不为空
+                                $url = $source[1] ? $source[1] : '';
+                                if(!$chapterlist[$source[0]]){
+                                    $chapterlist[$source[0]][0] = $source[0];
+                                    $chapterlist[$source[0]][1] = array($c['id']=>$url);
+                                }else{
+                                    $chapterlist[$source[0]][1] = $chapterlist[$source[0]][1] + array($c['id']=>$url);
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+            $display_order = 1;
+            $chapterdata = [];
+            foreach ($chapterlist as &$cc){
+                if($cc[0]){
+                    $cc[1] = json_encode($cc[1], JSON_UNESCAPED_UNICODE);
+                    $c_one = VideoChapter::findOne(['video_id'=>$this->id,'title'=>$cc[0]]);
+                    $chapter = new VideoChapter();
+                    if($c_one){
+                        $chapter->oldAttributes = $c_one;
+                        $param['resource_url'] = $cc[1];
+                        $chapter->updateAttributes($param);
+                    }else{
+                        $chapterdata[] = [
+                            'video_id'  => $this->id,
+                            'title'   => $cc[0],
+                            'resource_url'   => $cc[1],
+                            'display_order'   => $display_order,
+                            'created_at' => time()
+                        ];
+                        $display_order++;
+                    }
+                }
+            }
+            if($chapterdata){
+                Yii::$app->db->createCommand()->batchInsert(VideoChapter::tableName(), ['video_id', 'title', 'resource_url', 'display_order', 'created_at'], $chapterdata)->execute();
+            }
+        }
+
         if (!$insert) {
             // 删除该视频缓存
             Tool::clearCache(RedisKey::videoInfoPrefix($this->id));
@@ -177,5 +229,27 @@ class Video extends \common\models\video\Video
         }
 
         return parent::afterSave($insert, $changedAttributes);
+    }
+    /*
+     * 获取各章节线路
+     */
+    public function getChapterSource()
+    {
+        $sourcelist = VideoSource::findAll(['created_at' => 0]);
+        $chapterlist = VideoChapter::findAll(['video_id' => $this->id]);
+        if($sourcelist){
+            foreach ($sourcelist as &$source){
+                $source['resource_url'] = '';
+                if($chapterlist){
+                    foreach ($chapterlist as $chapter){
+                        $resource_url = json_decode($chapter['resource_url'],true);
+                        if($resource_url[$source['id']]){
+                            $source['resource_url'] .= $chapter['title']."$".$resource_url[$source['id']]."\n";
+                        }
+                    }
+                }
+            }
+        }
+        return $sourcelist;
     }
 }

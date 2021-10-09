@@ -12,6 +12,7 @@ class UserMessage extends \common\models\user\UserMessage
 //            'type' => function () {
 //                return ArrayHelper::getValue(\common\models\user\UserMessage::$messageMap, 'type');
 //            },
+            'message_id' => 'id',
             'type',
             'content',
             'created_at' => function($model) {

@@ -213,9 +213,9 @@ $(document).ready(function() {
 	$(".rBtn-03").click(function() {
 		$(this).toggleClass("act");
 	});
-	$(".rBtn-04").click(function() {
-		$(this).toggleClass("act");
-	});
+	// $(".rBtn-04").click(function() {
+	// 	$(this).toggleClass("act");
+	// });
 	$(".lBtn-01").click(function() {
 		$(this).toggleClass("act");
 	});
@@ -348,11 +348,11 @@ $(document).ready(function() {
 		$(".per-tab-w02>div").eq(tabNum).addClass("act").siblings().removeClass("act");
 	});
 	// 关注页tab  切换
-	$(".per-tab03>li").click(function() {
-		var tabNum = $(this).index();
-		$(this).addClass("act").siblings().removeClass("act");
-		$(".per-tab-w03>div").eq(tabNum).addClass("act").siblings().removeClass("act");
-	});
+	// $(".per-tab03>li").click(function() {
+	// 	var tabNum = $(this).index();
+	// 	$(this).addClass("act").siblings().removeClass("act");
+	// 	$(".per-tab-w03>div").eq(tabNum).addClass("act").siblings().removeClass("act");
+	// });
 	// 消息页tab  切换
 	$(".per-tab04>li").click(function() {
 		var tabNum = $(this).index();
@@ -361,10 +361,10 @@ $(document).ready(function() {
 	});
 
 	//点赞
-	$(".per-btn-z").click(function() {
-		var tabNum = $(this).index();
-		$(this).toggleClass("act").siblings("span").toggleClass("act");
-	});
+	// $(".per-btn-z").click(function() {
+	// 	var tabNum = $(this).index();
+	// 	$(this).toggleClass("act").siblings("span").toggleClass("act");
+	// });
 	// 收藏页tab  切换
 	$(".per-tab05>li").click(function() {
 		var tabNum = $(this).index();
@@ -387,13 +387,13 @@ $(document).ready(function() {
 		}
 	});
 
-	$(".per-slt-list>input").click(function() {
-		var perSlt=$(this).val();
-		$(this).addClass("act").siblings().removeClass("act");
-		$(this).parents(".per-slt").find(".per-slt-name>input").val(perSlt);
-		$('.per-slt-name>input').removeClass("act");
-		$('.per-slt-list').removeClass("act");
-	});
+	// $(".per-slt-list>input").click(function() {
+	// 	var perSlt=$(this).val();
+	// 	$(this).addClass("act").siblings().removeClass("act");
+	// 	$(this).parents(".per-slt").find(".per-slt-name>input").val(perSlt);
+	// 	$('.per-slt-name>input').removeClass("act");
+	// 	$('.per-slt-list').removeClass("act");
+	// });
 
 	// 收藏页全选样式切换
 	$(".per-qx>input").click(function() {
@@ -415,8 +415,9 @@ $(document).ready(function() {
 	});
 	$(".per-btn-cbox>input").click(function() {
 		$(this).toggleClass("act");
-		var  aggg=$(this).attr("class");
-		if (aggg=="act") {
+		// var  aggg=$(this).attr("class");
+		// if (aggg=="act") {
+		if($(this).hasClass("act")){
 			$(this).attr("checked","checked");
 		} else{
 			$(this).removeAttr("checked");
@@ -555,13 +556,13 @@ $(document).ready(function() {
 // 	});
 // });
 
-//他人主页
-$(document).ready(function() {
-	//	关注按钮切换样式
-	$('.oth-bth-box>input').click(function() {
-		$(this).toggleClass("act").siblings("input").toggleClass("act");
-	});
-});
+// //他人主页
+// $(document).ready(function() {
+// 	//	关注按钮切换样式
+// 	$('.oth-bth-box>input').click(function() {
+// 		$(this).toggleClass("act").siblings("input").toggleClass("act");
+// 	});
+// });
 
 //上传视频页
 $(document).ready(function() {
@@ -724,5 +725,63 @@ $(document).ready(function() {
 			$(".AD-bow").show();
 		});
 		$(".AD-bow").hide();
+	});
+});
+
+//密码隐藏显示
+$(document).ready(function() {
+	$(".eye").click(function() {
+		var eyeOn=$(this).attr("class")
+		if(eyeOn=="eye") {
+			$(this).addClass("act");
+			$(this).siblings(".inp").removeClass("pas").attr("type", "text");
+		} else {
+			$(this).removeClass("act");
+			$(this).siblings(".inp").addClass("pas").attr("type", "password");
+		}
+	});
+});
+
+//登录弹出层
+$(document).ready(function() {
+	//登录注册tab
+	$(".alt-logon .tab-nav>li").click(function() {
+		var tabNum = $(this).index();
+		$(this).addClass("act").siblings().removeClass("act");
+		$(".alt-logon .tab-box>div").eq(tabNum).addClass("act").siblings().removeClass("act");
+	});
+	//自动登录切换样式
+	$(".gn-box .chebox").click(function() {
+		$(this).toggleClass("act");
+	});
+	//用户协议样式切换
+	$(".bowbox .chebox").click(function() {
+		$(this).toggleClass("act");
+	});
+	//假下拉菜单
+	$(".alt-logon .selectJ").click(function() {
+		$('.alt-logon .opJ').removeClass("act");
+		$(this).siblings(".opJ").toggleClass("act");
+		$(document).click(function(e) {
+			var $target = $(e.target);
+			// 点击下拉菜单以外的地方切换样式
+			if(!$target.is('.alt-logon .sltJ *') && !$target.is('.alt-logon .opJ')) {
+				$('.alt-logon .opJ').removeClass("act");
+			}
+		});
+		$(".alt-logon .opJ>input[type='button']").click(function() {
+			var opJval=$(this).val();
+			var questionid = $(this).attr('data-value');
+			$(this).addClass("act").siblings("input").removeClass("act");
+			$(this).parents(".sltJ").find(".selectJ").addClass("act").val(opJval);
+			$("#reg_question").val(questionid);
+			$('.alt-logon .opJ').removeClass("act");
+		});
+		$(".alt-logon .opJ>li").click(function() {
+			var opJval=$(this).find("span").text();
+			$(this).addClass("act").siblings("li").removeClass("act");
+			$(this).parents(".sltJ").find(".selectJ").addClass("act").val(opJval);
+			$('.alt-logon .opJ').removeClass("act");
+		});
 	});
 });

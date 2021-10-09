@@ -160,13 +160,15 @@ $this->registerJs($js);
                                             </div>
                                             <div>导演:
                                                 <span>
-                                                    <?php foreach ($list['director'] as $key => $director): ?>
-                                                        <?php if($key == 0):?>
-                                                            <?= $director['actor_name']?>
-                                                        <?php else :?>
-                                                            ,<?= $director['actor_name']?>
-                                                        <?php endif;?>
-                                                    <?php endforeach;?>
+                                                    <?php if($list['director']):?>
+                                                        <?php foreach ($list['director'] as $key => $director): ?>
+                                                            <?php if($key == 0):?>
+                                                                <?= $director['actor_name']?>
+                                                            <?php else :?>
+                                                                ,<?= $director['actor_name']?>
+                                                            <?php endif;?>
+                                                        <?php endforeach;?>
+                                                    <?php endif;?>
                                                 </span>
                                             </div>
                                             <div>主演:

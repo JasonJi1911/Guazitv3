@@ -19,6 +19,7 @@ use Yii;
  *
  * @property int $uid
  * @property string $mobile 手机号
+ * @property string $email 邮箱
  * @property string $nickname 昵称
  * @property string $udid 注册设备号 iOS:UDID,Android:IMEI
  * @property string $user_token token
@@ -40,6 +41,12 @@ use Yii;
  * @property string $device_id 推送设备device_id
  * @property int $user_type 用户类型 1注册用户 2内置用户
  * @property string $last_device_id 最后登录设备id
+ * @property string $mobile_areacode 手机区号
+ * @property int $security_question 密保问题
+ * @property string $security_answer 密保答案
+ * @property string $auth_key 认证KEY
+ * @property int $fans_num 粉丝数
+ * @property int $follow_num 关注数
  * @property int $created_at 创建时间
  * @property int $updated_at 更新时间
  * @property int $deleted_at 删除时间

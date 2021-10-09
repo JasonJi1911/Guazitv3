@@ -132,18 +132,3 @@ $this->registerJs($js);
         </div>
     </div>
 </div>
-<!--提交成功弹出层-->
-<div class="alt" id="alt05">
-    <div class="alt05-box" name="zt">
-        <!--报错也用这个弹出层-->
-        <p class="alt-title" name="zt">求片成功</p>
-        <!--多余的可以删除-->
-        <div class="alt-bth-box" name="zt">
-<!--            <input class="alt-bth-off closealt05" type="button" name="" id="" value="取消" />-->
-            <input class="alt-bth-on" type="button" name="" id="closealt05" value="确定" />
-        </div>
-    </div>
-
-    <!--关闭按钮-->
-    <input class="alt-GB" type="button" id="" value="X" />
-</div>

@@ -24,6 +24,7 @@ use api\models\user\User;
 use api\models\user\UserAssets;
 use api\models\user\UserAuthApp;
 use api\models\user\UserMessage;
+use api\models\user\UserRelations;
 use api\models\user\UserVip;
 use api\models\video\Comment;
 use api\models\video\UserWatchLog;
@@ -37,6 +38,7 @@ use common\helpers\Tool;
 use common\models\user\CancelAccountLog;
 use common\services\PayService;
 use Yii;
+use yii\base\BaseObject;
 use yii\helpers\ArrayHelper;
 
 
@@ -1263,5 +1265,63 @@ class UserLogic
         }
         $redis->setEx($lockKey, 1, 1296000); // 15天
         throw new ApiException(ErrorCode::EC_CANCEL_SUCCESS);
+    }
+
+    /*
+     * web注册
+     */
+    public function webRegister($data){
+        $result = [];
+        if(User::findOne(['email' => $data['email']])){
+            $result['message'] = '邮箱已注册过';
+            $result['errno'] = -1;
+            return $result;
+        }else if(User::findOne(['mobile' => $data['mobile']])){
+            $result['message'] = '手机号已注册过';
+            $result['errno'] = -1;
+            return $result;
+        }else{
+            $uid = $this->register($data);
+            $user = User::findOne(['uid' => $uid]);
+            $result['message'] = $user;
+            $result['errno'] = 0;
+            return $result;
+        }
+    }
+
+    /**
+     * 回复评论列表
+     * @return array
+     */
+    public function replyList()
+    {
+        $uid      = Yii::$app->user->id;
+        $avatar   = Yii::$app->user->avatar->toUrl();
+        $username = Yii::$app->user->nickname;
+
+        //取所有我的评论id
+        $commentlist = Comment::find()->andWhere(['uid' => $uid])->all();
+
+        //取（pid=我的评论id） 的评论，即回复
+        $dataProvider = new ActiveDataProvider([
+            'query' => Comment::find()
+                ->joinWith('user')
+                ->where(['in', 'pid', array_column($commentlist, 'id')])
+        ]);
+        $data = $dataProvider->setPagination()->toArray(['uid', 'content', 'video_id', 'created_at']);
+        if ($data['list']) {
+            $videoId = array_column($data['list'], 'video_id');
+            $videoDao = new VideoDao();
+            $videoInfo = $videoDao->batchGetVideo($videoId, ['video_id', 'video_name', 'cover', 'flag'], true);
+            foreach ($data['list'] as &$comment) {
+                $user = User::find()->andWhere(['uid' => $comment['pid'] ])->one();
+                $comment['avatar']    = $avatar;
+                $comment['username']  = $comment['nickname'];
+                $comment['film_name'] = $videoInfo[$comment['video_id']]['video_name'];
+                $comment['date']      = date('Y-m-d', $comment['created_at']);
+                unset($comment['created_at']);
+            }
+        }
+        return $data['list'];
     }
 }

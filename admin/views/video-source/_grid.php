@@ -29,6 +29,7 @@ use yii\helpers\Html;
         ],
         'display_order',
         'player',
+        'PlayLimit',
         [
             'label' => '创建时间',
             'enableSorting' => false,

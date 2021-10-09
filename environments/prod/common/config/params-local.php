@@ -23,6 +23,10 @@ define('COUPON_SWITCH', true); // 卡券开关
 define('LOGONAME','吉祥');
 //广告图片链接前缀(当前域名)
 define('ADVERTURL','https://img.kantv9.com/');
+//邮箱
+define('EMAIL_NAME','jxsptv');
+//客服二维码
+define('KFQRCODE','ryewm.png');
 
 return [
     'sign_secret_key' => [ //签名key

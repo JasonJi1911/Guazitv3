@@ -11,7 +11,7 @@ class VideoFeedcountry extends \common\models\video\VideoFeedcountry
             'country_name',
             'imgname',
             'display_order',
-            'remark'
+            'mobile_areacode'
         ];
     }
 

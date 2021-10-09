@@ -1724,7 +1724,7 @@ NewIndexStyleAsset::register($this);
             <ul class="AD-text10" name="zt" >
                 <li> 4.如果交由你们设计广告，我需要提供什么资料呢？</li>
                 <li>
-                    需要提供广告词、联系方式、LOGO、产品图片、二维码等。请将所有资料发到我们指定的邮箱：<span>ads@ifsp.tv</span>
+                    需要提供广告词、联系方式、LOGO、产品图片、二维码等。请将所有资料发到我们指定的邮箱：<span><?=EMAIL_NAME?></span>
                 </li>
             </ul>
             <ul class="AD-text10" name="zt" >

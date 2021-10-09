@@ -12,7 +12,9 @@ use Yii;
  * @property int $type 消息类型，1：系统消息
  * @property string $content
  * @property int $status
- * @property string $created_at
+ * @property int $created_at
+ * @property int $updated_at
+ * @property int $deleted_at
  */
 class UserMessage extends \yii\db\ActiveRecord
 {

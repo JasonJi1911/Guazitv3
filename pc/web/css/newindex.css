@@ -1794,13 +1794,14 @@ body {
 	display: block;
 	position: relative;
 	width: 100%;
+	/*height: 314px;*/
 	overflow: hidden;
 }
 
 .Movie-img {
 	display: block;
 	width: 100%;
-	height: 314px;/*min-*/
+	/*min-height: 314px;*/
 }
 
 .palyBtn {
@@ -2211,7 +2212,7 @@ body {
 
 .footNav {
 	display: grid;
-	grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr;/* 1fr 1fr 1fr */
+	grid-template-columns: 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;/*  1fr 1fr */
 	grid-gap: 5px;
 	overflow: hidden;
 }
@@ -2397,54 +2398,6 @@ body {
 	height: 100%;
 	background-color: rgba(0, 0, 0, 0.5);
 	overflow: hidden;
-	z-index: 8;
-}
-
-.alt01—box {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin-left: -415px;
-	margin-top: -270px;
-	width: 830px;
-	height: 540px;
-	background-color: #FFFFFF;
-	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
-	overflow: hidden;
-}
-
-.alt01—box>div {
-	float: left;
-	height: 100%;
-	overflow: hidden;
-}
-
-.alt01-GG {
-	width: 380px;
-	overflow: hidden;
-}
-
-.alt01-GG img {
-	display: block;
-	padding: 0;
-	width: 380px;
-	height: 540px;
-}
-
-.alt-logon {
-	width: 450px;
-}
-
-.GGtext {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin-left: -405px;
-	margin-top: -260px;
-	font-size: 12px;
-	color: #999999;
-	width: 50px;
-	height: 50px;
 	z-index: 8;
 }
 
@@ -3686,7 +3639,7 @@ body {
 .rBtn-03>input,
 .rBtn-04>input,
 .rBtn-05>input {
-	width: 67px;
+	width: 75px;/*67px*/
 	height: 30px;
 	padding-left: 35px;
 	color: #999999;
@@ -4170,7 +4123,7 @@ body {
 	.rBtn-03>input,
 	.rBtn-04>input,
 	.rBtn-05>input {
-		width: 66px;
+		width: 75px;/*66px*/
 		padding-left: 30px;
 	}
 	.lBtn-01,
@@ -6532,8 +6485,8 @@ body {
 }
 
 .per-tab02>li:hover {
-	background-color: #FF5722;
-	color: #FFFFFF;
+	/*background-color: #FF5722;*/
+	color: #FF5722;
 }
 
 .per-tab02>li.act {
@@ -6560,8 +6513,8 @@ body {
 }
 
 .per-tab03>li:hover {
-	background-color: #FF5722;
-	color: #FFFFFF;
+	/*background-color: #FF5722;*/
+	color: #FF5722;
 }
 
 .per-tab03>li.act {
@@ -6588,8 +6541,8 @@ body {
 }
 
 .per-tab04>li:hover {
-	background-color: #FF5722;
-	color: #FFFFFF;
+	/*background-color: #FF5722;*/
+	color: #FF5722;
 }
 
 .per-tab04>li.act {
@@ -6616,8 +6569,8 @@ body {
 }
 
 .per-tab05>li:hover {
-	background-color: #FF5722;
-	color: #FFFFFF;
+	/*background-color: #FF5722;*/
+	color: #FF5722;
 }
 
 .per-tab05>li.act {
@@ -6644,8 +6597,8 @@ body {
 }
 
 .per-tab06>li:hover {
-	background-color: #FF5722;
-	color: #FFFFFF;
+	/*background-color: #FF5722;*/
+	color: #FF5722;
 }
 
 .per-tab06>li.act {
@@ -9847,7 +9800,7 @@ body {
 .ADcurrency>li>input:hover,
 .ADcurrency>li>input.act{
 	background-color:#FF5722;
-	/*background-image: url(../img/jin-bj.png);
+	/*background-image: url(../images/newindex/jin-bj.png);
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: 100% 100%;*/
@@ -10223,7 +10176,8 @@ body {
 	color: #FF0000;
 }
 .wrg select,
-.wrg input{
+.wrg input[type="text"],
+.wrg input[type="password"] {
 	line-height: 38px;
 	box-sizing: border-box;
 	border: solid 1px #FF0000;
@@ -10463,6 +10417,437 @@ body {
 	background-position: right top;
 	background-repeat: no-repeat;
 }
+
+/*---------忘记密码--------*/
+.helpbox01 .alt-content02 {
+	width: 800px;
+	min-width: auto;
+	margin: 0px auto;
+	padding-bottom: 120px;
+}
+
+.wjmm {
+	padding-top: 20px;
+	margin: 0px 80px;
+	overflow: hidden;
+}
+
+.wjmm>li {
+	position: relative;
+}
+
+.helpbox01 .alt-bth-box02 .bth-on {
+	background-image: none;
+	background-color: #FF5722;
+	color: #FFFFFF;
+}
+
+.wjmm .eye {
+	position: absolute;
+	top: 40px;
+	right: 0px;
+	height: 40px;
+	width: 40px;
+	background-color: rgba(0, 0, 0, 0);
+	background-image: url(../images/newindex/eye.png);
+	background-position: 8px 8px;
+	background-repeat: no-repeat;
+	background-size: 24px auto;
+}
+
+.wjmm .eye.act {
+	background-position: 8px -24px;
+}
+
+.wjmm .seek-slk {
+	background-position-x: 98%;
+}
+
+/*---------登录弹出层----------*/
+.alt01—box {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -420px;
+	margin-top: -295px;
+	width: 840px;
+	background-color: #FFFFFF;
+	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
+	border-radius: 30px;
+	overflow: hidden;
+}
+
+.alt01—box>div {
+	float: left;
+	height: 100%;
+	overflow: hidden;
+}
+
+.alt01-GG {
+	width: 400px;
+	overflow: hidden;
+}
+
+.alt01-GG img {
+	display: block;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.alt-logon {
+	width: 440px;
+	min-height: 575px;
+	position: relative;
+}
+
+.alt-logon .tab-nav {
+	line-height: 40px;
+	font-size: 14px;
+	color: rgba(0, 0, 0, 0.4);
+	text-align: center;
+	overflow: hidden;
+}
+
+.alt-logon .tab-nav>li {
+	position: relative;
+	padding: 20px;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.alt-logon .tab-nav>li.act {
+	font-weight: 400;
+	font-size: 18px;
+	color: rgba(0, 0, 0, 0.8);
+}
+
+.alt-logon .tab-nav>li.act:after {
+	content: "";
+	width: 72px;
+	height: 3px;
+	background: #ff6f00;
+	background: -webkit-gradient(linear, left top, right top, from(#ff6f00), to(#ffa516));
+	background: linear-gradient( 90deg, #ff6f00, #ffa516);
+	-webkit-box-shadow: 0 5px 15px 0 rgb(255 138 11 / 30%);
+	border-radius: 5px;
+	position: absolute;
+	bottom: 10px;
+	left: 50%;
+	-webkit-transform: translate(-50%);
+	transform: translate(-50%);
+	box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+}
+.alt-logon .tab-box{
+	margin: 0px 40px;
+	padding-top: 20px;
+}
+.alt-logon .tab-box>div{
+	display: none;
+}
+.alt-logon .tab-box>div.act{
+	display: block;
+}
+.alt-logon .inp-box{
+	position: relative;
+}
+.mb-20{
+	margin-bottom: 20px;
+}
+.mb-30{
+	margin-bottom: 30px;
+}
+.alt-logon .inp-box>input::placeholder{
+	color: rgba(102,102,102,0.6);
+}
+.alt-logon .inp-box>.icon{
+	position: absolute;
+	left: 17px;
+	top: 10px;
+	width: 28px;
+	height: 28px;
+}
+.alt-logon .inp-box>input[type="text"],
+.alt-logon .inp-box>input[type="password"]{
+	display: block;
+	width: 100%;
+	height: 48px;
+	line-height: 48px;
+	font-size: 14px;
+	padding-left: 50px;
+	padding-right: 20px;
+	border-radius: 50px;
+	border: solid 1px rgba(0,0,0,0.1);
+	box-sizing: border-box;
+}
+.alt-logon .inp-box.pasbox>input[type="text"],
+.alt-logon .inp-box.pasbox>input[type="password"]{
+	padding-right: 60px;
+}
+.alt-logon .inp-box.pasbox .eye{
+	position: absolute;
+	top: 0px;
+	right: 2px;
+	width: 48px;
+	height: 48px;
+	background-image: url(../images/newindex/logon-icon-05.png);
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.alt-logon .inp-box.pasbox .eye.act{
+	background-image: url(../images/newindex/logon-icon-055.png);
+}
+.alt-logon .inp-box.yzmbox>input[type="text"]{
+	padding-right: 188px;
+}
+.alt-logon .inp-box.yzmbox .yzm{
+	position: absolute;
+	top: 5px;
+	right: 48px;
+	height: 38px;
+	background-color: #F9F9F9;
+}
+.alt-logon .inp-box.yzmbox .sx{
+	position: absolute;
+	top: 0px;
+	right: 2px;
+	width: 48px;
+	height: 48px;
+	background-image: url(../images/newindex/logon-icon-04.png);
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.alt-logon .bttn-box>input{
+	display: block;
+	width: 100%;
+	height: 48px;
+	line-height: 48px;
+	font-size: 18px;
+	color: #FFFFFF;
+	border-radius: 50px;
+	background-color: #FF5722;
+	box-shadow: 5px 15px 15px rgba(0, 0, 0, 0.2);
+}
+.gn-box{
+	height: 20px;
+	line-height: 20px;
+	font-size: 12px;
+	color: rgba(102,102,102,0.6);
+	overflow: hidden;
+}
+.gn-box>li:first-of-type{
+	float: left;
+}
+.gn-box>li:first-of-type>input[type="checkbox"]{
+	display: none;
+}
+.gn-box>li:last-of-type{
+	float: right;
+}
+.gn-box .chebox{
+	position: relative;
+	padding-left: 20px;
+	cursor: pointer;
+}
+.gn-box .chebox:hover{
+	color: #FF5722;
+}
+.gn-box .chebox::before{
+	position: absolute;
+	left: 0;
+	top: 1px;
+	content: "";
+	width: 14px;
+	height: 14px;
+	border-radius: 2px;
+	border: solid 1px rgba(0,0,0,0.1);
+	box-sizing: border-box;
+}
+.gn-box .chebox.act::before{
+	border: solid 1px rgba(0,0,0,0.4);
+}
+.gn-box .chebox::after{
+	display: none;
+	position: absolute;
+	left: 3px;
+	top: 50%;
+	margin-top: -4px;
+	content: "";
+	width: 8px;
+	height: 8px;
+	border-radius: 2px;
+	background-color: #FF5722;
+}
+.gn-box .chebox.act::after{
+	display: block;
+}
+
+.gn-box>li:last-of-type>a{
+	color: rgba(102,102,102,0.6);
+}
+.gn-box>li:last-of-type>a:hover{
+	color: #FF5722;
+}
+.bowbox{
+	position: absolute;
+	bottom: 10px;
+	left: 0;
+	width: 100%;
+	height: 20px;
+	line-height: 20px;
+	text-align: center;
+	font-size: 12px;
+	color: rgba(102,102,102,0.6);
+	overflow: hidden;
+}
+.bowbox>input{
+	display: none;
+}
+.bowbox>.chebox{
+	position: relative;
+	padding-left: 20px;
+}
+.bowbox>.chebox::before{
+	position: absolute;
+	left: 0;
+	top: 1px;
+	content: "";
+	width: 14px;
+	height: 14px;
+	border-radius: 14px;
+	border: solid 1px rgba(0,0,0,0.1);
+	box-sizing: border-box;
+	cursor: pointer;
+}
+.bowbox>.chebox.act::before{
+	border: solid 1px rgba(0,0,0,0.4);
+}
+.bowbox>.chebox::after{
+	display: none;
+	position: absolute;
+	left: 3px;
+	top: 50%;
+	margin-top: -4px;
+	content: "";
+	width: 8px;
+	height: 8px;
+	border-radius: 8px;
+	background-color: #FF5722;
+	cursor: pointer;
+}
+.bowbox>.chebox.act::after{
+	display: block;
+}
+.bowbox>.chebox>a{
+	color: #FF5722;
+}
+.bowbox>.chebox>a:hover{
+	text-decoration: underline;
+	text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+.alt-logon .inp-box>.selectJ{
+	display: block;
+	width: 100%;
+	height: 48px;
+	line-height: 48px;
+	font-size: 14px;
+	text-align: left;
+	color: rgba(102,102,102,0.6);
+	padding-left: 50px;
+	padding-right: 20px;
+	border-radius: 50px;
+	border: solid 1px rgba(0,0,0,0.1);
+	box-sizing: border-box;
+	background-image: url(../images/newindex/logon-icon-09.png);
+	background-position: 97.5% center;
+	background-repeat: no-repeat;
+}
+.alt-logon .inp-box>.selectJ.act{
+	color: #000000;
+}
+.alt-logon .opJ{
+	display: none;
+	position: absolute;
+	top: 50px;
+	left: 50px;
+	right: 20px;
+	border-radius: 10px;
+	border: solid 1px rgba(0,0,0,0.1);
+	background-color: #FFFFFF;
+	box-shadow: 0px 5px 5px rgba(0, 0, 0, 0.2);
+	max-height: 160px;
+	overflow-x: hidden;
+	overflow-y: auto;
+	padding: 10px 0px;
+	z-index: 2;
+}
+.alt-logon .tel .opJ{
+	left: 0;
+	right: 200px;
+}
+.alt-logon .opJ.act{
+	display: block;
+}
+.alt-logon .opJ>input[type="button"],
+.alt-logon .opJ>li{
+	display: block;
+	width: 100%;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	font-size: 14px;
+	cursor: pointer;
+}
+.alt-logon .opJ>input[type="button"].act,
+.alt-logon .opJ>li.act{
+	background-color: #FF5722;
+	color: #FFFFFF;
+}
+.alt-logon .opJ>input[type="button"]:hover,
+.alt-logon .opJ>li:hover{
+	background-color: #FF5722;
+	color: #FFFFFF;
+}
+.alt-logon .tel>input[type="text"]{
+	padding-left: 120px;
+}
+.alt-logon .tel>.selectJ{
+	position: absolute;
+	left: 50px;
+	padding: 0px;
+	width: 70px;
+	border: none;
+}
+
+.GGtext {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	font-size: 12px;
+	color: rgba(102,102,102,0.6);
+	width: 50px;
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+	overflow: hidden;
+	z-index: 8;
+}
+
+.alt-logon .alt-GB{
+	margin: 0px;
+	top: 0px;
+	right: 0px;
+	background-size: 20px;
+}
+.alt-logon .wor{
+	border-radius: 50px;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+.alt-logon .wor>input[type="text"],
+.alt-logon .wor>input[type="password"],
+.alt-logon .wor>input[type="button"]{
+	border-color: #FF5722;
+}
 /*--------主题颜色切换----------*/
 body.ZT-black,
 .bkgWhite.ZT-black,
@@ -10480,7 +10865,8 @@ body.ZT-black,
 .alt05-box.ZT-black,
 .alt06-box.ZT-black,
 .alt-content.ZT-black,
-.alt-content02.ZT-black {
+.alt-content02.ZT-black,
+.alt01—box.ZT-black {
 	background-color: #16161a;
 }
 
@@ -10560,7 +10946,9 @@ body.ZT-black,
 .sort02.ZT-black,
 .upl-file-box.ZT-black,
 .AD-navR.ZT-black,
-.ss_no.ZT-black {
+.ss_no.ZT-black,
+.helpbox01 .alt-content02.ZT-black,
+.ZT-black .alt-logon .opJ {
 	background-color: #2a2a32;
 }
 
@@ -10670,7 +11058,10 @@ body.ZT-black,
 .jh-left.ZT-black,
 .jh-right.ZT-black,
 .cz-oth.ZT-black,
-.AD-ul04.ZT-black {
+.AD-ul04.ZT-black,
+.tab-nav.ZT-black,
+.ZT-black .alt-logon .opJ,
+.ZT-black .alt-logon .opJ>input{
 	color: rgba(255, 255, 255, 0.7);
 }
 
@@ -10732,7 +11123,11 @@ body.ZT-black,
 .AD-text08.ZT-black,
 .AD-text09.ZT-black,
 .AD-time.ZT-black,
-.AD-text10.ZT-black>li:first-of-type {
+.AD-text10.ZT-black>li:first-of-type,
+.tab-nav.ZT-black>li.act,
+.inp-box.ZT-black>input[type="text"],
+.inp-box.ZT-black>input[type="password"],
+.inp-box.ZT-black>.selectJ.act {
 	color: rgba(255, 255, 255, 1);
 }
 
@@ -10828,7 +11223,8 @@ body.ZT-black,
 .bnt-tow.ZT-black>input,
 .dz-inp.ZT-black>li>div:last-of-type>input,
 .dz-inp.ZT-black>li>div:last-of-type>select,
-.jh-left.ZT-black {
+.jh-left.ZT-black,
+.ZT-black .alt-logon .inp-box.yzmbox .yzm {
 	background-color: rgba(255, 255, 255, 0.05);
 }
 
@@ -10860,11 +11256,21 @@ body.ZT-black,
 .pay-dz.ZT-black>li,
 .dz-inp.ZT-black>li>div:last-of-type,
 .cz-oth.ZT-black>li,
-.rec-box.ZT-black table th {
+.rec-box.ZT-black table th,
+.inp-box.ZT-black>input[type="text"],
+.inp-box.ZT-black>input[type="password"],
+.inp-box.ZT-black>.selectJ,
+.gn-box.ZT-black .chebox::before,
+.bowbox.ZT-black>.chebox::before{
 	border-color: rgba(255, 255, 255, 0.05);
 }
 
-.cz-oth.ZT-black>.act {
+.cz-oth.ZT-black>.act,
+.inp-box.wor.ZT-black>input[type="text"],
+.inp-box.wor.ZT-black>input[type="password"],
+.inp-box.wor.ZT-black>.selectJ.act,
+.gn-box.ZT-black .chebox.act::before,
+.bowbox.ZT-black>.chebox.act::before  {
 	border-color: #FF5722;
 }
 

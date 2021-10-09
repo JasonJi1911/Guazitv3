@@ -8,6 +8,7 @@ use api\exceptions\ApiException;
 use api\helpers\ErrorCode;
 use api\helpers\Common;
 use api\logic\ChannelLogic;
+use api\logic\CommentLogic;
 use api\logic\PayLogic;
 use api\logic\VideoLogic;
 use api\logic\AdvertLogic;
@@ -60,6 +61,20 @@ class VideoController extends BaseController
 
         // 添加热门分类
         array_unshift($data['list'], ['channel_id' => 0, 'channel_name' => '首页']);
+
+        //所有密保问题信息
+        $feedbackinfo = $VideoDao->findFeedbackinfo();
+        $data['question_info'] = $feedbackinfo['question'];
+        $data['country_info'] = $feedbackinfo['country'];
+
+        //登录左侧广告
+        if(Yii::$app->common->product == Common::PRODUCT_PC ){
+            $advertLogic = new AdvertLogic();
+            $advert = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_LOGIN_PC, '');
+            if($advert){
+                $data['login_advert'] = $advert;
+            }
+        }
 
         return $data;
     }
@@ -316,12 +331,13 @@ class VideoController extends BaseController
         $sourceId  = $this->getParam('source_id');
         
         $city = $this->getParam('city');
+        $uid = $this->getParam('uid');
         // 不传入id则设置为空
         $chapterId = $chapterId ? $chapterId : '';
 
         $videoLogic = new VideoLogic();
         // return $videoLogic->playInfo($videoId, $chapterId, $sourceId);
-        return $videoLogic->playInfo($videoId, $chapterId, $sourceId, $city);
+        return $videoLogic->playInfo($videoId, $chapterId, $sourceId, $city, $uid);
     }
 
     /**
@@ -524,13 +540,16 @@ class VideoController extends BaseController
      * 保存反馈信息
      */
     public function actionSaveFeedbackinfo(){
-        $country    = $this->getParam('country',0);
-        $internets    = $this->getParam('internets',0);
-        $systems    = $this->getParam('systems',0);
+        $country     = $this->getParam('country',0);
+        $internets   = $this->getParam('internets',0);
+        $systems     = $this->getParam('systems',0);
         $browsers    = $this->getParam('browsers',0);
         $description = $this->getParam('description',"");
+        $video_id    = $this->getParam('video_id', 0);
+        $chapter_id  = $this->getParam('chapter_id', 0);
+        $source_id   = $this->getParam('source_id', 0);
         $videoDao = new VideoDao();
-        $result = $videoDao->saveFeedbackinfo($country,$internets,$systems,$browsers,$description);
+        $result = $videoDao->saveFeedbackinfo($country,$internets,$systems,$browsers,$description,$video_id,$chapter_id,$source_id);
 
         return $result;
     }
@@ -572,5 +591,152 @@ class VideoController extends BaseController
         $result = $videoDao->saveAdcenter($type,$realname,$telephone,$country,$address,$industry,$wechatNO,$email);
 
         return $result;
+    }
+
+    /*
+     * 我的播放记录
+     */
+    public function actionWatchlogPc(){
+        $uid = $this->getParam('uid', "");
+        $videodao = new VideoDao();
+        //播放记录
+        $result = $videodao->finduserwatchLog($uid,'');
+        return $result;
+    }
+    /*
+     * 删除播放记录
+     */
+    public function actionRemoveWatchlog(){
+        $uid = $this->getParam('uid', "");
+        $logId = $this->getParam('logid', "");
+        $videodao = new VideoDao();
+        $result = $videodao->delWatchLogByuidPC($uid,$logId);
+        return $result;
+    }
+    /*
+     * 添加播放记录
+     */
+    public function actionAddWatchlog(){
+        $uid = $this->getParam('uid', 0);
+        $video_id = $this->getParam('video_id', 0);
+        $chapter_id = $this->getParam('chapter_id', 0);
+        $watchTime = $this->getParam('watchTime', 0);
+        $totalTime = $this->getParam('totalTime', 0);
+
+        $videodao = new VideoDao();
+        $result = $videodao->addWatchLogPC($uid, $video_id, $chapter_id, $watchTime,$totalTime);
+        return $result;
+    }
+    /*
+     * 搜索播放记录
+     */
+    public function actionSearchWatchlog(){
+        $uid = $this->getParam('uid', "");
+        $searchword = $this->getParam('searchword', "");
+        $page_num = $this->getParam('page_num', 1);
+        $videodao = new VideoDao();
+        $result = $videodao->finduserwatchLog($uid, $searchword,$page_num);
+        return $result;
+    }
+
+    /*
+     * 我的收藏
+     */
+    public function actionFavoritePc(){
+        $uid = $this->getParam('uid', "");
+        $videodao = new VideoDao();
+        //收藏
+        $result = $videodao->findVideoFavorite($uid);
+        return $result;
+    }
+    /*
+     * 收藏条件查询
+     */
+    public function actionSearchFavorite(){
+        $uid = $this->getParam('uid', "");
+        $searchword  = $this->getParam('searchword', "");
+        $order       = $this->getParam('order', "");
+        $channel     = $this->getParam('channel', "");
+        $is_finished = $this->getParam('is_finished', 0);
+        $page_num = $this->getParam('page_num', 1);
+
+        $videodao = new VideoDao();
+        $result = $videodao->findVideoFavoriteBycondition($uid,$searchword,$order,$channel,$is_finished,$page_num);
+        return $result;
+    }
+    /*
+     * 收藏 / 取消收藏
+     */
+    public function actionChangeFavorite(){
+        $uid = $this->getParam('uid', "");
+        $videoid  = $this->getParam('videoid', "");
+        $videodao = new VideoDao();
+        $result = $videodao->favVideoPC($uid,$videoid);
+        return $result;
+    }
+
+    /*
+     * 提交影片评论
+     */
+    public function actionSendComment()
+    {
+        $uid = $this->getParam('uid', 0);
+        $videoId    = $this->getParam('video_id');
+        $chapterId  = $this->getParam('chapter_id');
+        $content    = trim($this->getParam('content'));
+        $commentPid = $this->getParam('pid', 0);
+
+        $commentLogic = new CommentLogic();
+        $res = $commentLogic->postCommentPC($uid, $content, $videoId, $chapterId, $commentPid);
+        if($res['is_review']==-1){
+            $r['display'] = 0;
+            $r['data']    = [];
+            $r['message'] = '您的操作过于频繁，请稍后重试';
+        }else{
+            $r['display'] = $res['is_review'] ? 1 : 0;
+            $r['data']    = $res['data'];
+            $r['message'] = $res['is_review'] ? '评论成功' : '评论成功,等待审核';
+        }
+
+        return $r;
+    }
+
+
+    /*
+     * 加载评论列表
+     */
+    public function actionCommentMore(){
+        $video_id = $this->getParam('video_id', 0);
+        $chapter_id = $this->getParam('chapter_id', 0);
+        $order = $this->getParam('order', 0);
+        $page_num = $this->getParam('page_num', 1);
+        $page_num = $page_num+1;//取下一页
+
+        $commentLogic = new CommentLogic();
+//        $commentList  = $commentLogic->commentList($videoId, $chapterId, 1);
+        if($order=='replynum'){
+            $commentList  = $commentLogic->commentListPCByReply($video_id, $chapter_id, $page_num);
+            $data['comments'] = $commentList;
+        }else{
+            $commentList  = $commentLogic->commentListPC($video_id, $chapter_id, $page_num);
+            $data['comments'] = $commentList['list'];
+        }
+        return $data;
+    }
+    /*
+     * 加载回复列表
+     */
+    public function actionReplyMore(){
+//        $video_id = $this->getParam('video_id', 0);
+//        $channel_id = $this->getParam('channel_id', 0);
+        $pid = $this->getParam('pid', 0);
+        $page_num = $this->getParam('page_num', 1);
+        $page_num = $page_num+1;//取下一页
+
+        $commentLogic = new CommentLogic();
+//        $commentList  = $commentLogic->commentList($videoId, $chapterId, 1);
+        $replylist  = $commentLogic->getReplyMorePC($pid, $page_num);
+
+        return $replylist;
     }
 }

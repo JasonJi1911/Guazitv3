@@ -11,7 +11,10 @@ class VideoFeedback extends \common\models\video\VideoFeedback
             'internets',
             'systems',
             'browsers',
-            'description'
+            'description',
+            'video_id',
+            'chapter_id',
+            'source_id'
         ];
     }
 

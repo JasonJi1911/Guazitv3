@@ -119,3 +119,98 @@ $(document).ready(function() {
         $('#alt05').hide();
     });
 });
+
+//存用户
+function saveuser(uid,zd){
+    //设置是否自动登录
+    if(zd==1 || zd=="1"){
+        //是自动
+        // setCookie("zd","1",7);
+        setCookie("uid",uid,7);
+    }else{
+        document.cookie="uid="+uid;
+    }
+    // if(window.localStorage.hasOwnProperty("user")){
+    //     window.localStorage.removeItem("user");
+    // }
+    // window.localStorage.setItem("user",str);
+}
+
+//读用户
+function finduser(){
+    var uid = getCookie("uid");
+    // if(zd){
+    //     if(window.localStorage.hasOwnProperty("user")){
+    //         str = window.localStorage.getItem("user");
+    //     }
+    //     if(str && str!="underfined" && str!= "undefined"){
+    //         showlogin(JSON.parse(str));
+    //     }
+    // }
+    return uid;
+}
+//删除
+function removeuser(){
+    // if(window.localStorage.hasOwnProperty("user")){
+    //     window.localStorage.removeItem("user");
+    // }
+    setCookie("uid","",-1);
+}
+
+//设置有效期的cookie,exdays为负数时即为删除cookie
+function setCookie(cname,cvalue,exdays){
+    var d = new Date();
+    d.setTime(d.getTime()+(exdays*24*60*60*1000));
+    var expires = "expires="+d.toGMTString();
+    document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+//获取cookie
+function getCookie(cname){
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    var str = "";
+    for(var i=0; i<ca.length; i++){
+        var c = ca[i].trim();
+        if (c.indexOf(name)==0){
+            str = c.substring(name.length,c.length);
+        }
+    }
+    return str;
+}
+
+//右上角登录
+function showlogin(user){
+    if(user.avatar && user.avatar!="underfined" && typeof (user.avatar) != "undefined"){
+        $("#user_headimg").attr("src",user.avatar);
+    }
+    if(user.nickname && user.nickname!="underfined" && typeof (user.nickname) != "undefined"){
+        $("#user_name").html(user.nickname);
+    }
+    // $("#user_isvip").text();
+    // $("#user_grade").text();
+    // $(".user_score").text();
+    // $("#user_allscore").text();
+
+    $("#notloggedin").hide();
+    $("#loggedin").show();
+}
+
+//手机验证
+function isMobilePhone(mobile){
+    var reg = /^1\d{10}$/;
+    if (!reg.test(mobile)) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+//邮箱验证
+function isEmail(email){
+    var reg = /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/;
+    if (!reg.test(email)) {
+        return false;
+    } else {
+        return true;
+    }
+}

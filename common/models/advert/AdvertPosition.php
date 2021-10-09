@@ -54,6 +54,7 @@ class AdvertPosition extends \xiang\db\ActiveRecord implements StatusToggleInter
     const POSITION_VIDEO_RIGHT_PC  = 31;
     const POSITION_VIDEO_SEARCH_PC  = 32;
     const POSITION_VIDEO_LIST_PC  = 33;
+    const POSITION_VIDEO_LOGIN_PC  = 34;
 
     public static $positionMap = [
         self::POSITION_VIDEO_INDEX  => '手机端首页',
@@ -88,7 +89,8 @@ class AdvertPosition extends \xiang\db\ActiveRecord implements StatusToggleInter
         self::POSITION_VIDEO_CHANNEL_PC10 => 'PC类目页10',
         self::POSITION_VIDEO_RIGHT_PC  => 'PC播放页右侧',
         self::POSITION_VIDEO_SEARCH_PC => 'PC搜索页右侧',
-        self::POSITION_VIDEO_LIST_PC   => 'PC列表页右侧'
+        self::POSITION_VIDEO_LIST_PC   => 'PC列表页右侧',
+        self::POSITION_VIDEO_LOGIN_PC  => 'PC登录左侧'
     ];
 
     // 状态

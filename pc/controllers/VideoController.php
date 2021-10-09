@@ -14,6 +14,7 @@ use common\models\Activity;
 use common\models\ActivityLog;
 use common\helpers\RedisStore;
 use yii\helpers\ArrayHelper;
+use pc\models\LoginForm;
 
 class VideoController extends BaseController
 {
@@ -318,6 +319,8 @@ class VideoController extends BaseController
         $chapter_id = Yii::$app->request->get('chapter_id', '');
         $source_id = Yii::$app->request->get('source_id', '');
 
+        $uid = Yii::$app->user->id;
+
         //请求频道、搜索信息
         $channels = Yii::$app->api->get('/video/channels');
         $city = "";
@@ -338,10 +341,7 @@ class VideoController extends BaseController
         }
         //请求视频信息
         // $data = Yii::$app->api->get('/video/info', ['video_id' => $video_id, 'chapter_id' => $chapter_id, 'source_id' => $source_id]);
-        $data = Yii::$app->api->get('/video/info', ['video_id' => $video_id, 'chapter_id'
-        => $chapter_id, 'source_id' => $source_id, 'city'=> $city]);
-
-
+        $data = Yii::$app->api->get('/video/info', ['video_id' => $video_id, 'chapter_id' => $chapter_id, 'source_id' => $source_id, 'city'=> $city, 'uid'=>$uid]);
 
         $channel_id = $data['channel_id'];
         $data['info']['actorvideos'] = [];
@@ -367,8 +367,14 @@ class VideoController extends BaseController
         $source_id = $data['info']['source_id'];
         $sourceFilter = $data['info']['filter'];
         $souceVideos = ArrayHelper::index($sourceFilter, 'resId')[$source_id]['data'];
-        $data['info']['next_chapter'] = ArrayHelper::index($souceVideos, 'chapter_id')[$data['info']['play_chapter_id']]['next_chapter'];
-        $data['info']['last_chapter'] = ArrayHelper::index($souceVideos, 'chapter_id')[$data['info']['play_chapter_id']]['last_chapter'];
+        if ($souceVideos) {
+            $data['info']['next_chapter'] = ArrayHelper::index($souceVideos, 'chapter_id')[$data['info']['play_chapter_id']]['next_chapter'];
+            $data['info']['last_chapter'] = ArrayHelper::index($souceVideos, 'chapter_id')[$data['info']['play_chapter_id']]['last_chapter'];
+        }
+
+        //在线反馈信息
+        $feedbackinfo = Yii::$app->api->get('/video/feedbackinfo');
+
         return $this->render('newframe', [
             'pageTab'       => $pageTab,
             'data'          => $data,
@@ -376,7 +382,8 @@ class VideoController extends BaseController
             'hotword'       => $hot,
             'source_id'     => $source_id,
             'channel_id'    => $channel_id,
-            'city'=> $city
+            'city'=> $city,
+            'feedbackinfo'  => $feedbackinfo
         ]);
     }
 
@@ -834,7 +841,12 @@ class VideoController extends BaseController
         $systems      = Yii::$app->request->get('systems', 0);
         $browsers     = Yii::$app->request->get('browsers', 0);
         $description = Yii::$app->request->get('description', "");
-        $result = Yii::$app->api->get('/video/save-feedbackinfo',['country' => $country,'internets' => $internets,'systems' => $systems, 'browsers'=>$browsers, 'description'=>$description]);
+        $video_id     = Yii::$app->request->get('video_id', 0);
+        $chapter_id     = Yii::$app->request->get('chapter_id', 0);
+        $source_id     = Yii::$app->request->get('source_id', 0);
+        $result = Yii::$app->api->get('/video/save-feedbackinfo',['country' => $country,'internets' => $internets,
+            'systems' => $systems, 'browsers'=>$browsers, 'description'=>$description,
+            'video_id' =>$video_id ,'chapter_id'=>$chapter_id ,'source_id'=>$source_id]);
         return $result;
     }
 
@@ -886,5 +898,390 @@ class VideoController extends BaseController
         $result = Yii::$app->api->get('/video/save-adcenter',['type' => $type,'realname' => $realname,'telephone' => $telephone,
             'country'=>$country, 'address'=>$address, 'industry'=>$industry,'wechatNO'=>$wechatNO,'email'=>$email]);
         return Tool::responseJson(0, '提交成功', $result);
+    }
+
+    /*
+     * PC端手机、邮箱登录
+     */
+    public function actionLogin(){
+        $account = Yii::$app->request->get('account', "");//手机或邮箱
+        $password = Yii::$app->request->get('password', "");
+        $is_email = Tool::isEmail($account);//验证邮箱格式
+        if($is_email){
+            //邮箱登录
+            $result = Yii::$app->api->get('/user/email-weblogin',['email' => $account,'password' => $password]);
+        }else{
+            //手机登录
+            $result = Yii::$app->api->get('/user/mobile-weblogin',['mobile' => $account,'password' => $password]);
+        }
+        return Tool::responseJson(0, '提交成功', $result);
+    }
+
+    /*
+     * PC端手机、邮箱注册
+     */
+    public function actionRegister(){
+        $email = Yii::$app->request->get('email', "");
+        $mobile_areacode = Yii::$app->request->get('prefix_phone', "");
+        $mobile = Yii::$app->request->get('phone', "");
+        $password = Yii::$app->request->get('newpwd', "");
+        $question = Yii::$app->request->get('question', 0);
+        $answer = Yii::$app->request->get('answer', "");
+
+        $result = Yii::$app->api->get('/user/webregister',['email'=>$email, 'mobile' => $mobile,
+            'mobile_areacode'=>$mobile_areacode,'password' => $password,'question'=>$question,'answer'=>$answer]);
+        if($result['errno']==0){
+            $model = new LoginForm();
+            $model->mobile = $mobile;
+            $model->email = $email;
+            $model->password = $password;
+            if ( $model->login()) {
+                Yii::$app->cache->set('login_flag', '1');
+            }
+            $uid = Yii::$app->user->id;
+            $result['uid'] = $uid;
+            $cookie1 = \Yii::$app->request->cookies;
+            $uid1=$cookie1->get("uid");
+            if(!$uid1){
+                $cookie = new \yii\web\Cookie();
+                $cookie -> name = 'uid';        //cookie的名称
+                $cookie -> expire = time() + 3600*24;	   //存活的时间
+                $cookie -> httpOnly = false;		   //无法通过js读取cookie
+                $cookie -> value = $uid;   //cookie的值
+                $cookie -> secure = false; //不加密
+                \Yii::$app->response->getCookies()->add($cookie);
+            }
+        }
+        return Tool::responseJson($result['errno'],"操作成功",$result);
+    }
+
+    /*
+     * PC端用户修改密码
+     */
+    public function actionModifyPassword(){
+        $account = Yii::$app->request->get('account', "");//手机或邮箱
+        $password = Yii::$app->request->get('newpwd', "");
+        $question = Yii::$app->request->get('question', 0);
+        $answer = Yii::$app->request->get('answer', "");
+        $is_email = Tool::isEmail($account);//验证邮箱格式
+
+        $rows = Yii::$app->api->get('/user/modify-password',['account'=>$account, 'password' => $password,
+                'question'=>$question,'answer'=>$answer, 'is_email'=>$is_email]);
+        return Tool::responseJson(0, '提交成功', $rows);
+    }
+
+    //个人中心
+    public function actionPersonal(){
+        $pageTab = 'personal';
+
+        $uid = Yii::$app->user->id;
+        if(!$uid){
+            return $this->redirect('/video/index');
+        }
+        //请求频道、搜索信息
+        $channels = Yii::$app->api->get('/video/channels');
+        //获取热搜
+        $hotword = Yii::$app->api->get('/search/hot-word');
+        //个人中心信息
+        $data['watchlog'] = Yii::$app->api->get('/video/watchlog-pc',['uid'=>$uid]);
+        $data['favorite'] = Yii::$app->api->get('/video/favorite-pc',['uid'=>$uid]);
+        $comment = Yii::$app->api->get('/user/comment-pc',['uid'=>$uid]);
+        if($comment){
+            $data = array_merge($data,$comment);
+        }
+        $relations = Yii::$app->api->get('/user/relations-pc',['uid'=>$uid]);
+        if($relations){
+            $data = array_merge($data,$relations);
+        }
+
+        $uservip = Yii::$app->api->get('/user/userinfo',['uid'=>$uid]);
+        if($uservip['user']){
+            $data['user'] = $uservip['user'];
+        }
+        //任务
+//        $task = Yii::$app->api->get('/task/center');
+
+        return $this->render('newframe',[
+            'pageTab'  => $pageTab,
+            'channels' => $channels,
+            'hotword'  => $hotword,
+            'data'     => $data,
+//            'task'     => $task
+        ]);
+    }
+
+    /*
+     * 查vip
+     * 根据id查光看记录、消息
+     */
+    public function actionUservip(){
+        $uid = Yii::$app->user->id;
+        $vip = Yii::$app->api->get('/user/uservip',['uid'=>$uid]);
+        if($vip){
+            $errno = 0;
+        }else{
+            $errno = -1;
+        }
+        return TOOL::responseJson($errno,"操作成功",$vip);
+    }
+
+    /*
+     * 删除播放记录
+     */
+    public function actionRemoveWatchlog(){
+        $uid = Yii::$app->user->id;
+        $logId = Yii::$app->request->get('logid', "");
+        $result = Yii::$app->api->get('/video/remove-watchlog',['uid'=>$uid,'logid'=>$logId]);
+        return TOOL::responseJson(0,"操作成功",$result);
+    }
+
+    /*
+     * 添加播放记录
+     */
+    public function actionAddWatchlog(){
+        $uid = Yii::$app->user->id;
+        $video_id = Yii::$app->request->get('video_id', 0);
+        $chapter_id = Yii::$app->request->get('chapter_id', 0);
+        $watchTime = Yii::$app->request->get('watchTime', 0);
+        $totalTime = Yii::$app->request->get('totalTime', 0);
+        $result = Yii::$app->api->get('/video/add-watchlog',['uid'=>$uid,'video_id'=>$video_id,'chapter_id'=>$chapter_id,'watchTime'=>$watchTime,'totalTime'=>$totalTime]);
+        return TOOL::responseJson(0,"操作成功",$result);
+    }
+
+    /*
+     * 搜索播放记录
+     */
+    public function actionSearchWatchlog(){
+        $uid = Yii::$app->user->id;
+        $searchword = Yii::$app->request->get('searchword', "");
+        $result = Yii::$app->api->get('/video/search-watchlog',['uid'=>$uid,'searchword'=>$searchword]);
+        if($result){
+            $errno = 0;
+        }else{
+            $errno = -1;
+        }
+        return TOOL::responseJson($errno,"操作成功",$result);
+    }
+    /*
+     * 收藏条件查询
+     */
+    public function actionSearchFavorite(){
+        $uid = Yii::$app->user->id;
+        $searchword  = Yii::$app->request->get('searchword', "");
+        $order       = Yii::$app->request->get('order', "");
+        $channel     = Yii::$app->request->get('channel', 0);
+        $is_finished = Yii::$app->request->get('is_finished', 0);
+        $result = Yii::$app->api->get('/video/search-favorite',['uid'=>$uid,'searchword'=>$searchword,
+            'order'=>$order,'channel'=>$channel,'is_finished'=>$is_finished]);
+        if($result){
+            $errno = 0;
+        }else{
+            $errno = -1;
+        }
+        return TOOL::responseJson($errno,"操作成功",$result);
+    }
+
+    /*
+     * 收藏 / 取消收藏
+     */
+    public function actionChangeFavorite(){
+        $uid = Yii::$app->user->id;
+        $videoid  = Yii::$app->request->get('videoid', "");
+        $result = Yii::$app->api->get('/video/change-favorite',['uid'=>$uid,'videoid'=>$videoid]);
+        if($result){
+            $errno = 0;
+        }else{
+            $errno = -1;
+        }
+        return TOOL::responseJson($errno,"操作成功",$result);
+    }
+
+    //个人主页/他人主页
+    public function actionOtherHome(){
+        $pageTab = 'otherhome';
+
+        $uid = Yii::$app->user->id;
+        $other_uid = Yii::$app->request->get('uid', 0);
+        if(!$uid){
+            return $this->redirect('/video/index');
+        }else if($other_uid==0){
+            $other_uid = $uid;
+        }
+        //请求频道、搜索信息
+        $channels = Yii::$app->api->get('/video/channels');
+        //获取热搜
+        $hotword = Yii::$app->api->get('/search/hot-word');
+        //加载个人主页信息
+        $data = Yii::$app->api->get('/user/other-home',['uid'=>$uid,'other_uid'=>$other_uid]);
+        $data['main_uid'] = $uid;
+
+        return $this->render('newframe',[
+            'pageTab'  => $pageTab,
+            'channels' => $channels,
+            'hotword'  => $hotword,
+            'data'     => $data
+        ]);
+    }
+
+    /*
+     * 关注/拉黑 或取消
+     */
+    public function actionChangeRelations(){
+        $type  = Yii::$app->request->get('type', 1);
+        if($type==3){//粉丝（uid和other_uid反着查）
+            $other_uid  = Yii::$app->request->get('uid', 0);
+            $uid  = Yii::$app->request->get('other_uid', 0);
+            $type = 1;
+        }else{//黑名单/关注
+            $uid = Yii::$app->user->id;
+            $other_uid  = Yii::$app->request->get('other_uid', 0);
+        }
+
+        $result = Yii::$app->api->get('/user/change-relations',['uid'=>$uid,'other_uid'=>$other_uid,'type'=>$type]);
+        if($result){
+            $errno = 0;
+        }else{
+            $errno = -1;
+        }
+        return TOOL::responseJson($errno,"操作成功",$result);
+    }
+
+    /*
+     * 点赞
+     */
+    public function actionAddLikes(){
+        $comment_id  = Yii::$app->request->get('id', 0);
+        $cal  = Yii::$app->request->get('cal', 'plus');
+        $result = Yii::$app->api->get('/user/add-likes',['comment_id'=>$comment_id, 'cal'=>$cal]);
+        return TOOL::responseJson(0,"操作成功",$result);
+    }
+    /*
+     * 删除消息
+     */
+    public function actionRemoveMessage(){
+        $comment_id  = Yii::$app->request->get('id', 0);
+        $type  = Yii::$app->request->get('type', "");
+        if($type=="message"){
+            $result = Yii::$app->api->get('/user/remove-message',['comment_id'=>$comment_id]);
+        }else if($type=="comment"){
+            $result = Yii::$app->api->get('/user/remove-comment',['comment_id'=>$comment_id]);
+        }
+        return TOOL::responseJson(0,"操作成功",$result);
+    }
+
+    /*
+     * 根据条件重新查消息
+     */
+    public function actionSearchRelation(){
+        $uid = Yii::$app->user->id;
+        $type  = Yii::$app->request->get('type', 1);
+        $order = Yii::$app->request->get('order', 'time');
+        $searchword  = Yii::$app->request->get('searchword', '');
+        $result = Yii::$app->api->get('/user/search-relation',['uid'=>$uid,'type'=>$type,'order'=>$order,'searchword'=>$searchword]);
+        if($result){
+            $errno = 0;
+        }else{
+            $errno = -1;
+        }
+        return TOOL::responseJson($errno,"操作成功",$result);
+    }
+    /*
+     * 提交评论 / 回复
+     */
+    public function actionSendComment(){
+        $uid = Yii::$app->user->id;
+        $video_id = Yii::$app->request->get('video_id', 0);
+        $chapter_id = Yii::$app->request->get('chapter_id', 0);
+        $content  = Yii::$app->request->get('content', "");
+        $pid  = Yii::$app->request->get('pid', 0);
+        $result = Yii::$app->api->get('/video/send-comment',['uid'=>$uid,'video_id'=>$video_id,'chapter_id'=>$chapter_id,
+            'content'=>$content,'pid'=>$pid]);
+        if($result){
+            $errno = 0;
+        }else{
+            $errno = -1;
+        }
+        return TOOL::responseJson($errno,"操作成功",$result);
+    }
+
+    /*
+     * 加载评论列表
+     */
+    public function actionCommentMore(){
+        $video_id = Yii::$app->request->get('video_id', 0);
+        $chapter_id = Yii::$app->request->get('chapter_id', 0);
+        $page_num = Yii::$app->request->get('page_num', 1);
+        $order = Yii::$app->request->get('order', 'time');
+
+        $data = Yii::$app->api->get('/video/comment-more', ['video_id' => $video_id, 'chapter_id' => $chapter_id, 'page_num' => $page_num, 'order' => $order]);
+
+        return $this->renderPartial('commentmore', ['data' => $data]);
+    }
+
+
+    /*
+     * 加载回复列表
+     */
+    public function actionReplyMore(){
+//        $video_id = Yii::$app->request->get('video_id', 0);
+//        $channel_id = Yii::$app->request->get('channel_id', 0);
+        $page_num = Yii::$app->request->get('page_num', 1);
+        $pid = Yii::$app->request->get('pid', 1);
+
+        $data = Yii::$app->api->get('/video/reply-more', ['pid' => $pid, 'page_num' => $page_num]);
+        if($data){
+            $errno = 0;
+        }else{
+            $errno = -1;
+        }
+        return TOOL::responseJson($errno,"操作成功",$data);
+    }
+
+    /*
+     * 滚动加载
+     */
+    public function actionLoadMore(){
+        $uid = Yii::$app->user->id;
+        $page_num = Yii::$app->request->get('page_num', 1);
+        $tab = Yii::$app->request->get('tab', '');
+        $searchword = Yii::$app->request->get('searchword', '');
+        $order       = Yii::$app->request->get('order', "");
+        $channel     = Yii::$app->request->get('channel', 0);
+        $is_finished = Yii::$app->request->get('is_finished', 0);
+        $type  = Yii::$app->request->get('type', 1);
+        $ctype  = Yii::$app->request->get('ctype', "comment");
+        $result = [];
+        if($tab=="watchlog"){
+            //播放记录
+            $result = Yii::$app->api->get('/video/search-watchlog',['uid'=>$uid,'searchword'=>$searchword,'page_num'=>$page_num]);
+        }else if($tab=="favorite"){
+            //收藏
+            $result = Yii::$app->api->get('/video/search-favorite',['uid'=>$uid,'searchword'=>$searchword,
+                'order'=>$order,'channel'=>$channel,'is_finished'=>$is_finished,'page_num'=>$page_num]);
+        }else if($tab=="comment"){
+            //消息（评论）
+            $result = Yii::$app->api->get('/user/search-comment',['uid'=>$uid,'type'=>$ctype,'page_num'=>$page_num]);
+        }else if($tab=="relation"){
+            $result = Yii::$app->api->get('/user/search-relation',['uid'=>$uid,'type'=>$type,'order'=>$order,'searchword'=>$searchword,'page_num'=>$page_num]);
+        }
+        if($result){
+            $errno = 0;
+        }else{
+            $errno = -1;
+        }
+        return TOOL::responseJson($errno,"操作成功",$result);
+    }
+    /*
+     * 查用户信息
+     */
+    public function actionUserinfo(){
+        $uid = Yii::$app->request->get('uid', 0);
+        $result = Yii::$app->api->get('/user/userinfo',['uid'=>$uid]);
+        if($result){
+            $errno = 0;
+        }else{
+            $errno = -1;
+        }
+        return TOOL::responseJson($errno,"操作成功",$result);
     }
 }

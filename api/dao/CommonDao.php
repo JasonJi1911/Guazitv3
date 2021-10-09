@@ -168,7 +168,7 @@ class CommonDao extends BaseDao
             $data = json_decode($str, true);
         } else {
                 $data = (new \yii\db\Query())
-                ->select('v.id as source_id,v.name,v.icon,v.player')
+                ->select('v.id as source_id,v.name,v.icon,v.player,v.play_limit')
                 ->from(ChannelVideo::tableName().'as c')
                 ->leftJoin(VideoSource::tableName().'as v','v.id=c.sid')
                 ->where(['c.os_type'=>$product])

@@ -13,7 +13,7 @@ header('X-Frame-Options:Deny');
 		var mobile_flag = isMobile();
 
 		if(mobile_flag == false){
-			window.location = 'https://www.jxsp.tv';
+			window.location = "<?=PC_HOST_PATH?>";
 		}
 		
 		if ($("#jBox1").length > 0) {
@@ -287,14 +287,14 @@ header('X-Frame-Options:Deny');
 <div class="video-index-notice">
      <p style="padding-bottom: 5px;text-align: center;">
         <a class="browser browser1" href="<?= Url::to(['map'])?>">网站地图</a>
-        <a class="browser browser1" href="https://m.jxsp.tv/">手机端</a>
-        <a class="browser " href="https://www.jxsp.tv">电脑端</a>
+        <a class="browser browser1" href="<?=WAP_HOST_PATH?>">手机端</a>
+        <a class="browser " href="<?=PC_HOST_PATH?>">电脑端</a>
 <!--        <a class="browser" href="--><?//= Url::to(['site/share-down'])?><!--">APP下载</a>-->
      </p>
     <p>版权声明：如果来函说明本网站提供内容本人或法人版权所有。本网站在核实后，有权先行撤除，以保护版权拥有者的权益。
-        &nbsp; 邮箱地址： jxsptv@gmail.com
+        &nbsp; 邮箱地址： <?=EMAIL_NAME?>
     </p>
-    <p style="text-align:center;">Copyright 2020-2021 jxsp.tv Allrights Reserved.</p>
+    <p style="text-align:center;">Copyright 2020-2021 <?=PC_HOST_NAME?> Allrights Reserved.</p>
 </div>
 <!--<div class="video-footer">
     <ul class="clearfix footer-top">

@@ -306,7 +306,7 @@ NewIndexStyleAsset::register($this);
                                             </ul>
                                             <div class="XQ-btn" name="zt">
                                                 <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">播放</a>
-                                                <input type="button" id="" value="收藏" />
+                                                <input type="button" value="收藏" />
                                             </div>
                                         </div>
                                     </div>
@@ -321,7 +321,7 @@ NewIndexStyleAsset::register($this);
                                     <!--                                    <div><span>12</span>分享 </div>-->
                                     <!--                                </div>-->
                                     <!--关闭按钮-->
-                                    <input class="alt-GB" type="button" id="" value="X" />
+                                    <input class="alt-GB" type="button" value="X" />
                                 </div>
                             </div>
                         <?php endif;?>
@@ -446,7 +446,7 @@ NewIndexStyleAsset::register($this);
                                             </ul>
                                             <div class="XQ-btn" name="zt">
                                                 <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">播放</a>
-                                                <input type="button" id="" value="收藏" />
+                                                <input type="button" value="收藏" />
                                             </div>
                                         </div>
                                     </div>
@@ -461,7 +461,7 @@ NewIndexStyleAsset::register($this);
                                     <!--                                    <div><span>12</span>分享 </div>-->
                                     <!--                                </div>-->
                                     <!--关闭按钮-->
-                                    <input class="alt-GB" type="button" id="" value="X" />
+                                    <input class="alt-GB" type="button"  value="X" />
                                 </div>
                             </div>
                         <?php endif;?>

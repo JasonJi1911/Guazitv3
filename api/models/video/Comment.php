@@ -20,6 +20,7 @@ class Comment extends \common\models\video\Comment
             'time_flag' => function($model){
                 return !empty($model->created_at) ? Tool::timeFormat($model->created_at) : '';
             },
+            'likes_num'
         ];
     }
 

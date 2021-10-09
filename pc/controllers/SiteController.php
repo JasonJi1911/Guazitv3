@@ -6,6 +6,7 @@ use Yii;
 use yii\web\Cookie;
 use api\models\User;
 use yii\helpers\Url;
+use pc\models\LoginForm;
 
 /**
  * Site controller
@@ -134,5 +135,71 @@ class SiteController extends BaseController
         }
 
         return \Yii::createObject($xml);
+    }
+
+
+    /**
+     * Login action.
+     *
+     * @return string
+     */
+    public function actionLogin()
+    {
+        $account = Yii::$app->request->get('account', "");//手机或邮箱
+        $password = Yii::$app->request->get('password', "");
+        $is_email = Tool::isEmail($account);//验证邮箱格式
+        if (!Yii::$app->user->isGuest) {
+            $uid = Yii::$app->user->id;
+            $this->setCookie($uid);
+            return Tool::responseJson(0, '登录成功', $uid);
+        }
+
+        $model = new LoginForm();
+        if($is_email){
+            $model->mobile = '';
+            $model->email = $account;
+        }else{
+            $model->mobile = $account;
+            $model->email = '';
+        }
+        $model->password = $password;
+        if ( $model->login()) {
+            Yii::$app->cache->set('login_flag', '1');
+            $uid = Yii::$app->user->id;
+            $this->setCookie($uid);
+            return Tool::responseJson(0, '登录成功', $uid);
+        } else {
+            return Tool::responseJson(-1, '登录失败', '');
+        }
+    }
+    private function setCookie($uid){
+        $cookie1 = \Yii::$app->request->cookies;
+        $uid1=$cookie1->get("uid");
+        if(!$uid1){
+            $cookie = new \yii\web\Cookie();
+            $cookie -> name = 'uid';        //cookie的名称
+            $cookie -> expire = time() + 3600*24;	   //存活的时间
+            $cookie -> httpOnly = false;		   //无法通过js读取cookie
+            $cookie -> value = $uid;   //cookie的值
+            $cookie -> secure = false; //不加密
+            \Yii::$app->response->getCookies()->add($cookie);
+        }
+    }
+
+
+    /**
+     * Logout action.
+     *
+     * @return string
+     */
+    public function actionLogout()
+    {
+        Yii::$app->user->logout();
+
+//        $cookie1 = \Yii::$app->request->cookies;
+//        Yii::$app->request->enableCookieValidation = false;
+//        $cookie1->remove('uid');
+
+        return Tool::responseJson(0, '退出登录', '');
     }
 }

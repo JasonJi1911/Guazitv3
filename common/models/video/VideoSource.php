@@ -13,10 +13,22 @@ use Yii;
  * @property string $icon icon图标
  * @property int $display_order 展示序号
  * @property string $player 播放器地址
+ * @property int $play_limit 线路免费：0-免费；1-付费
  * @property int $created_at 创建时间
+ * @property int $updated_at
+ * @property int $deleted_at
  */
 class VideoSource extends \yii\db\ActiveRecord
 {
+
+    const SOURCE_FREE  = 0; //免费线路
+    const SOURCE_PAY = 1; //付费线路
+
+    public static $playlimitMap = [
+        self::SOURCE_FREE  => '免费',
+        self::SOURCE_PAY => '付费'
+    ];
+
     /**
      * {@inheritdoc}
      */

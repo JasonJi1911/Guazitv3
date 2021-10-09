@@ -6,45 +6,10 @@ use pc\assets\NewIndexStyleAsset;
 NewIndexStyleAsset::register($this);
 $name = LOGONAME.'视频';
 $logo = LOGONAME;
-
-$js = <<<JS
-$(function(){    
-    $("#v_submit").click(function(){
-        var arrIndex = {};
-        var tab = true;
-        var str = '提交成功';
-        if(tab){
-            arrIndex['country'] = $("#v_country").val();         
-            arrIndex['internets'] = $("#v_internet").val();    
-            arrIndex['systems'] = $("#v_system").val();    
-            arrIndex['browsers'] = $("#v_browser").val();    
-            arrIndex['description'] = $("#v_description").val();   
-            //发送请求，获取数据     
-            $.get('/video/save-feedbackinfo', arrIndex, function(s) {
-                // console.log(s);
-                if(s>0){
-                    //插入成功，所有值置空
-                    // $("#v_country").val(''); 
-                    $("#v_country").find("option").eq(0).prop("selected",true);
-                    $("#v_internet").find("option").eq(0).prop("selected",true);
-                    $("#v_system").find("option").eq(0).prop("selected",true);  
-                    $("#v_browser").find("option").eq(0).prop("selected",true); 
-                    $("#v_description").val('');  
-                    str = '提交成功';
-                }else{
-                    str = '提交失败';
-                }
-            });
-        }
-        $(".alt-title").text(str);        
-        $("#alt05").show();        
-    });
-    
-});
-JS;
-
-$this->registerJs($js);
 ?>
+<style>
+    .ADbzhidden{display:none;}
+</style>
 <input id="helptab" type="hidden" value="<?=$helptab?>" />
 <!--排行榜标题-->
 <div class="RANbox-title">
@@ -59,7 +24,7 @@ $this->registerJs($js);
         <li class="c_question">常见问题</li>
         <li>视频上传</li>
         <li class="c_feedback">在线反馈</li>
-        <li>忘记密码</li>
+        <li class="c_pwd">忘记密码</li>
         <li class="c_aboutUs">关于我们</li>
         <li class="c_terms">用户协议</li>
         <li class="c_contact">联系我们</li>
@@ -572,16 +537,57 @@ $this->registerJs($js);
         </div>
     </div>
     <!--忘记密码-->
-    <div class="helpbox01">
-        <div class="hlp-mm" name="zt">
-            <div class="hlp-mm-img">
-                <img src="/images/newindex/account_logo.png" />
-            </div>
-            <div class="hlp-text04">
-                请登录任意门，通过短信重设密码
-            </div>
-            <div>
-                <a class="hlp-Alj" href="javascript">重置密码</a>
+    <div class="helpbox01 c_pwd" >
+        <div class="alt-content02" name="zt">
+            <ul class="wjmm">
+                <!--错误提示  给li附class="wrg" 文字可用在li内添加<div class="ADbz"> -->
+                <li>
+                    <div class="seekbox02-text" name="zt"> 账号 </div>
+                    <div class="seekbox-ipt seek-bottom">
+                        <input class="c_blur" type="text" name="zt" id="pwd_account" placeholder="邮箱/手机号" value="">
+                    </div>
+                    <div class="ADbz ADbzhidden">
+                        *&nbsp;请输入账号
+                    </div>
+                </li>
+                <!--错误提示  给li附class="wrg" 文字可用在li内添加<div class="ADbz"> -->
+                <li>
+                    <div class="seekbox02-text" name="zt"> 密保问题 </div>
+                    <div class="seekbox-ipt seek-bottom">
+                        <select class="seek-slk" name="zt" id="pwd_question">
+                            <?php if(!empty($feedbackinfo['question'])) :?>
+                                <?php foreach ($feedbackinfo['question'] as $question): ?>
+                                    <option value="<?=$question['id']?>"><?=$question['message']?></option>
+                                <?php endforeach;?>
+                            <?php endif;?>
+                        </select>
+                    </div>
+                </li>
+                <!--错误提示  给li附class="wrg" 文字可用在li内添加<div class="ADbz"> -->
+                <li>
+                    <div class="seekbox02-text" name="zt"> 密保答案 </div>
+                    <div class="seekbox-ipt seek-bottom">
+                        <input class="c_blur" type="text" name="zt" id="pwd_answer" placeholder="请输入密保问题答案" value="">
+                    </div>
+                    <div class="ADbz ADbzhidden">
+                        *&nbsp;请输入密保答案
+                    </div>
+                </li>
+                <!--错误提示  给li附class="wrg" 文字可用在li内添加<div class="ADbz"> -->
+                <li>
+                    <div class="seekbox02-text" name="zt"> 新密码 </div>
+                    <div class="seekbox-ipt seek-bottom">
+                        <input type="password" class="inp pas c_blur" maxlength="40" name="zt" id="pwd_newpwd" placeholder="请输入新密码" value="">
+                        <input class="eye" type="button" id="" value="" />
+                    </div>
+                    <div class="ADbz ADbzhidden">
+                        *&nbsp;请输入新密码
+                    </div>
+                </li>
+            </ul>
+            <div class="alt-bth-box02" name="zt">
+                <!--这里的按钮最多两个    多余的可删除   隐藏-->
+                <input class="bth-on" type="button" id="pwd_update" value="确认修改">
             </div>
         </div>
     </div>
@@ -1008,7 +1014,7 @@ $this->registerJs($js);
                 &nbsp;
             </div>
             <p>
-                1. 请准备一个存储设备（U盘、移动硬盘、储存卡...） APK文件大小约：7MB<br /> 2. 点击上方立即下载按钮，下载APK文件至U盘（图1）。<br /> 3. 将U盘插入电视盒子，通过电视盒子文件管理软件打开进行安装，或通过第三方文件管理软件（如ES文件浏览器）打开安装（图2）。<br /> 4. 点击安装，同意授权。正常安装结束后，在电视桌面找到并点击影院应用，享受大屏影音体验（图3）。<br /> 5. 若是三星TV，可以直接在系统自带浏览器直接搜索ifsp.tv即可立即使用。
+                1. 请准备一个存储设备（U盘、移动硬盘、储存卡...） APK文件大小约：7MB<br /> 2. 点击上方立即下载按钮，下载APK文件至U盘（图1）。<br /> 3. 将U盘插入电视盒子，通过电视盒子文件管理软件打开进行安装，或通过第三方文件管理软件（如ES文件浏览器）打开安装（图2）。<br /> 4. 点击安装，同意授权。正常安装结束后，在电视桌面找到并点击影院应用，享受大屏影音体验（图3）。<br /> 5. 若是三星TV，可以直接在系统自带浏览器直接搜索<?=PC_HOST_NAME ?>即可立即使用。
             </p>
             <ul>
                 <li><img src="/images/newindex/tv-install-step1.png" /></li>
@@ -1025,42 +1031,135 @@ $this->registerJs($js);
     </div>
 </div>
 
-<!--提交成功弹出层-->
-<div class="alt" id="alt05">
-    <div class="alt05-box" name="zt">
-        <!--报错也用这个弹出层-->
-        <p class="alt-title" name="zt">提交成功</p>
-        <!--多余的可以删除-->
-        <div class="alt-bth-box" name="zt">
-            <!--            <input class="alt-bth-off closealt05" type="button" name="" id="" value="取消" />-->
-            <input class="alt-bth-on" type="button" name="" id="closealt05" value="确定" />
-        </div>
-    </div>
-
-    <!--关闭按钮-->
-    <input class="alt-GB" type="button" id="" value="X" />
-</div>
 <script src="/js/jquery.js"></script>
 <script>
-    $(function(){
-        //首次加载
-        $(document).ready(function() {
-            var helptab = $('#helptab').val();
-            if(helptab=='feedback'){
-                $('.c_feedback').addClass('act');
-            }else if(helptab=='aboutUs'){
-                $('.c_aboutUs').addClass('act');
-            }else if(helptab=='terms'){
-                $('.c_terms').addClass('act');
-            }else if(helptab=='contact'){
-                $('.c_contact').addClass('act');
-            }else if(helptab=='appdownload'){
-                showwarning();
-                // $('.c_appdownload').addClass('act');
-            }else{//c_question
-                $('.c_question').addClass('act');
-            }
-        });
+$(function(){
+    //首次加载
+    $(document).ready(function() {
+        var helptab = $('#helptab').val();
+        if(helptab=='feedback'){
+            $('.c_feedback').addClass('act');
+        }else if(helptab=='aboutUs'){
+            $('.c_aboutUs').addClass('act');
+        }else if(helptab=='terms'){
+            $('.c_terms').addClass('act');
+        }else if(helptab=='contact'){
+            $('.c_contact').addClass('act');
+        }else if(helptab=='pwd'){
+            $('.c_pwd').addClass('act');
+        }else if(helptab=='appdownload'){
+            showwarning();
+            // $('.c_appdownload').addClass('act');
+        }else{//c_question
+            $('.c_question').addClass('act');
+        }
     });
-</script>
+    //在线反馈提交
+    $("#v_submit").click(function(){
+        var arrIndex = {};
+        var tab = true;
+        var str = '提交成功';
+        if(tab){
+            arrIndex['country'] = $("#v_country").val();
+            arrIndex['internets'] = $("#v_internet").val();
+            arrIndex['systems'] = $("#v_system").val();
+            arrIndex['browsers'] = $("#v_browser").val();
+            arrIndex['description'] = $("#v_description").val();
+            //发送请求，获取数据
+            $.get('/video/save-feedbackinfo', arrIndex, function(s) {
+                // console.log(s);
+                if(s>0){
+                    //插入成功，所有值置空
+                    // $("#v_country").val('');
+                    $("#v_country").find("option").eq(0).prop("selected",true);
+                    $("#v_internet").find("option").eq(0).prop("selected",true);
+                    $("#v_system").find("option").eq(0).prop("selected",true);
+                    $("#v_browser").find("option").eq(0).prop("selected",true);
+                    $("#v_description").val('');
+                    str = '提交成功';
+                }else{
+                    str = '提交失败';
+                }
+            });
+        }
+        $(".alt-title").text(str);
+        $("#alt05").show();
+    });
+    //修改密码提交
+    $("#pwd_update").click(function(){
+        var arrIndex = {};
+        var tab = true;
+        var str = '提交成功';
+        var account = $("#pwd_account").val();
+        var answer = $("#pwd_answer").val();
+        var newpwd = $("#pwd_newpwd").val();
+        if(account==""){
+            showwrg("pwd_account",true);
+            tab = false;
+            return false;
+        }else {
+            var ismobile = isMobilePhone(account);
+            var isemail = isEmail(account);
+            if(!ismobile && !isemail){
+                showwrg("pwd_account",true);
+                tab = false;
+                return false;
+            }else{
+                arrIndex['account'] = account;
+            }
+        }
+        if(answer==""){
+            showwrg("pwd_answer",true);
+            tab = false;
+            return false;
+        }
+        if(newpwd==""){
+            showwrg("pwd_newpwd",true);
+            tab = false;
+            return false;
+        }
+        if(tab){
+            arrIndex['account'] = account;
+            arrIndex['question'] = $("#pwd_question").val();
+            arrIndex['answer'] = answer;
+            arrIndex['newpwd'] = newpwd;
+            //发送请求，获取数据
+            $.get('/video/modify-password', arrIndex, function(res) {
+                console.log(res);
+                if(res.errno==0 && res.data>0){
+                    //插入成功，所有值置空
+                    $("#pwd_account").val('');
+                    $("#pwd_question").find("option").eq(0).prop("selected",true);
+                    $("#pwd_answer").val('');
+                    $("#pwd_newpwd").val('');
+                    $(".alt-title").text('修改成功');
+                    $("#alt05").show();
+                }else{
+                    $(".alt-title").text('修改失败');
+                    $("#alt05").show();
+                }
+            });
+        }
+    });
 
+    $(".c_blur").blur(function(){
+        if($(this).val()==""){
+            showwrg($(this).attr("id"),true);
+        }else{
+            hiddenwrg($(this).attr("id"),true);
+        }
+    });
+});
+function showwrg(id,type){
+    $("#"+id).parent().parent().addClass("wrg");
+    if(type){
+        $("#"+id).parent().parent().find(".ADbz").removeClass("ADbzhidden");
+    }
+}
+function hiddenwrg(id,type){
+    $("#"+id).parent().parent().removeClass("wrg");
+    if(type){
+        $("#"+id).parent().parent().find(".ADbz").addClass("ADbzhidden");
+    }
+}
+</script>

@@ -12,6 +12,7 @@ use Yii;
  * @property int $video_id 系列id
  * @property int $chapter_id 视频id
  * @property int $time 时间
+ * @property int $total_time 视频总时长
  * @property string $created_at
  * @property string $updated_at
  * @property string $deleted_at

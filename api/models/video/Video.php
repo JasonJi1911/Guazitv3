@@ -88,7 +88,8 @@ class Video extends \common\models\video\Video
             'is_sensitive',
             'created_at',
             'total_price',
-            'is_down'
+            'is_down',
+            'is_finished'
         ];
     }
     

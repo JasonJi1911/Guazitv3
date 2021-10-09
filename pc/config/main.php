@@ -18,8 +18,9 @@ return [
             'cookieValidationKey' => 'T0ZK5NohbEgclUuLjBfgvlZXQmVKhZUx',
         ],
         'user' => [
-            'identityClass' => 'pc\models\UserInfo',
+            'identityClass' => 'pc\models\User',
             'enableAutoLogin' => true,
+            'authTimeout' => 60 * 360,
             'identityCookie' => ['name' => '_identity-pc', 'httpOnly' => true],
         ],
         'session' => [

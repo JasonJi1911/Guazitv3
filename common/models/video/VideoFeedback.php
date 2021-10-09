@@ -8,6 +8,9 @@ use Yii;
  * This is the model class for table "{{%video_feedback}}".
  *
  * @property int $id 序号id
+ * @property int $video_id 视频id
+ * @property int $chapter_id 分集id
+ * @property int $source_id 线路id
  * @property string $country 国家
  * @property int $internets 上网环境id
  * @property int $systems 设备、系统id
