@@ -46,20 +46,23 @@ NewIndexStyleAsset::register($this);
             <ul class="sort-menu" name="zt">
                 <?php if(!empty($channels)) : ?>
                     <?php foreach ($channels['list'] as $key => $channel): ?>
-                        <li>
-                            <?php if($channel['channel_name'] == '首页'): ?>
+                        <?php if($channel['channel_name'] == '首页'): ?>
+                            <li>
                                 <a href="<?= Url::to(['/video/index'])?>" >
                                     <?= $channel['channel_name']?>
                                 </a>
-                            <?php else : ?>
+                            </li>
+                            <li><a href="https://sport.rysp.tv" target="_blank">体育直播</a></li>
+                        <?php else : ?>
+                            <li>
                                 <a href="<?= Url::to(['video/channel', 'channel_id' => $channel['channel_id']])?>">
                                     <span><?= $channel['channel_name']?></span>
                                     <? if($channel['num'] != 0) : ?>
                                         <span class="sortSpan"><?=$channel['num']?></span>
                                     <?php endif; ?>
                                 </a>
-                            <?php endif; ?>
-                        </li>
+                            </li>
+                        <?php endif; ?>
                     <?php endforeach ?>
                 <?php endif;?>
             </ul>

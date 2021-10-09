@@ -191,7 +191,6 @@ $(function(){
                                 "<div>"+data[i]['flag']+"</div>"+
                             "</div>"+
                        "</li>";
-            console.log(content);
         };        
         return content;
     }  

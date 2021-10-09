@@ -27,6 +27,7 @@ use api\models\video\VideoFeedback;
 use api\models\video\VideoFeedbackinfo;
 use api\models\video\VideoFeedcountry;
 use api\models\video\VideoSeek;
+use api\models\video\VideoYear;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
 use common\helpers\Tool;
@@ -562,6 +563,13 @@ class VideoDao extends BaseDao
             $channelId = reset($videoChannel)['channel_id'];
         }
         $this->checkFilterParams($channelId, $tag, $area);
+
+        //year==''或0（全部），取最新年份
+        if($year=='' || $year==0){
+            $maxorder = VideoYear::find()->max('display_order');
+            $maxyear = VideoYear::findOne(['display_order'=>$maxorder])->toArray();
+            $year = $maxyear['year_id'];
+        }
 
         $key = RedisKey::videoFilterList([$channelId, $sort, $tag, $area, $year, $type, $page, $pageSize, $playLimit,$sorttype, $status]);
 
