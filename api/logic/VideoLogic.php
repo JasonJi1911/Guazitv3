@@ -817,9 +817,14 @@ class VideoLogic
         if($videoFav){
             $fav_status = $videoFav['status'];
         }
-        //总收藏数
-        $video_total = Video::find()->select("total_favors")->andWhere(['id'=>$videoId])->asArray()->one();
-
+        //总收藏数+详情-更新：summary
+        $video_total = Video::find()->select("total_favors,is_finished")->andWhere(['id'=>$videoId])->asArray()->one();
+        //详情-更新：summary
+        if($video_total['is_finished']==1){
+            $videoInfo['summary'] = "已完结";
+        }else if($videoInfo['summary']==""){
+            $videoInfo['summary'] = "更新中";
+        }
         //获取总评论数
         $commentcount = VideoChapter::find()->select("total_comment")->andWhere(['id'=>$chapterId])->asArray()->one();
 
