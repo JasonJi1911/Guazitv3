@@ -162,6 +162,10 @@ else
         background-position-x: 95%;
     }
 
+    .hlp-bd .seek-slk.ZT-black {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
     .seekbox-tta>textarea {
         width: 100%;
         height: 80px;
@@ -201,64 +205,6 @@ else
         height: 50px;
     }
 
-    /*非vip不可播放提示alert*/
-    .altvip-box{
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        margin-left: -150px;
-        margin-top: -200px;
-        width:300px;
-        height:400px;
-    }
-    .altvip-title{
-        width:100%;
-        height:150px;
-        background-color: rgba(0, 0, 0, 0);
-        background-image: url(../images/newindex/1-b.png);
-        background-repeat: no-repeat;
-        background-size: 100% 100%;
-        background-position: center center;
-    }
-    .altvip-title div{
-        position:absolute;
-        top:100px;
-        width:100%;
-        text-align:center;
-        font-weight:bold;
-        font-size:18px;
-        color:#ffffff;
-    }
-    .altvip-middle{
-        background-color:#fff;
-        padding:10px 0;
-    }
-    .altvip-middle .middle01{
-        height:40px;
-        line-height:40px;
-        color:#797979;
-        font-size:16px;
-        text-align:center;
-    }
-    .altvip-middle .middle02 img{
-        width:100px;
-        margin:10px 100px;
-    }
-    .altvip-middle .middle03{
-        height: 40px;
-        line-height: 40px;
-        font-size: 16px;
-        text-align: center;
-    }
-    .altvip-middle .middle03 input.middle03-btn{
-        padding: 10px 20px;
-        height: 40px;
-        font-size: 16px;
-        width:150px;
-        border-radius: 20px;
-        color: #FFFFFF;
-        background-color:#E4AC49;
-    }
     /*评论留言回复*/
     .ul-box{
          margin-top:10px;
@@ -420,7 +366,7 @@ else
                 <li class="rBtn-05"><input type="button" id="" value="0" /></li>
                 <li class="rBtn-06"><input type="button" id="" value="手机看" /></li>
                 <li class="rBtn-07"><input type="button" id="err_feedback" value="片源报错" /></li>
-                <li class="rBtn-08"><a href="<?= Url::to(['/video/seek'])?>">求片</a></li>
+                <li class="rBtn-08"><a href="<?= Url::to(['/video/seek'])?>" target="_blank">求片</a></li>
             </ul>
         </div>
 
@@ -983,26 +929,6 @@ else
         </ul>
     </div>
 </div>
-
-<!--非vip不可播放提示alert-->
-<div class="alt" id="altvip">
-    <div class="altvip-box" name="zt" >
-        <div class="altvip-title">
-            <div style="">您还不是vip！</div>
-        </div>
-        <div class="altvip-middle">
-            <div class="middle01" >
-                您还不是vip呦！赶紧联系客服吧
-            </div>
-            <div class="middle02">
-                <img src="/images/newindex/<?=KFQRCODE?>" />
-            </div>
-            <div class="seek-bottom middle03" >
-                <input class="middle03-btn" type="button" id="closealtvip" value="确定" />
-            </div>
-        </div>
-    </div>
-</div>
 <script>
     //片源报错
     $('#err_feedback').click(function(){
@@ -1071,11 +997,6 @@ else
         });
     }
 
-    //关闭vip提示框
-    $("#closealtvip").click(function(){
-        $("#altvip").hide();
-    });
-
     //收藏
     $("#id_favors").click(function(){
         var that = this;
@@ -1122,6 +1043,7 @@ else
                 if(res.errno==0){
                     if(res.data.display==1){
                         commentstr(res.data.data);
+                        ztBlack();
                         $(".alt-title").text(res.data.message);
                         $("#alt05").show();
                         $(that).parent().siblings('textarea').val("");
@@ -1261,6 +1183,7 @@ else
                         }else{
                             $("#addreplydiv").after('<div class="div-reply">'+rstr+'</div>');
                         }
+                        ztBlack();
                         $(".alt-title").text(res.data.message);
                         $("#alt05").show();
                         $("#addreplydiv").remove();
@@ -1344,6 +1267,7 @@ else
         ar['order'] = order;
         $.get('/video/comment-more',ar,function(res){
             $("#comment-more").before(res);//添加评论列表
+            ztBlack();
             if(total == page_num+1){
                 $("#comment-more").hide();
             }else{
@@ -1364,6 +1288,7 @@ else
             if(res.errno==0 && res.data.length>0){
                 var str = replyMorestr(res.data);
                 $("#reply-more-"+pid).before(str);//添加评论列表
+                ztBlack();
                 if(total == page_num+1){
                     $("#reply-more-"+pid).hide();
                 }else{
@@ -1448,6 +1373,7 @@ else
             $("#comment-part .div-commentlist").remove();
             $("#comment-more").before(res);//添加评论列表
             $(that).addClass("act").siblings().removeClass("act");
+            ztBlack();
             if(total == page_num+1){
                 $("#comment-more").hide();
             }else{

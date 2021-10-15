@@ -909,11 +909,12 @@ class VideoLogic
             }
             unset($chap['resource_url']); // 安全考虑，删除剧集播放连接，防止全部播放连接一次性全返回
         }
-
-        foreach ($data[$sourceId]['data'] as $key => &$video) {
-            $video['last_chapter']  = isset($data[$sourceId]['data'][$key-1]) ? $data[$sourceId]['data'][$key-1]['chapter_id'] : 0;
-            $video['next_chapter']  = isset($data[$sourceId]['data'][$key+1]) ? $data[$sourceId]['data'][$key+1]['chapter_id'] : 0;
-            // unset($video['resource_url']); // 安全考虑，删除剧集播放连接，防止全部播放连接一次性全返回
+        if ($data[$sourceId]['data']) {
+            foreach ($data[$sourceId]['data'] as $key => &$video) {
+                $video['last_chapter']  = isset($data[$sourceId]['data'][$key-1]) ? $data[$sourceId]['data'][$key-1]['chapter_id'] : 0;
+                $video['next_chapter']  = isset($data[$sourceId]['data'][$key+1]) ? $data[$sourceId]['data'][$key+1]['chapter_id'] : 0;
+                // unset($video['resource_url']); // 安全考虑，删除剧集播放连接，防止全部播放连接一次性全返回
+            }
         }
 
         return array_values($data);
@@ -1442,5 +1443,110 @@ class VideoLogic
         $data['list'] = $videos;
 
         return $data;
+    }
+    /*
+     * 根据$chapterId取线路url
+     */
+    public function findSourceByChapterId($uid,$chapterId){
+        $limit = 0;//免费线路
+        if($uid){
+            $userdao = new UserDao();
+            $vip = $userdao->validuservipPC($uid);
+            if($vip){
+                //是vip
+                $limit = 1;
+            }
+        }
+
+        $key = 'player_chapter_source_'.$chapterId.'_'.$limit;
+        $redis = new RedisStore();
+        if($sourceInfo = $redis->get($key)){
+            $data = json_decode($sourceInfo, true);
+            return $data;
+        }
+
+        //PC端-videoSource
+        $commonDao = new CommonDao();
+        $sources = $commonDao->videoSource(Yii::$app->common->product);
+        $chapter = VideoChapter::findOne(['id'=>$chapterId]);
+        if($chapter){
+            $resource_url = json_decode($chapter['resource_url'],true);
+            if($sources){
+                foreach ($sources as $k=>$s){
+                    if($resource_url[$s['source_id']]){
+                        if($limit==0 && $s['play_limit']==1){
+                            $s['resource_url'] = '';
+                        }else{
+                            $s['resource_url'] = $this->initialUrl($resource_url[$s['source_id']]);
+                        }
+                        $sources[$k] = $s;
+                    }else{
+                        unset($sources[$k]);
+                    }
+                }
+            }
+        }
+        //写入缓存
+        $redis->setEx($key, json_encode($sources));
+
+        return $sources;
+    }
+    /*
+     * 视频url转换
+     */
+    private function initialUrl($url){
+        // $url = urldecode($url);
+        $preg = "/^http(s)?:\\/\\/.+/";
+        $type = "";
+        if (preg_match($preg, $url)) {
+            if (strstr($url, ".m3u8") == true || strstr($url, ".mp4") == true || strstr($url, ".flv") == true) {
+                $type = $url;
+                $metareferer = "never";//	$metareferer = "origin";
+            }
+        }
+
+        if (strstr($url, "qq.com") == true && strstr($url, "shcdn-qq") == false) {
+            $type = $this->get_url(QQURL . urlencode($url));
+        }
+
+        if (strstr($url, "iqiyi.com") == true) {
+            $type = $this->get_url(IQIYIURL . $url);
+        }
+
+        if ($type == "") {
+            $type = $this->get_url(OTHERURL . $url);
+        }
+
+        return $type;
+    }
+
+    public function get_url($query){
+        //请求接口获取地址
+//        $query = VIDEO_JSON_URL.'?v='. urlencode($url);
+        $url = '';
+        $i = 2;
+        do {
+            $response = Tool::httpGet($query);
+
+            $i--;
+            if (!$response['data']) {
+                continue;
+            }
+
+            $data = json_decode($response['data'], true);
+            if (empty($data) || $data['code'] != 200) {
+                continue;
+            }
+
+            $url = $data['url'];
+            break;
+        } while($i>0);
+
+//        //计算结束时间，打印日志
+//        $endTime = microtime(true) * 1000;
+//        $intTimeUsed = $endTime - $startTime;
+//        Yii::warning("360apitv req cost: " . $intTimeUsed);
+
+        return $url;
     }
 }

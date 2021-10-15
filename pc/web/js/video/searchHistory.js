@@ -87,19 +87,6 @@ function searchurl() {
     window.location.href = '/video/search-result?keyword=' + searchKeyword;
 }
 
-//回车搜索
-$('#keywords').keypress(function(event){
-    var keycode = (event.keyCode ? event.keyCode : event.which);
-    if(keycode == '13'){
-        savewords();
-    }
-});
-
-//详情
-function XQ(videoId){
-    $("#alt03"+videoId).show();
-}
-
 //数组去重
 function noRepeat(arr) {
     for(var i = 0; i < arr.length-1; i++){
@@ -126,7 +113,7 @@ function saveuser(uid,zd){
     if(zd==1 || zd=="1"){
         //是自动
         // setCookie("zd","1",7);
-        setCookie("uid",uid,7);
+        setCookie("uid",uid,1);
     }else{
         document.cookie="uid="+uid;
     }
@@ -212,5 +199,15 @@ function isEmail(email){
         return false;
     } else {
         return true;
+    }
+}
+
+//背景色处理
+function ztBlack(){
+    var bodycolor = $("body").attr("class");
+    if(bodycolor.indexOf("ZT-black")>=0){
+        $("[name='zt']").addClass("ZT-black");
+    }else{
+        $("[name='zt']").removeClass("ZT-black");
     }
 }

@@ -506,6 +506,23 @@ class UserDao extends BaseDao
             $v['title']   = UserMessage::$messageMap[$v['type']];
             $v['content'] = $v['type'] ==  UserMessage::TYPE_MESSAGE ? $v['content'] : '回复内容：' . $v['content'];
             $v['date']    = $v['created_at'];
+            $current_time = time();
+            $updated_at = intval($v['created_time']);
+            $t = $current_time - $updated_at;
+            if($t<60){
+                $v['time_diff'] = $t.'秒前';
+            }else if($t<3600){
+                $m = floor($t / 60);
+                $v['time_diff'] = $m.'分钟前';
+            }else if($t < (3600*24)){
+                $h = floor($t / 3600);
+                $v['time_diff'] = $h.'小时前';
+            }else if($t < (3600*24*7)){
+                $d = floor($t / (3600*24));
+                $v['time_diff'] = $d.'天前';
+            }else{
+                $v['time_diff'] = date('Y-m-d', $v['created_time']);
+            }
             unset($v['created_at']);
             unset($v['type']);
         }
@@ -536,13 +553,18 @@ class UserDao extends BaseDao
     /*
      * 删除系统消息
      */
-    public function removeMessagePC($message_id){
-        $m = UserMessage::find()->andWhere(['id'=>$message_id])->asArray()->one();
-        $message = new UserMessage();
-        $message->oldAttributes = $m;
-        $param['status'] = UserMessage::STATUS_YES;
-        $param['deleted_at'] = time();
-        $row = $message->updateAttributes($param);
+    public function removeMessagePC($message_id,$uid=''){
+        if($message_id=='all'){
+//            $m = UserMessage::find()->andWhere(['uid'=>$uid])->asArray()->all();
+            $row = UserMessage::updateAll(['status'=>UserMessage::STATUS_YES,'deleted_at'=>time()], ['uid'=>$uid]);
+        }else{
+            $m = UserMessage::find()->andWhere(['id'=>$message_id])->asArray()->one();
+            $message = new UserMessage();
+            $message->oldAttributes = $m;
+            $param['status'] = UserMessage::STATUS_YES;
+            $param['deleted_at'] = time();
+            $row = $message->updateAttributes($param);
+        }
         return $row;
     }
     /*

@@ -430,6 +430,17 @@ class UserController extends BaseController
     }
 
     /*
+     * 系统消息
+     */
+    public function actionMessagePc(){
+        $uid = $this->getParam('uid', "");
+        $userdao = new UserDao();
+        //消息-系统信息
+        $data = $userdao->messagePC($uid);
+        return $data;
+    }
+
+    /*
      * 消息加载更多
      */
     public function actionSearchComment(){
@@ -479,9 +490,10 @@ class UserController extends BaseController
      * 删除系统消息
      */
     public function actionRemoveMessage(){
+        $uid  = $this->getParam('uid', 0);
         $comment_id  = $this->getParam('comment_id', 0);
         $userdao = new UserDao();
-        $result = $userdao->removeMessagePC($comment_id);
+        $result = $userdao->removeMessagePC($comment_id,$uid);
         return $result;
     }
     /*

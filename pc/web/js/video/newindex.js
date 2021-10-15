@@ -42,9 +42,9 @@ $(document).ready(function() {
 		$("#alt03").show();
 	});
 	//	收藏按钮改变样式
-	$(".XQ-btn > input").click(function() {
-		$(this).toggleClass("act");
-	});
+	// $(".XQ-btn > input").click(function() {
+	// 	$(this).toggleClass("act");
+	// });
 });
 
 //首页大轮播

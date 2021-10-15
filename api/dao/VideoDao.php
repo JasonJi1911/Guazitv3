@@ -591,7 +591,6 @@ class VideoDao extends BaseDao
                     ->andFilterWhere(['year' => $year])
                     ->andFilterWhere(['play_limit' => $playLimit])
                     ->andFilterWhere(['is_finished' => $status])
-//                    ->andFilterWhere(['id in (select video_id from sf_video_chapter)'])
                     ->orderBy("{$order} {$sorttype}")
             ]);
         }else{
@@ -1017,10 +1016,10 @@ class VideoDao extends BaseDao
             'query' => UserWatchLog::find()
                 ->andWhere(['uid' => $uid])
         ]);
-        $data = $dataProvider->setPagination(['page_num' => $page_num])->toArray(['log_id', 'video_id', 'chapter_id', 'play_time', 'time', 'play_date', 'created_at','watchplay_time','total_time']);
+        $data = $dataProvider->setPagination(['page_num' => $page_num])->toArray(['log_id', 'video_id', 'chapter_id', 'play_time', 'time', 'play_date', 'created_at','watchplay_time','total_time','updated_at']);
         if ($data['list']) {
             $videoId = array_column($data['list'], 'video_id');
-            $videoInfo = $this->batchGetVideo($videoId, ['video_id', 'video_name', 'cover','category','flag'], true);
+            $videoInfo = $this->batchGetVideo($videoId, ['video_id', 'video_name', 'cover','category','flag','channel_id'], true);
             $list = [];
             foreach ($data['list'] as $k => $info) {
                 if($searchword=="" || ($searchword!="" && strpos($videoInfo[$info['video_id']]['video_name'], $searchword) !== false)){
@@ -1034,6 +1033,30 @@ class VideoDao extends BaseDao
                         $info['watch_percent'] = intval(intval($info['time']) / intval($info['total_time'])*100);
                     }else{
                         $info['watch_percent'] = 0;
+                    }
+                    $info['chapter_title'] = '';
+                    //判断是否为连续剧，加观看集数
+                    if($videoInfo[$info['video_id']]['channel_id']==2){
+                        $chapter_one = VideoChapter::findOne(['id'=>$info['chapter_id']])->toArray();
+                        $info['chapter_title'] = isset($chapter_one)? $chapter_one['title'] : '';
+                    }
+
+                    $current_time = time();
+                    $updated_at = intval($info['updated_at']);
+                    $t = $current_time - $updated_at;
+                    if($t<60){
+                        $info['time_diff'] = $t.'秒前';
+                    }else if($t<3600){
+                        $m = floor($t / 60);
+                        $info['time_diff'] = $m.'分钟前';
+                    }else if($t < (3600*24)){
+                        $h = floor($t / 3600);
+                        $info['time_diff'] = $h.'小时前';
+                    }else if($t < (3600*24*7)){
+                        $d = floor($t / (3600*24));
+                        $info['time_diff'] = $d.'天前';
+                    }else{
+                        $info['time_diff'] = $info['play_date'];
                     }
 
                     if ($info['play_date'] == date('Y-m-d')) {
@@ -1258,5 +1281,72 @@ class VideoDao extends BaseDao
         return [
             'status' => $status
         ];
+    }
+
+
+    /*
+     * 右上角通知-收藏
+     */
+    public function findVideoFavoriteNew($uid){
+        $vf = VideoFavorite::find()->where(['uid' => $uid, 'status' => VideoFavorite::STATUS_YES])->asArray()->all();
+        if($vf){
+            foreach ($vf as $k=>$f){
+                $chapter_max = VideoChapter::find()->andWhere(['video_id'=>$f['video_id']])
+                    ->andWhere(['and',['>' , 'updated_at', $f['created_at']]])
+                    ->orderBy('display_order desc')
+                    ->limit(1)->asArray()->one();
+                if($chapter_max){
+                    $f['chapter_title'] = $chapter_max['title'];
+
+                    $current_time = time();
+                    $updated_at = intval($chapter_max['updated_at']);
+                    $t = $current_time - $updated_at;
+                    if($t<60){
+                        $f['time_diff'] = $t.'秒前';
+                    }else if($t<3600){
+                        $m = floor($t / 60);
+                        $f['time_diff'] = $m.'分钟前';
+                    }else if($t < (3600*24)){
+                        $h = floor($t / 3600);
+                        $f['time_diff'] = $h.'小时前';
+                    }else if($t < (3600*24*7)){
+                        $d = floor($t / (3600*24));
+                        $f['time_diff'] = $d.'天前';
+                    }else{
+                        $f['time_diff'] = date('Y-m-d',$chapter_max['updated_at']);
+                    }
+
+                    $video = Video::findOne(['id'=>$f['video_id']]);
+                    $f['video_name'] = $video['title'];
+                    $f['type'] = 'favorite';//收藏标志
+                    $vf[$k] = $f;
+                }else{
+                    unset($vf[$k]);
+                }
+            }
+        }
+        return array_slice($vf, 0, 8);
+    }
+
+    /*
+     * 删除右上角通知-收藏
+     */
+    public function modifyFavoriteTime($uid){
+        $row = VideoFavorite::updateAll(['created_at'=>time(),'updated_at'=>time()], ['uid'=>$uid]);
+        return $row;
+    }
+    /*
+     * 根据uid和videoId查收藏
+     */
+    public function findFavoriteByVideoid($uid,$videoId){
+        $favorite = VideoFavorite::find()
+                    ->andWhere(['uid'=>$uid])
+                    ->andWhere(['video_id'=>$videoId])
+                    ->andWhere(['status' => VideoFavorite::STATUS_YES])
+                    ->asArray()->one();
+        if(!$favorite){
+            return [];
+        }
+        return $favorite;
     }
 }

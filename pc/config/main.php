@@ -20,7 +20,7 @@ return [
         'user' => [
             'identityClass' => 'pc\models\User',
             'enableAutoLogin' => true,
-            'authTimeout' => 60 * 360,
+            'authTimeout' => 3600*24,
             'identityCookie' => ['name' => '_identity-pc', 'httpOnly' => true],
         ],
         'session' => [

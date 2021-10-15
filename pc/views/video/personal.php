@@ -16,6 +16,27 @@ NewIndexStyleAsset::register($this);
         font-size:14px;
     }
 </style>
+<script>
+//首次加载
+$(document).ready(function() {
+    var tab = '<?=$ptab?>';
+    if(tab=='watchlog'){
+        $('.c_watchlog').addClass('act');
+    }else if(tab=='message'){
+        $('.c_message').addClass('act');
+    }else if(tab=='favorite'){
+        $('.c_favorite').addClass('act');
+    }else if(tab=='task'){
+        $('.c_task').addClass('act');
+    }else if(tab=='upload'){
+        $('.c_upload').addClass('act');
+    }else if(tab=='relation'){
+        $('.c_relation').addClass('act');
+    }else{//c_question
+        $('.c_upload').addClass('act');
+    }
+});
+</script>
 <div class="per-box">
     <!--头部样式-->
     <div class="per-top">
@@ -81,12 +102,12 @@ NewIndexStyleAsset::register($this);
 
         <!--tab切换-->
         <ul class="per-tab">
-            <li data-value="task" class="act">首页</li>
-            <li data-value="uploadvideo">视频</li>
-            <li data-value="relation">关注</li>
-            <li data-value="comment">消息</li>
-            <li data-value="favorite">收藏夹</li>
-            <li data-value="watchlog">播放记录</li>
+            <li class="c_task" data-value="task">首页</li>
+            <li class="c_upload" data-value="uploadvideo">视频</li>
+            <li class="c_relation" data-value="relation">关注</li>
+            <li class="c_message" data-value="comment">消息</li>
+            <li class="c_favorite" data-value="favorite">收藏夹</li>
+            <li class="c_watchlog" data-value="watchlog">播放记录</li>
             <li><a href="<?= Url::to(['/video/seek'])?>">求片</a></li>
             <li><a href="javascript:;">安全设置</a></li>
         </ul>
@@ -94,7 +115,7 @@ NewIndexStyleAsset::register($this);
 
     <div class="per-tab-w">
         <!--tab 首页 -->
-        <div class="per-tab-box act" name="zt">
+        <div class="per-tab-box c_task" name="zt">
             <div class="per-vip">
                 <!--首页第一行-->
                 <div class="per-vip-box01" name="zt">
@@ -306,7 +327,7 @@ NewIndexStyleAsset::register($this);
         </div>
 
         <!--tab 视频-->
-        <div class="per-tab-box" name="zt">
+        <div class="per-tab-box c_upload" name="zt">
             <!-- 头部导航 -->
             <div class="per-sp-box">
                 <ul class="per-tab02" name="zt">
@@ -643,7 +664,7 @@ NewIndexStyleAsset::register($this);
         </div>
 
         <!--tab 关注-->
-        <div class="per-tab-box" name="zt">
+        <div class="per-tab-box c_relation" name="zt">
             <!-- 头部导航 -->
             <div class="per-sp-box">
                 <ul class="per-tab03" name="zt">
@@ -813,7 +834,7 @@ NewIndexStyleAsset::register($this);
         </div>
 
         <!--tab 消息-->
-        <div class="per-tab-box" name="zt">
+        <div class="per-tab-box c_message" name="zt">
             <!-- 头部导航 -->
             <div class="per-sp-box">
                 <ul class="per-tab04" name="zt">
@@ -1104,7 +1125,7 @@ NewIndexStyleAsset::register($this);
         </div>
 
         <!--tab 收藏夹-->
-        <div class="per-tab-box" name="zt">
+        <div class="per-tab-box c_favorite" name="zt">
             <!-- 收藏夹导航 -->
             <div class="per-sp-box">
                 <ul class="per-tab05" name="zt">
@@ -1298,7 +1319,7 @@ NewIndexStyleAsset::register($this);
         </div>
 
         <!--tab 播放记录-->
-        <div class="per-tab-box" name="zt">
+        <div class="per-tab-box c_watchlog" name="zt">
             <!-- 头部导航 -->
             <div class="per-sp-box">
                 <ul class="per-tab06" name="zt">
@@ -1646,6 +1667,7 @@ $(".per-slt-list-favorite>input").click(function() {
         }else{
             $(".per-tab-box05.act").html('<h4 class="per-zw" name="zt">暂无内容</h4>');
         }
+        ztBlack();
     });
 });
 //收藏搜索
@@ -1659,6 +1681,7 @@ $("#fav_searchbtn").click(function (){
         }else{
             $(".per-tab-box05.act").html('<h4 class="per-zw" name="zt">暂无内容</h4>');
         }
+        ztBlack();
     });
 });
 function findfavoritelist(list){
@@ -1779,6 +1802,7 @@ $(function(){
             }else{
                 $(".per-tab-box06.act").html('<h4 class="per-zw" name="zt">暂无内容</h4>');
             }
+            ztBlack();
         });
     });
 });
@@ -1888,6 +1912,7 @@ $(".per-tab03>li").click(function() {
         }
         $(that).addClass("act").siblings().removeClass("act");
         $(".per-tab-w03>div").eq(tabNum).addClass("act").siblings().removeClass("act");
+        ztBlack();
     });
 });
 //关注排序
@@ -1908,6 +1933,7 @@ $(".per-slt-list-relation>input").click(function() {
         }else{
             $(".per-tab-box03.act").html('<h4 class="per-zw" name="zt">暂无内容</h4>');
         }
+        ztBlack();
     });
 });
 //关注搜索
@@ -1922,6 +1948,7 @@ $("#rela_searchbtn").click(function (){
         }else{
             $(".per-tab-box03.act").html('<h4 class="per-zw" name="zt">暂无内容</h4>');
         }
+        ztBlack();
     });
 });
 function findrelationlist(list,type){
@@ -2044,9 +2071,9 @@ $(window).scroll(function () {
                     params['ctype'] = (type!=""?type:"comment");
                     arrall[c+'-page'] = page;
                 }
-                console.log(params);
+                //console.log(params);
                 $.get('/video/load-more', params, function(res) {
-                    console.log(res);
+                    // console.log(res);
                     // $(".more-load").hide();
                     if(res.errno==0){
                         var html = "";
@@ -2064,6 +2091,7 @@ $(window).scroll(function () {
                             html = findcommentlist(res.data,type);
                             $(".per-tab-box04.act").append(html);
                         }
+                        ztBlack();
                     }
                     progress = false;
                 });

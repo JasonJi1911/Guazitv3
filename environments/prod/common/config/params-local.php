@@ -27,6 +27,12 @@ define('ADVERTURL','https://img.kantv9.com/');
 define('EMAIL_NAME','jxsptv');
 //客服二维码
 define('KFQRCODE','ryewm.png');
+//qq.com(视频url转换)
+define('QQURL','https://cache4.jhdyw.vip:8091/jhcs.php?url=');
+//iqiyi.com(视频url转换)
+define('IQIYIURL','https://cache4.jhdyw.vip:8091/jhcs.php?url=');
+//其他(视频url转换)
+define('OTHERURL','https://cache4.jhdyw.vip:8091/jhcs.php?url=');
 
 return [
     'sign_secret_key' => [ //签名key

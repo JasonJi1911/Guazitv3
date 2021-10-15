@@ -242,7 +242,7 @@ NewIndexStyleAsset::register($this);
                                         </ul>
                                         <div class="XQ-btn" name="zt">
                                             <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">播放</a>
-                                            <input type="button" id="" value="收藏" />
+                                            <input type="button" value="收藏" onclick="addfavors(<?=$list['video_id']?>)"  />
                                         </div>
                                     </div>
                                 </div>

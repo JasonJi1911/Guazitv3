@@ -34,18 +34,108 @@ header("Access-Control-Allow-Origin:*");
     <meta charset="utf-8" />
     <meta name="viewport" content="width=1336, maximum-scale=1, user-scalable=no">
 </head>
+<style>
+    /*登录/注册 加载*/
+    .login-loading{
+        background-image:url(/images/newindex/loading.gif);
+        background-position: 65% center;
+        background-repeat: no-repeat;
+        background-size: 30px;
+    }
+    /*统一提示框背景图*/
+    .alt05-p{
+        background-image:url(/images/newindex/alt05_back.png);
+        background-position: center center;
+        background-repeat: no-repeat;
+        padding: 130px 20px 10px 20px;
+        margin-bottom:20px;
+        text-align: center;
+        color:#696969;
+    }
+    /*非vip不可播放提示alert*/
+    .altvip-box{
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-left: -150px;
+        margin-top: -200px;
+        width:300px;
+        height:400px;
+    }
+    .altvip-title{
+        width:100%;
+        height:150px;
+        background-color: rgba(0, 0, 0, 0);
+        background-image: url(../images/newindex/1-b.png);
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        background-position: center center;
+    }
+    .altvip-title div{
+        position:absolute;
+        top:100px;
+        width:100%;
+        text-align:center;
+        font-weight:bold;
+        font-size:18px;
+        color:#ffffff;
+    }
+    .altvip-middle{
+        background-color:#fff;
+        padding:10px 0;
+    }
+    .altvip-middle .middle01{
+        height:40px;
+        line-height:40px;
+        color:#797979;
+        font-size:16px;
+        text-align:center;
+    }
+    .altvip-middle .middle02 img{
+        width:100px;
+        margin:10px 100px;
+    }
+    .altvip-middle .middle03{
+        height: 40px;
+        line-height: 40px;
+        font-size: 16px;
+        text-align: center;
+    }
+    .altvip-middle .middle03 input.middle03-btn{
+        padding: 10px 20px;
+        height: 40px;
+        font-size: 16px;
+        width:150px;
+        border-radius: 20px;
+        color: #FFFFFF;
+        background-color:#E4AC49;
+    }
+</style>
 <script src="/js/jquery.js"></script>
 <script src="/js/video/newindex.js"></script>
 <script src="/js/video/searchHistory.js"></script>
 <script src="/js/video/gVerify.js"></script>
 <script>
     $(document).ready(function(){
+        $("[name='zt']").addClass("ZT-black");
         var mobile_flag = isMobile();
         if(mobile_flag){
             window.location = '<?=WAP_HOST_PATH?>';
         }
         $('#v_navTopLogo').click(function(){
             window.location.href = '/video/index';
+        });
+
+        var uid = finduser();
+        var pagetab = '<?=$pageTab?>';
+        var ar = {};
+        ar['uid'] = uid;
+        $.get('/video/userall',ar,function(res){
+            $("#navTopBtnBox").html(res);
+            ztBlack();
+            if(pagetab=="newdetail"){
+                $("#det_login").parent().parent().hide();
+            }
         });
         $("#keywords").focus(function(){
             if(window.localStorage.hasOwnProperty("searchwords")){
@@ -238,6 +328,29 @@ header("Access-Control-Allow-Origin:*");
         </div>
     </div>
 </div>
+
+<!--非vip不可播放提示alert-->
+<div class="alt" id="altvip">
+    <div class="altvip-box" name="zt" >
+        <div class="altvip-title">
+            <div>您还不是vip！</div>
+        </div>
+        <div class="altvip-middle">
+            <div class="middle01" id="mvip-title" >
+                您还不是vip呦！赶紧联系客服吧
+            </div>
+            <div class="middle02">
+                <img src="/images/newindex/<?=KFQRCODE?>" />
+            </div>
+            <div class="middle01" >
+                扫码加客服领取会员
+            </div>
+            <div class="seek-bottom middle03" >
+                <input class="middle03-btn" type="button" id="closealtvip" value="确定" />
+            </div>
+        </div>
+    </div>
+</div>
 <?php
 $headclass = "";
 $bodyid = "";
@@ -365,342 +478,8 @@ if($pageTab != "newdetail") {//顶部导航默认透明或白色
                 <input type="button" class="navTopSearchBtn " name="zt" onclick="savewords();"  value="" />
             </div>
         </li>
-        <li class="navTopBtnBox">
-            <input type="hidden" id="login_id" value="" />
-            <!--升级vip-->
-            <div id="vipbtn" class="navTopBtn " onclick="showwarning();">
-                <div class="navTopBtnImg">
-                    &nbsp;
-                </div>
-                <div class="navTopBtnName">
-                    升级VIP
-                </div>
-                <!--登录显示-->
-                <div class="VIPHui" style="display: none;">
-                    惠
-                </div>
-                <!--菜单-->
-                <ul class="VIPmenuBOX " name="zt" style="display: none;">
-                    <li class="VIPmenuBOX-li">
-                        <div class="VIPmenuBOX-liText">
-                            还不是VIP？会员
-                        </div>
-                        <div class="VIPmenuBOX-liBtn">
-                            <input type="button"  value="立即开通" />
-                        </div>
-                    </li>
-                    <li class="VIPmenuBOX-A " name="zt">
-                        <a href="javascript:;">
-                            <img src="/images/newindex/adguanggao.png" /> 过滤广告
-                        </a>
-                    </li>
-                    <li class="VIPmenuBOX-A " name="zt">
-                        <a href="javascript:;">
-                            <img src="/images/newindex/hdchaoqing.png" /> 观看超清视频
-                        </a>
-                    </li>
-                    <li class="VIPmenuBOX-A " name="zt">
-                        <a href="javascript:;">
-                            <img src="/images/newindex/xiazai.png" /> 下载视频
-                        </a>
-                    </li>
-                    <li class="VIPmenuBOX-A " name="zt">
-                        <a href="javascript:;">
-                            <img src="/images/newindex/pianku.png" /> 求片
-                        </a>
-                    </li>
-                    <li class="VIPmenuBOX-A " name="zt">
-                        <a href="javascript:;">
-                            <img src="/images/newindex/Vipbiaoshi.png" /> 尊贵身份标识
-                        </a>
-                    </li>
-                    <!--登录后显示-->
-                    <div class="LSmenuBottom">
-                        <div class="LSmenuBottom-rg">
-                            <a href="javascript:;">前往会员专区&nbsp;》</a>
-                        </div>
-                    </div>
-                </ul>
-            </div>
-            <!--福利-->
-            <div class="navTopBtn" onclick="showwarning();">
-                <div class="navTopBtnImg">
-                    &nbsp;
-                </div>
-                <div class="navTopBtnName">
-                    福利
-                </div>
-                <div class="VIPmenuTop " name="zt">
-                    &nbsp;
-                </div>
-                <!--菜单-->
-                <ul class="FLmenuBox " name="zt" style="display: none;">
-                    <li class="FLmenuBox-li">
-                        <a href="javascript:;">
-                            <div class="FLmenuBox-liImg">
-                                <img src="/images/newindex/qiandao.png" />
-                            </div>
-                            <div class="FLmenuBox-liText">
-                                每日签到
-                            </div>
-                        </a>
-                    </li>
-                    <li class="FLmenuBox-li">
-                        <a href="javascript:;">
-                            <div class="FLmenuBox-liImg">
-                                <img src="/images/newindex/renwu.png" />
-                            </div>
-                            <div class="FLmenuBox-liText">
-                                日常任务
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <!--上传-->
-            <div class="navTopBtn" onclick="showwarning();">
-                <div class="navTopBtnImg">
-                    &nbsp;
-                </div>
-                <div class="navTopBtnName">
-                    上传
-                </div>
-                <div class="VIPmenuTop " name="zt">
-                    &nbsp;
-                </div>
-                <!--菜单-->
-                <ul class="FLmenuBox " name="zt" style="display: none;">
-                    <li class="FLmenuBox-li">
-                        <a href="javascript:;">
-                            <div class="FLmenuBox-liImg">
-                                <img src="/images/newindex/Sdianying.png" />
-                            </div>
-                            <div class="FLmenuBox-liText">
-                                上传视频
-                            </div>
-                        </a>
-                    </li>
-                    <li class="FLmenuBox-li">
-                        <a href="javascript:;">
-                            <div class="FLmenuBox-liImg">
-                                <img src="/images/newindex/Sjuji.png" />
-                            </div>
-                            <div class="FLmenuBox-liText">
-                                上传剧集
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <!--观看历史-->
-            <div class="navTopBtn" onclick="showwarning();">
-                <div class="navTopBtnImg">
-                    &nbsp;
-                </div>
-                <div class="navTopBtnName">
-                    观看历史
-                </div>
-                <div class="VIPmenuTop " name="zt">
-                    &nbsp;
-                </div>
-                <!--菜单-->
-                <div class="LSmenuBox " name="zt">
-                    <!--未登录   显示-->
-                    <div class="LSmenu-No">
-                        暂无历史
-                    </div>
-                    <!--登录显示-->
-                    <ul class="LSmenu " name="zt">
-                        <li>
-                            <a href="javascript:;">
-                                <div>爱，死亡和机器人第2季</div>
-                                <div>测试集数</div>
-                                <div>
-                                    <span>5</span>
-                                    <span>天前</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:;">
-                                <div>测试名称</div>
-                                <div>测试集数</div>
-                                <div>
-                                    <span>5</span>
-                                    <span>天前</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:;">
-                                <div>测试名称</div>
-                                <div>测试集数</div>
-                                <div>
-                                    <span>5</span>
-                                    <span>天前</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:;">
-                                <div>测试名称</div>
-                                <div>测试集数</div>
-                                <div>
-                                    <span>5</span>
-                                    <span>天前</span>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="LSmenuBottom">
-                        <div class="LSmenuBottom-lf">
-                            &nbsp;
-                        </div>
-                        <div class="LSmenuBottom-rg">
-                            <a href="javascript:;">查看更多&nbsp;》</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--通知-->
-            <div class="navTopBtn" onclick="showwarning();">
-                <div class="navTopBtnImg">
-                    &nbsp;
-                </div>
-                <div class="navTopBtnName">
-                    通知
-                </div>
-                <div class="VIPmenuTop " name="zt">
-                    &nbsp;
-                </div>
-                <!--菜单未登录显示-->
-                <ul class="FLmenuBox " name="zt" style="display: none;">
-                    <li class="FLmenuBox-li">
-                        <a href="javascript:;">
-                            <div class="FLmenuBox-liImg">
-                                <img src="/images/newindex/xiaoxi.png" />
-                            </div>
-                            <div class="FLmenuBox-liText">
-                                消息
-                            </div>
-                        </a>
-                    </li>
-                    <li class="FLmenuBox-li">
-                        <a href="javascript:;">
-                            <div class="FLmenuBox-liImg">
-                                <img src="/images/newindex/guanzu.png" />
-                            </div>
-                            <div class="FLmenuBox-liText">
-                                关注&收藏
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-                <!--登录显示-->
-                <div class="LSmenuBox lf " name="zt" style="display: none;">
-                    <ul class="XX-tabA " name="zt">
-                        <li class="tabA">消息</li>
-                        <li>关注&收藏</li>
-                    </ul>
-                    <div class="XX-tabBox">
-                        <div class="tabBox">
-                            <div class="LSmenu-No">
-                                暂无历史1
-                            </div>
-                        </div>
-                        <div>
-                            <div class="LSmenu-No">
-                                暂无历史2
-                            </div>
-                        </div>
-                    </div>
+        <li class="navTopBtnBox" id="navTopBtnBox">
 
-                    <div class="LSmenuBottom">
-                        <div class="LSmenuBottom-lf">
-                            &nbsp;
-                        </div>
-                        <div class="LSmenuBottom-rg">
-                            <a href="javascript:;">更多&nbsp;》</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--未登录显示-->
-            <div class="navTopLogon" id="notloggedin">
-                <div class="navTopLogonImg-no">
-                    <img src="/images/newindex/logon.png" />
-                </div>
-                <div class="navTopLogonName " name="zt">
-                    登录
-                </div>
-            </div>
-            <!--登录显示-->
-            <div class="navTopLogon" id="loggedin" style="display:none;">
-                <div class="navTopLogonImg">
-                    <img id="user_headimg" src="/images/newindex/logon.png" onerror="javascript:this.src='/images/newindex/logon.png';" />
-                </div>
-                <div class="navTopLogon-GRXX " name="zt">
-                    <div class="navTopLogon-GRXX-box">
-                        <ul class="navTopLogon-box01">
-                            <li class="navTopLogon-name" id="user_name"></li>
-                            <li class="navTopLogon-Gender"><img src="/images/newindex/nan.png" /></li>
-                        </ul>
-                        <ul class="navTopLogon-box02">
-                            <li class="navTopLogon-icon01"><img src="/images/newindex/jinbi.png" /></li>
-                            <li class="navTopLogon-text" class="user_score">0</li>
-                            <li class="navTopLogon-text" id="user_isvip"></li>
-                            <li class="navTopLogon-rank">LV.<span id="user_grade">1</span></li>
-                            <!--<li class="navTopLogon-icon01"><img src="/images/newindex/shangsheng.png" /></li>
-                            <li class="navTopLogon-Progress">
-                                <div>
-                                    <div class="Progress">&nbsp;</div>
-                                </div>
-                            </li>
-                            <li class="navTopLogon-experience">
-                                <span class="user_score">76</span>/<span id="user_allscore">200</span>
-                            </li>-->
-                        </ul>
-                    </div>
-                    <ul class="navTopLogon-box03">
-                        <li>
-                            <a class="navTopLogon-A" href="<?= Url::to(['/video/personal'])?>">个人中心</a>                        </li>
-                        <li><input class="navTopLogon-btn" type="" name="" id="logout" value="退出" /></li>
-                    </ul>
-                </div>
-            </div>
-
-            <script>
-                $(function(){
-                    var uid = finduser();
-                    var pagetab = '<?=$pageTab?>';
-                    if(!isNaN(uid) && uid!=""){
-                        //login
-                        var ar = {};
-                        ar['uid'] = uid;
-                        $.get('/video/userinfo',ar,function(res){
-                            if(res.errno==0){
-                                if(pagetab=="newdetail"){
-                                    $("#det_login").parent().parent().hide();
-                                }
-                                showlogin(res.data.user);
-                                if(res.data.isvip!=1){
-                                    $("#user_isvip").html("还不是vip会员");
-                                }else{
-                                    $("#user_isvip").html("");
-                                }
-                                $("#login_id").val(uid);
-                            }else{
-                                $("#loggedin").hide();
-                                $("#notloggedin").show();
-                            }
-                        });
-                    }else{
-                        //notlogin
-                        $("#loggedin").hide();
-                        $("#notloggedin").show();
-                    }
-                });
-            </script>
         </li>
     </ul>
 </div>
@@ -801,8 +580,9 @@ if($pageTab != "newdetail") {//顶部导航默认透明或白色
         break;
     case "personal" :
         echo $this->render('personal',[
-            'data'  => $data,
-            'channels'  => $channels,
+            'data'     => $data,
+            'channels' => $channels,
+            'ptab'      => $ptab,
             //'task'  => $task
         ]);
         break;
@@ -1094,17 +874,6 @@ if($pageTab != "newdetail") {//顶部导航默认透明或白色
         </div>
     </div>
 </div>
-<style>
-    .alt05-p{
-        background-image:url(/images/newindex/alt05_back.png);
-        background-position: center center;
-        background-repeat: no-repeat;
-        padding: 130px 20px 10px 20px;
-        margin-bottom:20px;
-        text-align: center;
-        color:#696969;
-    }
-</style>
 <!--提交成功弹出层-->
 <div class="alt" id="alt05">
     <div class="alt05-box" name="zt" style="border-radius:20px;">
@@ -1120,216 +889,14 @@ if($pageTab != "newdetail") {//顶部导航默认透明或白色
 <!--    <input class="alt-GB" type="button"  value="X" />-->
 </div>
 <script>
-//初始化验证码
-var verifyCode = new GVerify({
-    id : "picyzm",
-    type : "blend"
-});
 $(function(){
-    isvip();
-    // console.log(document.cookie);
-    // console.log(window.localStorage);
     $("#keywords").focus(function(){
         findwords();
     });
-    //刷新验证码
-    $("#v_refresh").click(function(){
-        verifyCode.refresh();
-    });
-    //未登录状态-登录
-    $("#notloggedin").click(function(){
-        showloggedin();
-    });
-    //提交登录
-    $("#login_submit").click(function(){
-        var account = $("#login_account").val();
-        var pwd = $("#login_pwd").val();
-        var yzm = verifyCode.validate($("#login_yzm").val());
-        var tab = true;
-        var arrIndex = {};
-        if(account==""){
-            $("#login_account").parent().addClass("wor");
-            $(".alt-title").text("账号不能为空");
-            $("#alt05").show();
-            verifyCode.refresh();
-            tab = false;
-            return false;
-        }else{
-            var ismobile = isMobilePhone(account);
-            var isemail = isEmail(account);
-            if(!ismobile && !isemail){
-                $("#login_account").parent().addClass("wor");
-                $(".alt-title").text("账号格式错误");
-                $("#alt05").show();
-                verifyCode.refresh();
-                tab = false;
-                return false;
-            }else{
-                arrIndex['account'] = account;
-            }
-        }
-        if(pwd==""){
-            $("#login_pwd").parent().addClass("wor");
-            $(".alt-title").text("密码不能为空");
-            $("#alt05").show();
-            verifyCode.refresh();
-            tab = false;
-            return false;
-        }else{
-            arrIndex['password'] = pwd;
-        }
-        if(!yzm) {
-            //验证不通过
-            $("#login_yzm").parent().addClass("wor");
-            $(".alt-title").text("验证码错误");
-            $("#alt05").show();
-            verifyCode.refresh();
-            tab = false;
-            return false;
-        }
-        if(!$("#xy").hasClass("act")){
-            $(".alt-title").text("请阅读并同意《用户协议》");
-            $("#alt05").show();
-            verifyCode.refresh();
-            tab = false;
-            return false;
-        }
-        if(tab){
-            $.get('/site/login',arrIndex,function(res){
-                // console.log(res);
-                if(res.errno==0 && res.data){
-                    //登陆成功,页面刷新
-                    var zd = $("#zd").hasClass("act")? 1:0;
-                    if(!isNaN(res.data) && res.data!=""){
-                        saveuser(res.data,zd);
-                    }
-                    location.reload();
-                    // showlogin(res.data);
-                    // $("#login_id").val(res.data.uid);
-                    // $("#alt01").hide();
-                }else{
-                    $("#login_account").parent().addClass("wor");
-                    $("#login_pwd").parent().addClass("wor");
-                    $(".alt-title").text("账号或密码错误");
-                    $("#alt05").show();
-                    verifyCode.refresh();
-                }
-            });
-        }
-    });
-    //提交注册
-    $("#reg_submit").click(function(){
-        var email = $("#reg_email").val();
-        var prefix_phone = $("#reg_prefix_phone").val();
-        var phone = $("#reg_phone").val();
-        var newpwd = $("#reg_newpwd").val();
-        var question = $("#reg_question").val();
-        var answer = $("#reg_answer").val();
-        var tab = true;
-        var arrIndex = {};
-        if(email==""){
-            $("#reg_email").parent().addClass("wor");
-            $(".alt-title").text("邮箱不能为空");
-            $("#alt05").show();
-            tab = false;
-            return false;
-        }else{
-            var isemail = isEmail(email);
-            if(!isemail){
-                $("#reg_email").parent().addClass("wor");
-                $(".alt-title").text("邮箱格式错误");
-                $("#alt05").show();
-                tab = false;
-                return false;
-            }else{
-                arrIndex['email'] = email;
-            }
-        }
-        if(phone==""){
-            $("#reg_phone").parent().addClass("wor");
-            $(".alt-title").text("手机号不能为空");
-            $("#alt05").show();
-            tab = false;
-            return false;
-        }else{
-            var ismobile = isMobilePhone(phone);
-            if(!ismobile){
-                $("#reg_phone").parent().addClass("wor");
-                $(".alt-title").text("手机号格式错误");
-                $("#alt05").show();
-                tab = false;
-                return false;
-            }else{
-                arrIndex['prefix_phone'] = prefix_phone;
-                arrIndex['phone'] = phone;
-            }
-        }
-        if(newpwd==""){
-            $("#reg_newpwd").parent().addClass("wor");
-            $(".alt-title").text("新密码不能为空");
-            $("#alt05").show();
-            tab = false;
-            return false;
-        }else{
-            arrIndex['newpwd'] = newpwd;
-        }
-        if(answer==""){
-            $("#reg_answer").parent().addClass("wor");
-            $(".alt-title").text("密保答案不能为空");
-            $("#alt05").show();
-            tab = false;
-            return false;
-        }else{
-            arrIndex['question'] = question;
-            arrIndex['answer'] = answer;
-        }
-        if(!$("#xy").hasClass("act")){
-            $(".alt-title").text("请阅读并同意《用户协议》");
-            $("#alt05").show();
-            tab = false;
-            return false;
-        }
-        if(tab){
-            $.get('/video/register', arrIndex, function(res) {
-                //console.log(res);
-                if(res.errno==0){
-                    //注册成功,页面刷新
-                    var zd = $("#zd").hasClass("act")? 1:0;
-                    if(!isNaN(res.data.uid) && res.data.uid!=""){
-                        saveuser(res.data.uid,zd);
-                    }
-                    location.reload();
-                    // showlogin(res.data);
-                    // $("#login_id").val(res.data.uid);
-                    // $("#alt01").hide();
-                    // $(".alt-title").text("注册成功");
-                    // $("#alt05").show();
-                }else{
-                    var mes = "";
-                    if(res.data!=''){
-                        mes = res.data.message;
-                    }else{
-                        mes = '注册失败';
-                    }
-                    $("#login_account").parent().addClass("wor");
-                    $("#login_pwd").parent().addClass("wor");
-                    $(".alt-title").text(mes);
-                    $("#alt05").show();
-                }
-            });
-        }
-    });
-    //登录状态-退出
-    $("#logout").click(function(){
-        $.get('/site/logout', {}, function(res) {
-            if(res.errno==0){
-                $("#login_id").val("");
-                $("#notloggedin").show();
-                $("#loggedin").hide();
-                removeuser();
-                location.reload();
-            }
-        });
+
+    //关闭vip提示框
+    $("#closealtvip").click(function(){
+        $("#altvip").hide();
     });
 });
 
@@ -1359,26 +926,41 @@ function isvip(){
         }
     });
 }
+
+//详情
+function XQ(videoId){
+    var ar = {};
+    ar['videoId'] = videoId;
+    $.get('/video/user-favorite', ar, function(res) {
+        //console.log(res);
+        if(res.errno==0 && res.data==1){
+            $("#alt03"+videoId+" .XQ-btn input").addClass("act");
+        }
+        $("#alt03"+videoId).show();
+    });
+}
 //收藏
-function addfavors(that){
-    var uid = $("#login_id").val();
+function addfavors(videoId){
+    var uid = finduser();
     if(!isNaN(uid) && uid!=""){
-        var arrindex = {};
-        arrindex['videoid'] = '<?=$data['info']['play_video_id']?>';
-        $.get('/video/change-favorite',arrindex,function(res){
-            $(that).toggleClass("act");
-            if(res.errno==0){
-                if(res.data.status==0){
-                    $("#id_favors").val(--total_favors);
-                }else{
-                    $("#id_favors").val(++total_favors);
-                }
-            }
+        var ar = {};
+        ar['videoid'] = videoId;
+        $.get('/video/change-favorite',ar,function(res){
+            $("#alt03"+videoId+" .XQ-btn input").toggleClass("act");
         });
     }else{//弹框登录
         showloggedin();
+        $("#alt03"+videoId).hide();
     }
 }
+
+//回车搜索
+$('#keywords').keypress(function(event){
+    var keycode = (event.keyCode ? event.keyCode : event.which);
+    if(keycode == '13'){
+        savewords();
+    }
+});
 </script>
 </body>
 </html>

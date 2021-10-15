@@ -15,6 +15,7 @@ class UserMessage extends \common\models\user\UserMessage
             'message_id' => 'id',
             'type',
             'content',
+            'created_time'=>'created_at',
             'created_at' => function($model) {
                 return date('m-d', $model->created_at);
             }

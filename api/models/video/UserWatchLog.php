@@ -22,7 +22,9 @@ class UserWatchLog extends \common\models\user\UserWatchLog
             'watchplay_time'=>function(){
                 return date('H:i', $this->updated_at);
             },
-            'total_time'
+            'total_time',
+            'created_at',
+            'updated_at'
         ];
 
     }

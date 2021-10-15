@@ -974,6 +974,7 @@ class VideoController extends BaseController
     public function actionPersonal(){
         $pageTab = 'personal';
 
+        $ptab = Yii::$app->request->get('ptab', "");
         $uid = Yii::$app->user->id;
         if(!$uid){
             return $this->redirect('/video/index');
@@ -1006,6 +1007,7 @@ class VideoController extends BaseController
             'channels' => $channels,
             'hotword'  => $hotword,
             'data'     => $data,
+            'ptab'      => $ptab,
 //            'task'     => $task
         ]);
     }
@@ -1159,10 +1161,11 @@ class VideoController extends BaseController
      * 删除消息
      */
     public function actionRemoveMessage(){
+        $uid = Yii::$app->user->id;
         $comment_id  = Yii::$app->request->get('id', 0);
         $type  = Yii::$app->request->get('type', "");
         if($type=="message"){
-            $result = Yii::$app->api->get('/user/remove-message',['comment_id'=>$comment_id]);
+            $result = Yii::$app->api->get('/user/remove-message',['comment_id'=>$comment_id, 'uid'=>$uid]);
         }else if($type=="comment"){
             $result = Yii::$app->api->get('/user/remove-comment',['comment_id'=>$comment_id]);
         }
@@ -1283,5 +1286,90 @@ class VideoController extends BaseController
             $errno = -1;
         }
         return TOOL::responseJson($errno,"操作成功",$result);
+    }
+
+    /*
+     * 右上角导航-用户相关信息
+     */
+    public function actionUserall(){
+        $uid = Yii::$app->request->get('uid', 0);
+        //用户信息
+        $user = Yii::$app->api->get('/user/userinfo',['uid'=>$uid]);
+        $data = [];
+        $data['main_uid'] = $uid;
+        if($uid){
+//            $errno = 0;
+            $data['login_show'] = '';
+            $data['notlogin_show'] = 'display:none';
+            $data['user'] = $user['user'];
+            $data['vip'] = $user['vip'];
+            $data['isvip'] = $user['isvip'];
+        }else{
+//            $errno = -1;
+            $data['login_show'] = 'display:none';
+            $data['notlogin_show'] = '';
+            $data['user'] = [];
+            $data['vip'] = [];
+            $data['isvip'] = 0;
+        }
+
+        //播放记录
+        $watchlog = Yii::$app->api->get('/video/watchlog-pc',['uid'=>$uid]);
+        if($watchlog){
+            $data['watchlog'] = $watchlog;
+        }
+        //收藏
+        $favorite = Yii::$app->api->get('/video/favorite-new',['uid'=>$uid]);
+        if($favorite){
+            $data['favorite'] = $favorite;
+        }
+
+        //消息
+        $message = Yii::$app->api->get('/user/message-pc',['uid'=>$uid]);
+        if($message){
+            $data['message'] = $message;
+        }
+
+//        return TOOL::responseJson(0,"操作成功",$result);
+        return $this->renderPartial('rheadnavi', ['data' => $data]);
+    }
+    /*
+     * 删除右上角导航收藏消息
+     */
+    public function actionRemoveFmes(){
+        $uid = Yii::$app->user->id;
+        $data = Yii::$app->api->get('/video/remove-fmes',['uid'=>$uid]);
+
+        return TOOL::responseJson(0,"操作成功",$data);
+    }
+    /*
+     * 首页和频道页，详情里的收藏
+     * 根据uid和videoId查收藏
+     */
+    public function actionUserFavorite(){
+        $uid = Yii::$app->user->id;
+        $videoId = Yii::$app->request->get('videoId', 0);
+
+        $data = Yii::$app->api->get('/video/user-favorite',['uid'=>$uid,'videoId'=>$videoId]);
+        $return = -1;
+        if($data){
+            $return = 1;
+        }
+
+        return TOOL::responseJson(0,"操作成功",$return);
+    }
+    /*
+     * 根据chapterId查线路
+     */
+    public function actionChapterSources(){
+        $uid = Yii::$app->user->id;
+        $chapterId = Yii::$app->request->get('chapterId', 0);
+        $data = Yii::$app->api->get('/video/chapter-sources',['uid'=>$uid,'chapterId'=>$chapterId,]);
+        if($data){
+            $errno = 0;
+        }else{
+            $errno = -1;
+        }
+        return TOOL::responseJson($errno,"操作成功",$data);
     }
 }

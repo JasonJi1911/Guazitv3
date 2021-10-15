@@ -539,9 +539,21 @@ function initialUrl($url)
     .Dplayer_box, .player_av, .box{
         height: 100%;
     }
+    #player-load1-warn{
+        color:#fff;
+        z-index:10;
+        position:absolute;
+        top:20px;
+        width:100%;
+        text-align:center;
+    }
+    #player-load1-warn span{
+        color:#FF5722
+    }
 </style>
 
 <div class="Dplayer_box">
+    <img id="load1-img" src="/images/newindex/player_load.gif" style="width:100%;height:100%;" />
     <div class="player_av">
         <div class="box" id="player1">
         </div>
@@ -708,7 +720,20 @@ function initialUrl($url)
         sourceLimit(0,e.defaultPlayLimit);//先验证再播放，替代 dp1.play();
         // $('.dplayer-video-wrap').trigger('click');
         // dp1.play();
+
+        var strtext = "<div id='player-load1-warn'>如果卡顿，可以通过<span>清晰度</span>切换到其他线路</div>";
+        $("#player1").prepend(strtext);
+        setTimeout(function(){
+            $("#player-load1-warn").hide();
+        },10000);
+        dp1.on('loadedmetadata', function () {
+            var totaltime = parseInt(dp1.video.duration);
+            if(totaltime>0){
+                $("#player-load1-warn").hide();
+            }
+        });
     }
+    //验证视频播放权限
     function sourceLimit(index,limit){
         if(limit==0){
             //直接切换
@@ -723,6 +748,7 @@ function initialUrl($url)
                         dp1.switchQuality(index);
                     }else{
                         //不是，弹框提示
+                        $("#mvip-title").text("您可在清晰度那里，选择其他免费线路");
                         $("#altvip").show();
                         return false;
                     }
@@ -884,39 +910,29 @@ function initialUrl($url)
                 $('#ADxq-box').remove();
                 $('#ADMask').remove();
                 dp.destroy();
-                var ini_video = {
-                    quality: [
-                        <?php
-                        $default_qua = 0;
-                        foreach ($videos as $k => $val){
-                            if($val['chapter_id'] == $play_chapter_id){
-                                $chapter = $val;
-                                $src_array = $val['resource_url'];
-                            }
+
+                <?php $default_qua = 0;?>
+                var qualitystr = '';
+                var ar = {};
+                ar['chapterId'] = '<?=$play_chapter_id?>';
+                $.get("/video/chapter-sources",ar,function(res){
+                    // console.log(res.data);
+                    if(res.errno==0){
+                        for(var i in res.data){
+                            qualitystr += "{name: '"+res.data[i].name+"',url: '"+res.data[i].resource_url+"',type: 'auto',limit: '"+res.data[i].play_limit+"'},";
                         }
-                        foreach ($source as $key => $src) {
-                            if (empty($src_array[$src['source_id']])) { // source_id不在视频里面或者没有视频播放连接
-                                continue;
-                            }
-                            // $src_id = $src['source_id'];
-                            // $src_url = $src_array[$src_id];
-                            $src_url = $src['resource_url'];
-                            $type = initialUrl($src_url);
-                            echo "{
-                                        name: '".$src['name']."',
-                                        url: '".$type."',
-                                        type: 'auto',
-                                        limit: '".$src['play_limit']."'
-                                    },";
-                        }
-                        ?>
-                    ],
-                    url: '<?php echo $type;?>',
-                    pic: '',
-                    defaultQuality: <?php echo $default_qua;?>,
-                    defaultPlayLimit:'<?php echo $source[$default_qua]['play_limit'];?>'
-                };
-                initialPlayer(ini_video);
+                        qualitystr = "["+qualitystr+"]";
+                        $('#load1-img').remove();
+                        var ini_video = {
+                            quality: eval('(' + qualitystr + ')'),
+                            //url: '<?php echo $type;?>',
+                            pic: '',
+                            defaultQuality: <?php echo $default_qua;?>,
+                            defaultPlayLimit:'<?php echo $source[$default_qua]['play_limit'];?>'
+                        };
+                        initialPlayer(ini_video);
+                    }
+                });
             }
         }, 1000);
     }, 1);
@@ -959,73 +975,52 @@ function initialUrl($url)
         dp.destroy();
     });
     dp.on('destroy', function () {
-        var ini_video = {
-            quality: [
-                <?php
-                $default_qua = 0;
-                foreach ($videos as $k => $val){
-                    if($val['chapter_id'] == $play_chapter_id){
-                        $chapter = $val;
-                        $src_array = $val['resource_url'];
-                    }
+        <?php $default_qua = 0;?>
+        var qualitystr = '';
+        var ar = {};
+        ar['chapterId'] = '<?=$play_chapter_id?>';
+        $.get("/video/chapter-sources",ar,function(res){
+            // console.log(res.data);
+            if(res.errno==0){
+                for(var i in res.data){
+                    qualitystr += "{name: '"+res.data[i].name+"',url: '"+res.data[i].resource_url+"',type: 'auto',limit: '"+res.data[i].play_limit+"'},";
                 }
-                foreach ($source as $key => $src) {
-                    if (empty($src_array[$src['source_id']])) { // source_id不在视频里面或者没有视频播放连接
-                        continue;
-                    }
-                    // $src_id = $src['source_id'];
-                    // $src_url = $src_array[$src_id];
-                    $src_url = $src['resource_url'];
-                    $type = initialUrl($src_url);
-                    echo "{
-                                name: '".$src['name']."',
-                                url: '".$type."',
-                                type: 'auto',
-                                limit: '".$src['play_limit']."'
-                            },";
-                }
-                ?>
-            ],
-            pic: '',
-            defaultQuality: <?php echo $default_qua;?>,
-            defaultPlayLimit:'<?php echo $source[$default_qua]['play_limit'];?>'
-        };
-        initialPlayer(ini_video);
+                qualitystr = "["+qualitystr+"]";
+                $('#load1-img').remove();
+                var ini_video = {
+                    quality: eval('(' + qualitystr + ')'),
+                    pic: '',
+                    defaultQuality: <?php echo $default_qua;?>,
+                    defaultPlayLimit:'<?php echo $source[$default_qua]['play_limit'];?>'
+                };
+                initialPlayer(ini_video);
+            }
+        });
     });
     <?php elseif (empty($ad_type)) :?>
     dp.destroy();
-    var ini_video = {
-        quality: [
-            <?php
-            $default_qua = 0;
-            foreach ($videos as $k => $val){
-                if($val['chapter_id'] == $play_chapter_id){
-                    $chapter = $val;
-                    $src_array = $val['resource_url'];
-                }
+
+    <?php $default_qua = 0;?>
+    var qualitystr = '';
+    var ar = {};
+    ar['chapterId'] = '<?=$play_chapter_id?>';
+    $.get("/video/chapter-sources",ar,function(res){
+        // console.log(res.data);
+        if(res.errno==0){
+            for(var i in res.data){
+                qualitystr += "{name: '"+res.data[i].name+"',url: '"+res.data[i].resource_url+"',type: 'auto',limit: '"+res.data[i].play_limit+"'},";
             }
-            foreach ($source as $key => $src) {
-                if (empty($src_array[$src['source_id']])) { // source_id不在视频里面或者没有视频播放连接
-                    continue;
-                }
-                // $src_id = $src['source_id'];
-                // $src_url = $src_array[$src_id];
-                $src_url = $src['resource_url'];
-                $type = initialUrl($src_url);
-                echo "{
-                            name: '".$src['name']."',
-                            url: '".$type."',
-                            type: 'auto',
-                            limit: '".$src['play_limit']."'
-                        },";
-            }
-            ?>
-        ],
-        pic: '',
-        defaultQuality: <?php echo $default_qua;?>,
-        defaultPlayLimit:'<?php echo $source[$default_qua]['play_limit'];?>'
-    };
-    initialPlayer(ini_video);
+            qualitystr = "["+qualitystr+"]";
+            $('#load1-img').remove();
+            var ini_video = {
+                quality: eval('(' + qualitystr + ')'),
+                pic: '',
+                defaultQuality: <?php echo $default_qua;?>,
+                defaultPlayLimit:'<?php echo $source[$default_qua]['play_limit'];?>'
+            };
+            initialPlayer(ini_video);
+        };
+    });
     <?php endif;?>
 
     function send() {

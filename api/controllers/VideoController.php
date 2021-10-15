@@ -739,4 +739,46 @@ class VideoController extends BaseController
 
         return $replylist;
     }
+    /*
+     * 右上角通知-收藏
+     */
+    public function actionFavoriteNew(){
+        $uid = $this->getParam('uid', "");
+        $videodao = new VideoDao();
+        //收藏
+        $result = $videodao->findVideoFavoriteNew($uid);
+        return $result;
+    }
+
+    /*
+     * 删除右上角导航收藏消息
+     */
+    public function actionRemoveFmes(){
+        $uid = $this->getParam('uid', "");
+        $videodao = new VideoDao();
+        $data = $videodao->modifyFavoriteTime($uid);
+
+        return $data;
+    }
+    /*
+     * 根据uid和videoId查收藏
+     */
+    public function actionUserFavorite(){
+        $uid = $this->getParam('uid', "");
+        $videoId = $this->getParam('videoId', "");
+        $videodao = new VideoDao();
+        $data = $videodao->findFavoriteByVideoid($uid,$videoId);
+
+        return $data;
+    }
+    /*
+     * 根据chapterId查线路
+     */
+    public function actionChapterSources(){
+        $uid = $this->getParam('uid', "");
+        $chapterId = $this->getParam('chapterId', "");
+        $videologic = new VideoLogic();
+        $data = $videologic->findSourceByChapterId($uid,$chapterId);
+        return $data;
+    }
 }
