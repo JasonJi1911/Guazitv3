@@ -247,7 +247,7 @@ header("Access-Control-Allow-Origin:*");
                     <!--报错样式 wor-->
                     <div class="inp-box mb-30 pasbox" name="zt">
                         <img class="icon" src="/images/newindex/logon-icon-02.png" />
-                        <input type="password" class="inp pas" name="" placeholder="密码" id="login_pwd" value="" />
+                        <input type="password" class="inp pas" name="" placeholder="密码" id="login_pwd" value="" onKeyUp="value=value.replace(/[^(\w-*\.*)]/g,'')" />
                         <input type="button" class="eye"  value="" />
                     </div>
                     <!--报错样式 wor-->
@@ -293,7 +293,7 @@ header("Access-Control-Allow-Origin:*");
                     <!--报错样式 wor-->
                     <div class="inp-box mb-20 pasbox" name="zt">
                         <img class="icon" src="/images/newindex/logon-icon-02.png" />
-                        <input type="password" class="inp pas" name="" placeholder="新密码" id="reg_newpwd" value="" />
+                        <input type="password" class="inp pas" name="" placeholder="新密码" id="reg_newpwd" value="" onKeyUp="value=value.replace(/[^(\w-*\.*)]/g,'')" />
                         <input type="button" class="eye"  value="" />
                     </div>
                     <!--报错样式 wor-->
@@ -668,7 +668,7 @@ if($pageTab != "newdetail") {//顶部导航默认透明或白色
     </div>
     <div class="rigNav-icon04"><!--求片-->
         <span onclick="rightUrl('seek')">求片</span>
-        <a href="<?= Url::to(['/video/seek'])?>">&nbsp;</a>
+        <a href="<?= Url::to(['/video/seek'])?>" target="_blank">&nbsp;</a>
     </div>
     <div class="rigNav-icon05"><!--帮助中心-->
         <span onclick="rightUrl('help')">帮助中心</span>
@@ -911,7 +911,8 @@ function closewarning(){
 //右侧链接
 function rightUrl(urlid){
     if(urlid=='seek'){
-        window.location.href = '/video/seek';
+        // window.location.href = '/video/seek';
+        window.open('/video/seek');
     }else if(urlid=='help'){
         window.location.href = '/video/help';
     }else if(urlid=='personal'){

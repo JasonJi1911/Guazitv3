@@ -334,7 +334,9 @@ else
                 'videos'    =>  $data['info']['videos'],
                 'play_chapter_id'   => $data['info']['play_chapter_id'],
                 'source_id'         => $data['info']['source_id'],
-                'source'            =>  $data['info']['source']
+                'source'            => $data['info']['source'],
+                'last_chapter'      => $data['info']['last_chapter'],
+                'next_chapter'      => $data['info']['next_chapter']
             ]);?>
         </div>
         <!--广告-->
@@ -359,11 +361,12 @@ else
         <!--评论，点赞，差评等按钮-->
         <div class="BtnList">
             <ul class="BtnList-boxL">
-                <li class="rBtn-01"><input type="button" id="" value="0"  onclick="window.location.href = '#GNbox-PL'" /></li>
-                <li class="rBtn-02"><input type="button" id="" value="0" /></li>
-                <li class="rBtn-03"><input type="button" id="" value="0" /></li>
+                <!--rBtn-01 display样式临时加用，加入赞踩分享后删除 -->
+                <li class="rBtn-01" style="display:inline-block;margin-top:0px;"><input type="button" id="" value="<?=$data['commentcount']?>"  onclick="window.location.href = '#GNbox-PL'" /></li>
+<!--                <li class="rBtn-02"><input type="button" id="" value="0" /></li>-->
+<!--                <li class="rBtn-03"><input type="button" id="" value="0" /></li>-->
                 <li class="rBtn-04 <?=$data['info']['fav_status']==1? 'act' : ''?>"><input type="button" id="id_favors" value="<?= $data['info']['total_favors']?>" /></li>
-                <li class="rBtn-05"><input type="button" id="" value="0" /></li>
+<!--                <li class="rBtn-05"><input type="button" id="" value="0" /></li>-->
                 <li class="rBtn-06"><input type="button" id="" value="手机看" /></li>
                 <li class="rBtn-07"><input type="button" id="err_feedback" value="片源报错" /></li>
                 <li class="rBtn-08"><a href="<?= Url::to(['/video/seek'])?>" target="_blank">求片</a></li>
@@ -376,7 +379,7 @@ else
                 <input class="GB" type="button" name="" id="" value="" />
             </div>
             <div class="Altsjk-02">
-                <img src="/images/newindex/jxewm.png" />
+                <img src="/images/newindex/ryewm_wap.png" />
                 <div class="Altsjk-02-a">
 <!--                    --><?//= Url::to(['/site/share-down'])?>
                     <a href="javascript:void(0);" onclick="showwarning();"><img src="/images/NewVideo/ipad.png" />iPhone客户端</a>
@@ -385,7 +388,8 @@ else
                 </div>
             </div>
             <div class="Altsjk-03">
-                没有吉祥视频APP？ <a href="<?= Url::to(['/site/share-down'])?>" target="_blank">立即下载</a>
+                没有<?=LOGONAME?>视频APP？ <a href="javascript:void(0);" onclick="showwarning();">立即下载</a>
+<!--                <a href="--><?//= Url::to(['/site/share-down'])?><!--" target="_blank">立即下载</a>-->
             </div>
         </div>
 
@@ -396,7 +400,7 @@ else
                     <a href="javascript:;"><img src="/images/NewVideo/logon.png" /></a>
                 </div>
                 <div class="BZname">
-                    <a href="javascript:;">吉祥影视</a>
+                    <a href="javascript:;"><?=LOGONAME?>影视</a>
                     <img src="/images/NewVideo/nan.png" />
                     <img src="/images/NewVideo/nv.png" />
                 </div>
@@ -784,15 +788,20 @@ else
                             </ul>
                         </div>
                     <?php endforeach;?>
-                    <div class="more-comment" id="comment-more"
-                        <?php if($data['comments']['total_page']!=0 && $data['comments']['current_page']==$data['comments']['total_page']):?>
-                            style="display: none;"
-                        <?php endif;?>  name="zt">
-                        <input type="hidden" id="comment-current" value="<?=$data['comments']['current_page']?>" />
-                        <input type="hidden" id="comment-total" value="<?=$data['comments']['total_page']?>" />
-                        查看更多评论
-                    </div>
                 <?php endif;?>
+                <?php $current_page = 0; $total_page = 0;
+                if($data['comments']['total_page']){
+                    $current_page = $data['comments']['current_page'];
+                    $total_page = $data['comments']['total_page'];
+                }?>
+                <div class="more-comment" id="comment-more"
+                    <?php if($total_page==0 || $current_page==$total_page):?>
+                        style="display: none;"
+                    <?php endif;?>  name="zt">
+                    <input type="hidden" id="comment-current" value="<?=$current_page?>" />
+                    <input type="hidden" id="comment-total" value="<?=$total_page?>" />
+                    查看更多评论
+                </div>
             </div>
         </div>
 
@@ -932,17 +941,29 @@ else
 <script>
     //片源报错
     $('#err_feedback').click(function(){
-        $("#alt04").show();
+        var uid = finduser();
+        if(isNaN(uid) || uid==""){
+            showloggedin();//弹登录框
+        }else{
+            $("#alt04").show();
+        }
     })
     //提交
     $("#v_submit").click(function(){
         var arrIndex = {};
         var str = '提交成功';
+
+        var description = $("#v_description").val();
+        if(description.length < 10){
+            $(".alt-title").text("请详细描述问题，至少10个字");
+            $("#alt05").show();
+            return false;
+        }
         arrIndex['country'] = $("#v_country").val();
         arrIndex['internets'] = $("#v_internet").val();
         arrIndex['systems'] = $("#v_system").val();
         arrIndex['browsers'] = $("#v_browser").val();
-        arrIndex['description'] = $("#v_description").val();
+        arrIndex['description'] = description;
         arrIndex['video_id'] = "<?= $data['info']['play_video_id']?>";
         arrIndex['chapter_id'] = "<?= $data['info']['play_chapter_id']?>";
         arrIndex['source_id'] = "<?= $source_id?>";
@@ -998,23 +1019,28 @@ else
     }
 
     //收藏
+    var favor_tab = true;
     $("#id_favors").click(function(){
-        var that = this;
-        var uid = $("#login_id").val();
+        var uid = finduser();
         if(!isNaN(uid) && uid!=""){
-            var total_favors = parseInt($(that).val());
-            var arrindex = {};
-            arrindex['videoid'] = '<?=$data['info']['play_video_id']?>';
-            $.get('/video/change-favorite',arrindex,function(res){
-                $(that).toggleClass("act");
-                if(res.errno==0){
-                    if(res.data.status==0){
-                        $("#id_favors").val(--total_favors);
-                    }else{
-                        $("#id_favors").val(++total_favors);
+            if(favor_tab){
+                favor_tab = false;
+                var that = this;
+                var total_favors = parseInt($(that).val());
+                var arrindex = {};
+                arrindex['videoid'] = '<?=$data['info']['play_video_id']?>';
+                $.get('/video/change-favorite',arrindex,function(res){
+                    favor_tab = true;
+                    if(res.errno==0){
+                        $(".rBtn-04").toggleClass("act");
+                        if(res.data.status==0){
+                            $(that).val(--total_favors);
+                        }else{
+                            $(that).val(++total_favors);
+                        }
                     }
-                }
-            });
+                });
+            }
         }else{//弹框登录
             showloggedin();
         }
@@ -1042,6 +1068,7 @@ else
             $.get('/video/send-comment',ar,function(res){
                 if(res.errno==0){
                     if(res.data.display==1){
+                        commentNum();//本剧集评论数
                         commentstr(res.data.data);
                         ztBlack();
                         $(".alt-title").text(res.data.message);
@@ -1177,6 +1204,7 @@ else
             $.get('/video/send-comment',ar,function(res){
                 if(res.errno==0){
                     if(res.data.display==1){
+                        commentNum();//本剧集评论数
                         var rstr = replystr(res.data.data);
                         if($("#addreplydiv").siblings('.div-reply').length>0){
                             $("#addreplydiv").siblings('.div-reply').prepend(rstr);
@@ -1268,7 +1296,7 @@ else
         $.get('/video/comment-more',ar,function(res){
             $("#comment-more").before(res);//添加评论列表
             ztBlack();
-            if(total == page_num+1){
+            if(total==0 || total == page_num+1){
                 $("#comment-more").hide();
             }else{
                 $("#comment-more").show();
@@ -1374,7 +1402,7 @@ else
             $("#comment-more").before(res);//添加评论列表
             $(that).addClass("act").siblings().removeClass("act");
             ztBlack();
-            if(total == page_num+1){
+            if(total==0 || total == page_num+1){
                 $("#comment-more").hide();
             }else{
                 $("#comment-more").show();
@@ -1382,4 +1410,11 @@ else
             }
         });
     });
+    //chapterId评论数
+    function commentNum(){
+        var value = $(".rBtn-01").find('input').val();
+        var num = parseInt(value!='' ? value : 0 )+1;
+        $(".rBtn-01").find('input').val(num);
+        $("#GNbox-PL").find('span').html("("+num+")");
+    }
 </script>

@@ -370,12 +370,13 @@ class UserController extends BaseController
         $param['security_question'] = $question;
         $param['security_answer'] = $answer;
         $userDao = new UserDao();
-        $user = $userDao->finduserInfo($param);
+        $data = $userDao->finduserInfoToReason($param);
         $rows = 0;
-        if($user){
-            $rows = $userDao->modifypassword($user['uid'],$password);
+        if($data && $data['errno']==0){
+            $rows = $userDao->modifypassword($data['uid'],$password);
         }
-        return $rows;
+        $data['row'] = $rows;
+        return $data;
     }
 
     /*

@@ -540,6 +540,7 @@ class VideoController extends BaseController
      * 保存反馈信息
      */
     public function actionSaveFeedbackinfo(){
+        $uid         = $this->getParam('uid',0);
         $country     = $this->getParam('country',0);
         $internets   = $this->getParam('internets',0);
         $systems     = $this->getParam('systems',0);
@@ -549,7 +550,7 @@ class VideoController extends BaseController
         $chapter_id  = $this->getParam('chapter_id', 0);
         $source_id   = $this->getParam('source_id', 0);
         $videoDao = new VideoDao();
-        $result = $videoDao->saveFeedbackinfo($country,$internets,$systems,$browsers,$description,$video_id,$chapter_id,$source_id);
+        $result = $videoDao->saveFeedbackinfo($country,$internets,$systems,$browsers,$description,$video_id,$chapter_id,$source_id,$uid);
 
         return $result;
     }

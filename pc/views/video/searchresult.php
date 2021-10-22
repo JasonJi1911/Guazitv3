@@ -325,7 +325,7 @@ $this->registerJs($js);
         抱歉亲，没有找到 <span><?= $keyword?></span> 相关的内容
     </h2>
     <h2>
-        您是否要求片？<a href="<?= Url::to(['/video/seek'])?>">立即求片</a>
+        您是否要求片？<a href="<?= Url::to(['/video/seek'])?>" target="_blank">立即求片</a>
     </h2>
 </div>
 <!--排序-->

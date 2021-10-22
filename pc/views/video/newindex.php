@@ -52,7 +52,6 @@ NewIndexStyleAsset::register($this);
                                     <?= $channel['channel_name']?>
                                 </a>
                             </li>
-                            <li><a href="https://sport.rysp.tv" target="_blank">体育直播</a></li>
                         <?php else : ?>
                             <li>
                                 <a href="<?= Url::to(['video/channel', 'channel_id' => $channel['channel_id']])?>">
@@ -65,6 +64,7 @@ NewIndexStyleAsset::register($this);
                         <?php endif; ?>
                     <?php endforeach ?>
                 <?php endif;?>
+                <li><a href="https://sport.rysp.tv" target="_blank">体育直播</a></li>
             </ul>
 
             <ul class="sort-recommend" name="zt">

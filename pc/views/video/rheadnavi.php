@@ -585,6 +585,7 @@ $(function(){
                 location.reload();
             }
         });
+        return false;
     });
     //升级vip
     $("#vipbtn").click(function(){
@@ -595,6 +596,10 @@ $(function(){
         }else{//弹框登录
             showloggedin();
         }
+    });
+    $("#loggedin").click(function(){
+        window.location.href="/video/personal";
+        return false;
     });
 });
 function removetab(tab){

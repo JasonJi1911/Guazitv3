@@ -836,17 +836,18 @@ class VideoController extends BaseController
      * 保存反馈信息
      */
     public function actionSaveFeedbackinfo(){
+        $uid         = Yii::$app->user->id;
         $country     = Yii::$app->request->get('country', 0);
-        $internets    = Yii::$app->request->get('internets', 0);
-        $systems      = Yii::$app->request->get('systems', 0);
-        $browsers     = Yii::$app->request->get('browsers', 0);
+        $internets   = Yii::$app->request->get('internets', 0);
+        $systems     = Yii::$app->request->get('systems', 0);
+        $browsers    = Yii::$app->request->get('browsers', 0);
         $description = Yii::$app->request->get('description', "");
-        $video_id     = Yii::$app->request->get('video_id', 0);
-        $chapter_id     = Yii::$app->request->get('chapter_id', 0);
-        $source_id     = Yii::$app->request->get('source_id', 0);
+        $video_id    = Yii::$app->request->get('video_id', 0);
+        $chapter_id  = Yii::$app->request->get('chapter_id', 0);
+        $source_id   = Yii::$app->request->get('source_id', 0);
         $result = Yii::$app->api->get('/video/save-feedbackinfo',['country' => $country,'internets' => $internets,
             'systems' => $systems, 'browsers'=>$browsers, 'description'=>$description,
-            'video_id' =>$video_id ,'chapter_id'=>$chapter_id ,'source_id'=>$source_id]);
+            'video_id' =>$video_id ,'chapter_id'=>$chapter_id ,'source_id'=>$source_id ,'uid'=>$uid]);
         return $result;
     }
 
@@ -965,9 +966,13 @@ class VideoController extends BaseController
         $answer = Yii::$app->request->get('answer', "");
         $is_email = Tool::isEmail($account);//验证邮箱格式
 
-        $rows = Yii::$app->api->get('/user/modify-password',['account'=>$account, 'password' => $password,
+        $data = Yii::$app->api->get('/user/modify-password',['account'=>$account, 'password' => $password,
                 'question'=>$question,'answer'=>$answer, 'is_email'=>$is_email]);
-        return Tool::responseJson(0, '提交成功', $rows);
+        $errno = -1;
+        if(isset($data['errno'])){
+            $errno = $data['errno'];
+        }
+        return Tool::responseJson($errno, '提交成功', $data);
     }
 
     //个人中心

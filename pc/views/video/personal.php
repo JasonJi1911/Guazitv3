@@ -108,7 +108,7 @@ $(document).ready(function() {
             <li class="c_message" data-value="comment">消息</li>
             <li class="c_favorite" data-value="favorite">收藏夹</li>
             <li class="c_watchlog" data-value="watchlog">播放记录</li>
-            <li><a href="<?= Url::to(['/video/seek'])?>">求片</a></li>
+            <li><a target="_blank" href="<?= Url::to(['/video/seek'])?>">求片</a></li>
             <li><a href="javascript:;">安全设置</a></li>
         </ul>
     </div>
@@ -1174,7 +1174,7 @@ $(document).ready(function() {
                     <input type="button"  value="" id="fav_searchbtn" />
                 </div>
                 <div class="per-qx" name="zt">
-                    <input type="button" name=""  value="批量删除" />
+                    <input type="button" name="" id="fav_deleteall" value="批量删除" />
                 </div>
             </div>
             <!-- 批量删除 -->
@@ -1237,8 +1237,8 @@ $(document).ready(function() {
                                 <div class="per-btn-tow" name="zt">
                                     <input type="button" name="" onclick="removefavorite(<?=$video['video_id']?>)" value="删除" />
                                 </div>
-                                <div class="per-btn-cbox" style="border:0px;">
-                                    <input type="checkbox" name="per-qx" class="fav_checkbox" data-value="<?=$video['video_id']?>" value="" />
+                                <div class="per-btn-cbox">
+                                    <input type="checkbox" name="per-qx" class="fav_checkbox" data-value="<?=$video['video_id']?>" value="" onclick="favchoose(this);" />
                                 </div>
                             </div>
                         <?php endforeach;?>
@@ -1649,6 +1649,23 @@ relaAr['order'] = 'time';
 relaAr['searchword'] = '';
 relaAr['tabNum'] = 0;
 /*-----------收藏------------*/
+//批量删除-全选
+$(".per-qx-02>input").click(function() {
+    $(this).parents(".per-sp-box02").siblings(".per-tab-w05").find(".per-tab-box05.act .per-btn-cbox>input").addClass("act").attr("checked","checked");
+    var num = $(".fav_checkbox").length;
+    $(".per-sp-box02-h span").text(num);
+});
+//批量删除-单选
+function favchoose(that) {
+    $(that).toggleClass("act");
+    if($(that).hasClass("act")){
+        $(that).attr("checked","checked");
+    } else{
+        $(that).removeAttr("checked");
+    };
+    var num = $(".per-btn-cbox>input[type='checkbox']:checked").length;
+    $(".per-sp-box02-h span").text(num);
+}
 //收藏条件切换
 $(".per-slt-list-favorite>input").click(function() {
     var perSlt=$(this).val();
@@ -1662,7 +1679,7 @@ $(".per-slt-list-favorite>input").click(function() {
     $.get('/video/search-favorite',favarr,function(res){
         arrall['favorite-page'] = 1;
         if(res.errno==0){
-            var html = findfavoritelist(res.data);
+            var html = findfavoritelist(res.data,false);
             $(".per-tab-box05.act").html(html);
         }else{
             $(".per-tab-box05.act").html('<h4 class="per-zw" name="zt">暂无内容</h4>');
@@ -1676,7 +1693,7 @@ $("#fav_searchbtn").click(function (){
     $.get('/video/search-favorite',favarr,function(res){
         arrall['favorite-page'] = 1;
         if(res.errno==0){
-            var html = findfavoritelist(res.data);
+            var html = findfavoritelist(res.data,false);
             $(".per-tab-box05.act").html(html);
         }else{
             $(".per-tab-box05.act").html('<h4 class="per-zw" name="zt">暂无内容</h4>');
@@ -1684,7 +1701,13 @@ $("#fav_searchbtn").click(function (){
         ztBlack();
     });
 });
-function findfavoritelist(list){
+function findfavoritelist(list,flag){
+    var show_deleteall = 'display:none';
+    var show_deleteone = 'display:block';
+    if(flag){
+        show_deleteall = 'display:block';
+        show_deleteone = 'display:none';
+    }
     var html = "";
     for(var i=0;i<list.length;i++){
         var cat = list[i]['category'].split(' ');
@@ -1722,11 +1745,11 @@ function findfavoritelist(list){
                     '<li><span>'+list[i]['total_views']+'</span></li>'+
                 '</ul>'+
             '</div>'+
-            '<div class="per-btn-tow" name="zt">'+
+            '<div class="per-btn-tow" name="zt" style="'+show_deleteone+'">'+
                 '<input type="button" name="" onclick="removefavorite('+list[i]['video_id']+')" value="删除" />'+
             '</div>'+
-            '<div class="per-btn-cbox">'+
-                '<input type="checkbox" name="per-qx" class="fav_checkbox"  value="" />'+
+            '<div class="per-btn-cbox" style="'+show_deleteall+'">'+
+                '<input type="checkbox" name="per-qx" class="fav_checkbox" value="" onclick="favchoose(this);"/>'+
             '</div>'+
         '</div>';
     }
@@ -1757,12 +1780,7 @@ function removefavorite(videoid){
                 for(var i=0;i<videoar.length;i++){
                     $(".id_fav"+videoar[i]).remove();
                 }
-                //取消全选样式
-                $("#btnQX>input").parents(".per-sp-box02").removeClass("act").siblings(".per-sp-box").removeClass("act");
-                $("#btnQX>input").parents(".per-sp-box02").siblings(".per-tab-w05").find(".per-tab-box05.act .per-btn-tow").toggle();
-                $("#btnQX>input").parents(".per-sp-box02").siblings(".per-tab-w05").find(".per-tab-box05.act .per-btn-cbox").toggle();
-                //取消选择
-                $("#btnQX>input").parents(".per-sp-box02").siblings(".per-tab-w05").find(".per-tab-box05.act .per-btn-cbox>input").removeClass("act").removeAttr("checked");
+                unselectAll();
             }else{
                 $(".id_fav"+videoid).remove();
             }
@@ -1770,6 +1788,19 @@ function removefavorite(videoid){
             $("#alt05").show();
         }
     });
+}
+$("#btnQX>input").click(function() {
+    unselectAll();
+});
+
+function unselectAll(){
+    //取消全选样式
+    $("#btnQX>input").parents(".per-sp-box02").removeClass("act").siblings(".per-sp-box").removeClass("act");
+    $("#btnQX>input").parents(".per-sp-box02").siblings(".per-tab-w05").find(".per-tab-box05.act .per-btn-tow").toggle();
+    $("#btnQX>input").parents(".per-sp-box02").siblings(".per-tab-w05").find(".per-tab-box05.act .per-btn-cbox").toggle();
+    //取消选择
+    $("#btnQX>input").parents(".per-sp-box02").siblings(".per-tab-w05").find(".per-tab-box05.act .per-btn-cbox>input").removeClass("act").removeAttr("checked");
+    $(".per-sp-box02-h span").text(0);
 }
 /*-----------播放记录------------*/
 //删除播放记录
@@ -2082,7 +2113,8 @@ $(window).scroll(function () {
                             // $(".per-tab-w03>div").eq(relaAr['tabNum']).append(html);
                             $(".per-tab-box03.act").append(html);
                         }else if(tab=="favorite"){
-                            html = findfavoritelist(res.data);
+                            var favoflag = $(".per-sp-box02").hasClass("act")? true : false;
+                            html = findfavoritelist(res.data,favoflag);
                             $(".per-tab-box05.act").append(html);
                         }else if(tab=="watchlog"){
                             html = findwatchloglist(res.data);

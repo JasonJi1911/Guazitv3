@@ -14,7 +14,8 @@ class VideoFeedback extends \common\models\video\VideoFeedback
             'description',
             'video_id',
             'chapter_id',
-            'source_id'
+            'source_id',
+            'uid'
         ];
     }
 

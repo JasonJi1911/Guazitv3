@@ -38,7 +38,7 @@ $logo = LOGONAME;
         <ul class="hlptab-a" name="zt">
             <li class="act">访问须知</li>
             <li>无法打开网站</li>
-            <li>注册和登录相关问提</li>
+            <li>注册和登录相关问题</li>
             <li>影片播放相关问题</li>
             <li>充值相关问题</li>
             <li>视频下载相关问题</li>
@@ -145,7 +145,7 @@ $logo = LOGONAME;
                         播完广告之后提示“加载失败”，或者没有提示，影片没有开始播放
                     </div>
                     <div class="hlp-text02">
-                        1.如果某个视频黑屏无法播放，说明该视频上传用户进行上传视频时发生某种错误，请立即联系客户进行处理。<br /><br /> 2 您电脑上的某些安全软件的设置造成了屏蔽各种游戏、视频网站的端口等防护措施，如McAfee、诺顿、瑞星等。请先检查这些防火墙的设置以及进行相关操作。<br /><br /> 3.您的网络上可能设置了防火墙，请联系您的网络运营商，或咨询专业的电脑维修人士解决。
+                        1.如果某个视频黑屏无法播放，说明该视频上传用户进行上传视频时发生某种错误，请立即联系客服进行处理。<br /><br /> 2 您电脑上的某些安全软件的设置造成了屏蔽各种游戏、视频网站的端口等防护措施，如McAfee、诺顿、瑞星等。请先检查这些防火墙的设置以及进行相关操作。<br /><br /> 3.您的网络上可能设置了防火墙，请联系您的网络运营商，或咨询专业的电脑维修人士解决。
                         <br /><br /> 4. 您可能处于校园网或某企业内网，此类网络大多会屏蔽各种游戏、视频网站的端口。<br /><br /> 5.某些网吧的管理系统会屏蔽本站播放器端口，请联系网吧管理员。
                     </div>
                 </div>
@@ -186,7 +186,7 @@ $logo = LOGONAME;
                         我安装了广告过滤插件，视频无法播放了
                     </div>
                     <div class="hlp-text02">
-                        部分恶意广告屏蔽插件，会破坏整个页面元素。本站广告已经过初步筛选，并根据算法针对个人情况进行推荐，如广告不会打扰到您，，请关闭广告屏蔽插件！<br /> 由于广告合作伙伴的支持，本网站才可以为您提供免费的视频服务。
+                        部分恶意广告屏蔽插件，会破坏整个页面元素。本站广告已经过初步筛选，并根据算法针对个人情况进行推荐，如广告不会打扰到您，请关闭广告屏蔽插件！<br /> 由于广告合作伙伴的支持，本网站才可以为您提供免费的视频服务。
                         <br /> 如果您使用了浏览器的广告过滤功能或工具，请在您的浏览器设置中停用该功能或取消对相关网址的屏蔽。<br />如果您使用的是遨游浏览器，请点击右下角的“广告猎手”，然后选择“编辑过滤规则”：<br /><br />
 
                         <img src="/images/newindex/ad_01.gif" /><br /><br /> 然后在弹出来的对话框中清除所有规则，使其保持为空：
@@ -243,13 +243,15 @@ $logo = LOGONAME;
                         <br /><br />
                         <img src="/images/newindex/g-2.png" /><br /><br /> VIP可享受优先求片特权！不必再为没有影视资源而烦恼。
                         <br /><br />
-                        <img src="/images/newindex/g-3.png" /><br /><br /> VIP可使用倍速播放，快慢随心，提高观影效率，适应快节奏生活。
+                        <img src="/images/newindex/g-seek.png" /><br /><br /> VIP可使用倍速播放，快慢随心，提高观影效率，适应快节奏生活。
                         <br /><br />
-                        <img src="/images/newindex/g-4.png" /><br /><br /> VIP可通过手机App，电脑客户端下载线上剧集，无需网络也能畅享高清影视。边下边看，专享极速下载。
+                        <img src="/images/newindex/g-beisu.png" /><br /><br /> VIP可通过手机App，电脑客户端下载线上剧集，无需网络也能畅享高清影视。边下边看，专享极速下载。
                         <br /><br />
-                        <img src="/images/newindex/g-5.png" /><br /><br /> VIP可使用历史播放进程，随时随地延续观影。
-                        <br /><br />
-                        <img src="/images/newindex/g-6.png" /><br /><br /> VIP可自定义弹幕颜色与位置。样式多到挑不过来，让您的弹幕脱颖而出！
+                        <img src="/images/newindex/g-xuanji.png" /><br /><br />
+<!--                        VIP可使用历史播放进程，随时随地延续观影。-->
+<!--                        <br /><br />-->
+<!--                        <img src="/images/newindex/g-6.png" /><br /><br /> -->
+                        VIP可自定义弹幕颜色与位置。样式多到挑不过来，让您的弹幕脱颖而出！
                         <br /><br />
                         <img src="/images/newindex/g-7.png" /><br /><br />
 
@@ -469,13 +471,13 @@ $logo = LOGONAME;
                     </div>
                 </div>
             </div>
-            <a class="hlp-kf-R" href="javascript:;">
+            <a class="hlp-kf-R" href="https://t.me/joinchat/9Wel0AHM2nkxY2Q1" target="_blank" >
                 立即联系
             </a>
         </div>
         <div class="hlp-bd" name="zt">
             <div class="hlp-t03" name="zt">
-                在线反馈<span class="clrOrangered">(您需要先登录才能提交反馈)</span>
+                在线反馈<span class="clrOrangered" id="v_feedback_login">(您需要先登录才能提交反馈)</span>
             </div>
             <ul class="hlp-bd-box" name="zt">
                 <li>
@@ -525,7 +527,7 @@ $logo = LOGONAME;
                             <?php endif;?>
                         </select>
                     </div>
-                    <div class="seekbox-tta">
+                    <div class="seekbox-tta" style="overflow:visible;">
                         <textarea id="v_description" placeholder="请详细描述问题现象以及出现了哪些错误提示等等，至少10个字。" name="zt"></textarea>
                     </div>
                     <p>
@@ -544,7 +546,7 @@ $logo = LOGONAME;
                 <li>
                     <div class="seekbox02-text" name="zt"> 账号 </div>
                     <div class="seekbox-ipt seek-bottom">
-                        <input class="c_blur" type="text" name="zt" id="pwd_account" placeholder="邮箱/手机号" value="">
+                        <input class="c_blur" type="text" name="zt" id="pwd_account" placeholder="邮箱/手机号" value="" />
                     </div>
                     <div class="ADbz ADbzhidden">
                         *&nbsp;请输入账号
@@ -577,7 +579,7 @@ $logo = LOGONAME;
                 <li>
                     <div class="seekbox02-text" name="zt"> 新密码 </div>
                     <div class="seekbox-ipt seek-bottom">
-                        <input type="password" class="inp pas c_blur" maxlength="40" name="zt" id="pwd_newpwd" placeholder="请输入新密码" value="">
+                        <input type="password" class="inp pas c_blur" maxlength="40" name="zt" id="pwd_newpwd" placeholder="请输入新密码" value="" onKeyUp="value=value.replace(/[^(\w-*\.*)]/g,'')" />
                         <input class="eye" type="button" id="" value="" />
                     </div>
                     <div class="ADbz ADbzhidden">
@@ -882,10 +884,10 @@ $logo = LOGONAME;
                 客户服务
             </div>
             <div class="hlp-mm-img">
-                <a href="javascript:;"><img src="/images/newindex/hlp-feiji.png" /></a>
+                <a href="https://t.me/joinchat/9Wel0AHM2nkxY2Q1" target="_blank"><img src="/images/newindex/hlp-feiji.png" /></a>
             </div>
             <div>
-                <a class="hlp-Alj" href="javascript:;">电报客服,点击跳转</a>
+                <a class="hlp-Alj"  href="https://t.me/joinchat/9Wel0AHM2nkxY2Q1" target="_blank">电报客服,点击跳转</a>
             </div>
         </div>
     </div>
@@ -1036,6 +1038,10 @@ $logo = LOGONAME;
 $(function(){
     //首次加载
     $(document).ready(function() {
+        var uid = finduser();
+        if(!isNaN(uid) && uid!=""){
+            $("#v_feedback_login").empty();
+        }
         var helptab = $('#helptab').val();
         if(helptab=='feedback'){
             $('.c_feedback').addClass('act');
@@ -1056,34 +1062,42 @@ $(function(){
     });
     //在线反馈提交
     $("#v_submit").click(function(){
+        var uid = finduser();
         var arrIndex = {};
-        var tab = true;
         var str = '提交成功';
-        if(tab){
-            arrIndex['country'] = $("#v_country").val();
-            arrIndex['internets'] = $("#v_internet").val();
-            arrIndex['systems'] = $("#v_system").val();
-            arrIndex['browsers'] = $("#v_browser").val();
-            arrIndex['description'] = $("#v_description").val();
-            //发送请求，获取数据
-            $.get('/video/save-feedbackinfo', arrIndex, function(s) {
-                // console.log(s);
-                if(s>0){
-                    //插入成功，所有值置空
-                    // $("#v_country").val('');
-                    $("#v_country").find("option").eq(0).prop("selected",true);
-                    $("#v_internet").find("option").eq(0).prop("selected",true);
-                    $("#v_system").find("option").eq(0).prop("selected",true);
-                    $("#v_browser").find("option").eq(0).prop("selected",true);
-                    $("#v_description").val('');
-                    str = '提交成功';
-                }else{
-                    str = '提交失败';
-                }
-            });
+        if(isNaN(uid) || uid==""){
+            showloggedin();//弹登录框
+            return false;
         }
-        $(".alt-title").text(str);
-        $("#alt05").show();
+        var description = $("#v_description").val();
+        if(description.length < 10){
+            $(".alt-title").text("请详细描述问题，至少10个字");
+            $("#alt05").show();
+            return false;
+        }
+        arrIndex['country'] = $("#v_country").val();
+        arrIndex['internets'] = $("#v_internet").val();
+        arrIndex['systems'] = $("#v_system").val();
+        arrIndex['browsers'] = $("#v_browser").val();
+        arrIndex['description'] = $("#v_description").val();
+        //发送请求，获取数据
+        $.get('/video/save-feedbackinfo', arrIndex, function(s) {
+            // console.log(s);
+            if(s>0){
+                //插入成功，所有值置空
+                // $("#v_country").val('');
+                $("#v_country").find("option").eq(0).prop("selected",true);
+                $("#v_internet").find("option").eq(0).prop("selected",true);
+                $("#v_system").find("option").eq(0).prop("selected",true);
+                $("#v_browser").find("option").eq(0).prop("selected",true);
+                $("#v_description").val('');
+                str = '提交成功';
+            }else{
+                str = '提交失败';
+            }
+            $(".alt-title").text(str);
+            $("#alt05").show();
+        });
     });
     //修改密码提交
     $("#pwd_update").click(function(){
@@ -1125,8 +1139,7 @@ $(function(){
             arrIndex['newpwd'] = newpwd;
             //发送请求，获取数据
             $.get('/video/modify-password', arrIndex, function(res) {
-                console.log(res);
-                if(res.errno==0 && res.data>0){
+                if(res.errno==0){
                     //插入成功，所有值置空
                     $("#pwd_account").val('');
                     $("#pwd_question").find("option").eq(0).prop("selected",true);
@@ -1135,7 +1148,11 @@ $(function(){
                     $(".alt-title").text('修改成功');
                     $("#alt05").show();
                 }else{
-                    $(".alt-title").text('修改失败');
+                    if(res.data.reason!=""){
+                        $(".alt-title").text(res.data.reason);
+                    }else{
+                        $(".alt-title").text('修改失败');
+                    }
                     $("#alt05").show();
                 }
             });

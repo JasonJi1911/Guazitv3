@@ -15,6 +15,7 @@ use api\models\user\UserRelations;
 use api\models\user\UserVip;
 use api\models\video\Comment;
 use api\models\video\Video;
+use api\models\video\VideoChapter;
 use api\models\video\VideoFavorite;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
@@ -232,6 +233,49 @@ class UserDao extends BaseDao
     }
 
     /*
+     * 验证用户并返回原因
+     */
+    public function finduserInfoToReason($param){
+        $data = [];
+        $userlist = User::find();
+        if($param['email']){
+            $userlist = $userlist->andWhere(['email' => $param['email']]);
+        }else if($param['mobile']){
+            $userlist = $userlist->andWhere(['mobile' => $param['mobile']]);
+        }
+        $u = $userlist->one();
+        if($u){
+//            if($param['security_question']){ }
+            $userlist->andWhere(['security_question' => $param['security_question'] ]);//
+            $u = $userlist->one();
+            if($u){
+//                if($param['security_answer']){ }
+                $userlist->andWhere(['security_answer' => $param['security_answer'] ]);
+                $u = $userlist->one();
+                if($u){
+                    $data['reason'] = '';
+                    $data['errno'] = 0;
+                    $data['user'] = $u->toArray();
+                }else{
+                    $data['reason'] = '您的密保答案填写不正确';
+                    $data['errno'] = -1;
+                    $data['user'] = [];
+                }
+            }else{
+                $data['reason'] = '您的密保问题选择不正确';
+                $data['errno'] = -1;
+                $data['user'] = [];
+            }
+        }else{
+            $data['reason'] = '您的账号输入错误';
+            $data['errno'] = -1;
+            $data['user'] = [];
+        }
+
+        return $data;
+    }
+
+    /*
      * 根据uid查用户信息
      */
     public function finduserByuid($uid){
@@ -343,7 +387,6 @@ class UserDao extends BaseDao
      * $type-1-关注；2-黑名单
      */
     public function findRelationsByCondition($uid,$type,$order,$searchword,$page_num=1){
-//        $pageSize = 10;
         $users = UserRelations::find()
             ->andWhere(['uid' => $uid])
             ->andWhere(['type' => $type])
@@ -378,7 +421,6 @@ class UserDao extends BaseDao
      * 粉丝名
      */
     public function findFansByCondition($uid,$order,$searchword,$page_num=1){
-//        $pageSize = 10;
         $users = UserRelations::find()
             ->andWhere(['other_uid' => $uid])
             ->andWhere(['type' => 1])
@@ -421,7 +463,6 @@ class UserDao extends BaseDao
 
     /*
      * 评论列表
-     * @return array
      */
     public function commentListPC($uid,$page_num=1){
         $user = User::find()->andWhere(['uid' => $uid])->asArray()->one();
@@ -429,7 +470,7 @@ class UserDao extends BaseDao
         $dataProvider = new ActiveDataProvider([
             'query' => Comment::find()->andWhere(['uid' => $uid])
         ]);
-        $data = $dataProvider->setPagination(['page_num' => $page_num])->toArray(['comment_id', 'uid', 'content', 'video_id', 'created_at', 'likes_num']);
+        $data = $dataProvider->setPagination(['page_num' => $page_num])->toArray(['comment_id','uid', 'content', 'video_id', 'created_at', 'likes_num']);
         if ($data['list']) {
             $videoId = array_column($data['list'], 'video_id');
             $videoDao = new VideoDao();
@@ -576,6 +617,10 @@ class UserDao extends BaseDao
         $comment->oldAttributes = $c;
         $param['deleted_at'] = time();
         $row = $comment->updateAttributes($param);
+        if($row > 0){
+            VideoChapter::updateAllCounters(['total_comment' => -1],
+                ['id' => $c['chapter_id']]);
+        }
         return $row;
     }
 

@@ -1261,6 +1261,7 @@ body {
 	height: 36px;
 	line-height: 36px;
 	overflow: hidden;
+	text-align: center;
 }
 
 .sort-menu>li>a:hover {

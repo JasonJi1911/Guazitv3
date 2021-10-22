@@ -223,6 +223,10 @@ class CommentLogic
      */
     public function postCommentPC($uid, $content, $videoId, $chapterId, $commentPid)
     {
+        if($uid<=0){
+            return [];
+        }
+
         //判断同一用户10S内评论一次
         $maxtime = Comment::find()->select('updated_at')
                     ->andWhere(['uid'=>$uid])->andWhere(['video_id'=>$videoId])->andWhere(['chapter_id'=>$chapterId])
@@ -446,13 +450,13 @@ class CommentLogic
         $replylist = $dataProvider->setPagination(['page_num' => $pageNum])->toArray();
         if(isset($replylist['list'])){
             foreach ($replylist['list'] as &$c){
+                $c['created_time'] = date("Y-m-d",$c['created_at']);
                 $u = User::find()->andWhere(['uid' => $c['uid']])->asArray()->one();
                 if($u){
                     $c['nickname'] = $u['nickname'];
                     $c['avatar'] = $u['avatar'];
                     $c['gender'] = $u['gender'];
                 }
-                $c['created_time'] = date("Y-m-d",$c['created_at']);
             }
         }
         return $replylist['list'];

@@ -828,6 +828,8 @@ class VideoLogic
         //获取总评论数
         $commentcount = VideoChapter::find()->select("total_comment")->andWhere(['id'=>$chapterId])->asArray()->one();
 
+        $videos = array_values($videos);//视频有效剧集序号重新排序
+
         $data = [
             'info' => array_merge($videoInfo,
                 [
@@ -843,6 +845,7 @@ class VideoLogic
                     'play_limit'      => $chapterInfo['play_limit'],
                     'last_play_time'  => intval($lastPlayLInfo['lastPlayTime']),
                     'next_chapter'    => ArrayHelper::index($videos, 'chapter_id')[$chapterInfo['chapter_id']]['next_chapter'],
+                    'last_chapter'    => ArrayHelper::index($videos, 'chapter_id')[$chapterInfo['chapter_id']]['last_chapter'],
 //                    'next_chapter'    => ArrayHelper::index($souceVideos, 'chapter_id')[$chapterInfo['chapter_id']]['next_chapter'],
 //                    'last_chapter'    => ArrayHelper::index($souceVideos, 'chapter_id')[$chapterInfo['chapter_id']]['last_chapter'],
                     'video_task_time' => $taskStatus ? 0 : 60, //TODO

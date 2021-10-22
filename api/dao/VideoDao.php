@@ -836,6 +836,8 @@ class VideoDao extends BaseDao
 
         $data['areas'] = $areas->toArray();
         $data['channels'] = $channels->toArray();
+        // 年代
+        $data['years'] = $this->_getYearsInfo();
         return $data;
     }
 
@@ -904,7 +906,7 @@ class VideoDao extends BaseDao
     /*
      * 保存反馈信息
      */
-    public function saveFeedbackinfo($country,$internets,$systems,$browsers,$description,$video_id,$chapter_id,$source_id){
+    public function saveFeedbackinfo($country,$internets,$systems,$browsers,$description,$video_id,$chapter_id,$source_id,$uid){
         $feedback = new VideoFeedback();
         $feedback->country = $country;
         $feedback->internets = $internets;
@@ -914,6 +916,7 @@ class VideoDao extends BaseDao
         $feedback->video_id = $video_id;
         $feedback->chapter_id = $chapter_id;
         $feedback->source_id = $source_id;
+        $feedback->uid = $uid;
         $result = $feedback->insert();
         return $result;
     }
@@ -1152,10 +1155,14 @@ class VideoDao extends BaseDao
      * 查询收藏
      */
     public function findVideoFavorite($uid){
+        $videofavorite = VideoFavorite::find()->where(['uid' => $uid, 'status' => VideoFavorite::STATUS_YES])->asArray()->all();
+        $videoIds = array_column($videofavorite, 'video_id');
+        $video = Video::find()->select('id')->andWhere(['in', 'id', $videoIds])
+            ->orderBy("created_at desc ,id desc");//->asArray()->all();
         $dataProvider = new ActiveDataProvider([
-            'query' => VideoFavorite::find()->where(['uid' => $uid, 'status' => VideoFavorite::STATUS_YES])
+            'query' => $video
         ]);
-        $data = $dataProvider->setPagination()->toArray(['video_id']);
+        $data = $dataProvider->setPagination()->toArray();
         if ($data['list']) {
             $videoId = array_column($data['list'], 'video_id');
             $videoInfo = $this->batchGetVideo($videoId, ['video_id', 'video_name', 'cover', 'horizontal_cover',
@@ -1186,11 +1193,8 @@ class VideoDao extends BaseDao
      * 一定条件查询收藏
      */
     public function findVideoFavoriteBycondition($uid,$searchword,$order,$channel,$is_finished,$page_num=1){
-        $dataProvider = new ActiveDataProvider([
-            'query' => VideoFavorite::find()->where(['uid' => $uid, 'status' => VideoFavorite::STATUS_YES])
-        ]);
-        $data = $dataProvider->setPagination(['page_num' => $page_num])->toArray(['video_id']);
-        $videoIds = array_column($data['list'], 'video_id');
+        $videofavorite = VideoFavorite::find()->where(['uid' => $uid, 'status' => VideoFavorite::STATUS_YES])->asArray()->all();
+        $videoIds = array_column($videofavorite, 'video_id');
         $video = Video::find()->select('id')->andWhere(['in', 'id', $videoIds]);
         $video = $video->andWhere(['like', 'title' , $searchword]);
         if($channel != 0){
@@ -1199,33 +1203,38 @@ class VideoDao extends BaseDao
         if($is_finished != 0){
             $video = $video->andWhere(['is_finished' => $is_finished]);
         }
-        $sort = $order == 'time' ? 'created_at' : ($order == 'view'?'total_views':'total_favors');
-        $video = $video->orderBy("$sort desc")->asArray()->all();
-        if ($video) {
-            $videoId = array_column($video, 'id');
+        $sort = $order == 'favorite' ? 'total_favors' : ($order == 'view'?'total_views':'created_at');
+        $video = $video->orderBy("$sort desc ,id desc");//->asArray()->all();
+        $dataProvider = new ActiveDataProvider([
+            'query' => $video
+        ]);
+        $data = $dataProvider->setPagination(['page_num' => $page_num])->toArray();
+        if ($data['list']) {
+            $vlist = $data['list'];
+            $videoId = array_column($vlist, 'video_id');
             $videoInfo = $this->batchGetVideo($videoId, ['video_id', 'video_name', 'cover', 'horizontal_cover',
                 'flag', 'tag','category','is_finished','created_at','total_views'], true);
-            foreach ($video as $k => $info) {
+            foreach ($vlist as $k => $info) {
                 //总评论数
-                $commentcount = VideoChapter::find()->andWhere(['video_id'=>$info['id']])
+                $commentcount = VideoChapter::find()->andWhere(['video_id'=>$info['video_id']])
                     ->sum('total_comment');
                 $info['commentcount'] = $commentcount;
 
-                $info['video_id']         = $info['id'];
-                $info['video_name']       = $videoInfo[$info['id']]['video_name'];
-                $info['cover']            = $videoInfo[$info['id']]['cover'];
-                $info['horizontal_cover'] = $videoInfo[$info['id']]['horizontal_cover'];
-                $info['flag']             = $videoInfo[$info['id']]['flag'];
-                $info['tag']              = $videoInfo[$info['id']]['tag'];
-                $info['category']         = $videoInfo[$info['id']]['category'];
-                $info['is_finished']      = $videoInfo[$info['id']]['is_finished'];
-                $info['created_at']       = $videoInfo[$info['id']]['created_at'];
-                $info['total_views']      = $videoInfo[$info['id']]['total_views'];
-                $info['created_data']     = date("Y年m月d日",$videoInfo[$info['id']]['created_at']);
-                $video[$k] = $info;
+                // $info['video_id']         = $info['video_id'];
+                $info['video_name']       = $videoInfo[$info['video_id']]['video_name'];
+                $info['cover']            = $videoInfo[$info['video_id']]['cover'];
+                $info['horizontal_cover'] = $videoInfo[$info['video_id']]['horizontal_cover'];
+                $info['flag']             = $videoInfo[$info['video_id']]['flag'];
+                $info['tag']              = $videoInfo[$info['video_id']]['tag'];
+                $info['category']         = $videoInfo[$info['video_id']]['category'];
+                $info['is_finished']      = $videoInfo[$info['video_id']]['is_finished'];
+                $info['created_at']       = $videoInfo[$info['video_id']]['created_at'];
+                $info['total_views']      = $videoInfo[$info['video_id']]['total_views'];
+                $info['created_data']     = date("Y年m月d日",$videoInfo[$info['video_id']]['created_at']);
+                $vlist[$k] = $info;
             }
         }
-        return $video;
+        return $vlist;
     }
 
     /*

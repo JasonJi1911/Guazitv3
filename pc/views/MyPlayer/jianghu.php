@@ -229,13 +229,12 @@ function initialUrl($url)
         width: 48px;
     }
     /*选集样式*/
-
     .palyer-js {
         position: relative;
         top: 3px;
         display: inline-block;
-        margin: 0 20px;
-        width: 50px;
+        margin: 0 5px;/*20px*/
+        width: auto;/*50px*/
         height: 100%;
         font-size: 18px;
         text-align: center;
@@ -245,6 +244,10 @@ function initialUrl($url)
 
     .palyer-js:hover {
         color: rgba(255, 255, 255, 1);
+    }
+
+    .player-next-chapter:hover {/*无效上一集样式*/
+        color: rgba(255, 255, 255, 0.8);
     }
 
     .palyer-js-alt {
@@ -539,9 +542,32 @@ function initialUrl($url)
     .Dplayer_box, .player_av, .box{
         height: 100%;
     }
+    #load1-img {
+        position:absolute;
+        width: 1430px;
+        height: 775px;
+        box-sizing: border-box;
+        border: solid 1px #FFFFFF;
+        border: none;
+        z-index:6;
+    }
+
+    @media screen and (max-width:1910px) {
+        #load1-img {
+            width: 1055px;
+            height: 640px;
+        }
+    }
+
+    @media screen and (max-width:1525px) {
+        #load1-img {
+            width: 900px;
+            height: 500px;
+        }
+    }
     #player-load1-warn{
         color:#fff;
-        z-index:10;
+        z-index:5;
         position:absolute;
         top:20px;
         width:100%;
@@ -551,9 +577,8 @@ function initialUrl($url)
         color:#FF5722
     }
 </style>
-
+<img id="load1-img" src="/images/newindex/player_load.gif" />
 <div class="Dplayer_box">
-    <img id="load1-img" src="/images/newindex/player_load.gif" style="width:100%;height:100%;" />
     <div class="player_av">
         <div class="box" id="player1">
         </div>
@@ -568,7 +593,17 @@ function initialUrl($url)
 <script type="text/javascript">
     // console.log(<?= json_encode($videos)?>);
     var selected_id = <?=$play_chapter_id?>;
-    var txt1 = "<div class='palyer-js'>选集</div>";
+    var player_last_chapter = '';//无上一集样式
+    var last_chapter = parseInt('<?=$last_chapter?>');
+    if(last_chapter == 0){
+        player_last_chapter = 'player-next-chapter';
+    }
+    var player_next_chapter = '';//无下一集样式
+    var next_chapter = parseInt('<?=$next_chapter?>');
+    if(next_chapter == 0){
+        player_next_chapter = 'player-next-chapter';
+    }
+    var txt1 = "<div class='palyer-js' data-index='choose' style='margin:0 5px 0 15px;'>选集</div><div class='palyer-js "+player_last_chapter+"' data-index='last'>上一集</div><div class='palyer-js "+player_next_chapter+"' data-index='next'>下一集</div>";
     var txt2 = "<div class='palyer-js-alt' style='z-index:100;'></div>";
     var txt3 = "<?php
         if(count($videos) > 200){
@@ -732,6 +767,10 @@ function initialUrl($url)
                 $("#player-load1-warn").hide();
             }
         });
+
+        dp1.on('quality_end',function(){
+            dp1.play();
+        });
     }
     //验证视频播放权限
     function sourceLimit(index,limit){
@@ -772,9 +811,22 @@ function initialUrl($url)
 
     //  集数alert 显示隐藏
     $("#player1").on('click', '.palyer-js', function() {
-        $("#player1 .palyer-js-alt").toggleClass("act");
-        $("#player1 .palyer-js-alt-right").toggleClass("act");
-        event.stopPropagation();
+        var index = $(this).attr('data-index');
+        if(index=='choose'){
+            $("#player1 .palyer-js-alt").toggleClass("act");
+            $("#player1 .palyer-js-alt-right").toggleClass("act");
+            event.stopPropagation();
+        }else if(index=='last'){
+            if(last_chapter>0){
+                var videoid = '<?=$videos[0]['video_id']?>'
+                window.location.href = "/video/detail?video_id="+videoid+"&chapter_id="+last_chapter;
+            }
+        }else if(index=='next'){
+            if(next_chapter>0){
+                var videoid = '<?=$videos[0]['video_id']?>'
+                window.location.href = "/video/detail?video_id="+videoid+"&chapter_id="+next_chapter;
+            }
+        }
     });
     $("#player1").on('click', '.palyer-js-alt-right', function() {
         $("#player1 .palyer-js-alt").toggleClass("act");
@@ -882,6 +934,8 @@ function initialUrl($url)
     var bb1 = dp.options.bbslist[0];
     var l = bb1.link;
     console.log("image: "+bb1.pic);
+
+    $('#load1-img').remove();
     dp.switchVideo(
         {
             url: '',
@@ -941,6 +995,8 @@ function initialUrl($url)
     console.log(adslists)
     var bb1 = adslists[0];
     var l = bb1.link;
+
+    $('#load1-img').remove();
     dp.switchVideo(
         {
             url: bb1.video,

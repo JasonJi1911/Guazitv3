@@ -8,48 +8,57 @@ NewIndexStyleAsset::register($this);
 $js = <<<JS
 $(function(){
     var arrIndex = {};
+    var seekflag = true;
     $("#v_submit").click(function(){
-        var tab = true;
-        var str = '提交成功';
-        if($("#v_videoname").val().trim() == ''){
-            tab = false;
-            str = '请填写影片名';
-        }else if(isNaN($("#v_year").val())){
-            tab = false;
-            str = '请正确输入年代';
-        }else if($("#v_director").val().length>32){
-            tab = false;
-            str = '导演名称长度超出范围';
-        }else if($("#v_actors").val().length>50){
-            tab = false;
-            str = '演员名称长度超出范围';
-        }
-        if(tab){
-            arrIndex['video_name'] = $("#v_videoname").val();         
-            arrIndex['channel_id'] = $("#v_channelid").val();    
-            arrIndex['area_id'] = $("#v_areaid").val();    
-            arrIndex['year'] = $("#v_year").val();    
-            arrIndex['director_name'] = $("#v_director").val();    
-            arrIndex['actor_name'] = $("#v_actors").val();   
-            //发送请求，获取数据     
-            $.get('/video/save-seek', arrIndex, function(s) {
-                // console.log(arrIndex);
-                if(s>0){
-                    //插入成功，所有值置空
-                    $("#v_videoname").val(''); 
-                    $("#v_channelid").find("option").eq(0).prop("selected",true);
-                    $("#v_areaid").find("option").eq(0).prop("selected",true);  
-                    $("#v_year").val('');  
-                    $("#v_director").val(''); 
-                    $("#v_actors").val('');  
-                    str = "提交成功";
-                }else{
-                    str = "提交失败";
-                }                
-            });
-        }
-        $(".alt-title").text(str);        
-        $("#alt05").show();        
+        if(seekflag){
+            seekflag = false;
+            var tab = true;
+            var str = '提交成功';
+            if($("#v_videoname").val().trim() == ''){
+                tab = false;
+                str = '请填写影片名';
+                seekflag = true;
+            }else if($("#v_year").val().trim() == ''){
+                tab = false;
+                str = '请正确输入年代';
+                seekflag = true;
+            }else if($("#v_director").val().length>32){
+                tab = false;
+                str = '导演名称长度超出范围';
+                seekflag = true;
+            }else if($("#v_actors").val().length>50){
+                tab = false;
+                str = '演员名称长度超出范围';
+                seekflag = true;
+            }
+            if(tab){
+                arrIndex['video_name'] = $("#v_videoname").val();         
+                arrIndex['channel_id'] = $("#v_channelid").val();    
+                arrIndex['area_id'] = $("#v_areaid").val();    
+                arrIndex['year'] = $("#v_year").val();    
+                arrIndex['director_name'] = $("#v_director").val();    
+                arrIndex['actor_name'] = $("#v_actors").val();   
+                //发送请求，获取数据     
+                $.get('/video/save-seek', arrIndex, function(s) {
+                    // console.log(arrIndex);
+                    if(s>0){
+                        //插入成功，所有值置空
+                        $("#v_videoname").val(''); 
+                        $("#v_channelid").find("option").eq(0).prop("selected",true);
+                        $("#v_areaid").find("option").eq(0).prop("selected",true);  
+                        $("#v_year").find("option").eq(0).prop("selected",true);  
+                        $("#v_director").val(''); 
+                        $("#v_actors").val('');  
+                        str = "提交成功";
+                    }else{
+                        str = "提交失败";
+                    }                
+                    seekflag = true;
+                });
+            }
+            $(".alt-title").text(str);        
+            $("#alt05").show(); 
+        }               
     });
 });
 JS;
@@ -75,7 +84,7 @@ $this->registerJs($js);
     <!--求片填选内容-->
     <div class="seekbox02" name="zt">
         <div class="seekbox02-text clrOrangered">
-            填写影片名称(只提供旧片)
+            填写影片名称(只提供旧片)*
         </div>
         <div class="seekbox-ipt">
             <input type="text" name="zt" id="v_videoname" placeholder="输入片名" value="" />
@@ -106,9 +115,15 @@ $this->registerJs($js);
                 年份
             </li>
             <li>
-                <div class="seekbox-ipt">
-                    <input type="text" name="zt" id="v_year" placeholder="输入片名年份" value="" />
-                </div>
+<!--                <div class="seekbox-ipt">-->
+<!--                    <input type="text" name="zt" id="v_year" placeholder="输入片名年份" value="" />-->
+<!--                </div>-->
+
+                <select class="seek-slk" name="zt" id="v_year">
+                    <?php foreach ($data['years'] as $year) :?>
+                        <option value="<?=$year['year']?>"><?=$year['year']?></option>
+                    <?php endforeach;?>
+                </select>
             </li>
         </ul>
 
@@ -116,14 +131,14 @@ $this->registerJs($js);
             导演
         </div>
         <div class="seekbox-ipt seek-bottom">
-            <input type="text" name="zt" id="v_director" placeholder="输入导演" value="" />
+            <input type="text" name="zt" id="v_director" placeholder="输入导演,人名之间用逗号隔开" value="" />
         </div>
 
         <div class="seekbox02-text" name="zt">
             演员
         </div>
         <div class="seekbox-tta seek-bottom">
-            <textarea placeholder="请输入演员 最多50字" name="zt" id="v_actors"></textarea>
+            <textarea placeholder="请输入演员,最多50字,人名之间用逗号隔开" name="zt" id="v_actors"></textarea>
         </div>
 
         <div class="seekbox-text03 seek-bottom" name="zt">

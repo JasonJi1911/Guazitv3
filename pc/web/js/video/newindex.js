@@ -266,9 +266,9 @@ $(document).ready(function() {
 	});
 
 	// 片源报错alert
-	$(".rBtn-07").click(function() {
-		$("#alt04").show();
-	});
+	// $(".rBtn-07").click(function() {
+	// 	$("#alt04").show();
+	// });
 });
 
 //排行榜页面
@@ -401,28 +401,26 @@ $(document).ready(function() {
 		$(this).parents(".per-sp-box").siblings(".per-tab-w05").find(".per-tab-box05.act .per-btn-tow").toggle();
 		$(this).parents(".per-sp-box").siblings(".per-tab-w05").find(".per-tab-box05.act .per-btn-cbox").toggle();
 	});
-	$("#btnQX>input").click(function() {
-		$(this).parents(".per-sp-box02").removeClass("act").siblings(".per-sp-box").removeClass("act");
-		$(this).parents(".per-sp-box02").siblings(".per-tab-w05").find(".per-tab-box05.act .per-btn-tow").toggle();
-		$(this).parents(".per-sp-box02").siblings(".per-tab-w05").find(".per-tab-box05.act .per-btn-cbox").toggle();
-		//取消选择
-		$(this).parents(".per-sp-box02").siblings(".per-tab-w05").find(".per-tab-box05.act .per-btn-cbox>input").removeClass("act").removeAttr("checked");
-	});
+	// $("#btnQX>input").click(function() {
+	// 	$(this).parents(".per-sp-box02").removeClass("act").siblings(".per-sp-box").removeClass("act");
+	// 	$(this).parents(".per-sp-box02").siblings(".per-tab-w05").find(".per-tab-box05.act .per-btn-tow").toggle();
+	// 	$(this).parents(".per-sp-box02").siblings(".per-tab-w05").find(".per-tab-box05.act .per-btn-cbox").toggle();
+	// 	//取消选择
+	// 	$(this).parents(".per-sp-box02").siblings(".per-tab-w05").find(".per-tab-box05.act .per-btn-cbox>input").removeClass("act").removeAttr("checked");
+	// });
 
 	//全选
-	$(".per-qx-02>input").click(function() {
-		$(this).parents(".per-sp-box02").siblings(".per-tab-w05").find(".per-tab-box05.act .per-btn-cbox>input").addClass("act").attr("checked","checked");
-	});
-	$(".per-btn-cbox>input").click(function() {
-		$(this).toggleClass("act");
-		// var  aggg=$(this).attr("class");
-		// if (aggg=="act") {
-		if($(this).hasClass("act")){
-			$(this).attr("checked","checked");
-		} else{
-			$(this).removeAttr("checked");
-		};
-	});
+	// $(".per-qx-02>input").click(function() {
+	// 	$(this).parents(".per-sp-box02").siblings(".per-tab-w05").find(".per-tab-box05.act .per-btn-cbox>input").addClass("act").attr("checked","checked");
+	// });
+	// $(".per-btn-cbox>input").click(function() {
+	// 	$(this).toggleClass("act");
+	// 	if($(this).hasClass("act")){
+	// 		$(this).attr("checked","checked");
+	// 	} else{
+	// 		$(this).removeAttr("checked");
+	// 	};
+	// });
 
 	// 播放记录页tab  切换
 	$(".per-tab06>li").click(function() {
