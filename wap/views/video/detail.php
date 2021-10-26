@@ -382,7 +382,7 @@ $this->registerJs($js);
 <div class="video-detail-series">
     <div class="clearfix video-detail-series-top">
         <span class="fl">剧集</span>
-        <span class="fr video-detail-series-btn"><?= count($info['info']['videos']) != $info['info']['episode_num'] ? '更新至' . count($info['info']['videos']) . '集' : count($info['info']['videos']) . '集完'?></span>
+        <span class="fr video-detail-series-btn"><?=$info['info']['is_finished']!=1 ? '更新至' . count($info['info']['videos']) . '集' : count($info['info']['videos']) . '集完'?></span>
     </div>
     <input type="hidden" id="videos-sum" value="<?= count($info['info']['videos'])?>">
     <div class="video-detail-series-bottom swiper-container">

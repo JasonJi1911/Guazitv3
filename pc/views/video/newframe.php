@@ -434,7 +434,7 @@ if($pageTab != "newdetail") {//顶部导航默认透明或白色
             </div>
         </li>
         <li class="navTopSearchBox">
-            <div class="navTopSearch " name="zt">
+            <div class="navTopSearch <?= $class_zt_black?>" name="<?= $name_zt?>">
                 <input type="text" class="navTopSearchText" id="keywords" placeholder="<?= empty($hotword['tab'][0]['list'][0]['video_name']) ? '': $hotword['tab'][0]['list'][0]['video_name']?>" />
                 <input type="hidden" id="v_keywords0" value="<?= empty($hotword['tab'][0]['list'][0]['video_name']) ? '': $hotword['tab'][0]['list'][0]['video_name']?>"
                 <!--输入框点击弹出菜单-->

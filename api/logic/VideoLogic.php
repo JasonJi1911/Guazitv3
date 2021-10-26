@@ -819,6 +819,7 @@ class VideoLogic
         }
         //总收藏数+详情-更新：summary
         $video_total = Video::find()->select("total_favors,is_finished")->andWhere(['id'=>$videoId])->asArray()->one();
+        $videoInfo['is_finished'] = $video_total['is_finished'];
         //详情-更新：summary
         if($video_total['is_finished']==1){
             $videoInfo['summary'] = "已完结";
