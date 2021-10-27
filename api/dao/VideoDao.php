@@ -845,6 +845,9 @@ class VideoDao extends BaseDao
      * 提交求片信息
      */
     public function saveSeekInfo($video_name,$channel_id,$area_id,$year,$director_name,$actor_name){
+        if(!$video_name){
+            return [];
+        }
         $seek = new VideoSeek();
         $seek->video_name = $video_name;
         $seek->channel_id = $channel_id;
