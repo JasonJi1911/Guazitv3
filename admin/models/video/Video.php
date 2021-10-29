@@ -182,7 +182,13 @@ class Video extends \common\models\video\Video
 
                 }
             }
-            $display_order = 1;
+
+            $display_order = VideoChapter::find()->andWhere(['video_id'=>$this->id])->max('display_order');
+            if($display_order){
+                $display_order++;
+            }else{
+                $display_order = 1;
+            }
             $chapterdata = [];
             foreach ($chapterlist as &$cc){
                 if($cc[0]){
