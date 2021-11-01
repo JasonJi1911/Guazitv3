@@ -213,6 +213,19 @@ class Video extends \common\models\video\Video
             }
             if($chapterdata){
                 Yii::$app->db->createCommand()->batchInsert(VideoChapter::tableName(), ['video_id', 'title', 'resource_url', 'display_order', 'created_at'], $chapterdata)->execute();
+                // 修改影视播放限制
+                $playLimit = VideoChapter::find()->where(['video_id' => $this->id, 'deleted_at' => 0])->max('play_limit');
+                // 查询剧集数
+                $videoNum = VideoChapter::find()->where(['video_id' => $this->id, 'deleted_at' => 0])->count();
+
+                $video = Video::findOne(['id' => $this->id]);
+                $video->play_limit = $playLimit;
+                $video->episode_num = $videoNum;
+                $video->save();
+
+                // 删除影视redis
+                Tool::clearCache(RedisKey::videoChapter($this->id));
+                Tool::clearCache(RedisKey::videoInfoPrefix($this->id));
             }
         }
 

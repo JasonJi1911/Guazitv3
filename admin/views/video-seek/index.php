@@ -57,6 +57,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'director_name',
                 'actor_name',
                 [
+                    'label' => '求片时间',
+                    'format' => 'raw',
+                    'value' =>  function ($model) {
+                        if (!$model->created_at) {
+                            return '--';
+                        }
+                        return date('Y-m-d H:i:s',$model->created_at);
+                    }
+                ],
+                [
                     'class' => 'metronic\grid\ActionColumn',
                     'template' => '{delete}',
                 ]
