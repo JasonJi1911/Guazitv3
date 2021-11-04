@@ -12,6 +12,7 @@ use api\logic\VideoLogic;
 use api\models\user\TaskInfo;
 use api\models\video\Actor;
 use api\models\video\Banner;
+use api\models\video\City;
 use api\models\video\HotRecommend;
 use api\models\video\HotRecommendList;
 use api\models\video\Industry;
@@ -1360,5 +1361,23 @@ class VideoDao extends BaseDao
             return [];
         }
         return $favorite;
+    }
+
+    /*
+     * 三字码查city
+     */
+    public function findcity($citycode){
+        if(!$citycode){
+            return [];
+        }
+        $city = City::find()->andWhere(['city_code'=>$citycode])->asArray()->one();
+        if($city){
+            $country = VideoFeedcountry::findOne(['id'=>$city['country_id']]);
+            if($country){
+                $city['country_code'] = $country['country_code'];
+                $city['country_name'] = $country['country_name'];
+            }
+        }
+        return $city;
     }
 }

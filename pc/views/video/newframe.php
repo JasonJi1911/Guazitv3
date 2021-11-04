@@ -133,7 +133,7 @@ header("Access-Control-Allow-Origin:*");
         $.get('/video/userall',ar,function(res){
             $("#navTopBtnBox").html(res);
             ztBlack();
-            if(pagetab=="newdetail"){
+            if(pagetab=="newdetail" && !isNaN(uid) && uid!=""){
                 $("#det_login").parent().parent().hide();
             }
         });

@@ -188,7 +188,7 @@ class VideoController extends BaseController
             $advert = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_LIST_PC, $city);
             $data['advert'] = $advert;
         }
-        
+
         return $data;
     }
 
@@ -781,5 +781,15 @@ class VideoController extends BaseController
         $videologic = new VideoLogic();
         $data = $videologic->findSourceByChapterId($uid,$chapterId);
         return $data;
+    }
+
+    /*
+     * 三字码查city
+     */
+    public function actionCityInfo(){
+        $citycode = $this->getParam('citycode', "");
+        $videodao = new VideoDao();
+        $city = $videodao->findcity($citycode);
+        return $city;
     }
 }

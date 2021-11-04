@@ -906,142 +906,161 @@ function initialUrl($url)
 
 </script>
 <script>
-    var dp = new DPlayer({
-        element: document.getElementById('player1'),
-        theme: '#FF5722',
-        loop: false,
-        lang: 'zh-cn',
-        hotkey: true,
-        preload: 'auto',
-        logo: '/MyPlayer/img/logo.png',
-        volume: 0.7,
-        autoplay: false,
-        playbackSpeed: [0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3, 5, 7.5, 10],
-        video: {
-            url: '',
-            pic: ''
-        },
-        bbslist: [
-            {
-                "link": "<?php echo $ad_link;?>",
-                "pic": "<?php echo($ad_type == 'img' ? $ad_url : '');?>",
-                "video": "<?php echo $ad_type == 'mp4' ? $ad_url : '';?>"
-            },
-        ],
-    });
-
-    <?php if($ad_type == 'img') :?>
-    var bb1 = dp.options.bbslist[0];
-    var l = bb1.link;
-    console.log("image: "+bb1.pic);
-
-    $('#load1-img').remove();
-    dp.switchVideo(
-        {
-            url: '',
-            pic: bb1.pic,
+    $(document).ready(function () {
+        var req = new XMLHttpRequest();
+        req.open('GET', document.location, false);
+        req.send(null);
+        var cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
+        var citycode = '';
+        if(cf_ray && cf_ray.length>3){
+            citycode = cf_ray.substring(cf_ray.length-3);
         }
-    );
-
-    $("#player1").append('<div class="AD-box" id="AD-box"><a href="' + l +'">广告剩余：<span id="time_ad">100</span>S</a></div>' +
-        '<div class="ADxq-box" id="ADxq-box"><a id="link" target="_blank" href="' + l + '">查看详情<svg t="1628136750461" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M572.197 505.905a19.707 19.707 0 0 1-5.976 13.397L300.215 785.31c-3.438 3.438-8.558 5.705-13.129 5.705s-9.728-2.304-13.129-5.705l-28.562-28.562c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129L469.98 505.905 245.395 281.32c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l28.562-28.562c3.438-3.438 8.558-5.705 13.129-5.705s9.728 2.304 13.129 5.705l266.277 266.277a19.534 19.534 0 0 1 5.714 13.465z m219.428 0a19.707 19.707 0 0 1-5.976 13.397L519.643 785.31c-3.438 3.438-8.558 5.705-13.129 5.705s-9.728-2.304-13.129-5.705l-28.562-28.562c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l224.585-224.585L464.823 281.32c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l28.562-28.562c3.438-3.438 8.558-5.705 13.129-5.705s9.728 2.304 13.129 5.705L785.92 492.777a19.534 19.534 0 0 1 5.714 13.465z"></path></svg></a></div>' +
-        '<div class="ADMask" id="ADMask"></div>');
-
-    $("#ADMask").click(function() {
-        document.getElementById('link').click();
-    });
-
-    var span = document.getElementById("time_ad");
-    var num = span.innerHTML;
-    var timer = null;
-    setTimeout(function() {
-        timer = setInterval(function() {
-            num--;
-            span.innerHTML = num;
-            if (num == 0) {
-                clearInterval(timer);
-                $('#AD-box').remove();
-                $('#ADxq-box').remove();
-                $('#ADMask').remove();
-                dp.destroy();
-
-                <?php $default_qua = 0;?>
+        // citycode = 'SYD';
+        // console.log(citycode);
+        var arrIndex = {};
+        arrIndex['citycode'] = citycode;
+        arrIndex['page'] = 'detail';
+        arrIndex['chapterId'] = '<?=$play_chapter_id?>';
+        $.get('/video/advert-info', arrIndex, function(res) {
+            // console.log(res);
+            if(res.errno == 0){
+                var advert = {};
+                advert['ad_type'] = '';
+                advert['ad_url'] = '';
+                advert['ad_link'] = '';
+                if(res.data.advert.playbefore.ad_image){
+                    advert['ad_url'] = res.data.advert.playbefore.ad_image;
+                    advert['ad_link'] = res.data.advert.playbefore.ad_skip_url;
+                    if(res.data.advert.playbefore.ad_image.indexOf('.mp4')>=0){
+                        advert['ad_type'] = 'mp4';
+                    }else{
+                        advert['ad_type'] = 'img';
+                    }
+                }
+                var sources = res.data.sources;
                 var qualitystr = '';
-                var ar = {};
-                ar['chapterId'] = '<?=$play_chapter_id?>';
-                $.get("/video/chapter-sources",ar,function(res){
-                    // console.log(res.data);
-                    if(res.errno==0){
-                        for(var i in res.data){
-                            qualitystr += "{name: '"+res.data[i].name+"',url: '"+res.data[i].resource_url+"',type: 'auto',limit: '"+res.data[i].play_limit+"'},";
-                        }
-                        qualitystr = "["+qualitystr+"]";
+                for(var i in sources){
+                    qualitystr += "{name: '"+sources[i].name+"',url: '"+sources[i].resource_url+"',type: 'auto',limit: '"+sources[i].play_limit+"'},";
+                }
+                qualitystr = "["+qualitystr+"]";
+                advertinfo(advert,qualitystr);
+            }
+        });
+    });
+    function advertinfo(advert,qualitystr){
+        var dp = new DPlayer({
+            element: document.getElementById('player1'),
+            theme: '#FF5722',
+            loop: false,
+            lang: 'zh-cn',
+            hotkey: true,
+            preload: 'auto',
+            logo: '/MyPlayer/img/logo.png',
+            volume: 0.7,
+            autoplay: false,
+            playbackSpeed: [0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3, 5, 7.5, 10],
+            video: {
+                url: '',
+                pic: ''
+            },
+            bbslist: [
+                {
+                    "link": advert['ad_link'],
+                    "pic": (advert['ad_type'] == 'img' ? advert['ad_url'] : ''),
+                    "video": (advert['ad_type'] == 'mp4' ? advert['ad_url'] : '')
+                },
+            ],
+        });
+
+        if(advert['ad_type']=='img'){
+            var bb1 = dp.options.bbslist[0];
+            var l = bb1.link;
+            console.log("image: "+bb1.pic);
+
+            $('#load1-img').remove();
+            dp.switchVideo(
+                {
+                    url: '',
+                    pic: bb1.pic,
+                }
+            );
+
+            $("#player1").append('<div class="AD-box" id="AD-box"><a href="' + l +'">广告剩余：<span id="time_ad">10</span>S</a></div>' +
+                '<div class="ADxq-box" id="ADxq-box"><a id="link" target="_blank" href="' + l + '">查看详情<svg t="1628136750461" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M572.197 505.905a19.707 19.707 0 0 1-5.976 13.397L300.215 785.31c-3.438 3.438-8.558 5.705-13.129 5.705s-9.728-2.304-13.129-5.705l-28.562-28.562c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129L469.98 505.905 245.395 281.32c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l28.562-28.562c3.438-3.438 8.558-5.705 13.129-5.705s9.728 2.304 13.129 5.705l266.277 266.277a19.534 19.534 0 0 1 5.714 13.465z m219.428 0a19.707 19.707 0 0 1-5.976 13.397L519.643 785.31c-3.438 3.438-8.558 5.705-13.129 5.705s-9.728-2.304-13.129-5.705l-28.562-28.562c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l224.585-224.585L464.823 281.32c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l28.562-28.562c3.438-3.438 8.558-5.705 13.129-5.705s9.728 2.304 13.129 5.705L785.92 492.777a19.534 19.534 0 0 1 5.714 13.465z"></path></svg></a></div>' +
+                '<div class="ADMask" id="ADMask"></div>');
+
+            $("#ADMask").click(function() {
+                document.getElementById('link').click();
+            });
+
+            var span = document.getElementById("time_ad");
+            var num = span.innerHTML;
+            var timer = null;
+            setTimeout(function() {
+                timer = setInterval(function() {
+                    num--;
+                    span.innerHTML = num;
+                    if (num == 0) {
+                        clearInterval(timer);
+                        $('#AD-box').remove();
+                        $('#ADxq-box').remove();
+                        $('#ADMask').remove();
+                        dp.destroy();
+
+                        <?php $default_qua = 0;?>
                         $('#load1-img').remove();
                         var ini_video = {
                             quality: eval('(' + qualitystr + ')'),
-                            //url: '<?php echo $type;?>',
                             pic: '',
                             defaultQuality: <?php echo $default_qua;?>,
                             defaultPlayLimit:'<?php echo $source[$default_qua]['play_limit'];?>'
                         };
                         initialPlayer(ini_video);
                     }
-                });
-            }
-        }, 1000);
-    }, 1);
-    <?php elseif ($ad_type == 'mp4') :?>
-    var adslists = dp.options.bbslist;
-    console.log(adslists)
-    var bb1 = adslists[0];
-    var l = bb1.link;
+                }, 1000);
+            }, 1);
+        }else if(advert['ad_type']=='mp4'){
+            var adslists = dp.options.bbslist;
+            console.log(adslists)
+            var bb1 = adslists[0];
+            var l = bb1.link;
 
-    $('#load1-img').remove();
-    dp.switchVideo(
-        {
-            url: bb1.video,
-            pic: '',
-            type: 'auto'
-        }
-    );
-
-    $("#player1").append('<div class="AD-box" id="AD-box"><a href="' + l +'">广告剩余：<span id="time_ad">100</span>S</a></div>' +
-        '<div class="ADxq-box" id="ADxq-box"><a id="link" target="_blank" href="' + l + '">查看详情<svg t="1628136750461" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M572.197 505.905a19.707 19.707 0 0 1-5.976 13.397L300.215 785.31c-3.438 3.438-8.558 5.705-13.129 5.705s-9.728-2.304-13.129-5.705l-28.562-28.562c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129L469.98 505.905 245.395 281.32c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l28.562-28.562c3.438-3.438 8.558-5.705 13.129-5.705s9.728 2.304 13.129 5.705l266.277 266.277a19.534 19.534 0 0 1 5.714 13.465z m219.428 0a19.707 19.707 0 0 1-5.976 13.397L519.643 785.31c-3.438 3.438-8.558 5.705-13.129 5.705s-9.728-2.304-13.129-5.705l-28.562-28.562c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l224.585-224.585L464.823 281.32c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l28.562-28.562c3.438-3.438 8.558-5.705 13.129-5.705s9.728 2.304 13.129 5.705L785.92 492.777a19.534 19.534 0 0 1 5.714 13.465z"></path></svg></a></div>' +
-        '<div class="ADMask" id="ADMask"></div>');
-
-    $("#ADMask").on('click', function() {
-        document.getElementById('link').click();
-        $('#link').trigger('click');
-    });
-
-    dp.on('loadedmetadata', function () {
-        document.getElementById('time_ad').innerText = Math.floor(dp.video.duration);
-    });
-    dp.on('timeupdate', function () {
-        document.getElementById('time_ad').innerText = Math.floor(dp.video.duration - dp.video.currentTime);
-    });
-    // dp.play();
-    $('.dplayer-video-wrap').trigger('click');
-    dp.on('ended', function () {
-        console.log('bbs player ended');
-        $('#AD-box').remove();
-        $('#ADxq-box').remove();
-        $('#ADMask').hide();
-        $('#ADMask').append('<span id="time_ad" style="color:#FF556E">10</span>')
-        dp.destroy();
-    });
-    dp.on('destroy', function () {
-        <?php $default_qua = 0;?>
-        var qualitystr = '';
-        var ar = {};
-        ar['chapterId'] = '<?=$play_chapter_id?>';
-        $.get("/video/chapter-sources",ar,function(res){
-            // console.log(res.data);
-            if(res.errno==0){
-                for(var i in res.data){
-                    qualitystr += "{name: '"+res.data[i].name+"',url: '"+res.data[i].resource_url+"',type: 'auto',limit: '"+res.data[i].play_limit+"'},";
+            $('#load1-img').remove();
+            dp.switchVideo(
+                {
+                    url: bb1.video,
+                    pic: '',
+                    type: 'auto'
                 }
-                qualitystr = "["+qualitystr+"]";
+            );
+
+            $("#player1").append('<div class="AD-box" id="AD-box"><a href="' + l +'">广告剩余：<span id="time_ad">10</span>S</a></div>' +
+                '<div class="ADxq-box" id="ADxq-box"><a id="link" target="_blank" href="' + l + '">查看详情<svg t="1628136750461" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M572.197 505.905a19.707 19.707 0 0 1-5.976 13.397L300.215 785.31c-3.438 3.438-8.558 5.705-13.129 5.705s-9.728-2.304-13.129-5.705l-28.562-28.562c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129L469.98 505.905 245.395 281.32c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l28.562-28.562c3.438-3.438 8.558-5.705 13.129-5.705s9.728 2.304 13.129 5.705l266.277 266.277a19.534 19.534 0 0 1 5.714 13.465z m219.428 0a19.707 19.707 0 0 1-5.976 13.397L519.643 785.31c-3.438 3.438-8.558 5.705-13.129 5.705s-9.728-2.304-13.129-5.705l-28.562-28.562c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l224.585-224.585L464.823 281.32c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l28.562-28.562c3.438-3.438 8.558-5.705 13.129-5.705s9.728 2.304 13.129 5.705L785.92 492.777a19.534 19.534 0 0 1 5.714 13.465z"></path></svg></a></div>' +
+                '<div class="ADMask" id="ADMask"></div>');
+
+            $("#ADMask").on('click', function() {
+                document.getElementById('link').click();
+                $('#link').trigger('click');
+            });
+
+            dp.on('loadedmetadata', function () {
+                document.getElementById('time_ad').innerText = Math.floor(dp.video.duration);
+            });
+            dp.on('timeupdate', function () {
+                document.getElementById('time_ad').innerText = Math.floor(dp.video.duration - dp.video.currentTime);
+            });
+            // dp.play();
+            $('.dplayer-video-wrap').trigger('click');
+            dp.on('ended', function () {
+                console.log('bbs player ended');
+                $('#AD-box').remove();
+                $('#ADxq-box').remove();
+                $('#ADMask').hide();
+                $('#ADMask').append('<span id="time_ad" style="color:#FF556E">10</span>')
+                dp.destroy();
+            });
+            dp.on('destroy', function () {
+                <?php $default_qua = 0;?>
                 $('#load1-img').remove();
                 var ini_video = {
                     quality: eval('(' + qualitystr + ')'),
@@ -1050,23 +1069,11 @@ function initialUrl($url)
                     defaultPlayLimit:'<?php echo $source[$default_qua]['play_limit'];?>'
                 };
                 initialPlayer(ini_video);
-            }
-        });
-    });
-    <?php elseif (empty($ad_type)) :?>
-    dp.destroy();
+            });
+        }else if(advert['ad_type']==''){
+            dp.destroy();
 
-    <?php $default_qua = 0;?>
-    var qualitystr = '';
-    var ar = {};
-    ar['chapterId'] = '<?=$play_chapter_id?>';
-    $.get("/video/chapter-sources",ar,function(res){
-        // console.log(res.data);
-        if(res.errno==0){
-            for(var i in res.data){
-                qualitystr += "{name: '"+res.data[i].name+"',url: '"+res.data[i].resource_url+"',type: 'auto',limit: '"+res.data[i].play_limit+"'},";
-            }
-            qualitystr = "["+qualitystr+"]";
+            <?php $default_qua = 0;?>
             $('#load1-img').remove();
             var ini_video = {
                 quality: eval('(' + qualitystr + ')'),
@@ -1075,10 +1082,10 @@ function initialUrl($url)
                 defaultPlayLimit:'<?php echo $source[$default_qua]['play_limit'];?>'
             };
             initialPlayer(ini_video);
-        };
-    });
-    <?php endif;?>
-
+        }
+    }
+</script>
+<script>
     function send() {
         dp.danmaku.draw({
             text: 'DIYgod is amazing',

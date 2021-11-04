@@ -3,7 +3,8 @@ COUNTRYINFO = {};
 $(document).ready(function() {
     var countrylist = "";
     //获取country_code
-    if (window.localStorage.hasOwnProperty("countrylist")) {
+    var currentcountry = getCookie("currentcountry");
+    if(currentcountry == 1 && window.localStorage.hasOwnProperty("countrylist")) {
         countrylist = window.localStorage.getItem("countrylist");
     }
     //缓存为空
@@ -19,6 +20,7 @@ $(document).ready(function() {
                     COUNTRYINFO = res.data;
                     countrylist = JSON.stringify(res.data);
                     window.localStorage.setItem("countrylist", countrylist);
+                    setCookie("currentcountry",1,1);
                 }
                 showcountry();
             });
@@ -47,4 +49,25 @@ function showcountry(){
     }
     $("#head-city").show();
     $("#v_countryname").parent().show();
+}
+
+//设置有效期的cookie,exdays为负数时即为删除cookie
+function setCookie(cname,cvalue,exdays){
+    var d = new Date();
+    d.setTime(d.getTime()+(exdays*24*60*60*1000));
+    var expires = "expires="+d.toGMTString();
+    document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+//获取cookie
+function getCookie(cname){
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    var str = "";
+    for(var i=0; i<ca.length; i++){
+        var c = ca[i].trim();
+        if (c.indexOf(name)==0){
+            str = c.substring(name.length,c.length);
+        }
+    }
+    return str;
 }

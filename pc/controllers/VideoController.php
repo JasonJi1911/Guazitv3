@@ -1377,4 +1377,42 @@ class VideoController extends BaseController
         }
         return TOOL::responseJson($errno,"操作成功",$data);
     }
+    /*
+     * 根据三字码，查city，返回对应广告信息
+     * 同时根据chapterId查线路
+     */
+    public function actionAdvertInfo(){
+        $uid = Yii::$app->user->id;
+        $citycode = Yii::$app->request->get('citycode', 0);//城市三字码
+        $page = Yii::$app->request->get('page', '');
+        $chapterId = Yii::$app->request->get('chapterId', 0);
+
+        $data = [];
+        //查城市
+        $citylist = Yii::$app->api->get('/video/city-info', ['citycode' => $citycode]);
+
+        if($citylist){
+            $city = $citylist['city_name'];
+        }else{
+            $city = '';
+        }
+
+        //查广告
+        $advert = Yii::$app->api->get('/video/advert', ['page' => $page, 'city'=> $city]);
+        if($advert){
+            $data['advert'] = $advert['advert'];
+        }
+
+        //查线路
+        $sources = Yii::$app->api->get('/video/chapter-sources',['uid'=>$uid,'chapterId'=>$chapterId,]);
+        if($sources){
+            $data['sources'] = $sources;
+        }
+        if($data){
+            $errno = 0;
+        }else{
+            $errno = -1;
+        }
+        return TOOL::responseJson($errno,"操作成功",$data);
+    }
 }
