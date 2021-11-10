@@ -202,7 +202,7 @@ header("Access-Control-Allow-Origin:*");
         $("#login_yzm").val("");
         $(".c_register").removeClass("act");
         $("#reg_email").val("");
-        $("#reg_prefix_phone").val("+86");
+        $("#reg_prefix_phone").val("+1");
         $("#reg_prefix_phone").removeClass("act")
         $("#reg_phone").val("");
         $("#reg_newpwd").val("");
@@ -277,9 +277,8 @@ header("Access-Control-Allow-Origin:*");
                     <!--报错样式 wor-->
                     <div class="inp-box sltJ mb-20 tel " name="zt">
                         <img class="icon" src="/images/newindex/logon-icon-06.png" />
-                        <input type="button" class="selectJ" id="reg_prefix_phone" value="+86" />
+                        <input type="button" class="selectJ" id="reg_prefix_phone" value="+1" />
                         <ul class="opJ">
-                            <li>中国 <span>+86</span></li>
                             <?php if(!empty($channels['country_info'])) :?>
                                 <?php foreach ($channels['country_info'] as $country): ?>
                                     <?php if($country['mobile_areacode']!=''):?>

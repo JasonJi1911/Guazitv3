@@ -191,15 +191,15 @@ use yii\helpers\Url;
                     <?php endforeach;?>
                 <?php endforeach;?>
             </ul>
+            <div class="LSmenuBottom" style="<?=$data['login_show']?>">
+                <div class="LSmenuBottom-lf" onclick="removetab('watchlog');">
+                    &nbsp;
+                </div>
+                <div class="LSmenuBottom-rg">
+                    <a href="<?= Url::to(['/video/personal', 'ptab' => 'watchlog'])?>">查看更多&nbsp;》</a>
+                </div>
+            </div>
         <?php endif;?>
-        <div class="LSmenuBottom" style="<?=$data['login_show']?>">
-            <div class="LSmenuBottom-lf" onclick="removetab('watchlog');">
-                &nbsp;
-            </div>
-            <div class="LSmenuBottom-rg">
-                <a href="<?= Url::to(['/video/personal', 'ptab' => 'watchlog'])?>">查看更多&nbsp;》</a>
-            </div>
-        </div>
     </div>
 </div>
 <!--通知-->
@@ -213,29 +213,6 @@ use yii\helpers\Url;
     <div class="VIPmenuTop " name="zt">
         &nbsp;
     </div>
-    <!--菜单未登录显示-->
-    <ul class="FLmenuBox " name="zt" style="display: none;">
-        <li class="FLmenuBox-li">
-            <a href="javascript:;">
-                <div class="FLmenuBox-liImg">
-                    <img src="/images/newindex/xiaoxi.png" />
-                </div>
-                <div class="FLmenuBox-liText">
-                    消息
-                </div>
-            </a>
-        </li>
-        <li class="FLmenuBox-li">
-            <a href="javascript:;">
-                <div class="FLmenuBox-liImg">
-                    <img src="/images/newindex/guanzu.png" />
-                </div>
-                <div class="FLmenuBox-liText">
-                    关注&收藏
-                </div>
-            </a>
-        </li>
-    </ul>
     <!--登录显示-->
     <div class="LSmenuBox lf " name="zt" style="<?=$data['login_show']?>">
         <ul class="XX-tabA " name="zt">
@@ -255,15 +232,15 @@ use yii\helpers\Url;
                             </div>
                         </a>
                     <?php endforeach;?>
+                    <div class="LSmenuBottom">
+                        <div class="LSmenuBottom-lf" onclick="removetab('message');">
+                            &nbsp;
+                        </div>
+                        <div class="LSmenuBottom-rg">
+                            <a href="<?= Url::to(['/video/personal', 'ptab' => 'message'])?>">更多&nbsp;》</a>
+                        </div>
+                    </div>
                 <?php endif;?>
-                <div class="LSmenuBottom">
-                    <div class="LSmenuBottom-lf" onclick="removetab('message');">
-                        &nbsp;
-                    </div>
-                    <div class="LSmenuBottom-rg">
-                        <a href="<?= Url::to(['/video/personal', 'ptab' => 'message'])?>">更多&nbsp;》</a>
-                    </div>
-                </div>
             </div>
             <div id="XX-tabBox-favorite">
                 <?php if(!$data['favorite']):?>
@@ -282,15 +259,15 @@ use yii\helpers\Url;
                             </div>
                         </a>
                     <?php endforeach;?>
+                    <div class="LSmenuBottom">
+                        <div class="LSmenuBottom-lf" onclick="removetab('favorite');">
+                            &nbsp;
+                        </div>
+                        <div class="LSmenuBottom-rg">
+                            <a href="<?= Url::to(['/video/personal', 'ptab' => 'favorite'])?>">更多&nbsp;》</a>
+                        </div>
+                    </div>
                 <?php endif;?>
-                <div class="LSmenuBottom">
-                    <div class="LSmenuBottom-lf" onclick="removetab('favorite');">
-                        &nbsp;
-                    </div>
-                    <div class="LSmenuBottom-rg">
-                        <a href="<?= Url::to(['/video/personal', 'ptab' => 'favorite'])?>">更多&nbsp;》</a>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -611,6 +588,7 @@ function removetab(tab){
                 $("#LSmenuBox_div").find("ul.LSmenu").remove();
                 $("#LSmenuBox_div").find("div.LSmenu-No").remove();
                 $("#LSmenuBox_div").prepend("<div class='LSmenu-No'>暂无历史</div>");
+                $("#LSmenuBox_div .LSmenuBottom").hide();
                 $(".alt-title").text("播放记录删除成功");
                 $("#alt05").show();
             }else{
@@ -625,6 +603,7 @@ function removetab(tab){
                 $("#XX-tabBox-favorite").find("a.XX-a").remove();
                 $("#XX-tabBox-favorite").find("div.LSmenu-No").remove();
                 $("#XX-tabBox-favorite").prepend("<div class='LSmenu-No'>暂无历史</div>");
+                $("#XX-tabBox-favorite .LSmenuBottom").hide();
                 $(".alt-title").text("关注&收藏删除成功");
                 $("#alt05").show();
             }else{
@@ -640,6 +619,7 @@ function removetab(tab){
                 $("#XX-tabBox-message").find("a.XX-a").remove();
                 $("#XX-tabBox-message").find("div.LSmenu-No").remove();
                 $("#XX-tabBox-message").prepend("<div class='LSmenu-No'>暂无历史</div>");
+                $("#XX-tabBox-message .LSmenuBottom").hide();
                 $(".alt-title").text("消息删除成功");
                 $("#alt05").show();
             }else{

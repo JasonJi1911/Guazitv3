@@ -86,6 +86,7 @@ class ChannelLogic
             $recommend['search'][]    = ['field' => 'channel_id', 'value' => $channel['channel_id']];
             // 推荐位频道下影片
             $recommend['list'] = $videoRecommend->recommendVideo($recommend['recommend_id'], $this->videoFields);
+            $recommend['list'] = array_values($recommend['list']);//数组序号重排
             // 每两个推荐位插入广告
 //            if ($advert) {
 //                if ($index != 0 && $index % 2 == 0) {

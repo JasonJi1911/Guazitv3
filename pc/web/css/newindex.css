@@ -750,7 +750,7 @@ body {
 }
 
 .LSmenu-No {
-	min-height: 100px;
+	min-height: 50px;/*50px*/
 	line-height: 50px;
 	color: #999999;
 }
@@ -3640,7 +3640,8 @@ body {
 .rBtn-03>input,
 .rBtn-04>input,
 .rBtn-05>input {
-	width: 75px;/*67px*/
+	width: auto;
+	min-width: 61px;/*67px*/
 	height: 30px;
 	padding-left: 35px;
 	color: #999999;
@@ -4124,7 +4125,8 @@ body {
 	.rBtn-03>input,
 	.rBtn-04>input,
 	.rBtn-05>input {
-		width: 75px;/*66px*/
+		width: auto;
+		min-width: 60px;/*66px*/
 		padding-left: 30px;
 	}
 	.lBtn-01,

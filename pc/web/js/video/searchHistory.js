@@ -184,8 +184,8 @@ function showlogin(user){
 
 //手机验证
 function isMobilePhone(mobile){
-    var reg = /^1\d{10}$/;
-    if (!reg.test(mobile)) {
+    var reg = /^[0-9]*$/;
+    if (mobile =='' || !reg.test(mobile)) {
         return false;
     } else {
         return true;
