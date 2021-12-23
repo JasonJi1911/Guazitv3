@@ -16,6 +16,7 @@ use api\models\video\City;
 use api\models\video\HotRecommend;
 use api\models\video\HotRecommendList;
 use api\models\video\Industry;
+use api\models\video\Trailer;
 use api\models\video\UserWatchLog;
 use api\models\video\Video;
 use api\models\video\VideoActor;
@@ -1379,5 +1380,16 @@ class VideoDao extends BaseDao
             }
         }
         return $city;
+    }
+
+    /*
+     * 查新片预告
+     */
+    public function findTrailer($trailer_title_id){
+        if(!$trailer_title_id){
+            return [];
+        }
+        $data = Trailer::find()->andWhere(['trailer_title_id'=>$trailer_title_id])->asArray()->all();
+        return $data;
     }
 }

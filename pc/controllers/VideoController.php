@@ -113,6 +113,12 @@ class VideoController extends BaseController
 
         $version = Yii::$app->api->get('/search/app-version');
 
+        //新片预告
+        $trailer = Yii::$app->api->get('/video/trailer', ['channel_id' => $channel_id]);
+        if($trailer){
+            $data['trailer'] = $trailer;
+        }
+
         if(!$data) {
             return $this->redirect('/site/error');
         }

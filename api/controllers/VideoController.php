@@ -31,7 +31,7 @@ class VideoController extends BaseController
     public function actionChannels()
     {
         // 筛选字段
-        $fields = ['channel_id', 'channel_name'];
+        $fields = ['channel_id', 'channel_name','icon','icon_gray'];
 
         $commonDao = new CommonDao();
         $channelList = $commonDao->videoChannel($fields);
@@ -791,5 +791,15 @@ class VideoController extends BaseController
         $videodao = new VideoDao();
         $city = $videodao->findcity($citycode);
         return $city;
+    }
+
+    /*
+     * 首页预告
+     */
+    public function actionTrailer(){
+        $channelId = $this->getParam('channel_id', 0);
+        $videologic = new VideoLogic();
+        $data = $videologic->getTrailerInfo($channelId);
+        return $data;
     }
 }

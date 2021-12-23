@@ -13,6 +13,7 @@ use Yii;
  * @property int $id 频道id
  * @property string $channel_name 频道名
  * @property string $icon 频道icon
+ * @property string $icon_gray 频道icon(置灰)
  * @property string $description 描述
  * @property string $areas 地区 多地区以,拼接
  * @property int $display_order 展示排序

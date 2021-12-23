@@ -11,6 +11,13 @@ class VideoChannel extends \common\models\video\VideoChannel
             'icon' => function() {
                 return $this->icon->toUrl();
             },
+            'icon_gray' => function() {
+                if($this->icon_gray){
+                    return $this->icon_gray->toUrl();
+                }else{
+                    return '';
+                }
+            },
             'description',
             'areas',
             'display_order',
