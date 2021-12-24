@@ -31,6 +31,18 @@ use admin\models\video\VideoChannel;
             }
         ],
         [
+            'label' => '频道置灰icon',
+            'enableSorting' => false,
+            'format' => 'raw',
+            'value' => function($model){
+                if($model->icon_gray!=""){
+                    return Html::img($model->icon_gray->resize(50,50),['width' => 50]);
+                }else{
+                    return '';
+                }
+            }
+        ],
+        [
           'label' => '描述',
           'value' => function($model){
             return $model->description;

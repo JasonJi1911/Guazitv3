@@ -54,6 +54,12 @@ class VideoChannel extends \xiang\db\ActiveRecord implements StatusToggleInterfa
                     'maxSize'    => 10 * 1024 * 1024 , // 10M
                     'required'   => true,
                     'dir'        => 'video/channel/'. date('Ym'),
+                ],
+                'icon_gray' => [ //竖封面
+                    'extensions' => UploadBehavior::$imageExtensions,
+                    'maxSize'    => 10 * 1024 * 1024 , // 10M
+                    'required'   => true,
+                    'dir'        => 'video/channel/'. date('Ym'),
                 ]
             ],
         ];

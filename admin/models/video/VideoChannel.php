@@ -36,6 +36,7 @@ class VideoChannel extends \common\models\video\VideoChannel
             'id' => 'ID',
             'channel_name' => '频道名',
             'icon' => '频道Icon',
+            'icon_gray' => '频道置灰Icon',
             'description' => '描述',
             'areas' => 'Areas',
             'display_order' => '排序',

@@ -3,6 +3,8 @@
 namespace common\models\video;
 
 use common\models\traits\SchemeTrait;
+use common\models\traits\SourceInterface;
+use common\models\traits\SourceTrait;
 use common\models\traits\StatusToggleInterface;
 use common\models\traits\StatusToggleTrait;
 use Yii;
@@ -22,9 +24,10 @@ use Yii;
  * @property int $updated_at 修改时间
  * @property int $deleted_at 删除时间
  */
-class Trailer extends \xiang\db\ActiveRecord implements StatusToggleInterface
+class Trailer extends \xiang\db\ActiveRecord implements StatusToggleInterface,SourceInterface
 {
-    use StatusToggleTrait , SchemeTrait;
+    use SourceTrait;
+    use StatusToggleTrait;
 
     public static $statusMap = [
         self::STATUS_ENABLED  => '显示',
@@ -37,6 +40,18 @@ class Trailer extends \xiang\db\ActiveRecord implements StatusToggleInterface
     public static function tableName()
     {
         return '{{%trailer}}';
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+
+
+        return $behaviors;
     }
 
 }

@@ -33,5 +33,6 @@ use yii\helpers\ArrayHelper;
 
 <?= $form->field($model, 'description')->textarea(['rows' => 4]) ?>
 <?= $form->field($model, 'icon')->imageUpload(['width' => 150, 'height' => 200])->hint('建议上传150px*200px的图片')->label('频道Icon<span class="required">*</span>') ?>
+<?= $form->field($model, 'icon_gray')->imageUpload(['width' => 150, 'height' => 200])->hint('建议上传150px*200px的图片')->label('频道置灰Icon<span class="required">*</span>') ?>
 <?= $form->field($model, 'display_order')->numberInput(['min' => 0, 'max' => '255'])->hint('0 ~ 255之间，值越大展示越靠前')->wrapper(['width' => 2])?>
 <?php ActiveForm::end() ?>
