@@ -603,11 +603,16 @@ class VideoLogic
         // $videoDao = new VideoDao();
         $videos = $videoDao->batchGetVideo($seriesId, ['video_id', 'video_name', 'category', 'cover', 'horizontal_cover', 'intro', 'flag', 'score', 'play_times','title', 'area', 'year', 'tag', 'director', 'artist', 'created_at','total_views'], false, ['channel_id', 'actors_id', 'actors', 'director', 'artist', 'chapters']);
 
-        foreach ($videos as &$videoInfo) {
-            $videoInfo['cats'] = implode('/', explode(' ', $videoInfo['category']));
+        foreach ($videos as $k=>&$videoInfo) {
+            if($videoInfo['chapters']){
+                $videoInfo['cats'] = implode('/', explode(' ', $videoInfo['category']));
+            }else{
+                unset($videos[$k]);
+            }
         }
 
         $data['list'] = $videos;
+        $data['total_count'] = count($videos,0);
 
         array_unshift($videoChannel,  ['channel_id' => '', 'channel_name' => '全部']);
         $data['tabs'] = $videoChannel;
