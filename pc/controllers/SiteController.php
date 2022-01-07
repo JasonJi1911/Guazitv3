@@ -134,9 +134,52 @@ class SiteController extends BaseController
             }
         }
 
+        $this->XmlFile($data['label']);
         return \Yii::createObject($xml);
     }
+    public function XmlFile($data){
+        //  创建一个XML文档并设置XML版本和编码。。
+        $dom=new \DomDocument('1.0', 'utf-8');
+        //  创建根节点
+        $urlset = $dom->createElement('urlset');
+        $dom->appendchild($urlset);
+        if (!empty($data)){
+            foreach ($data as  $labels){
+                if (empty($labels['list']))
+                    continue;
 
+                foreach ($labels['list'] as $key => $list){
+                    $item = $dom->createElement('url');
+                    $urlset->appendchild($item);
+                    //  loc
+                    $node = $dom->createElement('loc');//创建元素
+                    $item->appendchild($node);
+                    $text = $dom->createTextNode(PC_HOST_PATH.Url::to(['detail', 'video_id' => $list['video_id']]));//创建元素值
+                    $node->appendchild($text);
+                    //  score
+                    $node = $dom->createElement('score');
+                    $item->appendchild($node);
+                    $text = $dom->createTextNode($list['score']);
+                    $node->appendchild($text);
+                    //  title
+                    $node = $dom->createElement('title');
+                    $item->appendchild($node);
+                    $text = $dom->createTextNode('瓜子tv|'.$list['video_name']);
+                    $node->appendchild($text);
+                    //  year
+                    $node = $dom->createElement('year');
+                    $item->appendchild($node);
+                    $text = $dom->createTextNode($list['year']);
+                    $node->appendchild($text);
+                }
+            }
+        }
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = true;
+        $dom->loadXML($dom->saveXML(),LIBXML_NOERROR);
+        $res = file_put_contents('sitemap.xml',$dom->saveXML());
+//        return $dom->saveXML();
+    }
 
     /**
      * Login action.
