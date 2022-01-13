@@ -184,7 +184,8 @@ class CommonDao extends BaseDao
             $redis->set($key, json_encode($data));
         }
         //$redis->del($key);
-        return ArrayHelper::index($data, 'source_id');
+//        return ArrayHelper::index($data, 'source_id');
+        return $data;
     }
 
     /**

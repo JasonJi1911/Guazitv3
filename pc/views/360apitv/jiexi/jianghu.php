@@ -164,28 +164,115 @@ if ($p2p == "1") {
         "diyid": [0, "游客", 1] //自定义弹幕id
     }
 
-    var config = {
-        "api": "<?php echo FCPATH;?>" + "/web/360apitv/dmku/", //弹幕接口
-        "av": "<?php echo $_GET["av"];?>", //B站弹幕id 45520296
-        "id":"<?php echo substr(md5($_GET["v"]), -20);?>",//视频id
-        "sid":"<?php echo $_GET["sid"];?>",//集数id
-        "pic":"<?php echo $_GET["pic"];?>",//视频封面
-        "title":"",//视频标题
-        // "next": "",//下一集链接
-        "user": "",//用户名
-        "group": "0",//用户组
-        'startkey': 0,
-        'total': 1,
-        'url': ["<?php echo $type;?>",], //视频链接
-        "bbslist": [
-            {
-                "link": "<?php echo $ad_link;?>",
-                "pic": "<?php echo($ad_type == 'img' ? $ad_url : '');?>",
-                "video": "<?php echo $ad_type == 'mp4' ? $ad_url : '';?>"
-            },
-        ],
+    var config = {};
+
+    var advert = {};
+    advert['ad_type'] = '';
+    advert['ad_url'] = '';
+    advert['ad_link'] = '';
+    var req = new XMLHttpRequest();
+    req.open('GET', document.location, false);
+    req.send(null);
+    var cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
+    var citycode = '';
+    if(cf_ray && cf_ray.length>3){
+        citycode = cf_ray.substring(cf_ray.length-3);
     }
-    YZM.start();
+    // citycode = 'DRW';
+    // console.log(citycode);
+    var arrIndex = {};
+    arrIndex['citycode'] = citycode;
+    arrIndex['page'] = 'detail';
+    $.ajax({
+        url: '/video/advert-info',
+        data: arrIndex,
+        type:'get',
+        cache:false,
+        dataType:'json',
+        success:function(res) {
+            console.log(res);
+            if(res.errno == 0){
+                if(res.data.advert.playbefore.ad_image){
+                    advert['ad_url'] = res.data.advert.playbefore.ad_image;
+                    advert['ad_link'] = res.data.advert.playbefore.ad_skip_url;
+                    if(res.data.advert.playbefore.ad_image.indexOf('.mp4')>=0){
+                        advert['ad_type'] = 'mp4';
+                    }else{
+                        advert['ad_type'] = 'img';
+                    }
+                }
+            }
+            config = {
+                "api": "<?php echo FCPATH;?>" + "/web/360apitv/dmku/", //弹幕接口
+                "av": "<?php echo $_GET["av"];?>", //B站弹幕id 45520296
+                "id":"<?php echo substr(md5($_GET["v"]), -20);?>",//视频id
+                "sid":"<?php echo $_GET["sid"];?>",//集数id
+                "pic":"",//视频封面
+                "title":"",//视频标题
+                // "next": "",//下一集链接
+                "user": "",//用户名
+                "group": "0",//用户组
+                'startkey': 0,
+                'total': 1,
+                'url': ["<?php echo $type;?>",], //视频链接
+                "bbslist": [
+                    {
+                        "link": advert['ad_link'],
+                        "pic": advert['ad_type']=='img' ? advert['ad_url'] : '',
+                        "video": advert['ad_type']=='mp4' ? advert['ad_url'] : '',
+                    },
+                ],
+            }
+            YZM.start();
+        },
+        error : function() {
+            config = {
+                "api": "<?php echo FCPATH;?>" + "/web/360apitv/dmku/", //弹幕接口
+                "av": "<?php echo $_GET["av"];?>", //B站弹幕id 45520296
+                "id":"<?php echo substr(md5($_GET["v"]), -20);?>",//视频id
+                "sid":"<?php echo $_GET["sid"];?>",//集数id
+                "pic":"<?php echo $_GET["pic"];?>",//视频封面
+                "title":"",//视频标题
+                // "next": "",//下一集链接
+                "user": "",//用户名
+                "group": "0",//用户组
+                'startkey': 0,
+                'total': 1,
+                'url': ["<?php echo $type;?>",], //视频链接
+                "bbslist": [
+                    {
+                        "link": "",
+                        "pic": "",
+                        "video": ""
+                    },
+                ],
+            }
+            YZM.start();
+        }
+    });
+
+    //var config = {
+    //    "api": "<?php //echo FCPATH;?>//" + "/web/360apitv/dmku/", //弹幕接口
+    //    "av": "<?php //echo $_GET["av"];?>//", //B站弹幕id 45520296
+    //    "id":"<?php //echo substr(md5($_GET["v"]), -20);?>//",//视频id
+    //    "sid":"<?php //echo $_GET["sid"];?>//",//集数id
+    //    "pic":"<?php //echo $_GET["pic"];?>//",//视频封面
+    //    "title":"",//视频标题
+    //    // "next": "",//下一集链接
+    //    "user": "",//用户名
+    //    "group": "0",//用户组
+    //    'startkey': 0,
+    //    'total': 1,
+    //    'url': ["<?php //echo $type;?>//",], //视频链接
+    //    "bbslist": [
+    //        {
+    //            "link": "<?php //echo $ad_link;?>//",
+    //            "pic": "<?php //echo($ad_type == 'img' ? $ad_url : '');?>//",
+    //            "video": "<?php //echo $ad_type == 'mp4' ? $ad_url : '';?>//"
+    //        },
+    //    ],
+    //}
+    //YZM.start();
 
     // var _clearTimer = window.setInterval(function(){
 

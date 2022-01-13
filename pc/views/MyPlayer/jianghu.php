@@ -921,32 +921,69 @@ function initialUrl($url)
         arrIndex['citycode'] = citycode;
         arrIndex['page'] = 'detail';
         arrIndex['chapterId'] = '<?=$play_chapter_id?>';
-        $.get('/video/advert-info', arrIndex, function(res) {
-            // console.log(res);
-            if(res.errno == 0){
-                var advert = {};
-                advert['ad_type'] = '';
-                advert['ad_url'] = '';
-                advert['ad_link'] = '';
-                if(res.data.advert.playbefore.ad_image){
-                    advert['ad_url'] = res.data.advert.playbefore.ad_image;
-                    advert['ad_link'] = res.data.advert.playbefore.ad_skip_url;
-                    if(res.data.advert.playbefore.ad_image.indexOf('.mp4')>=0){
-                        advert['ad_type'] = 'mp4';
-                    }else{
-                        advert['ad_type'] = 'img';
+        $.ajax({
+            url:'/video/advert-info',
+            data:arrIndex,
+            type:'get',
+            cache:false,
+            dataType:'json',
+            success:function(res) {
+                if(res.errno == 0){
+                    var advert = {};
+                    advert['ad_type'] = '';
+                    advert['ad_url'] = '';
+                    advert['ad_link'] = '';
+                    if(res.data.advert.playbefore.ad_image){
+                        advert['ad_url'] = res.data.advert.playbefore.ad_image;
+                        advert['ad_link'] = res.data.advert.playbefore.ad_skip_url;
+                        if(res.data.advert.playbefore.ad_image.indexOf('.mp4')>=0){
+                            advert['ad_type'] = 'mp4';
+                        }else{
+                            advert['ad_type'] = 'img';
+                        }
                     }
+                    var sources = res.data.sources;
+                    var qualitystr = '';
+                    for(var i in sources){
+                        qualitystr += "{name: '"+sources[i].name+"',url: '"+sources[i].resource_url+"',type: 'auto',limit: '"+sources[i].play_limit+"'},";
+                    }
+                    qualitystr = "["+qualitystr+"]";
+                    advertinfo(advert,qualitystr);
+                }else{
+                    defaultAdvertInfo();
                 }
-                var sources = res.data.sources;
-                var qualitystr = '';
-                for(var i in sources){
-                    qualitystr += "{name: '"+sources[i].name+"',url: '"+sources[i].resource_url+"',type: 'auto',limit: '"+sources[i].play_limit+"'},";
-                }
-                qualitystr = "["+qualitystr+"]";
-                advertinfo(advert,qualitystr);
+            },
+            error : function() {
+                defaultAdvertInfo();
             }
         });
     });
+    function defaultAdvertInfo(){
+        var advert = {};
+        advert['ad_type'] = '';
+        advert['ad_url'] = '';
+        advert['ad_link'] = '';
+        var qualitystr = '';
+        <?php
+        $qstr = '';
+        foreach ($videos as $k => $val){
+            if($val['chapter_id'] == $play_chapter_id){
+                $chapter = $val;
+                $src_array = $val['resource_url'];
+            }
+        }
+        foreach ($source as $key => $src) {
+            if (empty($src_array[$src['source_id']])) { // source_id不在视频里面或者没有视频播放连接
+                continue;
+            }
+            $src_url = $src['resource_url'];
+            $type = initialUrl($src_url);
+            $qstr .= "{name: '".$src['name']."',url: '".$type."',type: 'auto',limit: '".$src['play_limit']."'},";
+        }
+        ?>
+        qualitystr = "["+"<?=$qstr?>"+"]",
+        advertinfo(advert,qualitystr);
+    }
     function advertinfo(advert,qualitystr){
         var dp = new DPlayer({
             element: document.getElementById('player1'),

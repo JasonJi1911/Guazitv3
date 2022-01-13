@@ -956,6 +956,7 @@ class VideoLogic
      * @return string
      */
     public function parseUrl($url, $product, $source = 0, $sourcesList = [],$uid='') {
+        $sourcesList = ArrayHelper::index($sourcesList, 'source_id');
         if ($source == 0 || empty($sourcesList))
             $player = VIDEO_JIXI_URL_LOCAL;
 
