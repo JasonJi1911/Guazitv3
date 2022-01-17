@@ -1343,8 +1343,13 @@ class UserLogic
 
     /*
      * 创建验证码
+     * $mobile:手机区号+手机号
      */
     public function createSMScode($mobile){
+        if(empty($mobile)){
+            $return['errno'] = -1;
+            $return['msg'] = '手机号不能为空';
+        }
         $return = [];
         $key = 'SMScode'.$mobile;//记录验证码
         $key_time = 'SMScode_time'.$mobile;//记录创建时间

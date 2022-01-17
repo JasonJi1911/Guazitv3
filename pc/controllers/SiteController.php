@@ -231,6 +231,7 @@ class SiteController extends BaseController
             $model = new LoginForm();
             $model->mobile = $mobile;
             $model->password = $password;
+            $model->flag = 0;
             if ( $model->login()) {
                 Yii::$app->cache->set('login_flag', '1');
                 $uid = Yii::$app->user->id;
@@ -244,7 +245,7 @@ class SiteController extends BaseController
             }
         }else{//短信验证码登录
             $redis = new RedisStore();
-            $key = 'SMScode'.$mobile;
+            $key = 'SMScode'.$mobile_areacode.$mobile;
             if($redis->get($key) && $redis->get($key)==$code){
                 $password = '111111';
                 $result = Yii::$app->api->get('/user/message-register',['mobile' => $mobile,'mobile_areacode'=>$mobile_areacode,'password'=>$password]);
@@ -252,6 +253,7 @@ class SiteController extends BaseController
                     $model = new LoginForm();
                     $model->mobile = $mobile;
                     $model->password = $password;
+                    $model->flag = 1;
                     if ( $model->login()) {
                         Yii::$app->cache->set('login_flag', '1');
                     }

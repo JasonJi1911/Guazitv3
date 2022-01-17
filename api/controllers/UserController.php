@@ -606,9 +606,10 @@ class UserController extends BaseController
      * 发送验证码
      */
     public function actionSendCode(){
+        $mobile_areacode = $this->getParam('mobile_areacode', "");
         $mobile = $this->getParam('mobile', "");//手机
         $userlogic = new UserLogic();
-        $result = $userlogic->createSMScode($mobile);
+        $result = $userlogic->createSMScode($mobile_areacode.$mobile);
         return $result;
     }
 }

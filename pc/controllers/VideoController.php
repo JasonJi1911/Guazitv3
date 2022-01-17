@@ -935,13 +935,14 @@ class VideoController extends BaseController
         $password = '111111';
 
         $redis = new RedisStore();
-        $key = 'SMScode'.$mobile;
+        $key = 'SMScode'.$mobile_areacode.$mobile;
         if($redis->get($key) && $redis->get($key)==$code){
             $result = Yii::$app->api->get('/user/message-register',['mobile' => $mobile,'mobile_areacode'=>$mobile_areacode,'password'=>$password]);
             if($result['errno']==0){
                 $model = new LoginForm();
                 $model->mobile = $mobile;
                 $model->password = $password;
+                $model->flag = 1;
                 if ( $model->login()) {
                     Yii::$app->cache->set('login_flag', '1');
                 }
@@ -1449,8 +1450,9 @@ class VideoController extends BaseController
      * 发送验证码
      */
     public function actionSendCode(){
+        $mobile_areacode = Yii::$app->request->get('mobile_areacode', "");
         $mobile = Yii::$app->request->get('mobile', "");
-        $result = Yii::$app->api->get('/user/send-code',['mobile'=>$mobile]);
+        $result = Yii::$app->api->get('/user/send-code',['mobile'=>$mobile,'mobile_areacode'=>$mobile_areacode]);
         if($result){
             $errno = $result['errno'];
             $msg = $result['msg'];
@@ -1465,11 +1467,12 @@ class VideoController extends BaseController
      * 验证
      */
     public function actionValiCode(){
+        $mobile_areacode = Yii::$app->request->get('mobile_areacode', "");
         $mobile = Yii::$app->request->get('mobile', "");
         $code = Yii::$app->request->get('code', "");
 
         $redis = new RedisStore();
-        $key = 'SMScode'.$mobile;
+        $key = 'SMScode'.$mobile_areacode.$mobile;
         if($redis->get($key) && $redis->get($key)==$code){
             $errno = 0;
             $msg = '操作成功';
