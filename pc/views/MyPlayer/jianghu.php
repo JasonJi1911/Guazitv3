@@ -243,7 +243,8 @@ function initialUrl($url)
     }
 
     .palyer-js:hover {
-        color: rgba(255, 255, 255, 1);
+        /*color: rgba(255, 255, 255, 1);*/
+        color: #FF5722;
     }
 
     .player-next-chapter:hover {/*无效上一集样式*/
@@ -507,6 +508,7 @@ function initialUrl($url)
     .BSbth:hover,
     .BSbth.act {
         opacity: 1;
+        color: #FF5722;
     }
 
     .BSlist {
@@ -537,6 +539,7 @@ function initialUrl($url)
 
     .BSlist>input:hover {
         background-color: rgba(51, 51, 51, 1);
+        color: #FF5722;
     }
 
     .Dplayer_box, .player_av, .box{
@@ -575,6 +578,31 @@ function initialUrl($url)
     }
     #player-load1-warn span{
         color:#FF5722
+    }
+
+    .icon-forward:hover svg path,.icon-rewind:hover svg path {
+        fill: #FF5722;
+    }
+
+    .dplayer .dplayer-controller .dplayer-icons .dplayer-icon.dplayer-volume-icon:hover svg path {
+        fill: #FF5722;
+    }
+
+    .dplayer .dplayer-controller .dplayer-icons .dplayer-icon.dplayer-setting-icon:hover svg path {
+        fill: #FF5722;
+    }
+
+    .dplayer .dplayer-controller .dplayer-icons .dplayer-icon.dplayer-full-icon:hover svg path {
+        fill: #FF5722;
+    }
+
+    .dplayer .dplayer-controller .dplayer-icons .dplayer-full .dplayer-full-in-icon:hover svg path {
+        fill: #FF5722;
+    }
+
+    .dplayer .dplayer-controller .dplayer-icons .dplayer-icon.dplayer-quality-icon:hover {
+        opacity: 1;
+        color: #FF5722;
     }
 </style>
 <img id="load1-img" src="/images/newindex/player_load.gif" />
@@ -981,7 +1009,7 @@ function initialUrl($url)
             $qstr .= "{name: '".$src['name']."',url: '".$type."',type: 'auto',limit: '".$src['play_limit']."'},";
         }
         ?>
-        qualitystr = "["+"<?=$qstr?>"+"]",
+        qualitystr = "["+"<?=$qstr?>"+"]";
         advertinfo(advert,qualitystr);
     }
     function advertinfo(advert,qualitystr){
