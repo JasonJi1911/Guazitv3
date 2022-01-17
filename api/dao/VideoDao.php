@@ -1019,10 +1019,18 @@ class VideoDao extends BaseDao
     /*
      * 播放记录
      */
-    public function finduserwatchLog($uid,$searchword,$page_num=1){
+    public function finduserwatchLog($uid,$searchword,$page_num=1,$channel_id=0){
+        $u = UserWatchLog::tableName();
+        $v = Video::tableName();
+        $query = UserWatchLog::find()->leftJoin($v,$v.'.id='.$u.'.video_id')
+                ->andWhere([$u.'.uid'=>$uid])
+                ->andFilterWhere(['like',$v.'.title',$searchword]);
+
+        if($channel_id!=0){
+            $query = $query->andWhere([$v.'.channel_id'=>$channel_id]);
+        }
         $dataProvider = new ActiveDataProvider([
-            'query' => UserWatchLog::find()
-                ->andWhere(['uid' => $uid])
+            'query' => $query
         ]);
         $data = $dataProvider->setPagination(['page_num' => $page_num])->toArray(['log_id', 'video_id', 'chapter_id', 'play_time', 'time', 'play_date', 'created_at','watchplay_time','total_time','updated_at']);
         if ($data['list']) {
@@ -1030,61 +1038,57 @@ class VideoDao extends BaseDao
             $videoInfo = $this->batchGetVideo($videoId, ['video_id', 'video_name', 'cover','category','flag','channel_id'], true);
             $list = [];
             foreach ($data['list'] as $k => $info) {
-                if($searchword=="" || ($searchword!="" && strpos($videoInfo[$info['video_id']]['video_name'], $searchword) !== false)){
-                    $info['title']    = $videoInfo[$info['video_id']]['video_name'];
-                    $info['cover']    = $videoInfo[$info['video_id']]['cover'];
-                    $info['category'] = $videoInfo[$info['video_id']]['category'];
-                    $info['flag']     = $videoInfo[$info['video_id']]['flag'];
-                    $info['watch_time'] = '观看至 ' . $info['play_time'];
-                    //计算 时长占百分比
-                    if($info['total_time']){
-                        $info['watch_percent'] = intval(intval($info['time']) / intval($info['total_time'])*100);
-                    }else{
-                        $info['watch_percent'] = 0;
-                    }
-                    $info['chapter_title'] = '';
-                    //判断是否为连续剧，加观看集数
-                    if($videoInfo[$info['video_id']]['channel_id']==2){
-                        $chapter_one = VideoChapter::findOne(['id'=>$info['chapter_id']])->toArray();
-                        $info['chapter_title'] = isset($chapter_one)? $chapter_one['title'] : '';
-                    }
-
-                    $current_time = time();
-                    $updated_at = intval($info['updated_at']);
-                    $t = $current_time - $updated_at;
-                    if($t<60){
-                        $info['time_diff'] = $t.'秒前';
-                    }else if($t<3600){
-                        $m = floor($t / 60);
-                        $info['time_diff'] = $m.'分钟前';
-                    }else if($t < (3600*24)){
-                        $h = floor($t / 3600);
-                        $info['time_diff'] = $h.'小时前';
-                    }else if($t < (3600*24*7)){
-                        $d = floor($t / (3600*24));
-                        $info['time_diff'] = $d.'天前';
-                    }else{
-                        $info['time_diff'] = $info['play_date'];
-                    }
-
-                    if ($info['play_date'] == date('Y-m-d')) {
-                        $dateKey = '今天';
-                        $info['show_times'] = $info['watchplay_time'];
-                    } else if ($info['play_date'] == date('Y-m-d', strtotime('-1 day'))) {
-                        $dateKey = '昨天';
-                        $info['show_times'] = $info['watchplay_time'];
-                    } else if ($info['play_date'] >= date('Y-m-d', strtotime('-7 day'))) {
-                        $dateKey = '本周';
-                        $info['show_times'] = $info['play_date'];
-                    } else {
-                        $dateKey = '一周前';
-                        $info['show_times'] = $info['play_date'];
-                    }
-                    $list[$info['play_date']]['date']   = $dateKey;
-                    $list[$info['play_date']]['list'][] = $info;
+                $info['title']    = $videoInfo[$info['video_id']]['video_name'];
+                $info['cover']    = $videoInfo[$info['video_id']]['cover'];
+                $info['category'] = $videoInfo[$info['video_id']]['category'];
+                $info['flag']     = $videoInfo[$info['video_id']]['flag'];
+                $info['watch_time'] = '观看至 ' . $info['play_time'];
+                //计算 时长占百分比
+                if($info['total_time']){
+                    $info['watch_percent'] = intval(intval($info['time']) / intval($info['total_time'])*100);
                 }else{
-                    unset($data['list'][$k]);
+                    $info['watch_percent'] = 0;
                 }
+                $info['chapter_title'] = '';
+                //判断是否为连续剧，加观看集数
+                if($videoInfo[$info['video_id']]['channel_id']==2){
+                    $chapter_one = VideoChapter::findOne(['id'=>$info['chapter_id']])->toArray();
+                    $info['chapter_title'] = isset($chapter_one)? $chapter_one['title'] : '';
+                }
+
+                $current_time = time();
+                $updated_at = intval($info['updated_at']);
+                $t = $current_time - $updated_at;
+                if($t<60){
+                    $info['time_diff'] = $t.'秒前';
+                }else if($t<3600){
+                    $m = floor($t / 60);
+                    $info['time_diff'] = $m.'分钟前';
+                }else if($t < (3600*24)){
+                    $h = floor($t / 3600);
+                    $info['time_diff'] = $h.'小时前';
+                }else if($t < (3600*24*7)){
+                    $d = floor($t / (3600*24));
+                    $info['time_diff'] = $d.'天前';
+                }else{
+                    $info['time_diff'] = $info['play_date'];
+                }
+
+                if ($info['play_date'] == date('Y-m-d')) {
+                    $dateKey = '今天';
+                    $info['show_times'] = $info['watchplay_time'];
+                } else if ($info['play_date'] == date('Y-m-d', strtotime('-1 day'))) {
+                    $dateKey = '昨天';
+                    $info['show_times'] = $info['watchplay_time'];
+                } else if ($info['play_date'] >= date('Y-m-d', strtotime('-7 day'))) {
+                    $dateKey = '本周';
+                    $info['show_times'] = $info['play_date'];
+                } else {
+                    $dateKey = '一周前';
+                    $info['show_times'] = $info['play_date'];
+                }
+                $list[$info['play_date']]['date']   = $dateKey;
+                $list[$info['play_date']]['list'][] = $info;
             }
 
             $data['list'] = array_values($list);
@@ -1150,7 +1154,7 @@ class VideoDao extends BaseDao
         if ($logId === 'all') {
             $where = ['uid' => $uid];
         } else {
-            //$logId = explode(',', $logId);
+            $logId = explode(',', $logId);
             $where = ['id' => $logId, 'uid' => $uid];
         }
         return UserWatchLog::deleteAll($where);
@@ -1305,13 +1309,13 @@ class VideoDao extends BaseDao
         $vf = VideoFavorite::find()->where(['uid' => $uid, 'status' => VideoFavorite::STATUS_YES])->asArray()->all();
         if($vf){
             foreach ($vf as $k=>$f){
+                //查看收藏的 剧/视频 更新情况，如果没有更新就不显示
                 $chapter_max = VideoChapter::find()->andWhere(['video_id'=>$f['video_id']])
                     ->andWhere(['and',['>' , 'updated_at', $f['created_at']]])
                     ->orderBy('display_order desc')
                     ->limit(1)->asArray()->one();
                 if($chapter_max){
                     $f['chapter_title'] = $chapter_max['title'];
-
                     $current_time = time();
                     $updated_at = intval($chapter_max['updated_at']);
                     $t = $current_time - $updated_at;
@@ -1333,6 +1337,15 @@ class VideoDao extends BaseDao
                     $video = Video::findOne(['id'=>$f['video_id']]);
                     $f['video_name'] = $video['title'];
                     $f['type'] = 'favorite';//收藏标志
+                    //新增收藏视频的观看时间
+                    $user_watch_log = UserWatchLog::findOne(['uid'=>$uid,'video_id'=>$f['video_id']]);
+                    //计算 时长占百分比
+                    if($user_watch_log['total_time']){
+                        $f['watch_percent'] = intval(intval($user_watch_log['time']) / intval($user_watch_log['total_time'])*100);
+                    }else{
+                        $f['watch_percent'] = 0;
+                    }
+
                     $vf[$k] = $f;
                 }else{
                     unset($vf[$k]);

@@ -333,7 +333,7 @@ class UserController extends BaseController
     }
 
     /*
-     * web用户注册
+     * web用户注册（手机邮箱+密码，密保）
      */
     public function actionWebregister(){
         $email = $this->getParam('email', '');
@@ -348,6 +348,21 @@ class UserController extends BaseController
         $userLogic = new UserLogic();
         $user = $userLogic->webRegister(['email'=>$email, 'mobile_areacode'=>$mobile_areacode, 'mobile'=>$mobile,
             'security_question'=>$question, 'security_answer'=>$answer, 'password_hash'=>$password]);
+
+        return $user;
+    }
+
+    /*
+     * PC端手机短信验证码注册
+     */
+    public function actionMessageRegister(){
+        $mobile_areacode = $this->getParam('mobile_areacode', '');
+        $mobile = $this->getParam('mobile', '');
+        $password = $this->getParam('password', '');
+        $password = Yii::$app->security->generatePasswordHash($password);
+
+        $userLogic = new UserLogic();
+        $user = $userLogic->messageRegister(['mobile_areacode'=>$mobile_areacode,'mobile'=>$mobile,'password_hash'=>$password]);
 
         return $user;
     }
@@ -376,6 +391,51 @@ class UserController extends BaseController
             $rows = $userDao->modifypassword($data['uid'],$password);
         }
         $data['row'] = $rows;
+        return $data;
+    }
+    /*
+     * PC端用户修改密码
+     */
+    public function actionNewModifyPassword(){
+        $mobile = $this->getParam('mobile', '');
+        $password = $this->getParam('password', '');
+        $password = Yii::$app->security->generatePasswordHash($password);
+
+        $userDao = new UserDao();
+        $data = [];
+
+        $rows = $userDao->modifypasswordByMobile($mobile,$password);
+        $data['row'] = $rows;
+        if($rows>0){
+            $data['error'] = 0;
+            $data['msg'] = '密码修改成功';
+        }else{
+            $data['error'] = -1;
+            $data['msg'] = '密码修改失败';
+        }
+        return $data;
+    }
+
+    /*
+     * PC端用户修改邮箱
+     */
+    public function actionModifyEmail(){
+        $email = $this->getParam('email', '');
+        $mobile = $this->getParam('mobile', '');
+
+        $param['mobile'] = $mobile;
+        $param['email'] = $email;
+        $userDao = new UserDao();
+        $data = [];
+        $rows = $userDao->modifyemail($param);
+        $data['row'] = $rows;
+        if($rows>0){
+            $data['error'] = 0;
+            $data['msg'] = '邮箱修改成功';
+        }else{
+            $data['error'] = -1;
+            $data['msg'] = '邮箱修改失败';
+        }
         return $data;
     }
 
@@ -541,5 +601,14 @@ class UserController extends BaseController
             $return['isvip'] = 1;
         }
         return $return;
+    }
+    /*
+     * 发送验证码
+     */
+    public function actionSendCode(){
+        $mobile = $this->getParam('mobile', "");//手机
+        $userlogic = new UserLogic();
+        $result = $userlogic->createSMScode($mobile);
+        return $result;
     }
 }

@@ -1288,6 +1288,22 @@ class UserLogic
             return $result;
         }
     }
+    /*
+     * web注册
+     */
+    public function messageRegister($data){
+        $result = [];
+        if($u = User::findOne(['mobile' => $data['mobile']])){
+            $result['message'] = $u;
+            $result['errno'] = 0;
+        }else{
+            $uid = $this->register($data);
+            $user = User::findOne(['uid' => $uid]);
+            $result['message'] = $user;
+            $result['errno'] = 0;
+        }
+        return $result;
+    }
 
     /**
      * 回复评论列表
@@ -1323,5 +1339,61 @@ class UserLogic
             }
         }
         return $data['list'];
+    }
+
+    /*
+     * 创建验证码
+     */
+    public function createSMScode($mobile){
+        $return = [];
+        $key = 'SMScode'.$mobile;//记录验证码
+        $key_time = 'SMScode_time'.$mobile;//记录创建时间
+        $redis = new RedisStore();
+        if($key_time_data = $redis->get($key_time)){
+            $return['errno'] = -1;
+            $return['msg'] = '正在发送短信，请耐心等待';
+        }else{
+            if($code = $redis->get($key)){
+                $return['errno'] = -1;
+                $return['msg'] = '短信验证码已发送，60s内不允许重复发送';
+            }else{
+                $redis->setEx($key_time, time(),60);
+                $length = SMSCODE_LENGTH;
+                $randStr = str_shuffle('1234567890');
+                $code = substr($randStr,0,$length);
+
+                $code = 123;//测试用
+                $returnId = 11122;//测试用
+//                $returnId = $this->sendSMScode($mobile,$code);
+
+                if(!empty($returnId)){
+                    $redis->setEx($key, $code,60);
+                    $return['errno'] = 0;
+                    $return['msg'] = '短信发送成功';
+                }else{
+                    $return['errno'] = -1;
+                    $return['msg'] = '短信发送失败';
+                }
+            }
+        }
+        return $return;
+    }
+
+    /*
+     * 发送短信
+     */
+    public function sendSMScode($mobile,$code){
+        $access_key = SMS_ACCESS_KEY;
+        $MessageBird = new \MessageBird\Client($access_key);
+        $Message = new \MessageBird\Objects\Message();
+        $Message->originator = 'guazitv';
+        $Message->recipients = array($mobile);
+
+//        $Message->recipients = array('+61401441376');//测试用号码
+
+        $Message->body = 'The SMS verification code is '.$code;
+        $result = $MessageBird->messages->create($Message);
+
+        return $result->getId();
     }
 }

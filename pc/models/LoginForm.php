@@ -26,7 +26,7 @@ class LoginForm extends Model
     {
         return [
             // username and password are both required
-            [['password'], 'required'],
+            [['mobile'], 'required'],
 //            ['captcha', 'captcha'],
             [['mobile'], 'string', 'max' => 11],
             [['email'], 'string', 'max' => 32],
@@ -75,11 +75,25 @@ class LoginForm extends Model
      */
     public function login()
     {
-        if ($this->validate()) {
+        if ($this->validateUser()) {
             return Yii::$app->user->login($this->getUser(), Yii::$app->user->authTimeout);
         }
 
         return false;
+    }
+
+    /*
+     * 登录校验：1.密码；2.短信验证码
+     */
+    public function validateUser(){
+        if(!$this->mobile){
+            return false;
+        }
+        if($this->flag==0){//密码登录
+            return $this->validate();
+        }else{//短信验证码登录
+            return true;
+        }
     }
 
     /**

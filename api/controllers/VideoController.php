@@ -634,9 +634,10 @@ class VideoController extends BaseController
     public function actionSearchWatchlog(){
         $uid = $this->getParam('uid', "");
         $searchword = $this->getParam('searchword', "");
+        $channel_id = $this->getParam('channel_id', "");
         $page_num = $this->getParam('page_num', 1);
         $videodao = new VideoDao();
-        $result = $videodao->finduserwatchLog($uid, $searchword,$page_num);
+        $result = $videodao->finduserwatchLog($uid, $searchword,$page_num,$channel_id);
         return $result;
     }
 

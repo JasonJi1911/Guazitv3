@@ -47,6 +47,7 @@ use Yii;
  * @property string $auth_key 认证KEY
  * @property int $fans_num 粉丝数
  * @property int $follow_num 关注数
+ * @property int $password_flag 密码是否修改标志：1-是；0-否
  * @property int $created_at 创建时间
  * @property int $updated_at 更新时间
  * @property int $deleted_at 删除时间
@@ -80,6 +81,10 @@ class User extends \xiang\db\ActiveRecord implements StatusToggleInterface, Sour
     //市场渠道
     const FROM_MARKET_NO = 0;
     const FROM_MARKET_APP = 1;
+
+    //密码修改状态
+    const PASSWORD_FLAG_NO = 0; //否
+    const PASSWORD_FLAG_YES = 1; //是
 
     /**
      * @var array 状态

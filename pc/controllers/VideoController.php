@@ -925,60 +925,82 @@ class VideoController extends BaseController
     }
 
     /*
-     * PC端手机、邮箱注册
+     * PC端手机短信验证码注册
      */
     public function actionRegister(){
-        $email = Yii::$app->request->get('email', "");
-        $mobile_areacode = Yii::$app->request->get('prefix_phone', "");
-        $mobile = Yii::$app->request->get('phone', "");
-        $password = Yii::$app->request->get('newpwd', "");
-        $question = Yii::$app->request->get('question', 0);
-        $answer = Yii::$app->request->get('answer', "");
+        $mobile_areacode = Yii::$app->request->get('mobile_areacode', "");
+        $mobile = Yii::$app->request->get('mobile', "");
+        $code = Yii::$app->request->get('code', "");
+//        $password = Yii::$app->request->get('newpwd', "");
+        $password = '111111';
 
-        $result = Yii::$app->api->get('/user/webregister',['email'=>$email, 'mobile' => $mobile,
-            'mobile_areacode'=>$mobile_areacode,'password' => $password,'question'=>$question,'answer'=>$answer]);
-        if($result['errno']==0){
-            $model = new LoginForm();
-            $model->mobile = $mobile;
-            $model->email = $email;
-            $model->password = $password;
-            if ( $model->login()) {
-                Yii::$app->cache->set('login_flag', '1');
+        $redis = new RedisStore();
+        $key = 'SMScode'.$mobile;
+        if($redis->get($key) && $redis->get($key)==$code){
+            $result = Yii::$app->api->get('/user/message-register',['mobile' => $mobile,'mobile_areacode'=>$mobile_areacode,'password'=>$password]);
+            if($result['errno']==0){
+                $model = new LoginForm();
+                $model->mobile = $mobile;
+                $model->password = $password;
+                if ( $model->login()) {
+                    Yii::$app->cache->set('login_flag', '1');
+                }
+                $uid = Yii::$app->user->id;
+                $result['uid'] = $uid;
+                $cookie1 = \Yii::$app->request->cookies;
+                $uid1=$cookie1->get("uid");
+                if(!$uid1){
+                    $cookie = new \yii\web\Cookie();
+                    $cookie -> name = 'uid';        //cookie的名称
+                    $cookie -> expire = time() + 3600*24;	   //存活的时间
+                    $cookie -> httpOnly = false;		   //无法通过js读取cookie
+                    $cookie -> value = $uid;   //cookie的值
+                    $cookie -> secure = false; //不加密
+                    \Yii::$app->response->getCookies()->add($cookie);
+                }
+                $errno = 0;
+                $msg = '操作成功';
+            }else{
+                $errno = -1;
+                $msg = '注册失败';
+                $uid = '';
             }
-            $uid = Yii::$app->user->id;
-            $result['uid'] = $uid;
-            $cookie1 = \Yii::$app->request->cookies;
-            $uid1=$cookie1->get("uid");
-            if(!$uid1){
-                $cookie = new \yii\web\Cookie();
-                $cookie -> name = 'uid';        //cookie的名称
-                $cookie -> expire = time() + 3600*24;	   //存活的时间
-                $cookie -> httpOnly = false;		   //无法通过js读取cookie
-                $cookie -> value = $uid;   //cookie的值
-                $cookie -> secure = false; //不加密
-                \Yii::$app->response->getCookies()->add($cookie);
-            }
+        }else{
+            $errno = -1;
+            $msg = '短信验证码输入错误';
+            $uid = '';
         }
-        return Tool::responseJson($result['errno'],"操作成功",$result);
+
+        return Tool::responseJson($errno,$msg,$uid);
     }
 
     /*
      * PC端用户修改密码
      */
     public function actionModifyPassword(){
-        $account = Yii::$app->request->get('account', "");//手机或邮箱
+        $mobile = Yii::$app->request->get('mobile', "");//手机
         $password = Yii::$app->request->get('newpwd', "");
-        $question = Yii::$app->request->get('question', 0);
-        $answer = Yii::$app->request->get('answer', "");
-        $is_email = Tool::isEmail($account);//验证邮箱格式
 
-        $data = Yii::$app->api->get('/user/modify-password',['account'=>$account, 'password' => $password,
-                'question'=>$question,'answer'=>$answer, 'is_email'=>$is_email]);
-        $errno = -1;
-        if(isset($data['errno'])){
-            $errno = $data['errno'];
+        $data = Yii::$app->api->get('/user/new-modify-password',['mobile'=>$mobile, 'password' => $password]);
+
+        return Tool::responseJson($data['error'], $data['msg'], $data);
+    }
+
+    /*
+     * PC端用户修改邮箱
+     */
+    public function actionModifyEmail(){
+        $mobile = Yii::$app->request->get('mobile', "");//手机
+        $email = Yii::$app->request->get('email', "");//邮箱
+//        $password = Yii::$app->request->get('newpwd', "");
+        $is_email = Tool::isEmail($email);//验证邮箱格式
+        if($is_email){
+            $data = Yii::$app->api->get('/user/modify-email',['email'=>$email, 'mobile' => $mobile]);
+        }else{
+            $data['errno'] = -1;
+            $data['msg'] = '您输入的邮箱格式不正确';
         }
-        return Tool::responseJson($errno, '提交成功', $data);
+        return Tool::responseJson($data['error'], $data['msg'], $data);
     }
 
     //个人中心
@@ -1043,7 +1065,7 @@ class VideoController extends BaseController
      */
     public function actionRemoveWatchlog(){
         $uid = Yii::$app->user->id;
-        $logId = Yii::$app->request->get('logid', "");
+        $logId = Yii::$app->request->get('logid', "");//多个id,以逗号(,)拼接
         $result = Yii::$app->api->get('/video/remove-watchlog',['uid'=>$uid,'logid'=>$logId]);
         return TOOL::responseJson(0,"操作成功",$result);
     }
@@ -1063,11 +1085,13 @@ class VideoController extends BaseController
 
     /*
      * 搜索播放记录
+     * 添加频道分类
      */
     public function actionSearchWatchlog(){
         $uid = Yii::$app->user->id;
         $searchword = Yii::$app->request->get('searchword', "");
-        $result = Yii::$app->api->get('/video/search-watchlog',['uid'=>$uid,'searchword'=>$searchword]);
+        $channel_id = Yii::$app->request->get('channel_id', "");
+        $result = Yii::$app->api->get('/video/search-watchlog',['uid'=>$uid,'searchword'=>$searchword,'channel_id'=>$channel_id]);
         if($result){
             $errno = 0;
         }else{
@@ -1420,5 +1444,39 @@ class VideoController extends BaseController
             $errno = -1;
         }
         return TOOL::responseJson($errno,"操作成功",$data);
+    }
+    /*
+     * 发送验证码
+     */
+    public function actionSendCode(){
+        $mobile = Yii::$app->request->get('mobile', "");
+        $result = Yii::$app->api->get('/user/send-code',['mobile'=>$mobile]);
+        if($result){
+            $errno = $result['errno'];
+            $msg = $result['msg'];
+        }else{
+            $errno = -1;
+            $msg = '发送失败';
+        }
+        return TOOL::responseJson($errno,$msg,$result);
+    }
+
+    /*
+     * 验证
+     */
+    public function actionValiCode(){
+        $mobile = Yii::$app->request->get('mobile', "");
+        $code = Yii::$app->request->get('code', "");
+
+        $redis = new RedisStore();
+        $key = 'SMScode'.$mobile;
+        if($redis->get($key) && $redis->get($key)==$code){
+            $errno = 0;
+            $msg = '操作成功';
+        }else{
+            $errno = -1;
+            $msg = '短信验证码输入错误';
+        }
+        return Tool::responseJson($errno,$msg,$msg);
     }
 }

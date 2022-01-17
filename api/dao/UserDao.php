@@ -290,8 +290,35 @@ class UserDao extends BaseDao
         $user = new User();
         $user->oldAttributes = User::find()->andWhere(['uid' => $uid])->asArray()->one();
         $param['password_hash'] = $password;
+        $param['password_flag'] = User::PASSWORD_FLAG_YES;
         $rows = $user->updateAttributes($param);
         return $rows;
+    }
+    /*
+     * 修改密码
+     */
+    public function modifypasswordByMobile($mobile,$password){
+        $user = new User();
+        $user->oldAttributes = User::find()->andWhere(['mobile' => $mobile])->asArray()->one();
+        $param['password_hash'] = $password;
+        $param['password_flag'] = User::PASSWORD_FLAG_YES;
+        $rows = $user->updateAttributes($param);
+        return $rows;
+    }
+
+    /*
+     * 修改邮箱
+     */
+    public function modifyemail($param){
+        if(!$param['mobile'] || !$param['email']){
+            return 0;
+        }
+        $user = new User();
+        $user->oldAttributes = User::findOne(['mobile' => $param['mobile']]);
+        $param['email'] = $param['email'];
+        $rows = $user->updateAttributes($param);
+        return $rows;
+
     }
     /*
      * PC查vip

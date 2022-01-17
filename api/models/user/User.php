@@ -36,7 +36,8 @@ class User extends \common\models\user\User
 
             'security_answer',
             'fans_num',
-            'follow_num'
+            'follow_num',
+            'password_flag'
         ];
     }
 
