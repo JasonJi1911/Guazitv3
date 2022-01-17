@@ -1355,7 +1355,8 @@ class VideoController extends BaseController
             $data['watchlog'] = $watchlog;
         }
         //收藏
-        $favorite = Yii::$app->api->get('/video/favorite-new',['uid'=>$uid]);
+//        $favorite = Yii::$app->api->get('/video/favorite-new',['uid'=>$uid]);
+        $favorite = Yii::$app->api->get('/video/favorite-pc',['uid'=>$uid]);
         if($favorite){
             $data['favorite'] = $favorite;
         }
