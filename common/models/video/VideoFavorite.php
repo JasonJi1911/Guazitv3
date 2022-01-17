@@ -10,7 +10,7 @@ use Yii;
  * @property int $id 自增id
  * @property int $uid 用户uid
  * @property int $video_id 视频系列id
- * @property int $status 状态：1收藏，2：取消收藏
+ * @property int $status 状态：1收藏，0：取消收藏
  * @property int $created_at 创建时间
  * @property int $updated_at
  * @property int $deleted_at

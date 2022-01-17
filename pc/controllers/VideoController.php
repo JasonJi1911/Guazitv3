@@ -546,11 +546,12 @@ class VideoController extends BaseController
     public function  actionHotPlay()
     {
         $pageTab = "hotplay";
+        $uid = Yii::$app->user->id;
         //获取频道信息
         $channel_id = Yii::$app->request->get('channel_id', 0);
 
         //请求首页信息
-        $data = Yii::$app->api->get('/video/index', ['channel_id' => 0]);
+        $data = Yii::$app->api->get('/video/index', ['channel_id' => 0,'uid'=>$uid]);
 
         //请求频道、搜索信息
         $channels = Yii::$app->api->get('/video/channels');

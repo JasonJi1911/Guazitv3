@@ -88,6 +88,7 @@ class VideoController extends BaseController
     {
      
         $channelId = $this->getParamOrFail('channel_id');
+        $uid = $this->getParam('uid', 0);
         
         $city = $this->getParam('city');
 
@@ -96,14 +97,14 @@ class VideoController extends BaseController
         // 获取banner数据
         $bannerFields = ['title','action', 'content', 'image','stitle'];
         $videoDao= new VideoDao();
-   
+
         $banner = $videoDao->banner($channelId, $bannerFields,$city);
         $data['banner'] = $banner;
         // $channelId == 0 时返回首页数据
-        
+
         $channelLogic = new ChannelLogic();
         if ($channelId == 0) {
-            $channelData = $channelLogic->channelIndexData($city);
+            $channelData = $channelLogic->channelIndexData($city,$uid);
         } else {
             $channelData = $channelLogic->channelLabelData($channelId,$city);
         }

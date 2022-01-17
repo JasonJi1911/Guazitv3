@@ -9,6 +9,7 @@ use api\data\ActiveDataProvider;
 use api\helpers\Common;
 use api\models\advert\AdvertPosition;
 use api\models\video\VideoChannel;
+use api\models\video\VideoFavorite;
 use yii\helpers\ArrayHelper;
 use yii;
 
@@ -21,7 +22,7 @@ class ChannelLogic
      * 频道首页数据
      * @return mixed
      */
-    public function channelIndexData($city='')
+    public function channelIndexData($city='',$uid=0)
     {
         // 首页金刚位
         $data['king_kong'] = $this->_kingKong();
@@ -87,6 +88,20 @@ class ChannelLogic
             // 推荐位频道下影片
             $recommend['list'] = $videoRecommend->recommendVideo($recommend['recommend_id'], $this->videoFields);
             $recommend['list'] = array_values($recommend['list']);//数组序号重排
+            //新增用户每个视频是否收藏，220117
+            if(!empty($recommend['list']) && $uid!=0){
+                foreach($recommend['list'] as &$list){
+                    $favorite = VideoFavorite::find()
+                        ->andWhere(['uid'=>$uid])
+                        ->andWhere(['video_id'=>$list['video_id']])
+                        ->asArray()->one();
+                    if($favorite){
+                        $list['favorite'] = $favorite['status'];//状态：1收藏，0：取消收藏
+                    }else{
+                        $list['favorite'] = VideoFavorite::STATUS_NO;
+                    }
+                }
+            }
             // 每两个推荐位插入广告
 //            if ($advert) {
 //                if ($index != 0 && $index % 2 == 0) {

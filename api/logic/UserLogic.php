@@ -1356,10 +1356,10 @@ class UserLogic
         $redis = new RedisStore();
         if($key_time_data = $redis->get($key_time)){
             $return['errno'] = -1;
-            $return['msg'] = '正在发送短信，请耐心等待';
+            $return['msg'] = '短信验证码已发送，60s内不允许重复发送';
         }else{
             if($code = $redis->get($key)){
-                $return['errno'] = -1;
+                $return['errno'] = -2;
                 $return['msg'] = '短信验证码已发送，60s内不允许重复发送';
             }else{
                 $redis->setEx($key_time, time(),60);
