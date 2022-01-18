@@ -222,11 +222,15 @@ function initialUrl($url)
     /*-----声音------*/
 
     .dplayer .dplayer-controller .dplayer-icons .dplayer-icon {
+        width: 40px;
         margin-right: 0px;
+    }
+    .dplayer .dplayer-controller .dplayer-icons .dplayer-icon {
+        width: 40px;
     }
 
     .dplayer .dplayer-controller .dplayer-icons .dplayer-icon.dplayer-volume-icon {
-        width: 48px;
+        width: 40px;
     }
     /*选集样式*/
     .palyer-js {
@@ -236,7 +240,7 @@ function initialUrl($url)
         margin: 0 5px;/*20px*/
         width: auto;/*50px*/
         height: 100%;
-        font-size: 18px;
+        font-size: 16px;
         text-align: center;
         color: rgba(255, 255, 255, 0.8);
         cursor: pointer;
@@ -496,7 +500,7 @@ function initialUrl($url)
     .BSbth {
         display: inline-block;
         padding: 8px;
-        font-size: 18px;
+        font-size: 16px;
         margin-right: 5px;
         color: #fff;
         opacity: 0.8;
@@ -508,7 +512,7 @@ function initialUrl($url)
     .BSbth:hover,
     .BSbth.act {
         opacity: 1;
-        color: #FF5722;
+        color: #FF556E;
     }
 
     .BSlist {
@@ -539,7 +543,7 @@ function initialUrl($url)
 
     .BSlist>input:hover {
         background-color: rgba(51, 51, 51, 1);
-        color: #FF5722;
+        color: #FF556E;
     }
 
     .Dplayer_box, .player_av, .box{
@@ -577,35 +581,43 @@ function initialUrl($url)
         text-align:center;
     }
     #player-load1-warn span{
-        color:#FF5722
+        color:#FF556E
     }
 
     .icon-forward:hover svg path,.icon-rewind:hover svg path {
-        fill: #FF5722;
+        fill: #FF556E;
     }
 
     .dplayer .dplayer-controller .dplayer-icons .dplayer-icon.dplayer-volume-icon:hover svg path {
-        fill: #FF5722;
+        fill: #FF556E;
     }
 
     .dplayer .dplayer-controller .dplayer-icons .dplayer-icon.dplayer-setting-icon:hover svg path {
-        fill: #FF5722;
+        fill: #FF556E;
     }
 
     .dplayer .dplayer-controller .dplayer-icons .dplayer-icon.dplayer-full-icon:hover svg path {
-        fill: #FF5722;
+        fill: #FF556E;
     }
 
     .dplayer .dplayer-controller .dplayer-icons .dplayer-full .dplayer-full-in-icon:hover svg path {
-        fill: #FF5722;
+        fill: #FF556E;
+    }
+    .dplayer .dplayer-controller .dplayer-icons .dplayer-icon.dplayer-quality-icon{
+        font-size: 16px;
     }
 
-    .dplayer .dplayer-controller .dplayer-icons .dplayer-icon.dplayer-quality-icon:hover {
+    .dplayer .dplayer-controller .dplayer-icons .dplayer-icon.dplayer-quality-icon:hover,
+    .dplayer .dplayer-controller .dplayer-icons .dplayer-icon.dplayer-quality-icon.act{
         opacity: 1;
-        color: #FF5722;
+        color: #FF556E;
+    }
+
+    .selected_quantity{
+        color: #FF556E;
     }
 </style>
-<img id="load1-img" src="/images/newindex/player_load.gif" />
+<img id="load1-img" src="/images/video/load.gif" />
 <div class="Dplayer_box">
     <div class="player_av">
         <div class="box" id="player1">
@@ -690,12 +702,11 @@ function initialUrl($url)
     var QXDvip = "<div class='QXD-vip'><div class='QXD-vip-01'>去广告.享高清</div><div class='QXD-vip-02'><a class='QXD-vip-02-a1' href='#'>开通VIP</a><a class='QXD-vip-02-a2' href='#'>金币开通</a></div></div>";
 
     //  快进快退
-    var FastF = "<div class='icon-forward'><div class='Fast-alt'>快进5秒</div><svg t='1628216546598' viewBox='0 0 1024 1024' version='1.1' xmlns='http://www.w3.org/2000/svg'><path d='M924.8 334.7c-22.5-53.1-54.6-100.8-95.6-141.8-40.9-40.9-88.6-73.1-141.8-95.6C632.4 74 574 62.2 513.8 62.2s-118.5 12-173.5 35.2C287.2 119.9 239.5 152 198.5 193c-40.9 40.9-73.1 88.6-95.6 141.8-23.3 55-35.1 113.4-35.1 173.6S79.7 627 103 682c22.5 53.1 54.6 100.8 95.6 141.8 40.9 40.9 88.6 73.1 141.8 95.6 55 23.3 113.4 35.1 173.6 35.1s118.6-11.8 173.6-35.1c53.1-22.5 100.8-54.6 141.8-95.6 40.9-40.9 73.1-88.6 95.6-141.8 23.3-55 35.1-113.4 35.1-173.6s-12-118.7-35.3-173.7zM770.9 765.3C702.2 834 611 871.8 513.9 871.8s-188.3-37.8-257-106.4c-68.6-68.6-106.4-159.9-106.4-257s37.8-188.3 106.4-257c68.6-68.6 159.9-106.4 257-106.4s188.3 37.8 257 106.4c68.6 68.6 106.4 159.9 106.4 257s-37.8 188.3-106.4 256.9z'></path><path d='M692.5 491.5l-77.7-50.9-77.7-50.9c-14.6-9.6-32.9 2.4-32.9 21.6v57.1l-42.5-27.8-77.7-50.9c-14.6-9.6-32.9 2.4-32.9 21.6l0.1 101.9 0.1 101.9c0 19.2 18.3 31.2 32.9 21.6l77.6-51 42.4-27.9v57.3c0 19.2 18.3 31.2 32.9 21.6l77.6-51 77.6-51c14.9-9.6 14.9-33.6 0.2-43.2z'></path></svg></div>";
-    var FastR = "<div class='icon-rewind'><div class='Fast-alt'>快退5秒</div><svg t='1628216546598' viewBox='0 0 1024 1024' version='1.1' xmlns='http://www.w3.org/2000/svg'><path d='M924.8 334.7c-22.5-53.1-54.6-100.8-95.6-141.8-40.9-40.9-88.6-73.1-141.8-95.6C632.4 74 574 62.2 513.8 62.2s-118.5 12-173.5 35.2C287.2 119.9 239.5 152 198.5 193c-40.9 40.9-73.1 88.6-95.6 141.8-23.3 55-35.1 113.4-35.1 173.6S79.7 627 103 682c22.5 53.1 54.6 100.8 95.6 141.8 40.9 40.9 88.6 73.1 141.8 95.6 55 23.3 113.4 35.1 173.6 35.1s118.6-11.8 173.6-35.1c53.1-22.5 100.8-54.6 141.8-95.6 40.9-40.9 73.1-88.6 95.6-141.8 23.3-55 35.1-113.4 35.1-173.6s-12-118.7-35.3-173.7zM770.9 765.3C702.2 834 611 871.8 513.9 871.8s-188.3-37.8-257-106.4c-68.6-68.6-106.4-159.9-106.4-257s37.8-188.3 106.4-257c68.6-68.6 159.9-106.4 257-106.4s188.3 37.8 257 106.4c68.6 68.6 106.4 159.9 106.4 257s-37.8 188.3-106.4 256.9z'></path><path d='M692.5 491.5l-77.7-50.9-77.7-50.9c-14.6-9.6-32.9 2.4-32.9 21.6v57.1l-42.5-27.8-77.7-50.9c-14.6-9.6-32.9 2.4-32.9 21.6l0.1 101.9 0.1 101.9c0 19.2 18.3 31.2 32.9 21.6l77.6-51 42.4-27.9v57.3c0 19.2 18.3 31.2 32.9 21.6l77.6-51 77.6-51c14.9-9.6 14.9-33.6 0.2-43.2z'></path></svg></div>";
+    // var FastF = "<div class='icon-forward'><div class='Fast-alt'>快进5秒</div><svg t='1628216546598' viewBox='0 0 1024 1024' version='1.1' xmlns='http://www.w3.org/2000/svg'><path d='M924.8 334.7c-22.5-53.1-54.6-100.8-95.6-141.8-40.9-40.9-88.6-73.1-141.8-95.6C632.4 74 574 62.2 513.8 62.2s-118.5 12-173.5 35.2C287.2 119.9 239.5 152 198.5 193c-40.9 40.9-73.1 88.6-95.6 141.8-23.3 55-35.1 113.4-35.1 173.6S79.7 627 103 682c22.5 53.1 54.6 100.8 95.6 141.8 40.9 40.9 88.6 73.1 141.8 95.6 55 23.3 113.4 35.1 173.6 35.1s118.6-11.8 173.6-35.1c53.1-22.5 100.8-54.6 141.8-95.6 40.9-40.9 73.1-88.6 95.6-141.8 23.3-55 35.1-113.4 35.1-173.6s-12-118.7-35.3-173.7zM770.9 765.3C702.2 834 611 871.8 513.9 871.8s-188.3-37.8-257-106.4c-68.6-68.6-106.4-159.9-106.4-257s37.8-188.3 106.4-257c68.6-68.6 159.9-106.4 257-106.4s188.3 37.8 257 106.4c68.6 68.6 106.4 159.9 106.4 257s-37.8 188.3-106.4 256.9z'></path><path d='M692.5 491.5l-77.7-50.9-77.7-50.9c-14.6-9.6-32.9 2.4-32.9 21.6v57.1l-42.5-27.8-77.7-50.9c-14.6-9.6-32.9 2.4-32.9 21.6l0.1 101.9 0.1 101.9c0 19.2 18.3 31.2 32.9 21.6l77.6-51 42.4-27.9v57.3c0 19.2 18.3 31.2 32.9 21.6l77.6-51 77.6-51c14.9-9.6 14.9-33.6 0.2-43.2z'></path></svg></div>";
+    // var FastR = "<div class='icon-rewind'><div class='Fast-alt'>快退5秒</div><svg t='1628216546598' viewBox='0 0 1024 1024' version='1.1' xmlns='http://www.w3.org/2000/svg'><path d='M924.8 334.7c-22.5-53.1-54.6-100.8-95.6-141.8-40.9-40.9-88.6-73.1-141.8-95.6C632.4 74 574 62.2 513.8 62.2s-118.5 12-173.5 35.2C287.2 119.9 239.5 152 198.5 193c-40.9 40.9-73.1 88.6-95.6 141.8-23.3 55-35.1 113.4-35.1 173.6S79.7 627 103 682c22.5 53.1 54.6 100.8 95.6 141.8 40.9 40.9 88.6 73.1 141.8 95.6 55 23.3 113.4 35.1 173.6 35.1s118.6-11.8 173.6-35.1c53.1-22.5 100.8-54.6 141.8-95.6 40.9-40.9 73.1-88.6 95.6-141.8 23.3-55 35.1-113.4 35.1-173.6s-12-118.7-35.3-173.7zM770.9 765.3C702.2 834 611 871.8 513.9 871.8s-188.3-37.8-257-106.4c-68.6-68.6-106.4-159.9-106.4-257s37.8-188.3 106.4-257c68.6-68.6 159.9-106.4 257-106.4s188.3 37.8 257 106.4c68.6 68.6 106.4 159.9 106.4 257s-37.8 188.3-106.4 256.9z'></path><path d='M692.5 491.5l-77.7-50.9-77.7-50.9c-14.6-9.6-32.9 2.4-32.9 21.6v57.1l-42.5-27.8-77.7-50.9c-14.6-9.6-32.9 2.4-32.9 21.6l0.1 101.9 0.1 101.9c0 19.2 18.3 31.2 32.9 21.6l77.6-51 42.4-27.9v57.3c0 19.2 18.3 31.2 32.9 21.6l77.6-51 77.6-51c14.9-9.6 14.9-33.6 0.2-43.2z'></path></svg></div>";
 
     //  倍速
     var BSbox = "<div class='BSbox'><div class='BSbth'>倍速</div><div class='BSlist'><input type='button' value='0.5' /><input type='button' value='0.75' /><input type='button' value='正常' /><input type='button' value='1.25' /><input type='button' value='1.5' /></div></div>";
-
     let dp1;
     //空格键切换播放暂停状态
     $(document).keyup(function(e){
@@ -721,12 +732,12 @@ function initialUrl($url)
     function initialPlayer(e) {
         dp1 = new DPlayer({
             element: document.getElementById('player1'),
-            theme: '#FF5722',
+            theme: '#FF556E',
             loop: false,
             lang: 'zh-cn',
             hotkey: true,
             preload: 'auto',
-            logo: '/MyPlayer/img/logo.png',
+            // logo: '/MyPlayer/img/logo.png',
             volume: 0.7,
             autoplay: true,
             playbackSpeed: [0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3, 5, 7.5, 10],
@@ -737,11 +748,12 @@ function initialUrl($url)
         $("#player1").append(txt2, txt6);
         $("#player1 .palyer-js-alt").append(txt3, txt4);
         $("#player1 .player-tab-Box").append(txt5);
-        $("#player1 .dplayer-icon.dplayer-play-icon").after(FastR ,FastF);
+        // $("#player1 .dplayer-icon.dplayer-play-icon").after(FastR ,FastF);
         $("#player1 .dplayer-quality").before(BSbox);
+        $("#player1 .dplayer-quality-icon").text('播放路线');
 
         //清晰度列表内生成VIP广告
-        $("#player1 .dplayer-quality-list").prepend(QXDvip);
+        // $("#player1 .dplayer-quality-list").prepend(QXDvip);
 
         //清晰度带vip标识    紧紧演示  可删除
         // $("#player1 .dplayer-quality-item").addClass("QXDvip");
@@ -784,7 +796,7 @@ function initialUrl($url)
         // $('.dplayer-video-wrap').trigger('click');
         // dp1.play();
 
-        var strtext = "<div id='player-load1-warn'>如果卡顿，可以通过<span>清晰度</span>切换到其他线路</div>";
+        var strtext = "<div id='player-load1-warn'>如果卡顿，可以通过<span>播放路线</span>切换到其他线路</div>";
         $("#player1").prepend(strtext);
         setTimeout(function(){
             $("#player-load1-warn").hide();
@@ -815,7 +827,7 @@ function initialUrl($url)
                         dp1.switchQuality(index);
                     }else{
                         //不是，弹框提示
-                        $("#mvip-title").text("您可在清晰度那里，选择其他免费线路");
+                        $("#mvip-title").text("您可在播放路线那里，选择其他免费线路");
                         $("#altvip").show();
                         return false;
                     }
@@ -931,7 +943,6 @@ function initialUrl($url)
         $("#player1 .BSbth").toggleClass("act");
         $("#player1 .BSlist").toggleClass("act");
     });
-
 </script>
 <script>
     $(document).ready(function () {
@@ -1015,12 +1026,12 @@ function initialUrl($url)
     function advertinfo(advert,qualitystr){
         var dp = new DPlayer({
             element: document.getElementById('player1'),
-            theme: '#FF5722',
+            theme: '#FF556E',
             loop: false,
             lang: 'zh-cn',
             hotkey: true,
             preload: 'auto',
-            logo: '/MyPlayer/img/logo.png',
+            // logo: '/MyPlayer/img/logo.png',
             volume: 0.7,
             autoplay: false,
             playbackSpeed: [0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3, 5, 7.5, 10],

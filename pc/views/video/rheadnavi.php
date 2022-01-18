@@ -22,222 +22,63 @@ use yii\helpers\Url;
         $(".XX-tabA>li").click(function() {
             var tabNum = $(this).index();
             $(this).addClass("tabA").siblings().removeClass("tabA");
+            $(this).find(".LSmenu-line").addClass("act");
+            $(this).siblings().find(".LSmenu-line").removeClass("act");
             $(".XX-tabBox>div").eq(tabNum).addClass("tabBox").siblings().removeClass("tabBox");
         });
     });
 </script>
 <input type="hidden" id="login_id" value="<?=$data['main_uid']?>" />
-<!--升级vip-->
-<?php if($data['isvip']!=1){
-    $vip_display = "";
-}else{
-    $vip_display = "display:none;";
-}?>
-<div id="vipbtn" class="navTopBtn " style="<?=$vip_display?>">
-    <div class="navTopBtnImg">
-        &nbsp;
-    </div>
-    <div class="navTopBtnName">
-        升级VIP
-    </div>
-    <!--登录显示-->
-    <div class="VIPHui" style="display: none;">
-        惠
-    </div>
-    <!--菜单-->
-    <ul class="VIPmenuBOX " name="zt" style="display: none;">
-        <li class="VIPmenuBOX-li">
-            <div class="VIPmenuBOX-liText">
-                还不是VIP？会员
-            </div>
-            <div class="VIPmenuBOX-liBtn">
-                <input type="button"  value="立即开通" />
-            </div>
-        </li>
-        <li class="VIPmenuBOX-A " name="zt">
-            <a href="javascript:;">
-                <img src="/images/newindex/adguanggao.png" /> 过滤广告
-            </a>
-        </li>
-        <li class="VIPmenuBOX-A " name="zt">
-            <a href="javascript:;">
-                <img src="/images/newindex/hdchaoqing.png" /> 观看超清视频
-            </a>
-        </li>
-        <li class="VIPmenuBOX-A " name="zt">
-            <a href="javascript:;">
-                <img src="/images/newindex/xiazai.png" /> 下载视频
-            </a>
-        </li>
-        <li class="VIPmenuBOX-A " name="zt">
-            <a href="javascript:;">
-                <img src="/images/newindex/pianku.png" /> 求片
-            </a>
-        </li>
-        <li class="VIPmenuBOX-A " name="zt">
-            <a href="javascript:;">
-                <img src="/images/newindex/Vipbiaoshi.png" /> 尊贵身份标识
-            </a>
-        </li>
-        <!--登录后显示-->
-        <div class="LSmenuBottom">
-            <div class="LSmenuBottom-rg">
-                <a href="javascript:;">前往会员专区&nbsp;》</a>
-            </div>
-        </div>
-    </ul>
-</div>
-<!--福利-->
-<div class="navTopBtn" onclick="showwarning();">
-    <div class="navTopBtnImg">
-        &nbsp;
-    </div>
-    <div class="navTopBtnName">
-        福利
-    </div>
-    <div class="VIPmenuTop " name="zt">
-        &nbsp;
-    </div>
-    <!--菜单-->
-    <ul class="FLmenuBox " name="zt" style="display: none;">
-        <li class="FLmenuBox-li">
-            <a href="javascript:;">
-                <div class="FLmenuBox-liImg">
-                    <img src="/images/newindex/qiandao.png" />
-                </div>
-                <div class="FLmenuBox-liText">
-                    每日签到
-                </div>
-            </a>
-        </li>
-        <li class="FLmenuBox-li">
-            <a href="javascript:;">
-                <div class="FLmenuBox-liImg">
-                    <img src="/images/newindex/renwu.png" />
-                </div>
-                <div class="FLmenuBox-liText">
-                    日常任务
-                </div>
-            </a>
-        </li>
-    </ul>
-</div>
-<!--上传-->
-<div class="navTopBtn" onclick="showwarning();">
-    <div class="navTopBtnImg">
-        &nbsp;
-    </div>
-    <div class="navTopBtnName">
-        上传
-    </div>
-    <div class="VIPmenuTop " name="zt">
-        &nbsp;
-    </div>
-    <!--菜单-->
-    <ul class="FLmenuBox " name="zt" style="display: none;">
-        <li class="FLmenuBox-li">
-            <a href="javascript:;">
-                <div class="FLmenuBox-liImg">
-                    <img src="/images/newindex/Sdianying.png" />
-                </div>
-                <div class="FLmenuBox-liText">
-                    上传视频
-                </div>
-            </a>
-        </li>
-        <li class="FLmenuBox-li">
-            <a href="javascript:;">
-                <div class="FLmenuBox-liImg">
-                    <img src="/images/newindex/Sjuji.png" />
-                </div>
-                <div class="FLmenuBox-liText">
-                    上传剧集
-                </div>
-            </a>
-        </li>
-    </ul>
-</div>
-<!--观看历史-->
+<!--观看历史/收藏-->
 <div class="navTopBtn">
     <div class="navTopBtnImg">
-        &nbsp;
-    </div>
-    <div class="navTopBtnName">
-        观看历史
-    </div>
-    <div class="VIPmenuTop " name="zt">
-        &nbsp;
-    </div>
-    <!--菜单-->
-    <div class="LSmenuBox ls-div" name="zt" id="LSmenuBox_div">
-        <?php if(!$data['watchlog']):?>
-            <!--无记录   显示-->
-            <div class="LSmenu-No">暂无历史</div>
-        <?php else :?>
-            <!--有记录显示-->
-            <ul class="LSmenu " name="zt">
-                <?php foreach ($data['watchlog'] as $watchlist):?>
-                    <?php foreach ($watchlist['list'] as $watchlog):?>
-                        <li>
-                            <a href="<?= Url::to(['detail', 'video_id' => $watchlog['video_id']])?>">
-                                <div><?=$watchlog['title']?></div>
-                                <div><?=$watchlog['chapter_title']?></div>
-                                <div>
-                                    <span><?=$watchlog['time_diff']?></span>
-                                    <!--<span>天前</span>-->
-                                </div>
-                            </a>
-                        </li>
-                    <?php endforeach;?>
-                <?php endforeach;?>
-            </ul>
-            <div class="LSmenuBottom" style="<?=$data['login_show']?>">
-                <div class="LSmenuBottom-lf" onclick="removetab('watchlog');">
-                    &nbsp;
-                </div>
-                <div class="LSmenuBottom-rg">
-                    <a href="<?= Url::to(['/video/personal', 'ptab' => 'watchlog'])?>">查看更多&nbsp;》</a>
-                </div>
-            </div>
-        <?php endif;?>
-    </div>
-</div>
-<!--通知-->
-<div class="navTopBtn">
-    <div class="navTopBtnImg">
-        &nbsp;
-    </div>
-    <div class="navTopBtnName">
-        通知
-    </div>
-    <div class="VIPmenuTop " name="zt">
         &nbsp;
     </div>
     <!--登录显示-->
     <div class="LSmenuBox lf " name="zt" style="<?=$data['login_show']?>">
         <ul class="XX-tabA " name="zt">
-            <li class="tabA">消息</li>
-            <li>关注&收藏</li>
+            <li class="tabA">
+                <p>观看记录</p>
+                <p class="LSmenu-line act"></p>
+            </li>
+            <li>
+                <p>我的收藏<p>
+                <p class="LSmenu-line"></p>
+            </li>
         </ul>
         <div class="XX-tabBox">
-            <div id="XX-tabBox-message" class="tabBox">
-                <?php if(!$data['message']):?>
+            <div class="tabBox" name="zt" id="LSmenuBox_div">
+                <?php if(!$data['watchlog']):?>
+                    <!--无记录   显示-->
                     <div class="LSmenu-No">暂无历史</div>
-                <?php else:?>
-                    <?php foreach ($data['message'] as $m):?>
-                        <a class="XX-a" href="<?= Url::to(['/video/personal', 'ptab' => 'message'])?>" >
-                            <div class="XX-adiv">
-                                <div><?=$m['content']?></div>
-                                <div><?=$m['time_diff']?></div>
-                            </div>
-                        </a>
-                    <?php endforeach;?>
-                    <div class="LSmenuBottom">
-                        <div class="LSmenuBottom-lf" onclick="removetab('message');">
-                            &nbsp;
+                <?php else :?>
+                    <!--有记录显示-->
+                    <ul class="LSmenu " name="zt">
+                        <?php $i=0;?>
+                        <?php foreach ($data['watchlog'] as $watchlist):?>
+                            <?php foreach ($watchlist['list'] as $watchlog):?>
+                                <?php $i++;?>
+                                <?php if($i<6):?>
+                                <li>
+                                    <a href="<?= Url::to(['detail', 'video_id' => $watchlog['video_id']])?>">
+                                        <div><?=$watchlog['title']?>&nbsp;&nbsp;<?php if($watchlog['chapter_title']):?>第<?=$watchlog['chapter_title']?>集<?php endif;?></div>
+                                        <div>观看至<?=$watchlog['watch_percent']?>%</div>
+                                        <div>
+                                            <span><?=$watchlog['time_diff']?></span>
+                                            <!--<span>天前</span>-->
+                                        </div>
+                                    </a>
+                                </li>
+                                <?php endif;?>
+                            <?php endforeach;?>
+                        <?php endforeach;?>
+                    </ul>
+                    <div class="LSmenuBottom" style="<?=$data['login_show']?>">
+                        <div class="LSmenuBottom-lf" onclick="removetab('watchlog');">
+                            &nbsp;清除历史
                         </div>
                         <div class="LSmenuBottom-rg">
-                            <a href="<?= Url::to(['/video/personal', 'ptab' => 'message'])?>">更多&nbsp;》</a>
+                            <a href="<?= Url::to(['/video/personal', 'ptab' => 'watchlog'])?>">查看更多&nbsp;》</a>
                         </div>
                     </div>
                 <?php endif;?>
@@ -246,45 +87,50 @@ use yii\helpers\Url;
                 <?php if(!$data['favorite']):?>
                     <div class="LSmenu-No">暂无历史</div>
                 <?php else:?>
-                    <?php foreach ($data['favorite'] as $f):?>
-                        <a class="XX-a" href="<?= Url::to(['detail', 'video_id' => $f['video_id']])?>" >
-                            <div class="XX-adiv">
-                                <?php $favoStr = '';
-                                if($f['type']=='favorite'){
-                                    $favoStr = "您收藏的<span> 《".$f['video_name']."》 </span>已更新至 <span>".$f['chapter_title']."</span>";
-                                }//关注消息等上传视频后再加
-                                ?>
-                                <div><?=$favoStr?></div>
-                                <div><?=$f['time_diff']?></div>
-                            </div>
-                        </a>
+                    <ul class="LSmenu " name="zt">
+                    <?php foreach ($data['favorite'] as $key=>$f):?>
+                        <?php if($key < 5):?>
+<!--                        <a class="XX-a" href="--><?//= Url::to(['detail', 'video_id' => $f['video_id']])?><!--" >-->
+<!--                            <div class="XX-adiv">-->
+<!--                                --><?php //$favoStr = '';
+//                                if($f['type']=='favorite'){
+//                                    $favoStr = "您收藏的<span> 《".$f['video_name']."》 </span>已更新至 <span>".$f['chapter_title']."</span>";
+//                                }//关注消息等上传视频后再加
+//                                ?>
+<!--                                <div>--><?//=$favoStr?><!--</div>-->
+<!--                                <div>--><?//=$f['time_diff']?><!--</div>-->
+<!--                            </div>-->
+<!--                        </a>-->
+                        <li>
+                            <a href="<?= Url::to(['detail', 'video_id' => $f['video_id']])?>">
+                                <div><?=$f['video_name']?>&nbsp;&nbsp</div>
+                                <div><?=$f['is_finished']==1? '完结' : '更新中' ?></div>
+                                <div>
+                                    <span><?=$f['flag']?></span>
+                                    <!--<span>天前</span>-->
+                                </div>
+                            </a>
+                        </li>
+                        <?php endif;?>
                     <?php endforeach;?>
+                    </ul>
                     <div class="LSmenuBottom">
                         <div class="LSmenuBottom-lf" onclick="removetab('favorite');">
-                            &nbsp;
+                            &nbsp;清除历史
                         </div>
                         <div class="LSmenuBottom-rg">
-                            <a href="<?= Url::to(['/video/personal', 'ptab' => 'favorite'])?>">更多&nbsp;》</a>
+                            <a href="<?= Url::to(['/video/personal', 'ptab' => 'favorite'])?>">查看更多&nbsp;》</a>
                         </div>
                     </div>
                 <?php endif;?>
             </div>
         </div>
-
-<!--        <div class="LSmenuBottom">-->
-<!--            <div class="LSmenuBottom-lf">-->
-<!--                &nbsp;-->
-<!--            </div>-->
-<!--            <div class="LSmenuBottom-rg">-->
-<!--                <a href="javascript:;">更多&nbsp;》</a>-->
-<!--            </div>-->
-<!--        </div>-->
     </div>
 </div>
 <!--未登录显示-->
 <div class="navTopLogon" id="notloggedin" style="<?=$data['notlogin_show']?>">
     <div class="navTopLogonImg-no">
-        <img src="/images/newindex/logon.png" />
+        <img src="/images/Index/user.png" />
     </div>
     <div class="navTopLogonName " name="zt">
         登录
@@ -297,127 +143,74 @@ use yii\helpers\Url;
         if($data['user']['avatar']==1){
             $avatar = $data['user']['avatar'];
         }else{
-            $avatar = '/images/newindex/logon.png';
+            $avatar = '/images/Index/user_c.png';
         }?>
-        <img id="user_headimg" src="<?=$avatar?>" onerror="javascript:this.src='/images/newindex/logon.png';" />
+        <img id="user_headimg" src="<?=$avatar?>" onerror="javascript:this.src='/images/Index/user_c.png';" />
+    </div>
+    <div class="navTopLogonName " name="zt">
+<!--        --><?//=$data['user']['nickname'];?>
+        瓜子用户
     </div>
     <div class="navTopLogon-GRXX " name="zt">
-        <div class="navTopLogon-GRXX-box">
-            <ul class="navTopLogon-box01">
-                <li class="navTopLogon-name" id="user_name"><?=$data['user']['nickname']?></li>
-                <?php $gender = '';
-                if($data['user']['gender']==1){
-                    $gender = '<img src="/images/newindex/nv.png" />';
-                }else if($data['user']['gender']==2){
-                    $gender = '<img src="/images/newindex/nan.png" />';
-                }?>
-                <li class="navTopLogon-Gender"><?=$gender?></li>
-            </ul>
-            <ul class="navTopLogon-box02">
-                <li class="navTopLogon-icon01"><img src="/images/newindex/jinbi.png" /></li>
-                <li class="navTopLogon-text" class="user_score">0</li>
-                <?php if($data['isvip']!=1){
-                    $vipstr = "还不是vip会员";
-                }else{
-                    $vipstr = "";
-                }?>
-                <li class="navTopLogon-text" id="user_isvip"><?=$vipstr?></li>
-                <li class="navTopLogon-rank">LV.<span id="user_grade">1</span></li>
-                <!--<li class="navTopLogon-icon01"><img src="/images/newindex/shangsheng.png" /></li>
-                <li class="navTopLogon-Progress">
-                    <div>
-                        <div class="Progress">&nbsp;</div>
-                    </div>
-                </li>
-                <li class="navTopLogon-experience">
-                    <span class="user_score">76</span>/<span id="user_allscore">200</span>
-                </li>-->
-            </ul>
-        </div>
         <ul class="navTopLogon-box03">
             <li>
-                <a class="navTopLogon-A" href="<?= Url::to(['/video/personal'])?>">个人中心</a>                        </li>
-            <li><input class="navTopLogon-btn" type="" name="" id="logout" value="退出" /></li>
+                <a class="navTopLogon-A" href="<?= Url::to(['/video/personal'])?>">个人中心</a></li>
+            <li><span class="navTopLogon-btn" id="logout">退出登录</span></li>
         </ul>
     </div>
 </div>
 <script>
-//初始化验证码
-var verifyCode = new GVerify({
-    id : "picyzm",
-    type : "blend"
-});
 $(function(){
-    //刷新验证码
-    $("#v_refresh").click(function(){
-        verifyCode.refresh();
-    });
     //未登录状态-登录
     $("#notloggedin").click(function(){
         showloggedin();
     });
-    //提交登录
+    //账号密码登录
     $("#login_submit").click(function(){
-        $(this).addClass("login-loading");
         var account = $("#login_account").val();
+        var prefix_phone = $("#login_prefix_phone").attr('data');
         var pwd = $("#login_pwd").val();
-        var yzm = verifyCode.validate($("#login_yzm").val());
         var tab = true;
         var arrIndex = {};
         if(account==""){
             $("#login_account").parent().addClass("wor");
-            $(".alt-title").text("账号不能为空");
-            $("#alt05").show();
-            verifyCode.refresh();
+            $(".J_login_warning").text("账号不能为空");
+            $(".J_login_warning").show();
             tab = false;
             $("#login_submit").removeClass("login-loading");
             return false;
         }else{
             var ismobile = isMobilePhone(account);
-            var isemail = isEmail(account);
-            if(!ismobile && !isemail){
+            if(!ismobile){
                 $("#login_account").parent().addClass("wor");
-                $(".alt-title").text("账号格式错误");
-                $("#alt05").show();
-                verifyCode.refresh();
+                $(".J_login_warning").text("账号格式错误");
+                $(".J_login_warning").show();
                 tab = false;
-                $("#login_submit").removeClass("login-loading");
                 return false;
             }else{
-                arrIndex['account'] = account;
+                arrIndex['mobile'] = account;
+                arrIndex['mobile_areacode'] = prefix_phone;
             }
         }
         if(pwd==""){
             $("#login_pwd").parent().addClass("wor");
-            $(".alt-title").text("密码不能为空");
-            $("#alt05").show();
-            verifyCode.refresh();
+            $(".J_login_warning").text("密码不能为空");
+            $(".J_login_warning").show();
             tab = false;
-            $("#login_submit").removeClass("login-loading");
             return false;
         }else{
             arrIndex['password'] = pwd;
         }
-        if(!yzm) {
-            //验证不通过
-            $("#login_yzm").parent().addClass("wor");
-            $(".alt-title").text("验证码错误");
-            $("#alt05").show();
-            verifyCode.refresh();
-            tab = false;
-            $("#login_submit").removeClass("login-loading");
-            return false;
-        }
         if(!$("#xy").hasClass("act")){
-            $(".alt-title").text("请阅读并同意《用户协议》");
-            $("#alt05").show();
-            verifyCode.refresh();
+            $(".J_login_warning").text("请阅读并同意《用户协议》和《隐私政策》");
+            $(".J_login_warning").show();
             tab = false;
-            $("#login_submit").removeClass("login-loading");
             return false;
         }
         if(tab){
-            $.get('/site/login',arrIndex,function(res){
+            arrIndex['flag'] = 0;//flag: 0-密码；1-短信验证码
+            console.log(arrIndex);
+            $.get('/site/new-login',arrIndex,function(res){
                 // console.log(res);
                 $("#login_submit").removeClass("login-loading");
                 if(res.errno==0 && res.data){
@@ -427,103 +220,210 @@ $(function(){
                         saveuser(res.data,zd);
                     }
                     location.reload();
-                    // showlogin(res.data);
-                    // $("#login_id").val(res.data.uid);
-                    // $("#alt01").hide();
                 }else{
                     $("#login_account").parent().addClass("wor");
                     $("#login_pwd").parent().addClass("wor");
-                    $(".alt-title").text("账号或密码错误");
-                    $("#alt05").show();
-                    verifyCode.refresh();
+                    $(".J_login_warning").text("账号或密码错误");
+                    $(".J_login_warning").show();
+                }
+            });
+        }
+    });
+    //发送短信验证码
+    $('.J_sms_code').click(function(){
+        sendyzm($(this));
+    });
+    //用ajax提交到后台的发送短信接口
+    function sendyzm(obj){
+        var prefix_phone = $(obj).parent().siblings('.J_tel').find('.J_prefix_phone').attr('data');
+        var account = $(obj).parent().siblings('.J_tel').find('.J_account').val();
+        var send_source = $(obj).attr('source');
+        var tab = true;
+        var arrIndex = {};
+        if(account==""){
+            $(obj).parent().siblings('.J_tel').addClass("wor");
+            $(obj).parent().siblings(".loginTip").text("账号不能为空");
+            $(obj).parent().siblings(".loginTip").show();
+            tab = false;
+            return false;
+        }else{
+            var ismobile = isMobilePhone(account);
+            if(!ismobile){
+                $(obj).parent().siblings('.J_tel').addClass("wor");
+                $(obj).parent().siblings(".loginTip").text("账号格式错误");
+                $(obj).parent().siblings(".loginTip").show();
+                tab = false;
+                return false;
+            }
+        }
+        if(tab) {
+            arrIndex['mobile_areacode'] = prefix_phone;
+            arrIndex['mobile'] = account;
+            console.log('发送短信验证码参数---',arrIndex);
+            $.get('/video/send-code', arrIndex, function(res) {
+                console.log('发送短信验证码结果---',res);
+                if(res.errno==0){
+                    //注册成功,页面刷新
+                    var zd = $("#zd").hasClass("act")? 1:0;
+                    if(!isNaN(res.data.uid) && res.data.uid!=""){
+                        saveuser(res.data.uid,zd);
+                    }
+                    setTime(obj,send_source);//开始倒计时
+                }else{
+                    var mes = "";
+                    if(res.data!=''){
+                        mes = res.data.message;
+                    }else{
+                        mes = '发送失败';
+                    }
+                    $(obj).parent().addClass("wor");
+                    $(obj).parent().siblings(".loginTip").text(mes);
+                    $(obj).parent().siblings(".loginTip").show();
+                }
+            });
+        }
+    }
+
+    //60s倒计时实现逻辑
+    var countdown = 60;
+    var countdown1 = 60;
+    function setTime(obj,send_source) {
+        if(send_source == 'sms'){
+            var timer = setInterval(function(){
+                obj.prop('disabled', true);
+                obj.val(countdown+"s") ;
+                countdown--;
+                if (countdown==0){
+                    countdown = 60;
+                    obj.prop('disabled', false);
+                    obj.val("获取验证码");
+                    clearInterval(timer);
+                }
+            },1000);
+        }
+        if(send_source == 'reg'){
+            var timer1 = setInterval(function(){
+                obj.prop('disabled', true);
+                obj.val(countdown1+"s") ;
+                countdown1--;
+                if (countdown1==0){
+                    countdown1 = 60;
+                    obj.prop('disabled', false);
+                    obj.val("获取验证码");
+                    clearInterval(timer1);
+                }
+            },1000);
+        }
+    }
+    //验证码登录
+    $("#login_sms_submit").click(function(){
+        var account = $("#login_sms_account").val();
+        var prefix_phone = $('#sms_prefix_phone').attr('data');
+        var code = $("#smscode").val();
+        var tab = true;
+        var arrIndex = {};
+        if(account==""){
+            $("#login_sms_account").parent().addClass("wor");
+            $(".J_login_warning1").text("账号不能为空");
+            $(".J_login_warning1").show();
+            tab = false;
+            return false;
+        }else{
+            var ismobile = isMobilePhone(account);
+            if(!ismobile){
+                $("#login_sms_account").parent().addClass("wor");
+                $(".J_login_warning1").text("账号格式错误");
+                $(".J_login_warning1").show();
+                tab = false;
+                return false;
+            }else{
+                arrIndex['mobile'] = account;
+                arrIndex['mobile_areacode'] = prefix_phone;
+            }
+        }
+        if(code==""){
+            $("#smscode").parent().addClass("wor");
+            $(".J_login_warning1").text("验证码不能为空");
+            $(".J_login_warning1").show();
+            tab = false;
+            return false;
+        }else{
+            arrIndex['code'] = code;
+        }
+        if(!$("#xy").hasClass("act")){
+            $(".J_login_warning1").text("请阅读并同意《用户协议》和《隐私政策》");
+            $(".J_login_warning1").show();
+            tab = false;
+            return false;
+        }
+        if(tab){
+            arrIndex['flag'] = 1;//flag: 0-密码；1-短信验证码
+            console.log('短信登录参数---',arrIndex);
+            $.get('/site/new-login',arrIndex,function(res){
+                // console.log(res);
+                console.log('短信登录结果---',res);
+                // $("#login_submit").removeClass("login-loading");
+                if(res.errno==0 && res.data){
+                    //登陆成功,页面刷新
+                    var zd = $("#zd").hasClass("act")? 1:0;
+                    if(!isNaN(res.data) && res.data!=""){
+                        saveuser(res.data,zd);
+                    }
+                    location.reload();
+                }else{
+                    $("#login_sms_account").parent().addClass("wor");
+                    $("#smscode").parent().addClass("wor");
+                    $(".J_login_warning1").text("账号或验证码错误");
+                    $(".J_login_warning1").show();
                 }
             });
         }
     });
     //提交注册
     $("#reg_submit").click(function(){
-        $(this).addClass("login-loading");
-        var email = $("#reg_email").val();
-        var prefix_phone = $("#reg_prefix_phone").val();
-        var phone = $("#reg_phone").val();
-        var newpwd = $("#reg_newpwd").val();
-        var question = $("#reg_question").val();
-        var answer = $("#reg_answer").val();
+        var prefix_phone = $("#reg_prefix_phone").attr("data");
+        var phone = $("#reg_account").val();
+        var code = $("#reg_smscode").val();
         var tab = true;
         var arrIndex = {};
-        if(email==""){
-            $("#reg_email").parent().addClass("wor");
-            $(".alt-title").text("邮箱不能为空");
-            $("#alt05").show();
-            tab = false;
-            $("#reg_submit").removeClass("login-loading");
-            return false;
-        }else{
-            var isemail = isEmail(email);
-            if(!isemail){
-                $("#reg_email").parent().addClass("wor");
-                $(".alt-title").text("邮箱格式错误");
-                $("#alt05").show();
-                tab = false;
-                $("#reg_submit").removeClass("login-loading");
-                return false;
-            }else{
-                arrIndex['email'] = email;
-            }
-        }
         if(phone==""){
-            $("#reg_phone").parent().addClass("wor");
-            $(".alt-title").text("手机号不能为空");
-            $("#alt05").show();
+            $("#reg_account").parent().addClass("wor");
+            $(".J_login_warning2").text("手机号不能为空");
+            $(".J_login_warning2").show();
             tab = false;
-            $("#reg_submit").removeClass("login-loading");
             return false;
         }else{
             var ismobile = isMobilePhone(phone);
             if(!ismobile){
-                $("#reg_phone").parent().addClass("wor");
-                $(".alt-title").text("手机号格式错误");
-                $("#alt05").show();
+                $("#reg_account").parent().addClass("wor");
+                $(".J_login_warning2").text("手机号格式错误");
+                $(".J_login_warning2").show();
                 tab = false;
-                $("#reg_submit").removeClass("login-loading");
                 return false;
             }else{
-                arrIndex['prefix_phone'] = prefix_phone;
-                arrIndex['phone'] = phone;
+                arrIndex['mobile_areacode'] = prefix_phone;
+                arrIndex['mobile'] = phone;
             }
         }
-        if(newpwd==""){
-            $("#reg_newpwd").parent().addClass("wor");
-            $(".alt-title").text("新密码不能为空");
-            $("#alt05").show();
+        if(code==""){
+            $("#reg_smscode").parent().addClass("wor");
+            $(".J_login_warning2").text("验证码不能为空");
+            $(".J_login_warning2").show();
             tab = false;
-            $("#reg_submit").removeClass("login-loading");
             return false;
         }else{
-            arrIndex['newpwd'] = newpwd;
-        }
-        if(answer==""){
-            $("#reg_answer").parent().addClass("wor");
-            $(".alt-title").text("密保答案不能为空");
-            $("#alt05").show();
-            tab = false;
-            $("#reg_submit").removeClass("login-loading");
-            return false;
-        }else{
-            arrIndex['question'] = question;
-            arrIndex['answer'] = answer;
+            arrIndex['code'] = code;
         }
         if(!$("#xy").hasClass("act")){
-            $(".alt-title").text("请阅读并同意《用户协议》");
-            $("#alt05").show();
+            $(".J_login_warning2").text("请阅读并同意《用户协议》和《隐私政策》");
+            $(".J_login_warning2").show();
             tab = false;
-            $("#reg_submit").removeClass("login-loading");
             return false;
         }
         if(tab){
+            console.log('注册接口参数------',arrIndex);
             $.get('/video/register', arrIndex, function(res) {
-                //console.log(res);
-                $("#reg_submit").removeClass("login-loading");
+                console.log('注册接口------',res);
                 if(res.errno==0){
                     //注册成功,页面刷新
                     var zd = $("#zd").hasClass("act")? 1:0;
@@ -531,11 +431,6 @@ $(function(){
                         saveuser(res.data.uid,zd);
                     }
                     location.reload();
-                    // showlogin(res.data);
-                    // $("#login_id").val(res.data.uid);
-                    // $("#alt01").hide();
-                    // $(".alt-title").text("注册成功");
-                    // $("#alt05").show();
                 }else{
                     var mes = "";
                     if(res.data!=''){
@@ -543,10 +438,10 @@ $(function(){
                     }else{
                         mes = '注册失败';
                     }
-                    $("#login_account").parent().addClass("wor");
-                    $("#login_pwd").parent().addClass("wor");
-                    $(".alt-title").text(mes);
-                    $("#alt05").show();
+                    $("#reg_account").parent().addClass("wor");
+                    $("#reg_smscode").parent().addClass("wor");
+                    $(".J_login_warning2").text(mes);
+                    $(".J_login_warning2").show();
                 }
             });
         }
@@ -554,6 +449,7 @@ $(function(){
     //登录状态-退出
     $("#logout").click(function(){
         $.get('/site/logout', {}, function(res) {
+            console.log(res);
             if(res.errno==0){
                 $("#login_id").val("");
                 $("#notloggedin").show();
@@ -563,16 +459,6 @@ $(function(){
             }
         });
         return false;
-    });
-    //升级vip
-    $("#vipbtn").click(function(){
-        var uid = finduser();
-        if(!isNaN(uid) && uid!=""){
-            $("#mvip-title").text("您还不是vip呦！赶紧联系客服吧");
-            $("#altvip").show();
-        }else{//弹框登录
-            showloggedin();
-        }
     });
     $("#loggedin").click(function(){
         window.location.href="/video/personal";

@@ -110,13 +110,13 @@ $(document).ready(function() {
 //存用户
 function saveuser(uid,zd){
     //设置是否自动登录
-    if(zd==1 || zd=="1"){
+    // if(zd==1 || zd=="1"){
         //是自动
         // setCookie("zd","1",7);
         setCookie("uid",uid,1);
-    }else{
-        document.cookie="uid="+uid;
-    }
+    // }else{
+    //     document.cookie="uid="+uid;
+    // }
     // if(window.localStorage.hasOwnProperty("user")){
     //     window.localStorage.removeItem("user");
     // }
@@ -211,3 +211,10 @@ function ztBlack(){
         $("[name='zt']").removeClass("ZT-black");
     }
 }
+
+//弹层隐藏
+$(document).ready(function() {
+    $("#pop-tip").click(function(){
+        $("#pop-tip").hide();
+    });
+});

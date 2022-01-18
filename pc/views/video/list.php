@@ -141,7 +141,7 @@ $(function(){
                 content += '</ul></div>';
             }
         }        
-        $('.conditionBox').html(content);
+        $('.box01-search').html(content);
     }
     
     //刷新影片内容
@@ -175,7 +175,7 @@ $(function(){
             content += "<li class='Movie-list'>"+
                             "<a class='Movie' href='/video/detail?video_id="+data[i]['video_id']+ "' >"+
                                 "<img class='Movie-img i_background_errorimg' src='"+data[i]['cover']+"' />" +
-                                "<div class='oth-time'>"+data[i]['score']+"</div>"+
+                                // "<div class='oth-time'>"+data[i]['score']+"</div>"+
                                 "<div class='palyBtn'><img src='/images/newindex/bofang.png' /></div>" +
                                 "<div class='Movie-details' name='zt'>" +
                                     "<div class='Movie-name01' name='zt'>"+data[i]['video_name']+"</div>" +
@@ -234,52 +234,46 @@ $this->registerJs($js);
 <!--筛选条件-->
 <div class="box01" name="zt">
     <div class="conditionBox" name="zt">
-        <!--类型选择-->
-        <?php foreach ($info['search_box'] as $cates): ?>
-            <?php if($cates['label'] != "排序") :?>
-                <div class="conditionType">
-                    <div class="conditionType-all" name="zt">
-                        <a href="javascript:;"><?= $cates['label']?></a>
-                    </div>
-                    <ul class="condition" name="zt">
-                        <?php foreach ($cates['list'] as $key => $cate): ?>
-                            <?php if($cates['field'] == 'channel_id' && $cate['checked'] == 1) : ?>
-                                <input type="hidden" id="channel-id" value="<?= $cate['value']?>">
-                            <?php endif;?>
-                            <?php if($cates['field'] == 'tag' && $cate['checked'] == 1) : ?>
-                                <input type="hidden" id="tag-id" value="<?= $cate['value']?>">
-                            <?php endif;?>
-                            <?php if($cates['field'] == 'area' && $cate['checked'] == 1) : ?>
-                                <input type="hidden" id="area-id" value="<?= $cate['value']?>">
-                            <?php endif;?>
-                            <?php if(!($cates['field'] == 'channel_id' && $cate['display']=='全部')):?><!--频道的全部不要-->
-                                <li>
-                                    <a href="javascript:;" class="videobtn
-                                    <?php if(($cates['field'] == 'channel_id' && $cate['checked'] == 1)
-                                        || ($cates['field'] == 'tag' && $cate['checked'] == 1)
-                                        || ($cates['field'] == 'area' && $cate['checked'] == 1)
-                                        || ($cates['field'] == 'year' && $cate['checked'] == 1)
-                                        || ($cates['field'] == 'status' && $cate['checked'] == 1)) :?>
-                                     conditionAct
-                                    <?php endif; ?>" data-value="<?= $cate['value']?>" data-type="<?= $cates['field']?>">
-                                        <?= $cate['display']?>
-                                    </a>
-                                </li>
-                            <?php endif;?>
-                        <?php endforeach;?>
-                    </ul>
-                </div>
-            <?php endif;?>
-        <?php endforeach;?>
-    </div>
-    <div class="AD-01" name="zt">
-            <?php if(isset($advert['advert_id'])):?>
-                <a href="<?=$advert['ad_skip_url']?>" target="_blank"><img src="<?=$advert['ad_image']?>" /></a>
-            <?php else :?>
-                <a href="javascript:;"><img src="/images/newindex/AD0-1.png" /></a>
-            <?php endif;?>
-        <div class="GGtext">
-            广告
+        <div class="box02-content">
+            <div class="box01-search">
+                <!--类型选择-->
+                <?php foreach ($info['search_box'] as $cates): ?>
+                    <?php if($cates['label'] != "排序") :?>
+                        <div class="conditionType">
+                            <div class="conditionType-all" name="zt">
+                                <a href="javascript:;"><?= $cates['label']?>:</a>
+                            </div>
+                            <ul class="condition" name="zt">
+                                <?php foreach ($cates['list'] as $key => $cate): ?>
+                                    <?php if($cates['field'] == 'channel_id' && $cate['checked'] == 1) : ?>
+                                        <input type="hidden" id="channel-id" value="<?= $cate['value']?>">
+                                    <?php endif;?>
+                                    <?php if($cates['field'] == 'tag' && $cate['checked'] == 1) : ?>
+                                        <input type="hidden" id="tag-id" value="<?= $cate['value']?>">
+                                    <?php endif;?>
+                                    <?php if($cates['field'] == 'area' && $cate['checked'] == 1) : ?>
+                                        <input type="hidden" id="area-id" value="<?= $cate['value']?>">
+                                    <?php endif;?>
+                                    <?php if(!($cates['field'] == 'channel_id' && $cate['display']=='全部')):?><!--频道的全部不要-->
+                                        <li>
+                                            <a href="javascript:;" class="videobtn
+                                            <?php if(($cates['field'] == 'channel_id' && $cate['checked'] == 1)
+                                                || ($cates['field'] == 'tag' && $cate['checked'] == 1)
+                                                || ($cates['field'] == 'area' && $cate['checked'] == 1)
+                                                || ($cates['field'] == 'year' && $cate['checked'] == 1)
+                                                || ($cates['field'] == 'status' && $cate['checked'] == 1)) :?>
+                                             conditionAct
+                                            <?php endif; ?>" data-value="<?= $cate['value']?>" data-type="<?= $cates['field']?>">
+                                                <?= $cate['display']?>
+                                            </a>
+                                        </li>
+                                    <?php endif;?>
+                                <?php endforeach;?>
+                            </ul>
+                        </div>
+                    <?php endif;?>
+                <?php endforeach;?>
+            </div>
         </div>
     </div>
 </div>
@@ -315,9 +309,9 @@ $this->registerJs($js);
 
 
     </ul>
-    <div class="scJg" name="zt">
-        共有 <span id="searchNum"><?= $info['total_count']?></span> 个筛选结果
-    </div>
+<!--    <div class="scJg" name="zt">-->
+<!--        共有 <span id="searchNum">--><?//= $info['total_count']?><!--</span> 个筛选结果-->
+<!--    </div>-->
 </div>
 <!--筛选结果-->
 <div class="box02">

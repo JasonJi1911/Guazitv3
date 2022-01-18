@@ -18,18 +18,22 @@ use yii\helpers\Url;
         </a>
         <div class="SSjg">
             <div class="SSjgName" name="zt">
+                <span class="SSjgTitle"><?= $info['title']?></span>
                 <a href="<?= Url::to(['detail', 'video_id' => $firstChap['video_id'], 'chapter_id' => $firstChap['chapter_id'], 'source_id' => $firstChap['source_id']])?>">
                     <span><?= $list['video_name']?></span>
                 </a>
+            </div>
+            <div class="SSjg-category">类型：
                 <?php foreach (explode(' ',$list['category']) as $category): ?>
                     <span><?= $category?></span>
                 <?php endforeach;?>
             </div>
-            <p>添加：<?= date("Y年m月d日",$list['created_at'])?></p>
-            <p>导演：<?= str_replace("导演:","",$list['director']);?></p>
-            <p>主演：
-                <?= substr(str_replace("演员:","/ ",$list['artist']),1);?>
-            </p>
+<!--            <p>添加：--><?//= date("Y年m月d日",$list['created_at'])?><!--</p>-->
+<!--            <p>导演：--><?//= str_replace("导演:","",$list['director']);?><!--</p>-->
+<!--            <p>主演：-->
+<!--                --><?//= substr(str_replace("演员:","/ ",$list['artist']),1);?>
+<!--            </p>-->
+            <p class="SSjgIntro">简介：<?= $list['intro']?></p>
             <div class="SSjgBox">
                 <div>
                     <!--视频集数最多显示7集，超出中间用点表示-->
@@ -87,15 +91,15 @@ use yii\helpers\Url;
                         <?php endif; ?>
                     </div>
                 </div>
-                <div>
-                    <ul class="SSjgPJ">
-                        <li><span>0</span></li>
-                        <li><span>0</span></li>
-                        <li><span>0</span></li>
-                        <li><span><?= str_replace("热度:","",$list['total_views']);?></span></li>
-                        <li><?= $list['score']?></li>
-                    </ul>
-                </div>
+<!--                <div>-->
+<!--                    <ul class="SSjgPJ">-->
+<!--                        <li><span>0</span></li>-->
+<!--                        <li><span>0</span></li>-->
+<!--                        <li><span>0</span></li>-->
+<!--                        <li><span>--><?//= str_replace("热度:","",$list['total_views']);?><!--</span></li>-->
+<!--                        <li>--><?//= $list['score']?><!--</li>-->
+<!--                    </ul>-->
+<!--                </div>-->
             </div>
         </div>
     </div>

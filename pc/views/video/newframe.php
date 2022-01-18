@@ -114,7 +114,7 @@ header("Access-Control-Allow-Origin:*");
 <script src="/js/jquery.js"></script>
 <script src="/js/video/newindex.js"></script>
 <script src="/js/video/searchHistory.js"></script>
-<script src="/js/video/gVerify.js"></script>
+<!--<script src="/js/video/gVerify.js"></script>-->
 <script>
     $(document).ready(function(){
         $("[name='zt']").addClass("ZT-black");
@@ -199,133 +199,173 @@ header("Access-Control-Allow-Origin:*");
         $(".c_login").addClass("act");
         $("#login_account").val("");
         $("#login_pwd").val("");
-        $("#login_yzm").val("");
+        $(".sms_login").removeClass("act");
+        $("#login_sms_account").val("");
+        $("#smscode").val("");
         $(".c_register").removeClass("act");
-        $("#reg_email").val("");
-        $("#reg_prefix_phone").val("+1");
-        $("#reg_prefix_phone").removeClass("act")
-        $("#reg_phone").val("");
-        $("#reg_newpwd").val("");
-        $("#quertion_value").val("密保问题");
-        $("#quertion_value").removeClass("act")
-        $("#reg_answer").val("");
+        $("#reg_account").val("");
+        $("#reg_smscode").val("");
+        $('.loginTip').hide();
+        $('.inp-box').removeClass('wor');
         $("#alt01").show();
     }
 </script>
 
 <!--登录弹出层-->
-<div class="alt" id="alt01" style="display: none;">
-    <div class="alt01—box" name="zt">
-        <div class="alt01-GG">
-            <?php if(!empty($channels['login_advert'])) :?>
-                <?php foreach ($channels['login_advert'] as $advert): ?>
-                    <a href="<?=$advert['ad_skip_url']?>" target="_blank">
-                        <img src="<?=$advert['ad_image']?>" />
-                    </a>
-                <?php endforeach;?>
-            <?php else :?>
-                <a href="javascript:;"><img src="/images/newindex/GG03.png" /></a>
-            <?php endif;?>
-            <div class="GGtext">
-                广告
-            </div>
-        </div>
+<div class="alt" id="alt01">
+    <div class="alt01—box">
         <div class="alt-logon">
-            <ul class="tab-nav" name="zt">
-                <li class="c_login act">
-                    账号登录
-                </li>
-                <li class="c_register">立即注册</li>
-            </ul>
-            <div class="tab-box">
-                <div class="c_login act">
-                    <!--报错样式 wor-->
-                    <div class="inp-box mb-30" name="zt">
-                        <img class="icon" src="/images/newindex/logon-icon-01.png" />
-                        <input type="text" name="" placeholder="邮箱/手机号" id="login_account" value="" />
-                    </div>
-                    <!--报错样式 wor-->
-                    <div class="inp-box mb-30 pasbox" name="zt">
-                        <img class="icon" src="/images/newindex/logon-icon-02.png" />
-                        <input type="password" class="inp pas" name="" placeholder="密码" id="login_pwd" value="" onKeyUp="value=value.replace(/[^(\w-*\.*)]/g,'')" />
-                        <input type="button" class="eye"  value="" />
-                    </div>
-                    <!--报错样式 wor-->
-                    <div class="inp-box mb-30 yzmbox" name="zt">
-                        <img class="icon" src="/images/newindex/logon-icon-03.png" />
-                        <input type="text" name="" placeholder="验证码" id="login_yzm" value="" />
-                        <div class="yzm" id="picyzm" style="width:100px;"></div>
-                        <!--                        <img class="yzm" src="/images/newindex/logon-yzm.png" />-->
-                        <input type="button" class="sx" id="v_refresh" value="" />
-                    </div>
-                    <div class="bttn-box mb-30">
-                        <input type="button" id="login_submit" value="登录" />
-                    </div>
-                    <ul class="gn-box" name="zt">
-                        <li><input type="checkbox" name="zd" value="" /><label class="chebox act" id="zd" for="zd">自动登录</label></li>
-                        <li>
-                            <a href="<?= Url::to(['/video/help', 'tab' => 'pwd'])?>">忘记密码?</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="c_register">
-                    <!--报错样式 wor-->
-                    <div class="inp-box mb-20" name="zt">
-                        <img class="icon" src="/images/newindex/logon-icon-01.png" />
-                        <input type="text" name="" placeholder="邮箱" id="reg_email" value="" />
-                    </div>
-                    <!--报错样式 wor-->
-                    <div class="inp-box sltJ mb-20 tel " name="zt">
-                        <img class="icon" src="/images/newindex/logon-icon-06.png" />
-                        <input type="button" class="selectJ" id="reg_prefix_phone" value="+1" />
-                        <ul class="opJ">
-                            <?php if(!empty($channels['country_info'])) :?>
-                                <?php foreach ($channels['country_info'] as $country): ?>
-                                    <?php if($country['mobile_areacode']!=''):?>
-                                        <li><?=$country['country_name']?> <span>+<?=$country['mobile_areacode']?></span></li>
-                                    <?php endif;?>
-                                <?php endforeach;?>
-                            <?php endif;?>
+            <div class="alt_login_d J_alt_login">
+                <ul class="tab-nav" name="zt">
+                    <li class="c_login act">
+                        账号登录
+                    </li>
+                    <li class="sms_login">短信登录</li>
+                </ul>
+                <div class="tab-box">
+                    <div class="c_login act">
+                        <div class="inp-box sltJ mb-25 tel J_tel">
+                            <ul class="opJ">
+                                <?php
+                                $selectVal = '';
+                                $selectData = '';
+                                foreach ($channels['country_info'] as $country){
+                                    if($country['mobile_areacode']!=''){
+                                        $selectVal = $country['country_name'] . '+' . $country['mobile_areacode'];
+                                        $selectData = '+' . $country['mobile_areacode'];
+                                        break;
+                                    }
+                                }
+                                ?>
+                                <?php if(!empty($channels['country_info'])) :?>
+                                    <?php foreach ($channels['country_info'] as $country): ?>
+                                        <?php if($country['mobile_areacode']!=''):?>
+                                            <li data="<?=$country['country_name']?>+<?=$country['mobile_areacode']?>"><?=$country['country_name']?><span>+<?=$country['mobile_areacode']?></span></li>
+                                        <?php endif;?>
+                                    <?php endforeach;?>
+                                <?php endif;?>
+                            </ul>
+                            <input type="button" class="selectJ" id="login_prefix_phone" value="<?=$selectVal?>" data="<?=$selectData?>"/>
+                            <input type="text" class="J_account" name="" placeholder="请输入登录账号" id="login_account" value="" />
+                        </div>
+                        <!--    报错样式 wor-->
+                        <div class="inp-box mb-16 pasbox">
+                            <input type="password" class="inp pas" name="" placeholder="请输入密码" id="login_pwd" value="" onKeyUp="value=value.replace(/[^(\w-*\.*)]/g,'')" />
+                            <input type="button" class="eye"  value="" />
+                        </div>
+                        <ul class="gn-box">
+                            <li class="c_register J_c_register">立即注册</li>
+                            <li>
+                                <a href="<?= Url::to(['/video/help', 'tab' => 'pwd'])?>">忘记密码</a>
+                            </li>
                         </ul>
-                        <input type="text" name="" placeholder="手机号" id="reg_phone" value="" />
-                    </div>
-                    <!--报错样式 wor-->
-                    <div class="inp-box mb-20 pasbox" name="zt">
-                        <img class="icon" src="/images/newindex/logon-icon-02.png" />
-                        <input type="password" class="inp pas" name="" placeholder="新密码" id="reg_newpwd" value="" onKeyUp="value=value.replace(/[^(\w-*\.*)]/g,'')" />
-                        <input type="button" class="eye"  value="" />
-                    </div>
-                    <!--报错样式 wor-->
-                    <div class="inp-box sltJ mb-20 " name="zt">
-                        <img class="icon" src="/images/newindex/logon-icon-07.png" />
-                        <input type="button" class="selectJ" id="quertion_value" value="密保问题" />
-                        <input type="hidden" id="reg_question" value="" />
-                        <div class="opJ">
-                            <?php if(!empty($channels['question_info'])) :?>
-                                <?php foreach ($channels['question_info'] as $question): ?>
-                                    <input type="button" data-value="<?=$question['id']?>" value="<?=$question['message']?>" />
-                                <?php endforeach;?>
-                            <?php endif;?>
+                        <div class="loginTip J_login_warning">请输入登录账号</div>
+                        <div class="bttn-box mb-30">
+                            <input type="button" id="login_submit" value="登录" />
                         </div>
                     </div>
-                    <!--报错样式 wor-->
-                    <div class="inp-box mb-20 " name="zt">
-                        <img class="icon" src="/images/newindex/logon-icon-08.png" />
-                        <input type="text" name="" placeholder="密保问题答案" id="reg_answer" value="" />
+                    <div class="sms_login">
+                        <!--    报错样式 wor-->
+<!--                        <div class="inp-box mb-25">-->
+<!--                            <input type="text" name="" placeholder="请输入手机号" id="login_account" value="" />-->
+<!--                        </div>-->
+                        <div class="inp-box sltJ mb-25 tel J_tel">
+                            <ul class="opJ">
+                                <?php
+                                $selectVal = '';
+                                $selectData = '';
+                                foreach ($channels['country_info'] as $country){
+                                    if($country['mobile_areacode']!=''){
+                                        $selectVal = $country['country_name'] . '+' . $country['mobile_areacode'];
+                                        $selectData = '+' . $country['mobile_areacode'];
+                                        break;
+                                    }
+                                }
+                                ?>
+                                <?php if(!empty($channels['country_info'])) :?>
+                                    <?php foreach ($channels['country_info'] as $country): ?>
+                                        <?php if($country['mobile_areacode']!=''):?>
+                                            <li data="<?=$country['country_name']?>+<?=$country['mobile_areacode']?>"><?=$country['country_name']?><span>+<?=$country['mobile_areacode']?></span></li>
+                                        <?php endif;?>
+                                    <?php endforeach;?>
+                                <?php endif;?>
+                            </ul>
+                            <input type="button" class="selectJ J_prefix_phone" id="sms_prefix_phone" value="<?=$selectVal?>" data="<?=$selectData?>"/>
+                            <input type="text" class="J_account" name="" placeholder="请输入登录账号" id="login_sms_account" value="" />
+                        </div>
+                        <!--    报错样式 wor-->
+                        <div class="inp-box mb-25 smsbox">
+                            <input type="text" class="inp" name="" placeholder="请输入验证码" value="" id="smscode"  onKeyUp="value=value.replace(/[^0-9]/i,'')" />
+                            <input type="button" class="sms_code J_sms_code"  value="获取验证码" source="sms"/>
+                        </div>
+                        <div class="loginTip J_login_warning1">请输入登录账号</div>
+                        <div class="bttn-box mb-30">
+                            <input type="button" id="login_sms_submit" value="登录" />
+                        </div>
                     </div>
-                    <div class="bttn-box mb-20">
-                        <input type="button" id="reg_submit" value="注册" />
+                </div>
+            </div>
+            <div class="alt_register J_alt_register" style="display:none;">
+                <div class="alt-reback J_alt_reback"><&nbsp;返回</div>
+                <ul class="tab-nav" name="zt">
+                    <li class="user_register">
+                        注册账号
+                    </li>
+                </ul>
+                <div class="tab-box">
+                    <div class="user_register act">
+                        <!--    报错样式 wor-->
+<!--                        <div class="inp-box mb-25">-->
+<!--                            <input type="text" name="" placeholder="请输入手机号" id="login_account" value="" />-->
+<!--                        </div>-->
+                            <div class="inp-box sltJ mb-25 tel J_tel">
+                                <ul class="opJ">
+                                    <?php
+                                    $selectVal = '';
+                                    $selecData = '';
+                                    foreach ($channels['country_info'] as $country){
+                                        if($country['mobile_areacode']!=''){
+                                            $selectVal = $country['country_name'] . '+' . $country['mobile_areacode'];
+                                            $selecData = '+' . $country['mobile_areacode'];
+                                            break;
+                                        }
+                                    }
+                                    ?>
+                                    <?php if(!empty($channels['country_info'])) :?>
+                                        <?php foreach ($channels['country_info'] as $country): ?>
+                                            <?php if($country['mobile_areacode']!=''):?>
+                                                <li data="<?=$country['country_name']?>+<?=$country['mobile_areacode']?>"><?=$country['country_name']?><span>+<?=$country['mobile_areacode']?></span></li>
+                                            <?php endif;?>
+                                        <?php endforeach;?>
+                                    <?php endif;?>
+                                </ul>
+                                <input type="button" class="selectJ J_prefix_phone" id="reg_prefix_phone" value="<?=$selectVal?>" data="<?=$selecData?>"/>
+                                <input type="text" name="" placeholder="请输入手机号" id="reg_account" value="" class="J_account"/>
+                            </div>
+                        <!--    报错样式 wor-->
+                        <div class="inp-box mb-25 smsbox">
+                            <input type="text" class="inp" name="" placeholder="请输入验证码" value="" id="reg_smscode"  onKeyUp="value=value.replace(/[^0-9]/i,'')" />
+                            <input type="button" class="sms_code J_sms_code"  value="获取验证码" source="reg"/>
+                        </div>
+                        <div class="loginTip J_login_warning2">手机号已注册，请勿重复注册</div>
+                        <div class="bttn-box mb-30">
+                            <input type="button" id="reg_submit" value="注册" />
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="bowbox" name="zt">
-                <input type="radio" name="xy" value="" />
-                <label for="xy" id="xy" class="chebox act">我已阅读并同意<a href="<?= Url::to(['/video/help', 'tab' => 'terms'])?>">《用户协议》</a></label>
+                <input type="radio" name="xy" value="">
+                <label for="xy" id="xy" class="chebox act">同意<a href="/video/help?tab=terms">《用户协议》</a>和<a href="/video/help?tab=terms">《隐私政策》</a></label>
             </div>
             <!--关闭按钮-->
-            <input class="alt-GB" type="button"  />
+<!--            <input class="alt-GB" type="button" style="background-color:black;">-->
         </div>
     </div>
+    <div>
+        <input class="alt-GB" type="button">
+    </div>
+
 </div>
 
 <!--非vip不可播放提示alert-->
@@ -355,36 +395,42 @@ $headclass = "";
 $bodyid = "";
 switch ($pageTab){
     case "newindex" : case "channel" : case "help" : case "hotplay" : case "adcenter" :
-        $bodyid    = "indexTS";
-        $headclass = "bkgBlack";
-        break;
+    $bodyid    = "indexTS";
+    $headclass = "bkgBlack";
+    break;
     case "list" : case "searchresult" : case "seek" : case "newdetail" : case "personal" : case "otherhome" :
-        $bodyid    = "";
-        $headclass = "bkgWhite";
-        break;
+    $bodyid    = "";
+//    $headclass = "bkgWhite";
+    break;
 }
 ?>
-<body id="<?= $bodyid?>" name="zt" >
+<body id="<?= $bodyid?>" <?php if($is_show_background == 1):?>name="zt"<?php endif;?>>
 <!-- 顶部导航 begin -->
 <?php
 $name_zt = "";
 $class_zt_black = "";
-if($pageTab != "newdetail") {//顶部导航默认透明或白色
+$footer_color = "font-color-FFFFFF";
+//if($pageTab != "newdetail") {//顶部导航默认透明或白色
+//    $name_zt = "zt";
+//    $class_zt_black = " ";
+//}else{//顶部导航默认黑色
+//    $name_zt = "";
+//    $class_zt_black = " ZT-black";
+//}
+if(empty($is_show_background) || $is_show_background != 1){
     $name_zt = "zt";
-    $class_zt_black = " ";
-}else{//顶部导航默认黑色
-    $name_zt = "";
-    $class_zt_black = " ZT-black";
-}?>
+    $class_zt_black = " navTopbgColor";
+    $footer_color = "font-color-000000";
+}
+?>
 <div class="navTopBox <?= $headclass?> <?= $class_zt_black?>" name="<?= $name_zt?>">
     <ul class="navTop">
         <li class="navTopLogo" id="v_navTopLogo">
             <a href="/video/index">
-                <span id="head-city" class="navTopWZ" style="display: none;"></span>
-                <script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>
-                <script src="/js/video/country.js"></script>
 <!--                <script>-->
-<!--                    $.get('/video/get-city', [], function(res) {-->
+<!--                    $.get('/video/get-city', [], function(res)      <span id="head-city" class="navTopWZ" style="display: none;"></span>-->
+<!--                <script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>-->
+<!--                <script src="/js/video/country.js"></script>{-->
 <!--                        console.log(JSON.stringify(res));-->
 <!--                        if(res.data.city.trim()!=""){-->
 <!--                            $("#head-city").text(res.data.city);-->
@@ -393,57 +439,66 @@ if($pageTab != "newdetail") {//顶部导航默认透明或白色
 <!--                </script>-->
             </a>
         </li>
-        <li class="navTopMenuBox">
-            <div class="navTopMenu">
-                <div class="navTopMenu-text" name="zt">
-                    导&nbsp;航
-                </div>
-                <div class="navTopMenu-oneTop" name="zt">
-                    &nbsp;
-                </div>
-                <ul class="navTopMenu-one">
+        <?php if(empty($is_show_navmenu) || $is_show_navmenu == 1):?>
+            <li class="navTopMenuBox">
+                <div class="navTopMenu">
                     <!--导航菜单--一级-->
-                    <li class="" name="zt">
-                        <a href="<?= Url::to(['/video/index'])?>" >
-                            首页
-                        </a>
-                    </li>
+                    <span class="navTopMenu-text" name="zt">
+                    <a href="<?= Url::to(['/video/index'])?>" >
+                        首页
+                    </a>
+                </span>
                     <?php if(!empty($channels)) :?>
-                        <?php foreach ($channels['channeltags'] as $channel) :?>
-                            <li class="" name="zt">
-                                <?php if($channel['channel_name'] != '首页'): ?>
-                                    <a class="
-                                    <?if(!empty($channel['tags'])) :?>
-                                        navTopMenu-oneRig
-                                    <?php endif;?>
-                                    " href="<?= Url::to(['/video/list', 'channel_id' => $channel['channel_id']])?>" >
-                                        <?= $channel['channel_name']?>
-                                    </a>
-                                    <!--导航菜单--二级-->
-                                    <ul class="navTopMenu-two " name="zt">
-                                        <?php foreach ($channel['tags'] as $tag) :?>
-                                            <li><a href="<?= Url::to(['list', 'channel_id' => $channel['channel_id'], 'tag' => $tag['cat_id']])?>"><?= $tag['name']?></a></li>
-                                        <?php endforeach;?>
-                                    </ul>
-                                <?php endif;?>
-                            </li>
+                        <?php foreach ($channels['channeltags'] as $key=>$channel) :?>
+                            <?php if ($key < 6) :?>
+                                <span class="navTopMenu-text" name="zt">
+                            <?php if($channel['channel_name'] != '首页'): ?>
+                                <a href="<?= Url::to(['video/channel', 'channel_id' => $channel['channel_id']])?>">
+                                    <?= $channel['channel_name']?>
+                                </a>
+                            <?php endif;?>
+                        </span>
+                            <?php endif;?>
                         <?php endforeach;?>
                     <?php endif;?>
-                </ul>
-            </div>
-        </li>
-        <li class="navTopSearchBox">
+                    <span class="navTopMenu-text navTopMenu-text-choice" name="zt">
+                        全部
+                        <ul class="navTopMenu-one J_navtop_menu">
+                        <!--导航菜单--一级-->
+                        <li class="" name="zt">
+                            <a href="<?= Url::to(['/video/index'])?>" >
+                                首页
+                            </a>
+                        </li>
+                        <?php if(!empty($channels)) :?>
+                            <?php foreach ($channels['channeltags'] as $channel) :?>
+                                <li class="" name="zt">
+                                    <?php if($channel['channel_name'] != '首页'): ?>
+                                        <a class="
+                                    " href="<?= Url::to(['/video/list', 'channel_id' => $channel['channel_id']])?>" >
+                                            <?= $channel['channel_name']?>
+                                        </a>
+                                    <?php endif;?>
+                                </li>
+                            <?php endforeach;?>
+                        <?php endif;?>
+                    </ul>
+                    </span>
+                </div>
+            </li>
+        <?php endif;?>
+        <li class="<?php if(empty($is_show_navmenu) || $is_show_navmenu == 1):?>navTopSearchBox-r<?php else :?>navTopSearchBox<?php endif;?>">
             <div class="navTopSearch <?= $class_zt_black?>" name="<?= $name_zt?>">
                 <input type="text" class="navTopSearchText" id="keywords" placeholder="<?= empty($hotword['tab'][0]['list'][0]['video_name']) ? '': $hotword['tab'][0]['list'][0]['video_name']?>" />
                 <input type="hidden" id="v_keywords0" value="<?= empty($hotword['tab'][0]['list'][0]['video_name']) ? '': $hotword['tab'][0]['list'][0]['video_name']?>"
                 <!--输入框点击弹出菜单-->
                 <ul class="searchMenuBox " name="zt" style="display: none;">
-                    <li class="clrGrey" id="searchHtitle" style="display:none;">
+                    <li class="clrGrey" id="searchHtitle" style="display: none;">
                         搜索历史：
                         <input class="clrGrey-btn" type="button" onclick="clearwords()" value="清空历史" />
                     </li>
                     <li class="clrGrey-list " name="zt"" id="searchHistory">
-<!--                        <a href="javascript:;">测试搜索历史</a>-->
+                    <!--                        <a href="javascript:;">测试搜索历史</a>-->
                     </li>
                     <li class="clrGrey">热门搜索：</li>
                     <?php if(!empty($hotword['tab'])) :?>
@@ -451,35 +506,36 @@ if($pageTab != "newdetail") {//顶部导航默认透明或白色
                             <?php if($key == 0) :?>
                                 <?php foreach ($tab['list'] as $key => $list): ?>
                                     <?php $clr = "";
-                                        if($key==0){
-                                            $clr = "clr01";
-                                        }else if($key==1){
-                                            $clr = "clr02";
-                                        }else if($key==2){
-                                            $clr = "clr03";
-                                        }else{
-                                            $clr = "";
-                                        }
+                                    if($key<3) {
+                                        $clr = "clr01";
+                                    }
                                     ?>
                                     <?php if($key < 10) :?>
-                                    <li class="searchMenu " name="zt" >
-                                        <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
-                                            <span class="searchMenu-sapn <?=$clr?> "><?= $key + 1?></span><?= $list['video_name']?>
-                                        </a>
-                                    </li>
+                                        <li class="searchMenu " name="zt" >
+                                            <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
+                                                <span class="searchMenu-sapn <?=$clr?> "><?= $key + 1?></span><?= $list['video_name']?>
+                                            </a>
+                                        </li>
                                     <?php endif;?>
                                 <?php endforeach;?>
                             <?php endif;?>
                         <?php endforeach;?>
                     <?php endif;?>
                 </ul>
-                <a href="<?= Url::to(['/video/hot-play'])?>" class="navTopSearchA " name="zt">&nbsp;</a>
-                <input type="button" class="navTopSearchBtn " name="zt" onclick="savewords();"  value="" />
+                <div class="navTopSearchRight">
+                    <a href="<?= Url::to(['/video/hot-play'])?>" class="navTop-search-hot" name="zt">
+                        <span class="navTopSearchA"></span>
+                        <span class="hotSearch">热搜榜</span>&nbsp;
+                    </a>
+                    <div class="verticalLine"></div>
+                    <div class="navTopSearchBoxB">
+                        <div class="navTopSearchB"></div>
+                        <div class="navTopSearchBText" onclick="savewords();">搜索</div>
+                    </div>
+                </div
             </div>
         </li>
-        <li class="navTopBtnBox" id="navTopBtnBox">
-
-        </li>
+        <li class="navTopBtnBox" id="navTopBtnBox"></li>
     </ul>
 </div>
 
@@ -568,6 +624,7 @@ if($pageTab != "newdetail") {//顶部导航默认透明或白色
         break;
     case "help":
         echo $this->render('help',[
+            'channels'      => $channels,
             'feedbackinfo'  => $feedbackinfo,
             'helptab'       => $helptab
         ]);
@@ -591,97 +648,73 @@ if($pageTab != "newdetail") {//顶部导航默认透明或白色
         ]);
         break;
 } ?>
-
 <!--底部导航-->
-<div class="foot" name="zt">
-    <div class="footBox">
-        <div>
-            <ul class="footNav">
-                <li>
-                    <a href="javascript:;" style="display: none;">
-                        <img src="/images/newindex/dizi.png" />
-                        <img id="v_countryimg" src="" />
-                        <span id="v_countryname"></span>
-                    </a>
-                </li>
-                <li>
-                    <a href="https://rysp.tv/sitemap.html" title="<?=LOGONAME?>视频"target="_blank"><strong><?=LOGONAME?>视频</strong></a>
-                </li>
-                <li>
-                    <a href="<?= Url::to(['/video/help', 'tab' => 'aboutUs'])?>">关于我们</a>
-                </li>
-                <li>
-                    <a href="<?= Url::to(['/video/help', 'tab' => 'question'])?>">常见问题</a>
-                </li>
-                <li>
-                    <a href="<?= Url::to(['/video/help', 'tab' => 'feedback'])?>">在线反馈</a>
-                </li>
-                <li>
-                    <a href="<?= Url::to(['/video/adcenter'])?>">广告投放</a>
-                </li>
-                <li>
-                    <a href="<?= Url::to(['/video/help', 'tab' => 'contact'])?>">联系我们</a>
-                </li>
-                <li>
-                    <a href="<?= Url::to(['/video/help', 'tab' => 'terms'])?>">服务条款</a>
-                </li>
-<!--                <li>-->
-<!--                    <a href="javascript:;">充值中心</a>-->
-<!--                </li>-->
-<!--                <li>-->
-<!--                    <a href="javascript:;">充值协议</a>-->
-<!--                </li>-->
-            </ul>
-            <div class="footSM">
-                版权声明：如果来函说明本网站提供内容本人或法人版权所有。本网站在核实后，有权先行撤除，以保护版权拥有者的权益。<br /> 邮箱地址：
-                <?=EMAIL_NAME?> &nbsp;
-                <?=PC_HOST_NAME?> 版权所有，未经授权禁止链接、复制或建立
-            </div>
-            <div class="footPH">
-                Copyright 2020-2021 <?=PC_HOST_NAME?> 版权所有，未经授权禁止链接、复制或建立
-            </div> Allrights Reserved.
-            </div>
-        </div>
-
-        <div class="footKF">
-            <a href="<?= Url::to(['/video/help', 'tab' => 'contact'])?>">
-                <img src="/images/newindex/kefu.png" /><br /> 联系客服
-            </a>
-        </div>
-
-        <div class="footXZ">
-            <a href="javascript:void(0)" onclick="showwarning();"><img src="/images/newindex/android.png" /></a>
-            <a href="javascript:void(0)" onclick="showwarning();"><img src="/images/newindex/ios.png" /></a>
-        </div>
+<footer class="qy-footer">
+    <div class="wp">
+        <a class="browser <?= $footer_color?>" href="<?= Url::to(['collaboration'])?>">商务合作</a>
+        <span class="<?= $footer_color?>">|</span>
+        <a class="browser1" href="###"></a>
+        <a class="browser <?= $footer_color?>" href="<?= Url::to(['map'])?>">网站地图</a>
+        <span class="<?= $footer_color?>">|</span>
+        <a class="browser1" href="###"></a>
+        <a class="browser <?= $footer_color?>" href="https://m.guazitv.tv">手机端</a>
+        <span class="<?= $footer_color?>">|</span>
+        <a class="browser1" href="###"></a>
+        <a class="browser <?= $footer_color?>" href="https://www.guazitv.tv">电脑端</a>
+        <span class="<?= $footer_color?>">|</span>
+        <a class="browser1" href="###"></a>
+        <a class="browser <?= $footer_color?>" href="<?= Url::to(['site/share-down'])?>">APP下载</a>
+        <span class="<?= $footer_color?>">|</span>
+        <a class="browser1" href="###"></a>
+        <!--<a class="browser" href="http://app.guazitv6.com/guazi-tv-1.0.1-debug.apk">电视TV版下载</a>-->
+        <a class="browser <?= $footer_color?>" href="<?= !empty($tvpath["file_path"])?$tvpath["file_path"]:"###" ?>">电视TV版下载</a>
     </div>
-</div>
+    <div class="wp">
+        <p>本网站为非赢利性站点，所有内容均由机器人采集于互联网，或者网友上传，本站只提供WEB页面服务，本站不存储、不制作任何视频，不承担任何由于内容的合法性及健康性所引起的争议和法律责任。<br />若本站收录内容侵犯了您的权益，请附说明联系邮箱，本站将第一时间处理。站长邮箱：guazitv@163.com</p>
+    </div>
+</footer>
 <!--右侧导航-->
-<div class="rigNav" name="zt">
-    <div class="rigNav-top" id="backToTop">
-        <span>返回顶部</span>
-        <a href="javascript:;">&nbsp;</a>
-    </div>
-    <div class="rigNav-icon01" id="HF">
-        <span>一键换肤</span>
-        <a href="javascript:;">&nbsp;</a>
-    </div>
-    <div class="rigNav-icon04"><!--求片-->
-        <span onclick="rightUrl('seek')">求片</span>
-        <a href="<?= Url::to(['/video/seek'])?>" target="_blank">&nbsp;</a>
-    </div>
-    <div class="rigNav-icon05"><!--帮助中心-->
-        <span onclick="rightUrl('help')">帮助中心</span>
-        <a href="<?= Url::to(['/video/help', 'tab' => ''])?>">&nbsp;</a>
-    </div>
-    <div class="rigNav-icon02"><!--app下载 tab=>appdownload-->
-        <span onclick="showwarning();">下载APP</span>
-        <a href="javascript:void(0)" onclick="showwarning();">&nbsp;</a>
-    </div>
-    <div class="rigNav-icon03"><!--升级vip-->
-        <span>功能开发中</span>
-        <a href="javascript:;">&nbsp;</a>
-    </div>
+<?php if($rightnav_type && $rightnav_type == 1):?>
+<div class="qy-float-anchor det-nav" style="" id="det-nav">
+    <ul class="anchor-list">
+        <?php if(!empty($channels)) : ?>
+            <?php foreach ($channels['list'] as $key => $channel): ?>
+                <?php if($channel['channel_id'] != 0) : ?>
+                    <li class="list-item"><a href="#section<?= $channel['channel_id']?>" class="list-link"><?= $channel['channel_name']?></a></li>
+                <?php endif;?>
+            <?php endforeach ?>
+        <?php endif;?>
+        <li class="list-item"><a href="<?= Url::to(['collaboration'])?>" class="list-link">为您推荐</a></li>
+        <li class="list-item"><a href="<?= Url::to(['collaboration'])?>" class="list-link">联系客服</a></li>
+        <li class="list-item"><a href="javascript:scroll(0,0)" class="list-link backToTop"><svg class="back-top-svg" viewBox="0 0 20 12" xmlns="https://www.w3.org/2000/svg"><path d="M10.784 2.305l6.91 6.911a1.045 1.045 0 1 1-1.477 1.478L10 4.477l-6.217 6.217a1.045 1.045 0 0 1-1.478-1.478l6.911-6.91c.189-.189.43-.29.677-.305h.214c.246.014.488.116.677.304z"></path></svg>顶部</a></li>
+    </ul>
 </div>
+<?php else: ?>
+<div class="qy-float-anchor-1 det-nav" style="" id="det-nav">
+    <ul class="anchor-list">
+        <li class="list-item">
+<!--            <span onclick="rightUrl('seek')">在线求片</span>-->
+            <a href="<?= Url::to(['/video/seek'])?>" target="_blank" class="list-link"><img src="/images/Index/right-1.png"></a>
+        </li>
+        <li class="list-item">
+<!--            <span onclick="rightUrl('help')">联系客服</span>-->
+            <a href="<?= Url::to(['/video/help', 'tab' => ''])?>" class="list-link"><img src="/images/Index/right-2.png"></a>
+        </li>
+        <li class="list-item">
+<!--            <span onclick="rightUrl('personal')">个人中心</span>-->
+            <a href="<?= Url::to(['/video/personal'])?>" class="list-link"><img src="/images/Index/right-3.png"></a>
+        </li>
+        <li class="list-item">
+<!--            <span onclick="rightUrl('help')">帮助中心</span>-->
+            <a href="<?= Url::to(['/video/help'])?>" class="list-link"><img src="/images/Index/right-4.png"></a>
+        </li>
+        <li class="list-item">
+<!--            <span>返回顶部</span>-->
+            <a href="javascript:scroll(0,0)" class="list-link backToTop"><img src="/images/Index/right-5.png"></a>
+        </li>
+    </ul>
+</div>
+<?php endif;?>
 
 <!--VIP弹出层 id="alt02"-->
 <div class="alt">
@@ -879,88 +912,91 @@ if($pageTab != "newdetail") {//顶部导航默认透明或白色
         <!--报错也用这个弹出层-->
         <p class="alt-title alt05-p" name="zt">提交成功</p>
         <!--多余的可以删除-->
-        <div class="alt-bth-box" name="zt" style="background-color:#FF5722;">
-<!--            <input class="alt-bth-off closealt05" type="button" name=""  value="取消" />-->
-            <input class="alt-bth-on" type="button" name="" id="closealt05" value="确定" style="background-color:#FF5722;color:#fff;"/>
+        <div class="alt-bth-box" name="zt" style="background-color:#FF556E;">
+            <!--            <input class="alt-bth-off closealt05" type="button" name=""  value="取消" />-->
+            <input class="alt-bth-on" type="button" name="" id="closealt05" value="确定" style="color:#fff;"/>
         </div>
     </div>
     <!--关闭按钮-->
-<!--    <input class="alt-GB" type="button"  value="X" />-->
+    <!--    <input class="alt-GB" type="button"  value="X" />-->
 </div>
+<!--成功弹出层（新）-->
+<div class="pop-tip" id="pop-tip">成功</div>
+
 <script>
-$(function(){
-    $("#keywords").focus(function(){
-        findwords();
-    });
-
-    //关闭vip提示框
-    $("#closealtvip").click(function(){
-        $("#altvip").hide();
-    });
-});
-
-//提示功能开发中
-function showwarning(){
-    $("#alt07").css("display","block");
-}
-//关闭提示
-function closewarning(){
-    $("#alt07").css("display","none");
-}
-//右侧链接
-function rightUrl(urlid){
-    if(urlid=='seek'){
-        // window.location.href = '/video/seek';
-        window.open('/video/seek');
-    }else if(urlid=='help'){
-        window.location.href = '/video/help';
-    }else if(urlid=='personal'){
-        window.location.href = '/video/personal';
-    }
-}
-function isvip(){
-    $.get('/video/uservip', {}, function(res) {
-        //console.log(res);
-        if(res.errno<0){
-            $("#user_isvip").html("还不是vip会员");
-        }
-    });
-}
-
-//详情
-function XQ(videoId){
-    var ar = {};
-    ar['videoId'] = videoId;
-    $.get('/video/user-favorite', ar, function(res) {
-        //console.log(res);
-        if(res.errno==0 && res.data==1){
-            $("#alt03"+videoId+" .XQ-btn input").addClass("act");
-        }
-        $("#alt03"+videoId).show();
-    });
-}
-//收藏
-function addfavors(videoId){
-    var uid = finduser();
-    if(!isNaN(uid) && uid!=""){
-        var ar = {};
-        ar['videoid'] = videoId;
-        $.get('/video/change-favorite',ar,function(res){
-            $("#alt03"+videoId+" .XQ-btn input").toggleClass("act");
+    $(function(){
+        $("#keywords").focus(function(){
+            findwords();
         });
-    }else{//弹框登录
-        showloggedin();
-        $("#alt03"+videoId).hide();
-    }
-}
 
-//回车搜索
-$('#keywords').keypress(function(event){
-    var keycode = (event.keyCode ? event.keyCode : event.which);
-    if(keycode == '13'){
-        savewords();
+        //关闭vip提示框
+        $("#closealtvip").click(function(){
+            $("#altvip").hide();
+        });
+    });
+
+    //提示功能开发中
+    function showwarning(){
+        $("#alt07").css("display","block");
     }
-});
+    //关闭提示
+    function closewarning(){
+        $("#alt07").css("display","none");
+    }
+    //右侧链接
+    function rightUrl(urlid){
+        if(urlid=='seek'){
+            // window.location.href = '/video/seek';
+            window.open('/video/seek');
+        }else if(urlid=='help'){
+            window.location.href = '/video/help';
+        }else if(urlid=='personal'){
+            window.location.href = '/video/personal';
+        }
+    }
+    function isvip(){
+        $.get('/video/uservip', {}, function(res) {
+            //console.log(res);
+            if(res.errno<0){
+                $("#user_isvip").html("还不是vip会员");
+            }
+        });
+    }
+
+    //详情
+    function XQ(videoId){
+        var ar = {};
+        ar['videoId'] = videoId;
+        $.get('/video/user-favorite', ar, function(res) {
+            //console.log(res);
+            if(res.errno==0 && res.data==1){
+                $("#alt03"+videoId+" .XQ-btn input").addClass("act");
+            }
+            $("#alt03"+videoId).show();
+        });
+    }
+    //收藏
+    function addfavors(videoId){
+        var uid = finduser();
+        if(!isNaN(uid) && uid!=""){
+            var ar = {};
+            ar['videoid'] = videoId;
+            $.get('/video/change-favorite',ar,function(res){
+                $("#alt03"+videoId+" .XQ-btn input").toggleClass("act");
+            });
+        }else{//弹框登录
+            showloggedin();
+            $("#alt03"+videoId).hide();
+        }
+    }
+
+    //回车搜索
+    $('#keywords').keypress(function(event){
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if(keycode == '13'){
+            savewords();
+        }
+    });
 </script>
 </body>
 </html>

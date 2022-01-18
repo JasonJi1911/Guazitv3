@@ -22,1618 +22,598 @@ $(document).ready(function() {
     var tab = '<?=$ptab?>';
     if(tab=='watchlog'){
         $('.c_watchlog').addClass('act');
+        $('.c_watchlog').siblings().removeClass('act');
     }else if(tab=='message'){
         $('.c_message').addClass('act');
+        $('.c_message').siblings().removeClass('act');
     }else if(tab=='favorite'){
         $('.c_favorite').addClass('act');
+        $('.c_favorite').siblings().removeClass('act');
     }else if(tab=='task'){
         $('.c_task').addClass('act');
+        $('.c_task').siblings().removeClass('act');
     }else if(tab=='upload'){
         $('.c_upload').addClass('act');
+        $('.c_upload').siblings().removeClass('act');
     }else if(tab=='relation'){
         $('.c_relation').addClass('act');
+        $('.c_relation').siblings().removeClass('act');
+    }else if(tab=='safe'){
+        $('.c_safe').addClass('act');
+        $('.c_safe').siblings().removeClass('act');
     }else{//c_question
         $('.c_upload').addClass('act');
+        $('.c_upload').siblings().removeClass('act');
     }
 });
 </script>
-<div class="per-box">
-    <!--头部样式-->
-    <div class="per-top">
-        <!--个人信息-->
-        <div class="per-xx">
-            <!--头像-->
-            <div class="per-h">
-                <a href="javascript:;">
-                    <img src="/images/newindex/logon.png" />
-                </a>
-                <!--会员标识-->
-                <img class="per-h-vip" src="/images/newindex/VIP-1.png" />
-            </div>
-            <!--个人信息-->
-            <div class="per-j">
-                <!--第一行-->
-                <div class="per-j-01">
-                    <h4 class="per-name"><?=$data['user']['nickname']?></h4>
-                    <div class="per-xb">
-                        <?php if($data['user']['gender'] == 2):?>
-                            <img src="/images/newindex/nan.png" />
-                        <?php elseif ($data['user']['gender'] == 1):?>
-                            <img src="/images/newindex/nv.png" />
-                        <?php endif;?>
-                    </div>
-                    <div class="per-dj">
-                        <img src="/images/newindex/lv_1.png" />
-                    </div>
-                    <!--<div class="per-dz">
-                        <img src="/images/newindex/hlp-dz-w.png" />
-                        <span class="per-d">澳大利亚</span>
-                    </div>
-                    <a class="per-bj" href="javascript:;">编辑</a>-->
-                </div>
-                <!--第二行-->
-                <div class="per-j-02">
-                    <div class="per-jb">
-                        <img src="/images/newindex/jinbi.png" />
-                        <span>0</span>
-                    </div>
-                    <!--<div class="per-jy">
-                        <img src="/images/newindex/shangsheng.png" />
-                        <div class="per-jy-box">
-                            <div class="per-jy-jd">
-                                &nbsp;
-                            </div>
-                        </div>
-                        <div class="per-jyz">
-                            <span>585</span>/<span>880</span>
-                        </div>
-                    </div>-->
-                </div>
-                <!--第三行  个性签名
-                <div class="per-qm">
-                    <input type="text" name=""  placeholder="点击此处添加个性签名" value="" />
-                </div>-->
+<div class="per-box-new">
+        <div class="per-title">
+            <div class="per-title-name">
+                <img src="/images/Index/user_c.png"/>
+                <p>瓜子TV用户</p>
+                <p><a href="<?= Url::to(['/video/other-home'])?>">个人主页></a></p>
             </div>
         </div>
-        <!--前往个人主页-->
-        <div class="per-zy">
-            <a href="<?= Url::to(['/video/other-home'])?>">前往个人主页</a>
-        </div>
-
-        <!--tab切换-->
-        <ul class="per-tab">
-            <li class="c_task" data-value="task">首页</li>
-            <li class="c_upload" data-value="uploadvideo">视频</li>
-            <li class="c_relation" data-value="relation">关注</li>
-            <li class="c_message" data-value="comment">消息</li>
-            <li class="c_favorite" data-value="favorite">收藏夹</li>
-            <li class="c_watchlog" data-value="watchlog">播放记录</li>
-            <li><a target="_blank" href="<?= Url::to(['/video/seek'])?>">求片</a></li>
-            <li><a href="javascript:;">安全设置</a></li>
+        <ul class="box-per-tab J_per_tab">
+            <li class="c_favorite act J_collect">
+                <div class="per-img-icon"><img src="/images/Index/icon_collect.png"></div>
+                我的收藏
+            </li>
+            <li class="c_watchlog J_watch">
+                <div class="per-img-icon"><img src="/images/Index/bofangjilu_line.png"></div>
+                播放记录
+            </li>
+            <li class="c_safe J_safe">
+                <div class="per-img-icon"><img src="/images/Index/anquanzhongxin.png"></div>
+                安全中心
+            </li>
+            <li class="J_seek">
+                <div class="per-img-icon"><img src="/images/Index/dianying-4.png"></div>
+                <a target="_blank" href="<?= Url::to(['/video/seek'])?>">求片</a>
+            </li>
         </ul>
     </div>
 
-    <div class="per-tab-w">
-        <!--tab 首页 -->
-        <div class="per-tab-box c_task" name="zt">
-            <div class="per-vip">
-                <!--首页第一行-->
-                <div class="per-vip-box01" name="zt">
-                    <div class="per-vip-box01-dj" name="zt">
-                        <!--会员标识-->
-                        <img src="/images/newindex/VIP-1.png" />
-                        <span><span>黄金</span>VIP</span>
-                    </div>
-                    <div class="per-vip-box01-day">
-                        <div class="per-vip-box01-day-l">
-                            VIP剩余 <span>25</span> 天
-                        </div>
-                        <div class="per-vip-box01-day-r" name="zt">
-                            <span>2021-08-15</span> 到期
-                        </div>
-                    </div>
-                    <div class="per-vip-box01-gg" name="zt">
-                        已为您过滤了<span>9</span>条广告
-                    </div>
-                    <a class="per-vip-t9" href="javascript:;"><img src="/images/newindex/9tq.png" /></a>
-                    <a class="per-vip-btn" href="javascript:;">立即续费</a>
-                    <a class="per-vip-btn" href="javascript:;">前往VIP中心</a>
-                </div>
-                <!--首页第2行-->
-                <?php if($task['task_menu']):?>
-                    <?php foreach ($task['task_menu'] as $tasklist):?>
-                        <?php if($tasklist['task_title']=='日常任务'):?>
-                            <div class="per-vip-box02" name="zt">
-                                <img class="per-mrrw-icon" src="/images/newindex/mrrw.png" />
-                                <div class="per-vip-box02-l" name="zt">
-                                    <div class="per-vip-box02-l-01">
-                                        已完成任务
-                                    </div>
-                                    <div class="per-vip-box02-l-02">
-                                        9 次
-                                    </div>
-                                    <div class="per-vip-box02-l-03">
-                                        累积获得
-                                        <img src="/images/newindex/jinbi.png" />
-                                        <span><?=$task['info']['score']?></span>
-                                    </div>
-                                </div>
-                                <div class="per-vip-box02-r">
-                                    <?php foreach ($tasklist['task_list'] as $t):?>
-                                        <div class="per-vip-box02-r-box">
-                                            <div class="per-vip-box02-r-box-01">
-                                                <img src="<?=$t['task_icon']?>" />
-                                            </div>
-                                            <div class="per-vip-box02-r-box-02" name="zt">
-                                                <?=$t['task_label']?>
-                                            </div>
-                                            <div class="per-vip-box02-r-box-03" name="zt">
-                                                <div>
-                                                    <img src="/images/newindex/jinbi.png" /> +
-                                                    <span><?=$t['task_award']?></span>
-                                                </div>
-                                                <!--<div>
-                                                    <img src="/images/newindex/shangsheng.png" /> +
-                                                    <span>3</span>
-                                                </div>-->
-                                            </div>
-                                            <div class="per-vip-box02-r-box-04">
-                                                <a class="per-btn-on act" href="javascript:;">待完成</a>
-                                                <a class="per-btn-off" href="javascript:;" style="display: none;">已完成</a>
-                                            </div>
-                                        </div>
-                                    <?php endforeach;?>
-                                    <!--
-                                    <div class="per-vip-box02-r-box">
-                                        <div class="per-vip-box02-r-box-01">
-                                            <img src="/images/newindex/qiandao-01.png" />
-                                        </div>
-                                        <div class="per-vip-box02-r-box-02" name="zt">
-                                            每日签到
-                                        </div>
-                                        <div class="per-vip-box02-r-box-03" name="zt">
-                                            <div>
-                                                <img src="/images/newindex/jinbi.png" /> +
-                                                <span>3</span>
-                                            </div>
-                                            <div>
-                                                <img src="/images/newindex/shangsheng.png" /> +
-                                                <span>3</span>
-                                            </div>
-                                        </div>
-                                        <div class="per-vip-box02-r-box-04">
-                                            <a class="per-btn-on" href="javascript:;">待签到</a>
-                                            <a class="per-btn-off" href="javascript:;" style="display: none;">已签到</a>
-                                        </div>
-                                    </div>
-                                    <div class="per-vip-box02-r-box">
-                                        <div class="per-vip-box02-r-box-01">
-                                            <img src="/images/newindex/fenxiang.png" />
-                                        </div>
-                                        <div class="per-vip-box02-r-box-02" name="zt">
-                                            分享视频给好友
-                                        </div>
-                                        <div class="per-vip-box02-r-box-03" name="zt">
-                                            <div>
-                                                <img src="/images/newindex/jinbi.png" /> +
-                                                <span>3</span>
-                                            </div>
-                                            <div>
-                                                <img src="/images/newindex/shangsheng.png" /> +
-                                                <span>3</span>
-                                            </div>
-                                        </div>
-                                        <div class="per-vip-box02-r-box-04">
-                                            <a class="per-btn-on" href="javascript:;" style="display: none;">待完成</a>
-                                            <a class="per-btn-off" href="javascript:;">已完成</a>
-                                        </div>
-                                    </div>
-                                    <div class="per-vip-box02-r-box">
-                                        <div class="per-vip-box02-r-box-01">
-                                            <img src="/images/newindex/shangchuan.png" />
-                                        </div>
-                                        <div class="per-vip-box02-r-box-02" name="zt">
-                                            上传视频并通过审核
-                                        </div>
-                                        <div class="per-vip-box02-r-box-03" name="zt">
-                                            <div>
-                                                <img src="/images/newindex/jinbi.png" /> +
-                                                <span>3</span>
-                                            </div>
-                                            <div>
-                                                <img src="/images/newindex/shangsheng.png" /> +
-                                                <span>3</span>
-                                            </div>
-                                        </div>
-                                        <div class="per-vip-box02-r-box-04">
-                                            <a class="per-btn-on act" href="javascript:;">待完成</a>
-                                            <a class="per-btn-off" href="javascript:;" style="display: none;">已完成</a>
-                                        </div>
-                                    </div>
-                                    -->
-                                </div>
-                            </div>
-                        <?php elseif($tasklist['task_title']=='新手任务') : ?>
-                            <!--首页第3行-->
-                            <div class="per-vip-box03" name="zt">
-                                <img class="per-mrrw-icon" src="/images/newindex/xsrw.png" />
-                                <h4 class="per-vip-box03-top" name="zt">
-                                    <span class="per-vip-box03-top-kua">&nbsp;</span>
-                                    完成新手任务，最高可获得约<span>3000</span>金币
-                                    <span class="per-vip-box03-top-kua">&nbsp;</span>
-                                </h4>
-                                <ul class="per-rwlist">
-                                    <li>
-                                        <?php foreach($tasklist['task_list'] as $i=>$t):?>
-                                            <?php if($i%2==1):?>
-                                            <div class="per-rwlist-h">
-                                                <div class="per-rwlist-h-l" name="zt">
-                                                    <?=$t['task_label']?>
-                                                </div>
-                                                <div class="per-rwlist-h-r">
-                                                    <div class="per-rwlist-h-r-01" name="zt">
-                                                        <div>
-                                                            <img src="/images/newindex/jinbi.png"> +
-                                                            <span><?=$t['task_award']?></span>
-                                                        </div>
-                                                        <!--<div>
-                                                            <img src="/images/newindex/shangsheng.png"> +
-                                                            <span>50</span>
-                                                        </div>-->
-                                                    </div>
-                                                    <div class="per-rwlist-h-r-02">
-                                                        <a class="per-btn-on act" href="javascript:;">去完成</a>
-                                                        <a class="per-btn-off" href="javascript:;" style="display: none;">已完成</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <?php endif; ?>
-                                        <?php endforeach;?>
-                                    </li>
-                                    <li name="zt">&nbsp;</li>
-                                    <li>
-                                        <?php foreach($tasklist['task_list'] as $i=>$t):?>
-                                            <?php if($i%2==0):?>
-                                                <div class="per-rwlist-h">
-                                                    <div class="per-rwlist-h-l" name="zt">
-                                                        <?=$t['task_label']?>
-                                                    </div>
-                                                    <div class="per-rwlist-h-r">
-                                                        <div class="per-rwlist-h-r-01" name="zt">
-                                                            <div>
-                                                                <img src="/images/newindex/jinbi.png"> +
-                                                                <span><?=$t['task_award']?></span>
-                                                            </div>
-                                                            <!--<div>
-                                                                <img src="/images/newindex/shangsheng.png"> +
-                                                                <span>10</span>
-                                                            </div>-->
-                                                        </div>
-                                                        <div class="per-rwlist-h-r-02">
-                                                            <a class="per-btn-on act" href="javascript:;">去完成</a>
-                                                            <a class="per-btn-off" href="javascript:;" style="display: none;">已完成</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            <?php endif; ?>
-                                        <?php endforeach;?>
-                                    </li>
-                                </ul>
-                            </div>
-                        <?php endif; ?>
-                    <?php endforeach;?>
-                <?php endif; ?>
-            </div>
-        </div>
-
-        <!--tab 视频-->
-        <div class="per-tab-box c_upload" name="zt">
+    <div class="per-tab-w-new">
+        <!--tab 收藏夹-->
+        <div class="per-tab-box-new c_favorite act" name="zt">
             <!-- 头部导航 -->
-            <div class="per-sp-box">
-                <ul class="per-tab02" name="zt">
+            <div class="per-sp-box-new">
+                <ul class="per-tab02-new" name="zt">
                     <li class="act">剧集</li>
                     <li>视频</li>
                 </ul>
-                <!-- 排序 -->
-                <div class="per-slt">
-                    <div class="per-slt-name" name="zt">
-                        <input type="button" name=""  value="最近上传" />
-                    </div>
-                    <div class="per-slt-list" name="zt">
-                        <input class="act" type="button" name=""  value="最近上传" />
-                        <input type="button" name=""  value="人气最高" />
-                        <input type="button" name=""  value="点赞最多" />
-                        <input type="button" name=""  value="点踩最多" />
-                    </div>
-                </div>
-                <!-- 视频类型 -->
-                <div class="per-slt">
-                    <div class="per-slt-name" name="zt">
-                        <input type="button" name=""  value="全部" />
-                    </div>
-                    <div class="per-slt-list" name="zt">
-                        <input class="act" type="button" name=""  value="全部" />
-                        <input type="button" name=""  value="转码中" />
-                        <input type="button" name=""  value="审核中" />
-                        <input type="button" name=""  value="已发布" />
-                        <input type="button" name=""  value="错误" />
-                        <input type="button" name=""  value="上传中" />
-                    </div>
-                </div>
-                <!-- 搜索 -->
-                <div class="per-ss" name="zt">
-                    <input type="text" name=""  value="" placeholder="搜索" />
-                    <input type="button"  value="" />
-                </div>
-                <!-- 上传视频 -->
-                <div class="per-btn" name="zt" style="display:none;">
-                    <a href="javascript:;"><img src="/images/newindex/SC02.png" />上传视频</a>
-                    <div class="VIPmenuTop" name="zt">
-                        &nbsp;
-                    </div>
-                    <ul class="FLmenuBox" name="zt">
-                        <li class="FLmenuBox-li">
-                            <a href="javascript:;">
-                                <div class="FLmenuBox-liImg">
-                                    <img src="/images/newindex/Sdianying.png" />
-                                </div>
-                                <div class="FLmenuBox-liText">
-                                    上传视频
-                                </div>
-                            </a>
-                        </li>
-                        <li class="FLmenuBox-li">
-                            <a href="javascript:;">
-                                <div class="FLmenuBox-liImg">
-                                    <img src="/images/newindex/Sjuji.png" />
-                                </div>
-                                <div class="FLmenuBox-liText">
-                                    上传剧集
-                                </div>
-                            </a>
-                        </li>
+                <!-- 批量删除 -->
+                <div class="per-sc-new" name="zt">
+                    <ul class="per-sc-pl act J_fa_pl">
+                        <li>批量删除</li>
+                    </ul>
+                    <ul class="per-sc-btn">
+                        <li class="J_cancel_all">取消全选</li>
+                        <li class="J_del_num" onclick="removefavorite('all');">删除(<span>0</span>)</li>
+                        <li class="J_cancel">取消</li>
                     </ul>
                 </div>
-            </div>
-            <div class="per-tab-w02">
-                <!-- 剧集列表 -->
-                <div class="per-tab-box02 act">
-                    <h4 class="per-zw" name="zt" >
-                        暂无内容
-                    </h4>
-                    <!--
-                    <div class="RANbox-list01" name="zt">
-                        <ul class="RANbox-list-xx per-img">
-                            <li>
-                                <a href="play.html"><img src="/images/newindex/test-03.jpg" /></a>
-                            </li>
-                            <li>
-                                <div class="RANbox-list01-t">
-                                    <a class="RAN-z-box01-name" href="play.html" name="zt">测试视频名称</a>
-                                    <div class="GNbox-type" name="zt">
-                                        <span>爱情</span>
-                                        <span>爱情</span>
-                                        <span>爱情</span>
-                                        <span>爱情</span>
-                                        <span>爱情</span>
-                                        <span>爱情</span>
-                                    </div>
-                                </div>
-                                <div class="RANbox-list01-b">
-                                    <div>
-                                        更新:<span>测试更新文字内容</span> 状态:
-                                        <span>发布中</span>
-                                    </div>
-                                    <div class="per-mtop">
-                                        上传:<span>2021年06月28日</span>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="RANbox-list01-sj per-img">
-                            <ul class="SSjgPJ">
-                                <li><span>1212</span></li>
-                                <li><span>1212</span></li>
-                                <li><span>1212</span></li>
-                                <li><span>1212</span></li>
-                            </ul>
-                        </div>
-                        <div class="per-btn-tow" name="zt">
-                            <a href="javascript:;">编辑</a>
-                            <input type="button" name=""  value="删除" />
-                        </div>
-                    </div>
-                    <div class="RANbox-list01" name="zt">
-                        <ul class="RANbox-list-xx per-img">
-                            <li>
-                                <a href="play.html"><img src="/images/newindex/test-03.jpg" /></a>
-                            </li>
-                            <li>
-                                <div class="RANbox-list01-t">
-                                    <a class="RAN-z-box01-name" href="play.html" name="zt">测试视频名称</a>
-                                    <div class="GNbox-type" name="zt">
-                                        <span>爱情</span>
-                                        <span>爱情</span>
-                                        <span>爱情</span>
-                                        <span>爱情</span>
-                                        <span>爱情</span>
-                                        <span>爱情</span>
-                                    </div>
-                                </div>
-                                <div class="RANbox-list01-b">
-                                    <div>
-                                        更新:<span>测试更新文字内容</span> 状态:
-                                        <span>发布中</span>
-                                    </div>
-                                    <div class="per-mtop">
-                                        上传:<span>2021年06月28日</span>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="RANbox-list01-sj per-img">
-                            <ul class="SSjgPJ">
-                                <li><span>1212</span></li>
-                                <li><span>1212</span></li>
-                                <li><span>1212</span></li>
-                                <li><span>1212</span></li>
-                            </ul>
-                        </div>
-                        <div class="per-btn-tow" name="zt">
-                            <a href="javascript:;">编辑</a>
-                            <input type="button" name=""  value="删除" />
-                        </div>
-                    </div>
-                    <div class="RANbox-list01" name="zt">
-                        <ul class="RANbox-list-xx per-img">
-                            <li>
-                                <a href="play.html"><img src="/images/newindex/test-03.jpg" /></a>
-                            </li>
-                            <li>
-                                <div class="RANbox-list01-t">
-                                    <a class="RAN-z-box01-name" href="play.html" name="zt">测试视频名称</a>
-                                    <div class="GNbox-type" name="zt">
-                                        <span>爱情</span>
-                                        <span>爱情</span>
-                                        <span>爱情</span>
-                                        <span>爱情</span>
-                                        <span>爱情</span>
-                                        <span>爱情</span>
-                                    </div>
-                                </div>
-                                <div class="RANbox-list01-b">
-                                    <div>
-                                        更新:<span>测试更新文字内容</span> 状态:
-                                        <span>发布中</span>
-                                    </div>
-                                    <div class="per-mtop">
-                                        上传:<span>2021年06月28日</span>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="RANbox-list01-sj per-img">
-                            <ul class="SSjgPJ">
-                                <li><span>1212</span></li>
-                                <li><span>1212</span></li>
-                                <li><span>1212</span></li>
-                                <li><span>1212</span></li>
-                            </ul>
-                        </div>
-                        <div class="per-btn-tow" name="zt">
-                            <a href="javascript:;">编辑</a>
-                            <input type="button" name=""  value="删除" />
-                        </div>
-                    </div>
-                    -->
-                </div>
-
-                <!-- 视频列表 -->
-                <div class="per-tab-box02 ">
-                    <h4 class="per-zw" name="zt" >
-                        暂无内容
-                    </h4>
-                    <!--
-                    <div class="RANbox-list01" name="zt">
-                        <ul class="RANbox-list-xx">
-                            <li>
-                                <a href="play.html"><img src="/images/newindex/RDimg.jpg" /></a>
-                            </li>
-                            <li>
-                                <div class="RANbox-list01-t">
-                                    <a class="RAN-z-box01-name" href="play.html" name="zt">测试视频名称</a>
-
-                                </div>
-                                <div class="RANbox-list01-b">
-                                    <div>
-                                        上传:<span>2021年06月28日</span> 状态:
-                                        <span>发布中</span>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="RANbox-list01-sj">
-                            <ul class="SSjgPJ">
-                                <li><span>1212</span></li>
-                                <li><span>1212</span></li>
-                                <li><span>1212</span></li>
-                                <li><span>1212</span></li>
-                            </ul>
-                        </div>
-                        <div class="per-btn-tow" name="zt">
-                            <a href="javascript">编辑</a>
-                            <input type="button" name=""  value="删除" />
-                        </div>
-                    </div>
-                    <div class="RANbox-list01" name="zt">
-                        <ul class="RANbox-list-xx">
-                            <li>
-                                <a href="play.html"><img src="/images/newindex/RDimg.jpg" /></a>
-                            </li>
-                            <li>
-                                <div class="RANbox-list01-t">
-                                    <a class="RAN-z-box01-name" href="play.html" name="zt">测试视频名称</a>
-
-                                </div>
-                                <div class="RANbox-list01-b">
-                                    <div>
-                                        上传:<span>2021年06月28日</span> 状态:
-                                        <span>发布中</span>
-                                    </div>
-                                </div>
-
-                            </li>
-                        </ul>
-                        <div class="RANbox-list01-sj">
-                            <ul class="SSjgPJ">
-                                <li><span>1212</span></li>
-                                <li><span>1212</span></li>
-                                <li><span>1212</span></li>
-                                <li><span>1212</span></li>
-                            </ul>
-                        </div>
-                        <div class="per-btn-tow" name="zt">
-                            <a href="javascript">编辑</a>
-                            <input type="button" name=""  value="删除" />
-                        </div>
-                    </div>
-                    <div class="RANbox-list01" name="zt">
-                        <ul class="RANbox-list-xx">
-                            <li>
-                                <a href="play.html"><img src="/images/newindex/RDimg.jpg" /></a>
-                            </li>
-                            <li>
-                                <div class="RANbox-list01-t">
-                                    <a class="RAN-z-box01-name" href="play.html" name="zt">测试视频名称</a>
-
-                                </div>
-                                <div class="RANbox-list01-b">
-                                    <div>
-                                        上传:<span>2021年06月28日</span> 状态:
-                                        <span>发布中</span>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="RANbox-list01-sj">
-                            <ul class="SSjgPJ">
-                                <li><span>1212</span></li>
-                                <li><span>1212</span></li>
-                                <li><span>1212</span></li>
-                                <li><span>1212</span></li>
-                            </ul>
-                        </div>
-                        <div class="per-btn-tow" name="zt">
-                            <a href="javascript">编辑</a>
-                            <input type="button" name=""  value="删除" />
-                        </div>
-                    </div>
-                    <div class="RANbox-list01" name="zt">
-                        <ul class="RANbox-list-xx">
-                            <li>
-                                <a href="play.html"><img src="/images/newindex/RDimg.jpg" /></a>
-                            </li>
-                            <li>
-                                <div class="RANbox-list01-t">
-                                    <a class="RAN-z-box01-name" href="play.html" name="zt">测试视频名称</a>
-                                </div>
-                                <div class="RANbox-list01-b">
-                                    <div>
-                                        上传:<span>2021年06月28日</span> 状态:
-                                        <span>发布中</span>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="RANbox-list01-sj">
-                            <ul class="SSjgPJ">
-                                <li><span>1212</span></li>
-                                <li><span>1212</span></li>
-                                <li><span>1212</span></li>
-                                <li><span>1212</span></li>
-                            </ul>
-                        </div>
-                        <div class="per-btn-tow" name="zt">
-                            <a href="javascript">编辑</a>
-                            <input type="button" name=""  value="删除" />
-                        </div>
-                    </div>
-                    -->
+                <!-- 搜索 -->
+                <div class="per-ss-new" name="zt">
+                    <input type="button"  value="" id="fav_searchbtn"/>
+                    <input type="text" name=""  value="" placeholder="搜索"id="fav_search" />
                 </div>
             </div>
-        </div>
-
-        <!--tab 关注-->
-        <div class="per-tab-box c_relation" name="zt">
-            <!-- 头部导航 -->
-            <div class="per-sp-box">
-                <ul class="per-tab03" name="zt">
-                    <li class="act" data-type="1">关注</li>
-                    <li data-type="3">粉丝</li>
-                    <li data-type="2">黑名单</li>
-                </ul>
-                <div class="per-slt">
-                    <div class="per-slt-name" name="zt">
-                        <input type="button" name=""  value="最近关注" />
-                    </div>
-                    <div class="per-slt-list per-slt-list-relation" name="zt">
-                        <input class="act" type="button" name="" data-value="time" value="最近关注" />
-<!--                        <input type="button" name="" data-value="" data-type="" value="最近更新" />-->
-                        <input type="button" name="" data-value="fans" value="人气最高" /><!--fans高-->
-                        <input type="button" name="" data-value="relations" value="最多关注" /><!--关注多-->
-                    </div>
-                </div>
-                <div class="per-ss" name="zt">
-                    <input type="text" name="" id="rela_search" value="" placeholder="搜索" />
-                    <input type="button" id="rela_searchbtn" value="" />
-                </div>
-            </div>
-            <div class="per-tab-w03">
-                <!-- 关注 -->
-                <div class="per-tab-box03 act" name="zt">
-                    <?php if(!$data['follow']):?>
-                        <h4 class="per-zw" name="zt">
-                            暂无内容
-                        </h4>
-                    <?php else:?>
-                        <?php foreach($data['follow'] as $follow):?>
-                            <ul class="per-gz-box relations1-<?=$follow['uid']?>-<?=$follow['other_uid']?>" name="zt">
-                                <li>
-                                    <a class="per-gz-h" href="<?= Url::to(['/video/other-home', 'uid' => $follow['other_uid']])?>">
-                                        <?php if($follow['avatar']):?>
-                                            <img src="<?=$follow['avatar']?>" />
-                                        <?php else:?>
-                                            <img src="/images/newindex/logon.png" />
-                                        <?php endif;?>
-                                    </a>
-                                </li>
-                                <li>
-                                    <div class="per-gz-xx">
-                                        <a class="per-gz-name" name="zt" href="<?= Url::to(['/video/other-home', 'uid' => $follow['other_uid']])?>"><?=$follow['nickname']?></a>
-                                        <div class="per-gz-xb">
-                                            <?php if($follow['gender']==2):?>
-                                                <img src="/images/newindex/nan.png" />
-                                            <?php elseif($follow['gender']==1):?>
-                                                <img src="/images/newindex/nv.png" />
-                                            <?php endif;?>
-                                        </div>
-                                        <div class="per-gz-dz">
-<!--                                            <img src="/images/newindex/hlp-dz-g.png" />-->
-<!--                                            <span>澳大利亚</span>-->
-                                        </div>
-                                    </div>
-                                    <div class="per-gz-qm">
-<!--                                        测试用户个性签名-->
-                                    </div>
-                                </li>
-                                <li>粉丝：<span><?=$follow['fannum']?></span></li>
-                                <li>作品：<span>0</span></li>
-                                <li>获赞：<span>0</span></li>
-                                <li class="per-li-r" name="zt">
-                                    <input class="per-btn-x" onclick="changerelations(this);" data-value="<?=$follow['uid']?>-<?=$follow['other_uid']?>" data-type="1" type="button" name="" value="取消关注" />
-                                </li>
-                            </ul>
-                        <?php endforeach;?>
-                    <?php endif;?>
-                </div>
-                <!-- 粉丝 -->
-                <div class="per-tab-box03" name="zt">
-                    <?php if(!$data['fans']):?>
-                    <h4 class="per-zw" name="zt" >
-                        暂无内容
-                    </h4>
-                    <?php else:?>
-                        <?php foreach($data['fans'] as $fans):?>
-                            <ul class="per-gz-box relations3-<?=$fans['uid']?>-<?=$fans['other_uid']?>" name="zt">
-                                <li>
-                                    <a class="per-gz-h" href="<?= Url::to(['/video/other-home', 'uid' => $fans['uid']])?>">
-                                        <?php if($fans['avatar']):?>
-                                            <img src="<?=$fans['avatar']?>" />
-                                        <?php else:?>
-                                            <img src="/images/newindex/logon.png" />
-                                        <?php endif;?>
-                                    </a>
-                                </li>
-                                <li>
-                                    <div class="per-gz-xx">
-                                        <a class="per-gz-name" name="zt" href="<?= Url::to(['/video/other-home', 'uid' => $fans['uid']])?>"><?=$fans['nickname']?></a>
-                                        <div class="per-gz-xb">
-                                            <?php if($fans['gender']==2):?>
-                                                <img src="/images/newindex/nan.png" />
-                                            <?php elseif($fans['gender']==1):?>
-                                                <img src="/images/newindex/nv.png" />
-                                            <?php endif;?>
-                                        </div>
-                                        <div class="per-gz-dz">
-<!--                                            <img src="/images/newindex/hlp-dz-g.png" />-->
-<!--                                            <span>澳大利亚</span>-->
-                                        </div>
-                                    </div>
-                                    <div class="per-gz-qm">
-<!--                                        测试用户个性签名-->
-                                    </div>
-                                </li>
-                                <li>粉丝：<span><?=$fans['fannum']?></span></li>
-                                <li>作品：<span>0</span></li>
-                                <li>获赞：<span>0</span></li>
-                                <li class="per-li-r" name="zt">
-                                    <input class="per-btn-x" onclick="changerelations(this);" data-value="<?=$fans['uid']?>-<?=$fans['other_uid']?>" data-type="3" type="button" name=""  value="<?=$fans['tab']==1?'取消关注':'关注'?>" />
-                                </li>
-                            </ul>
-                        <?php endforeach;?>
-                    <?php endif;?>
-                </div>
-                <!-- 黑名单 -->
-                <div class="per-tab-box03" name="zt">
-                    <?php if(!$data['blacklist']):?>
-                        <h4 class="per-zw" name="zt" >
-                            暂无内容
-                        </h4>
-                    <?php else:?>
-                        <?php foreach($data['blacklist'] as $bl):?>
-                            <ul class="per-gz-box relations2-<?=$bl['uid']?>-<?=$bl['other_uid']?>" name="zt">
-                                <li>
-                                    <a class="per-gz-h" href="<?= Url::to(['/video/other-home', 'uid' => $bl['other_uid']])?>">
-                                        <?php if($bl['avatar']):?>
-                                            <img src="<?=$bl['avatar']?>" />
-                                        <?php else:?>
-                                            <img src="/images/newindex/logon.png" />
-                                        <?php endif;?>
-                                    </a>
-                                </li>
-                                <li>
-                                    <div class="per-gz-xx">
-                                        <a class="per-gz-name" name="zt" href="<?= Url::to(['/video/other-home', 'uid' => $bl['other_uid']])?>"><?=$bl['nickname']?></a>
-                                        <div class="per-gz-xb">
-                                            <?php if($bl['gender']==2):?>
-                                                <img src="/images/newindex/nan.png" />
-                                            <?php elseif($bl['gender']==1):?>
-                                                <img src="/images/newindex/nv.png" />
-                                            <?php endif;?>
-                                        </div>
-                                        <div class="per-gz-dz">
-<!--                                            <img src="/images/newindex/hlp-dz-g.png" />-->
-<!--                                            <span>澳大利亚</span>-->
-                                        </div>
-                                    </div>
-                                    <div class="per-gz-qm">
-<!--                                        测试用户个性签名-->
-                                    </div>
-                                </li>
-                                <li>粉丝：<span><?=$bl['fannum']?></span></li>
-                                <li>作品：<span>0</span></li>
-                                <li>获赞：<span>0</span></li>
-                                <li class="per-li-r" name="zt">
-                                    <input class="per-btn-x" onclick="changerelations(this);" data-value="<?=$bl['uid']?>-<?=$bl['other_uid']?>" data-type="2" type="button" name=""  value="移除" />
-                                </li>
-                            </ul>
-                        <?php endforeach;?>
-                    <?php endif;?>
-                </div>
-            </div>
-        </div>
-
-        <!--tab 消息-->
-        <div class="per-tab-box c_message" name="zt">
-            <!-- 头部导航 -->
-            <div class="per-sp-box">
-                <ul class="per-tab04" name="zt">
-                    <li data-type="comment" class="act">我发表的</li>
-                    <li data-type="reply">回复我的</li>
-                    <li data-type="system_message">系统通知</li>
-<!--                    <li>私信</li>-->
-                </ul>
-            </div>
-            <div class="per-tab-w04">
-                <!-- 我发表的 -->
-                <div class="per-tab-box04 act" name="zt">
-                    <?php if(!$data['comment']):?>
-                        <h4 class="per-zw" name="zt">
-                            暂无内容
-                        </h4>
-                    <?php else:?>
-                        <?php foreach($data['comment'] as $comment):?>
-                            <ul class="per-now-box comment_<?=$comment['comment_id']?>" name="zt">
-                                <li class="per-now-h">
-                                    <div class="navTopLogonImg">
-                                        <a href="javascript">
-                                            <?php if($comment['avatar']):?>
-                                                <img src="<?=$comment['avatar']?>" />
-                                            <?php else:?>
-                                                <img src="/images/newindex/logon.png" />
-                                            <?php endif;?>
-                                        </a>
-                                    </div>
-                                    <div class="navTopLogon-GRXX" name="zt">
-                                        <div class="navTopLogon-GRXX-box">
-                                            <ul class="navTopLogon-box01">
-                                                <li class="navTopLogon-name"><img src="/images/newindex/VIP-1.png" /><?=$comment['username']?></li>
-                                                <li class="navTopLogon-Gender">
-                                                    <?php if($comment['gender']==2):?>
-                                                        <img src="/images/newindex/nan.png" />
-                                                    <?php elseif($comment['gender']==1):?>
-                                                        <img src="/images/newindex/nv.png" />
-                                                    <?php endif;?>
-                                                </li>
-                                            </ul>
-                                            <ul class="navTopLogon-box02">
-                                                <li class="navTopLogon-rank">LV.<span><?=$comment['grade']?></span></li>
-                                                <li class="navTopLogon-icon01"><img src="/images/newindex/jinbi.png" /></li>
-                                                <li class="navTopLogon-text"><?=$comment['score']?></li>
-                                                <li class="per-gz-dz">
-<!--                                                    <img src="/images/newindex/hlp-dz-w.png"><span>澳大利亚</span>-->
-                                                </li>
-<!--                                                <li class="navTopLogon-experience"><span>76</span>/<span>200</span></li>-->
-<!--                                                <li class="navTopLogon-icon01"><img src="/images/newindex/shangsheng.png" /></li>-->
-<!--                                                <li class="navTopLogon-Progress">-->
-<!--                                                    <div>-->
-<!--                                                        <div class="Progress">&nbsp;</div>-->
-<!--                                                    </div>-->
-<!--                                                </li>-->
-                                            </ul>
-                                        </div>
-                                        <ul class="navTopLogon-box03">
-                                            <li>
-                                                <a class="navTopLogon-A" href="<?=Url::to(['/video/other-home'])?>">个人主页</a>
-                                            </li>
-                                            <!--<li><input class="per-now-btn" type="" name=""  value="私信" /></li>-->
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="per-now-box-01">
-                                        <div>
-                                            <?=$comment['username']?>
-                                        </div>
-                                        <img src="/images/newindex/lv_1.png" />
-                                        <a href="<?= Url::to(['detail', 'video_id' => $comment['video_id']])?>"><?=$comment['film_name']?></a>
-                                    </div>
-                                    <div class="per-now-box-02" name="zt">
-                                        <?=$comment['content']?>
-                                    </div>
-                                    <ul class="per-now-box-03" name="zt">
-                                        <li><?=$comment['date']?></li>
-                                        <li><input class="per-btn-z" onclick="commentAddlikes(this)" type="button" name="" data-value="<?=$comment['comment_id']?>" value="" /><span><?=$comment['likes_num']?></span></li>
-                                        <li><input class="per-btn-s" onclick="removecomment(this)" type="button" name="" data-value="<?=$comment['comment_id']?>" data-type="comment" value="删除" /></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        <?php endforeach;?>
-                    <?php endif;?>
-                </div>
-                <!-- 回复我的 -->
-                <div class="per-tab-box04" name="zt">
-                    <?php if(!$data['reply']):?>
-                        <h4 class="per-zw" name="zt">
-                            暂无内容
-                        </h4>
-                    <?php else:?>
-                        <?php foreach($data['reply'] as $reply):?>
-                            <ul class="per-now-box comment_<?=$reply['comment_id']?>" name="zt">
-                                <li class="per-now-h">
-                                    <div class="navTopLogonImg">
-                                        <a href="javascript">
-                                            <?php if($reply['avatar']):?>
-                                                <img src="<?=$reply['avatar']?>" />
-                                            <?php else:?>
-                                                <img src="/images/newindex/logon.png" />
-                                            <?php endif;?>
-                                        </a>
-                                    </div>
-                                    <div class="navTopLogon-GRXX" name="zt">
-                                        <div class="navTopLogon-GRXX-box">
-                                            <ul class="navTopLogon-box01">
-                                                <li class="navTopLogon-name"><img src="/images/newindex/VIP-1.png" /><?=$reply['username']?></li>
-                                                <li class="navTopLogon-Gender">
-                                                    <?php if($reply['gender']==2):?>
-                                                        <img src="/images/newindex/nan.png" />
-                                                    <?php elseif($reply['gender']==1):?>
-                                                        <img src="/images/newindex/nv.png" />
-                                                    <?php endif;?>
-                                                </li>
-                                            </ul>
-                                            <ul class="navTopLogon-box02">
-                                                <li class="navTopLogon-rank">LV.<span><?=$reply['grade']?></span></li>
-                                                <li class="navTopLogon-icon01"><img src="/images/newindex/jinbi.png" /></li>
-                                                <li class="navTopLogon-text"><?=$reply['score']?></li>
-                                                <li class="per-gz-dz">
-<!--                                                    <img src="/images/newindex/hlp-dz-w.png"><span>澳大利亚</span>-->
-                                                </li>
-<!--                                                <li class="navTopLogon-experience"><span>76</span>/<span>200</span></li>-->
-<!--                                                <li class="navTopLogon-icon01"><img src="/images/newindex/shangsheng.png" /></li>-->
-<!--                                                <li class="navTopLogon-Progress">-->
-<!--                                                    <div>-->
-<!--                                                        <div class="Progress">&nbsp;</div>-->
-<!--                                                    </div>-->
-<!--                                                </li>-->
-                                            </ul>
-                                        </div>
-                                        <ul class="navTopLogon-box03">
-                                            <li>
-                                                <a class="navTopLogon-A" href="<?=Url::to(['/video/other-home','uid'=>$reply['uid']])?>">个人主页</a>
-                                            </li>
-                                            <!--<li><input class="per-now-btn" type="" name=""  value="私信" /></li>-->
-                                        </ul>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="per-now-box-01">
-                                        <div>
-                                            <?=$reply['username']?>
-                                        </div>
-                                        <img src="/images/newindex/lv_1.png" />
-                                        <a href="<?= Url::to(['detail', 'video_id' => $reply['video_id']])?>"><?=$reply['film_name']?></a>
-                                    </div>
-                                    <div class="per-now-box-02" name="zt">
-                                        <?=$reply['content']?>
-                                    </div>
-                                    <ul class="per-now-box-03" name="zt">
-                                        <li><?=$reply['date']?></li>
-                                        <li><input class="per-btn-z" onclick="commentAddlikes(this)" type="button" name="" data-value="<?=$reply['comment_id']?>" value="" /><span><?=$reply['likes_num']?></span></li>
-                                        <li><input class="per-btn-s" onclick="removecomment(this)" type="button" name="" data-value="<?=$reply['comment_id']?>" data-type="comment" value="删除" /></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        <?php endforeach;?>
-                    <?php endif;?>
-                </div>
-                <!-- 系统通知 -->
-                <div class="per-tab-box04" name="zt">
-                    <?php if(!$data['system_message']):?>
-                        <h4 class="per-zw" name="zt">
-                            暂无内容
-                        </h4>
-                    <?php else:?>
-                        <?php foreach($data['system_message'] as $message):?>
-                            <ul class="per-now-box message_<?=$message['message_id']?>" name="zt">
-                                <li class="per-now-h">
-                                    <img src="/images/newindex/admin_avatar.png" />
-                                </li>
-                                <li>
-                                    <div class="per-now-box-01">
-                                        <div>
-                                            系统管理员
-                                        </div>
-                                    </div>
-                                    <div class="per-now-box-02" name="zt">
-                                        <?=$message['content']?>
-                                    </div>
-                                    <ul class="per-now-box-03" name="zt">
-                                        <li><?=$message['date']?></li>
-                                        <li><input class="per-btn-s" onclick="removecomment(this)" type="button" name="" data-value="<?=$message['message_id']?>" data-type="message" value="删除" /></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        <?php endforeach;?>
-                    <?php endif;?>
-                </div>
-                <!-- 私信 -->
-                <div class="per-tab-box04" name="zt">
-                    <div class="per-qq-box" name="zt">
-                        <div class="per-qq-box-l">
-                            <div class="per-qq-list" name="zt">
-                                <div class="per-qq-h01" name="zt">
-                                    <input class="per-qq-sz act" type="button" name=""  value="" />
-                                    <input class="per-qq-bl" type="button" name=""  value="消息设置" />
-                                </div>
-                                <!--用户列表-->
-                                <div class="per-yh-lst act">
-                                    <ul class="per-qq-yh act">
-                                        <li><img src="/images/newindex/logon.png" /></li>
-                                        <li>
-                                            <div class="per-qq-name01" name="zt">
-                                                测试用户名
-                                            </div>
-                                            <div class="qer-qq-day01" name="zt">
-                                                <span>1991年02月22日</span><span>7:30</span>
-                                            </div>
-                                        </li>
-                                        <li><input class="per-qq-dlt" type="button" name=""  value="X" /></li>
-                                    </ul>
-
-                                    <!--用户列表ul多个循环-->
-                                    <ul class="per-qq-yh">
-                                        <li><img src="/images/newindex/logon.png" /></li>
-                                        <li>
-                                            <div class="per-qq-name01" name="zt">
-                                                测试用户名
-                                            </div>
-                                            <div class="qer-qq-day01" name="zt">
-                                                <span>1991年02月22日</span><span>7:30</span>
-                                            </div>
-                                        </li>
-                                        <li><input class="per-qq-dlt" type="button" name=""  value="X" /></li>
-                                    </ul>
-
-                                </div>
-                                    <!--消息设置-->
-                                <div class="per-qq-xxsz-box">
-                                    <ul class="per-qq-xxsz" name="zt">
-                                        <li>只接受互关好友私信</li>
-                                        <li class="per-qq-xxsz-an" name="zt">
-                                            <input type="checkbox" name="perQQ-sz" id="perQQ-sz" value="" style="display:none;" />
-                                            <label for="perQQ-sz">
-                                                <div>&nbsp;11</div>
-                                            </label>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <!--聊天框-->
-                        <div class="per-qq-box-r">
-                            <div class="per-qq-h02" name="zt">
-                                <div class="per-qq-name02" name="zt">
-                                    测试用户名称
-                                    <input class="per-qq-gz01 act" type="button" name=""  value="已关注" />
-                                    <input class="per-qq-gz02" type="button" name=""  value="关注" />
-                                </div>
-                                <input class="per-qq-sz02" type="button" name=""  value="" />
-                            </div>
-                            <div class="per-qq-sz02-slc" name="zt">
-                                <input type="button" name=""  value="加入黑名单" />
-                                <input type="button" name=""  value="清空聊天记录" />
-                                <input type="button" name=""  value="举报用户" />
-                            </div>
-                            <div class="per-qq-lt-box">
-                                <div class="per-qq-lt-l">
-                                    <ul>
-                                        <li><img src="/images/newindex/logon.png"/></li>
-                                        <li name="zt">测试聊天内容测试聊天内容测试聊天内容</li>
-                                    </ul>
-                                </div>
-                                <div class="per-qq-lt-r">
-                                    <ul>
-                                        <li><img src="/images/newindex/logon.png"/></li>
-                                        <li>测试聊天内容测试聊天内容测试聊天内容</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="per-qq-text-box" name="zt">
-                                <div class="GNbox-PLsr" name="zt">
-                                    <textarea placeholder="注意，以下行为将被封号：严重剧透、发布广告、木马链接、宣传同类网站、辱骂工作人员等。"></textarea>
-                                    <div class="GNbox-PL-box">
-                                        <input class="GNbox-Btnbq" type="button" name=""  value="">
-                                        <input class="GNbox-Btnfs" type="button" name=""  value="发送">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!--tab 收藏夹-->
-        <div class="per-tab-box c_favorite" name="zt">
-            <!-- 收藏夹导航 -->
-            <div class="per-sp-box">
-                <ul class="per-tab05" name="zt">
-                    <li class="act">剧集</li>
-                    <li>视频</li>
-                </ul>
-                <div class="per-slt">
-                    <div class="per-slt-name" name="zt">
-                        <input type="button" name="" value="最近上传" />
-                    </div>
-                    <div class="per-slt-list per-slt-list-favorite" name="zt">
-                        <input class="act" type="button" name="" data-value="time" data-type="order" value="最近上传" />
-                        <input type="button" name=""  data-value="view"  data-type="order" value="人气最高" /><!--浏览-->
-                        <input type="button" name=""  data-value="favorite"  data-type="order" value="收藏最多" />
-<!--                        <input type="button" name=""  value="点赞最多" />-->
-<!--                        <input type="button" name=""  value="点踩最多" />-->
-                    </div>
-                </div>
-                <div class="per-slt">
-                    <div class="per-slt-name" name="zt">
-                        <input type="button" name="" value="全部分类" />
-                    </div>
-                    <div class="per-slt-list per-slt-list-favorite" name="zt">
-                        <input class="act" type="button" name="" data-value="0" data-type="channel" value="全部分类" />
-                        <?php if(!empty($channels)) :?>
-                            <?php foreach ($channels['channeltags'] as $channel) :?>
-                                <?php if($channel['channel_name'] != '首页'): ?>
-                                    <input type="button" name="" data-value="<?= $channel['channel_id']?>"  data-type="channel" value="<?= $channel['channel_name']?>" />
-                                <?php endif;?>
-                            <?php endforeach;?>
-                        <?php endif;?>
-                    </div>
-                </div>
-                <div class="per-slt">
-                    <div class="per-slt-name" name="zt">
-                        <input type="button" name="" value="全部状态" />
-                    </div>
-                    <div class="per-slt-list per-slt-list-favorite" name="zt">
-                        <input class="act" type="button" name="" data-value="0" data-type="is_finished" value="全部状态" />
-                        <input type="button" name="" data-value="2" data-type="is_finished" value="连载中" />
-                        <input type="button" name="" data-value="1" data-type="is_finished" value="已完结" />
-                    </div>
-                </div>
-                <div class="per-ss" name="zt">
-                    <input type="text" name="" id="fav_search" value="" placeholder="搜索" />
-                    <input type="button"  value="" id="fav_searchbtn" />
-                </div>
-                <div class="per-qx" name="zt">
-                    <input type="button" name="" id="fav_deleteall" value="批量删除" />
-                </div>
-            </div>
-            <!-- 批量删除 -->
-            <div class="per-sp-box02">
-                <div class="per-qx-02" name="zt">
-                    <input type="button" name=""  value="全选" />
-                </div>
-                <div class="per-sp-box02-h">
-                    已选择 <span class="clrOrangered">0</span>个视频
-                </div>
-                <div class="per-qx-03" id="btnQX" name="zt">
-                    <input type="button" name=""  value="取消" />
-                </div>
-                <div class="per-qx-03" name="zt">
-                    <input type="button" name=""  value="删除" onclick="removefavorite('all');" />
-                </div>
-            </div>
-            <div class="per-tab-w05">
-                <!-- 收藏剧集 -->
-                <div class="per-tab-box05 act">
+            <div class="per-tab-wrap">
+                <div class="per-tab-w02-new act">
                     <?php if(!$data['favorite']):?>
-                    <h4 class="per-zw" name="zt">
-                        暂无内容
-                    </h4>
+                        <div class="no-video">
+                            <h2 class="per-zw-new" name="zt" >
+                                暂无内容，快去看看精彩视频吧~
+                            </h2>
+                        </div>
                     <?php else :?>
-                        <?php foreach ($data['favorite'] as $video):?>
-                            <div class="RANbox-list01 id_fav<?=$video['video_id']?>" name="zt">
-                                <ul class="RANbox-list-xx per-img">
-                                    <li>
-                                        <a href="<?= Url::to(['detail', 'video_id' => $video['video_id']])?>"><img src="<?=$video['cover']?>"></a>
-                                    </li>
-                                    <li>
-                                        <div class="RANbox-list01-t">
-                                            <a class="RAN-z-box01-name" href="<?= Url::to(['detail', 'video_id' => $video['video_id']])?>" name="zt"><?=$video['video_name']?></a>
-                                            <div class="GNbox-type" name="zt">
+                        <div class="per-tab-video-list">
+                            <?php foreach ($data['favorite'] as $video):?>
+                                <div class="RANbox-list01-new id_fav<?=$video['video_id']?>" name="zt">
+                                    <ul class="RANbox-list-xx-new">
+                                        <li>
+                                            <a href="<?= Url::to(['detail', 'video_id' => $video['video_id']])?>"><img src="<?=$video['cover']?>"></a>
+                                        </li>
+                                        <li>
+                                            <a class="RAN-z-box01-name-new" href="<?= Url::to(['detail', 'video_id' => $video['video_id']])?>" name="zt"><?=$video['video_name']?></a>
+                                            <div class="GNbox-type-new" name="zt">
                                                 <?php foreach (explode(' ',$video['category']) as $category): ?>
                                                     <span><?= $category?></span>
                                                 <?php endforeach;?>
                                             </div>
-                                        </div>
-                                        <div class="RANbox-list01-b">
-                                            <div>
-                                                更新:<span><?=$video['flag']?></span>
-                                                状态:<span><?=$video['is_finished']==1? '完结' : '更新中' ?></span>
+                                            <div class="RANbox-list01-b-new">
+                                                <span><?=$video['is_finished']==1? '完结' : '更新中' ?></span>
+                                                <span><?=$video['flag']?></span>
                                             </div>
-                                            <div class="per-mtop">
-                                                上传:<span><?=date("Y年m月d日",$video['created_at'])?></span>
+                                        </li>
+                                        <li>
+                                            <div class="RANbox-choose">
+                                                <div class="RANbox-choose-img J_choose_check"  data-value="<?=$video['video_id']?>" onclick="favchoose(this);" ></div>
                                             </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="RANbox-list01-sj per-img">
-                                    <ul class="SSjgPJ">
-                                        <li><span><?=$video['commentcount']?></span></li>
-                                        <li><span>0</span></li>
-                                        <li><span>0</span></li>
-                                        <li><span><?=$video['total_views']?></span></li>
+                                            <input type="button" value="删除" onclick="removefavorite(<?=$video['video_id']?>)">
+                                        </li>
                                     </ul>
                                 </div>
-                                <div class="per-btn-tow" name="zt">
-                                    <input type="button" name="" onclick="removefavorite(<?=$video['video_id']?>)" value="删除" />
-                                </div>
-                                <div class="per-btn-cbox">
-                                    <input type="checkbox" name="per-qx" class="fav_checkbox" data-value="<?=$video['video_id']?>" value="" onclick="favchoose(this);" />
-                                </div>
-                            </div>
-                        <?php endforeach;?>
+                            <?php endforeach;?>
+                        </div>
                     <?php endif;?>
                 </div>
-                <!-- 收藏视频 -->
-                <div class="per-tab-box05">
-                    <h4 class="per-zw" name="zt">
-                        暂无内容
-                    </h4>
-                    <!--
-                    <div class="RANbox-list01" name="zt">
-                        <ul class="RANbox-list-xx">
-                            <li>
-                                <a href="play.html"><img src="/images/newindex/RDimg.jpg" /></a>
-                            </li>
-                            <li>
-                                <div class="RANbox-list01-t">
-                                    <a class="RAN-z-box01-name" href="play.html" name="zt">测试视频名称</a>
-                                </div>
-                                <div class="RANbox-list01-b">
-                                    <div>
-                                        上传:<span>2021年06月28日</span> 状态:
-                                        <span>发布中</span>
+                <!-- 视频列表 -->
+                <div class="per-tab-w02-new">
+                    <div class="per-tab-video-list">
+                        <div class="no-video">
+                            <h2 class="per-zw-new" name="zt" >
+                                暂无内容，快去看看精彩视频吧~
+                            </h2>
+                        </div>
+                        <!--<div class="RANbox-list01-new id_fav1" name="zt">
+                            <ul class="RANbox-list-xx-new">
+                                <li>
+                                    <a href="play.html"><img src="/images/newindex/test-03.jpg" /></a>
+                                </li>
+                                <li>
+                                    <a class="RAN-z-box01-name-new" href="play.html" name="zt">测试视频名称</a>
+                                    <div class="GNbox-type-new" name="zt">
+                                        <span>爱情</span>
+                                        <span>爱情</span>
+                                        <span>爱情</span>
+                                        <span>爱情</span>
+                                        <span>爱情</span>
+                                        <span>爱情</span>
                                     </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="RANbox-list01-sj">
-                            <ul class="SSjgPJ">
-                                <li><span>1212</span></li>
-                                <li><span>1212</span></li>
-                                <li><span>1212</span></li>
-                                <li><span>1212</span></li>
+                                    <div class="RANbox-list01-b-new">
+                                        <span>发布中</span>
+                                        <span>测试更新文字内容</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="RANbox-choose">
+                                        <div class="RANbox-choose-img J_choose_check" data-value="1" onclick="favchoose(this);"></div>
+                                    </div>
+                                    <input type="button" value="删除" onclick="removefavorite(1)">
+                                </li>
                             </ul>
-                        </div>
-                        <div class="per-btn-tow" name="zt">
-                            <input type="button" name=""  value="删除" />
-                        </div>
-                        <div class="per-btn-cbox">
-                            <input type="checkbox" name="per-qx"  value="" />
-                        </div>
+                        </div>-->
                     </div>
-                    <div class="RANbox-list01" name="zt">
-                        <ul class="RANbox-list-xx">
-                            <li>
-                                <a href="play.html"><img src="/images/newindex/RDimg.jpg" /></a>
-                            </li>
-                            <li>
-                                <div class="RANbox-list01-t">
-                                    <a class="RAN-z-box01-name" href="play.html" name="zt">测试视频名称</a>
-                                </div>
-                                <div class="RANbox-list01-b">
-                                    <div>
-                                        上传:<span>2021年06月28日</span> 状态:
-                                        <span>发布中</span>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="RANbox-list01-sj">
-                            <ul class="SSjgPJ">
-                                <li><span>1212</span></li>
-                                <li><span>1212</span></li>
-                                <li><span>1212</span></li>
-                                <li><span>1212</span></li>
-                            </ul>
-                        </div>
-                        <div class="per-btn-tow" name="zt">
-                            <input type="button" name=""  value="删除" />
-                        </div>
-                        <div class="per-btn-cbox">
-                            <input type="checkbox" name="per-qx"  value="" />
-                        </div>
-                    </div> -->
                 </div>
             </div>
         </div>
-
         <!--tab 播放记录-->
-        <div class="per-tab-box c_watchlog" name="zt">
+        <div class="per-tab-box-new c_watchlog" name="zt">
             <!-- 头部导航 -->
-            <div class="per-sp-box">
-                <ul class="per-tab06" name="zt">
-                    <li class="act">剧集</li>
-                    <li>视频</li>
-                </ul>
-                <div class="per-ss" name="zt">
-                    <input type="text" id="watchlog_stext" value="" placeholder="搜索" />
-                    <input type="button" id="watchlog_search" value="" />
-                </div>
-                <div class="per-qk" name="zt">
-                    <input type="button" onclick="removewatchlog('all');" value="清空记录" />
-                </div>
-            </div>
-            <div class="per-tab-w06">
-                <!-- 剧集播放线 -->
-                <div class="per-tab-box06 act">
-                    <?php if(!$data['watchlog']):?>
-                        <h4 class="per-zw" name="zt">
-                            暂无内容
-                        </h4>
-                    <?php else :?>
-                        <?php foreach ($data['watchlog'] as $i => $watchdate):?>
-                            <?php if($i==0){
-                                $act = "act";
-                            }else{
-                                $act = "";
-                            }?>
-                            <div class="per-bf-lst">
-                                <?php if($data['watchlog'][$i-1]['date']!=$watchdate['date']):?>
-                                    <div class="per-bf-lst-btn <?=$act?>"><?=$watchdate['date']?></div>
-                                <?php endif;?>
-                                <?php foreach ($watchdate['list'] as $video):?>
-                                <ul class="per-bof-box id_watchlog_<?=$video['log_id']?>" name="zt">
-                                    <li class="per-bof-box-01"><?=$video['show_times']?></li>
-                                    <li class="per-bof-box-02" name="zt">
-                                        <div class="RANbox-list01" name="zt">
-                                            <ul class="RANbox-list-xx per-img">
-                                                <li>
-                                                    <a href="<?= Url::to(['detail', 'video_id' => $video['video_id']])?>"><img src="<?=$video['cover']?>"></a>
-                                                </li>
-                                                <li>
-                                                    <div class="RANbox-list01-t">
-                                                        <a class="RAN-z-box01-name" href="<?= Url::to(['detail', 'video_id' => $video['video_id']])?>" name="zt"><?=$video['title']?></a>
-                                                        <div class="GNbox-type" name="zt">
-                                                            <?php foreach (explode(' ',$video['category']) as $category): ?>
-                                                                <span><?= $category?></span>
-                                                            <?php endforeach;?>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                            <div class="per-btn-tow" name="zt">
-                                                <input type="button"  onclick="removewatchlog(<?=$video['log_id']?>);" value="删除">
-                                            </div>
-                                            <div class="per-bf-bow02">
-                                                <div class="per-bf-bow02-h" name="zt">
-<!--                                                    更新至：<span>36</span>-->
-                                                    <?=$video['flag']?>
-                                                </div>
-                                                <ul class="per-bf-bow02-h02" name="zt">
-                                                    <li class="per-bf-bow02-h02-jd" name="zt">
-                                                        <div style="width:<?=$video['watch_percent']?>%;">
-                                                            &nbsp;
-                                                        </div>
-                                                    </li>
-                                                    <li><?=$video['play_time']?></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <?php endforeach;?>
-                            </div>
+            <div class="per-sp-box-new">
+                <ul class="per-tab02-new-02 J_select_channel" name="zt">
+                    <li class="act" onclick="channelswatchlog('all',this);" channel-id=0>全部</li>
+                    <?php if(!empty($channels)) :?>
+                        <?php foreach ($channels['channeltags'] as $key=>$channel) :?>
+                            <?php if ($key < 6 && $channel['channel_name'] != '首页') :?>
+                            <li onclick="channelswatchlog(<?= $channel['channel_id']?>,this)" channel-id=<?= $channel['channel_id']?>>
+                                <?= $channel['channel_name']?>
+                            </li>
+                            <?php endif;?>
                         <?php endforeach;?>
                     <?php endif;?>
+                </ul>
+                <!-- 批量删除 -->
+                <div class="per-sc-new" name="zt">
+                    <ul class="per-sc-pl act J_wl_pl">
+                        <li>批量删除</li>
+                    </ul>
+                    <ul class="per-sc-btn">
+                        <li class="J_cancel_all">取消全选</li>
+                        <li class="J_del_num"  onclick="removewatchlog('all');">删除(<span>0</span>)</li>
+                        <li class="J_cancel">取消</li>
+                    </ul>
                 </div>
-                <!-- 视频播放线 -->
-                <div class="per-tab-box06">
-                    <h4 class="per-zw" name="zt">
-                        暂无内容
-                    </h4>
-                    <!--
-                    <div class="per-bf-lst">
-                        <div class="per-bf-lst-btn act">今天</div>
-                        <ul class="per-bof-box" name="zt">
-                            <li class="per-bof-box-01">14:30</li>
-                            <li class="per-bof-box-02" name="zt">
-                                <div class="RANbox-list01" name="zt">
-                                    <ul class="RANbox-list-xx">
-                                        <li>
-                                            <a href="play.html"><img src="/images/newindex/RDimg.jpg"></a>
-                                        </li>
-                                        <li>
-                                            <div class="RANbox-list01-t">
-                                                <a class="RAN-z-box01-name" href="play.html" name="zt">测试视频名称</a>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <div class="per-btn-tow" name="zt">
-                                        <input type="button" name=""  value="删除">
-                                    </div>
-                                    <div class="per-bf-bow">
-                                        <a href="javascript">测试作者名称</a>
-                                        <input type="button" name=""  value="关注" />
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <ul class="per-bof-box" name="zt">
-                            <li class="per-bof-box-01">14:30</li>
-                            <li class="per-bof-box-02" name="zt">
-                                <div class="RANbox-list01" name="zt">
-                                    <ul class="RANbox-list-xx">
-                                        <li>
-                                            <a href="play.html"><img src="/images/newindex/RDimg.jpg"></a>
-                                        </li>
-                                        <li>
-                                            <div class="RANbox-list01-t">
-                                                <a class="RAN-z-box01-name" href="play.html" name="zt">测试视频名称</a>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <div class="per-btn-tow" name="zt">
-                                        <input type="button" name=""  value="删除">
-                                    </div>
-                                    <div class="per-bf-bow">
-                                        <a href="javascript">测试作者名称</a>
-                                        <input type="button" name=""  value="关注" />
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
+                <!-- 搜索 -->
+                <div class="per-ss-new" name="zt">
+                    <input type="button"  value="" id="watchlog_search" />
+                    <input type="text" name=""  value="" placeholder="搜索" id="watchlog_stext" />
+                </div>
+            </div>
+            <div class="per-tab-wrap">
+                <div class="per-tab-w02-new act">
+                    <?php if(!$data['watchlog']):?>
+                    <div class="no-video">
+                        <h2 class="per-zw-new" name="zt" >
+                            暂无内容，快去看看精彩视频吧~
+                        </h2>
                     </div>
-                    <div class="per-bf-lst">
-                        <div class="per-bf-lst-btn">昨天</div>
-                        <ul class="per-bof-box" name="zt">
-                            <li class="per-bof-box-01">14:30</li>
-                            <li class="per-bof-box-02" name="zt">
-                                <div class="RANbox-list01" name="zt">
-                                    <ul class="RANbox-list-xx">
-                                        <li>
-                                            <a href="play.html"><img src="/images/newindex/RDimg.jpg"></a>
-                                        </li>
-                                        <li>
-                                            <div class="RANbox-list01-t">
-                                                <a class="RAN-z-box01-name" href="play.html" name="zt">测试视频名称</a>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <div class="per-btn-tow" name="zt">
-                                        <input type="button" name=""  value="删除">
-                                    </div>
-                                    <div class="per-bf-bow">
-                                        <a href="javascript">测试作者名称</a>
-                                        <input type="button" name=""  value="关注" />
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <ul class="per-bof-box" name="zt">
-                            <li class="per-bof-box-01">14:30</li>
-                            <li class="per-bof-box-02" name="zt">
 
-                                <div class="RANbox-list01" name="zt">
-                                    <ul class="RANbox-list-xx">
-                                        <li>
-                                            <a href="play.html"><img src="/images/newindex/RDimg.jpg"></a>
-                                        </li>
-                                        <li>
-                                            <div class="RANbox-list01-t">
-                                                <a class="RAN-z-box01-name" href="play.html" name="zt">测试视频名称</a>
-
-                                            </div>
-
-                                        </li>
-                                    </ul>
-                                    <div class="per-btn-tow" name="zt">
-                                        <input type="button" name=""  value="删除">
+                    <?php else :?>
+                        <?php foreach ($data['watchlog'] as $i => $watchdate):?>
+                        <div class="per-bf-lst">
+                            <?php if($data['watchlog'][$i-1]['date']!=$watchdate['date']):?>
+                            <div class="per-bf-lst-btn act"><?=$watchdate['date']?></div>
+                            <?php endif;?>
+                            <?php foreach ($watchdate['list'] as $video):?>
+                            <ul class="per-bof-box id_watchlog_<?=$video['log_id']?>" name="zt">
+                                <li class="per-bof-box-01 show-times"><?=$video['show_times']?></li>
+                                <li class="per-bof-box-02" name="zt">
+                                    <div class="RANbox-list01" name="zt">
+                                        <ul class="RANbox-list-xx RANbox-list-xx-new">
+                                            <li>
+                                                <a href="<?= Url::to(['detail', 'video_id' => $video['video_id']])?>"><img src="<?=$video['cover']?>"></a>
+                                            </li>
+                                            <li>
+                                                <a class="RAN-z-box01-name-new" href="<?= Url::to(['detail', 'video_id' => $video['video_id']])?>" name="zt"><?=$video['title']?></a>
+                                                <div class="GNbox-type-new" name="zt">
+                                                    <?php foreach (explode(' ',$video['category']) as $category): ?>
+                                                        <span><?= $category?></span>
+                                                    <?php endforeach;?>
+                                                </div>
+                                                <div class="RANbox-list01-b-new">
+                                                    <span><?=$video['is_finished']==1? '完结' : '更新中' ?></span>
+                                                    <span> <?=$video['flag']?></span>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <div class="RANbox-choose">
+                                                    <div class="RANbox-choose-img J_choose_check" data-value="1" onclick="favchoose(this);"></div>
+                                                </div>
+                                                <input type="button" value="删除"  onclick="removewatchlog(<?=$video['log_id']?>);">
+                                            </li>
+                                        </ul>
                                     </div>
-                                    <div class="per-bf-bow">
-                                        <a href="javascript">测试作者名称</a>
-                                        <input type="button" name=""  value="关注" />
-                                    </div>
-                                </div>
-
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="per-bf-lst">
-                        <div class="per-bf-lst-btn">本周</div>
-                        <ul class="per-bof-box" name="zt">
-                            <li class="per-bof-box-01">2021-07-07</li>
-                            <li class="per-bof-box-02" name="zt">
-                                <div class="RANbox-list01" name="zt">
-                                    <ul class="RANbox-list-xx">
-                                        <li>
-                                            <a href="play.html"><img src="/images/newindex/RDimg.jpg"></a>
-                                        </li>
-                                        <li>
-                                            <div class="RANbox-list01-t">
-                                                <a class="RAN-z-box01-name" href="play.html" name="zt">测试视频名称</a>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <div class="per-btn-tow" name="zt">
-                                        <input type="button" name=""  value="删除">
-                                    </div>
-                                    <div class="per-bf-bow">
-                                        <a href="javascript">测试作者名称</a>
-                                        <input type="button" name=""  value="关注" />
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <ul class="per-bof-box" name="zt">
-                            <li class="per-bof-box-01">2021-07-06</li>
-                            <li class="per-bof-box-02" name="zt">
-                                <div class="RANbox-list01" name="zt">
-                                    <ul class="RANbox-list-xx">
-                                        <li>
-                                            <a href="play.html"><img src="/images/newindex/RDimg.jpg"></a>
-                                        </li>
-                                        <li>
-                                            <div class="RANbox-list01-t">
-                                                <a class="RAN-z-box01-name" href="play.html" name="zt">测试视频名称</a>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <div class="per-btn-tow" name="zt">
-                                        <input type="button" name=""  value="删除">
-                                    </div>
-                                    <div class="per-bf-bow">
-                                        <a href="javascript">测试作者名称</a>
-                                        <input type="button" name=""  value="关注" />
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="per-bf-lst">
+                                </li>
+                            </ul>
+                            <?php endforeach;?>
+                        </div>
+                        <?php endforeach;?>
+                    <?php endif;?>
+                    <!--<div class="per-bf-lst">
                         <div class="per-bf-lst-btn">一周前</div>
                         <ul class="per-bof-box" name="zt">
-                            <li class="per-bof-box-01">2021-06-25</li>
+                            <li class="per-bof-box-01">2022-1-13</li>
                             <li class="per-bof-box-02" name="zt">
                                 <div class="RANbox-list01" name="zt">
-                                    <ul class="RANbox-list-xx">
+                                    <ul class="RANbox-list-xx RANbox-list-xx-new">
                                         <li>
                                             <a href="play.html"><img src="/images/newindex/RDimg.jpg"></a>
                                         </li>
                                         <li>
-                                            <div class="RANbox-list01-t">
-                                                <a class="RAN-z-box01-name" href="play.html" name="zt">测试视频名称</a>
+                                            <a class="RAN-z-box01-name-new" href="play.html" name="zt">测试视频名称</a>
+                                            <div class="GNbox-type-new" name="zt">
+                                                <span>爱情</span>
+                                                <span>爱情</span>
+                                                <span>爱情</span>
+                                                <span>爱情</span>
+                                                <span>爱情</span>
+                                                <span>爱情</span>
+                                            </div>
+                                            <div class="RANbox-list01-b-new">
+                                                <span>发布中</span>
+                                                <span>测试更新文字内容</span>
                                             </div>
                                         </li>
+                                        <li>
+                                            <div class="RANbox-choose">
+                                                <div class="RANbox-choose-img J_choose_check" data-value="1" onclick="favchoose(this);"></div>
+                                            </div>
+                                            <input type="button" value="删除" onclick="removefavorite(1)">
+                                        </li>
                                     </ul>
-                                    <div class="per-btn-tow" name="zt">
-                                        <input type="button" name=""  value="删除">
-                                    </div>
-                                    <div class="per-bf-bow">
-                                        <a href="javascript">测试作者名称</a>
-                                        <input type="button" name=""  value="关注" />
-                                    </div>
                                 </div>
                             </li>
                         </ul>
                         <ul class="per-bof-box" name="zt">
-                            <li class="per-bof-box-01">2021-06-23</li>
+                            <li class="per-bof-box-01">2022-1-12</li>
                             <li class="per-bof-box-02" name="zt">
                                 <div class="RANbox-list01" name="zt">
-                                    <ul class="RANbox-list-xx">
+                                    <ul class="RANbox-list-xx RANbox-list-xx-new">
                                         <li>
                                             <a href="play.html"><img src="/images/newindex/RDimg.jpg"></a>
                                         </li>
                                         <li>
-                                            <div class="RANbox-list01-t">
-                                                <a class="RAN-z-box01-name" href="play.html" name="zt">测试视频名称</a>
+                                            <a class="RAN-z-box01-name-new" href="play.html" name="zt">测试视频名称</a>
+                                            <div class="GNbox-type-new" name="zt">
+                                                <span>爱情</span>
+                                                <span>爱情</span>
+                                                <span>爱情</span>
+                                                <span>爱情</span>
+                                                <span>爱情</span>
+                                                <span>爱情</span>
+                                            </div>
+                                            <div class="RANbox-list01-b-new">
+                                                <span>发布中</span>
+                                                <span>测试更新文字内容</span>
                                             </div>
                                         </li>
+                                        <li>
+                                            <div class="RANbox-choose">
+                                                <div class="RANbox-choose-img J_choose_check" data-value="1" onclick="favchoose(this);"></div>
+                                            </div>
+                                            <input type="button" value="删除" onclick="removefavorite(1)">
+                                        </li>
                                     </ul>
-                                    <div class="per-btn-tow" name="zt">
-                                        <input type="button" name=""  value="删除">
-                                    </div>
-                                    <div class="per-bf-bow">
-                                        <a href="javascript">测试作者名称</a>
-                                        <input type="button" name=""  value="关注" />
-                                    </div>
                                 </div>
                             </li>
                         </ul>
+                    </div>-->
+                </div>
+            </div>
+        </div>
+        <!--tab 安全中心-->
+        <div class="per-tab-box-new c_safe J_safe_auth" name="zt">
+            <?php
+            $account_length = strlen($data['user']['mobile']);
+            $hide_account_length = $account_length - 5;
+            $xing = '';
+            $hide_account = '';
+            if ($hide_account_length > 0) {
+                for ($i = 0; $i < $hide_account_length; $i++) {
+                    $xing .= '*';
+                }
+                $hide_account = substr($data['user']['mobile'],0, 3) . $xing . substr($data['user']['mobile'],-2);
+            } else {
+                $hide_account = $data['user']['mobile'];
+            }
+            ?>
+<!--            安全中心列表页-->
+            <ul class="per-safe-box J_safe_list act">
+                <li>
+                    <span class="per-safe-title-c">手机</span>
+                    <span class="per-safe-content"><?=$hide_account?></span>
+<!--                    <span class="per-safe-action J_per_edit_phone">修改</span>-->
+                </li>
+                <li>
+                    <span class="per-safe-title-c">邮箱</span>
+                    <span class="per-safe-content J_is_bind_email"><?php if($data['user']['email']):?><?=$data['user']['email']?><?php else:?>未绑定<?php endif;?></span>
+                    <span class="per-safe-action J_per_edit_email">修改</span>
+                </li>
+                <li>
+                    <span class="per-safe-title-c">登录密码</span>
+                    <span class="per-safe-content"><?php if($data['user']['password_flag']==0):?>未设置<?php else:?>已设置<?php endif;?></span>
+                    <span class="per-safe-action J_per_edit_pass">修改</span>
+                </li>
+<!--                <li>-->
+<!--                    <span class="per-safe-title">登录记录</span>-->
+<!--                    <span class="per-safe-content"></span>-->
+<!--                    <span class="per-safe-action">查看</span>-->
+<!--                </li>-->
+            </ul>
+<!--            修改手机页面-->
+            <div class="per-edit-phone-box J_ep">
+                <div class="alt-content02" name="zt">
+                    <p>修改手机号</p>
+                    <div class="per-safe-title">您的账号当前处于安全环境</div>
+                </div>
+                <div class="per-safe-auth-box J_ep_safe_auth_title">
+                    <div class="hlp-forget-pass-item">
+
+                        <div class="hlp-forget-pass-jindu">
+                            <div class="hlp-forget-pass-line hlp-forget-pass-line-01 act"></div>
+                            <div class="hlp-forget-pass-jindu-01 act">
+                                1
+                            </div>
+                        </div>
+                        <p class="hlp-forget-pass-desc act">安全认证</p>
                     </div>
-                    -->
+                    <div class="hlp-forget-pass-item">
+                        <div class="hlp-forget-pass-jindu">
+                            <div class="hlp-forget-pass-line hlp-forget-pass-line-02 J_ep_line2"></div>
+                            <div class="hlp-forget-pass-jindu-01 J_ep_jindu2">
+                                2
+                            </div>
+                        </div>
+                        <p class="hlp-forget-pass-desc J_ep_auth_text2">修改号码</p>
+                    </div>
+                    <div class="hlp-forget-pass-item">
+                        <div class="hlp-forget-pass-jindu">
+                            <div class="hlp-forget-pass-line hlp-forget-pass-line-03 J_line3"></div>
+                            <div class="hlp-forget-pass-jindu-01 J_jindu3">
+                                3
+                            </div>
+                        </div>
+                        <p class="hlp-forget-pass-desc J_auth_text3">操作成功</p>
+                        <div class="hlp-forget-pass-text"></div>
+                    </div>
+                </div>
+                <div class="hlp-forget-pass-sub J_ep_safe_auth">
+                    <div class="help-tel-check-box act J_ep_step_one">
+                        <div class="help-tel-check">通过手机<span class="J_ep_hide_account" data-phone="<?=$data['user']['mobile']?>" data-prefix_phone="<?=$data['user']['mobile_areacode']?>"><?=$hide_account?></span>验证</div>
+                        <div class="bttn-box-warning1 J_ep_warning1">验证码发送失败</div>
+                    </div>
+                    <div class="help-tel-check-code-box J_ep_step_one1">
+                        <div class="help-tel-check-item">
+                        <p>短信验证码已经发送至<span class="J_hide_account"><?=$hide_account?></span></p>
+                        <div class="help-tel-check-code">
+                            <input class="yzm J_ep_yzm" type="text" name="" value="" />
+                            <input type="button" class="yzm-btn J_ep_one1_step" id="reg_prefix_phone" value="验证" />
+                        </div>
+                        <div class="bttn-box-warning2 J_ep_warning2">验证码发送失败</div>
+                        <p>未收到验证码？<span class="J_ep_count_down">53s后重新发送</span></p>
+                    </div>
+                    </div>
+                    <div class="help-te-box J_ep_step_two">
+                        <div class="inp-box J_account">
+                            <span class="inp-title">手机号</span>
+                            <ul class="opJ J_opt_country">
+                                <?php
+                                $selectVal = "";
+                                $selectData = "";
+                                foreach ($channels['country_info'] as $country){
+                                    if($country['mobile_areacode']!=''){
+                                        $selectVal = $country['country_name'] . '+' . $country['mobile_areacode'];
+                                        $selectData = '+' . $country['mobile_areacode'];
+                                        break;
+                                    }
+                                }
+                                ?>
+                                <?php if(!empty($channels['country_info'])) :?>
+                                    <?php foreach ($channels['country_info'] as $country): ?>
+                                        <?php if($country['mobile_areacode']!=''):?>
+                                            <li data="<?=$country['country_name']?>+<?=$country['mobile_areacode']?>"><?=$country['country_name']?><span>+<?=$country['mobile_areacode']?></span></li>
+                                        <?php endif;?>
+                                    <?php endforeach;?>
+                                <?php endif;?>
+                            </ul>
+                            <input type="button" class="selectJ J_ep_select_country" value="<?=$selectVal?>" data="<?=$selectData?>"/>
+                            <input class="tel J_ep_phone" type="text" name="" placeholder="请输手机号" value="" />
+                        </div>
+                        <div class="bttn-box-warning J_ep_warning">账号有误</div>
+                        <div class="bttn-box J_ep_second_step">
+                            <input type="button" value="获取验证码" />
+                        </div>
+                    </div>
+                    <div class="help-tel-check-code-box J_ep_step_two2">
+                        <div class="help-tel-check-item">
+                        <p>短信验证码已经发送至<span class="J_ep_hide_account">155******02</span></p>
+                        <div class="help-tel-check-code">
+                            <input class="yzm J_ep_yzm" type="text" name="" value="" />
+                            <input type="button" class="yzm-btn J_ep_two2_step" id="reg_prefix_phone" value="绑定" />
+                        </div>
+                        <div class="bttn-box-warning2 J_ep_warning2">验证码发送失败</div>
+                        <p>未收到验证码？<span class="J_ep_count_down">53s后重新发送</span></p>
+                    </div>
+                    </div>
+                </div>
+            </div>
+<!--            绑定/修改邮箱页面-->
+            <div class="per-edit-phone-box J_email_box">
+                <div class="alt-content02" name="zt">
+                    <p>修改邮箱</p>
+                    <div class="per-safe-title">您的账号当前处于安全环境</div>
+                </div>
+                <div class="per-safe-auth-box J_email_safe_auth_title">
+                    <div class="hlp-forget-pass-item">
+                        <div class="hlp-forget-pass-jindu">
+                            <div class="hlp-forget-pass-line hlp-forget-pass-line-01 act"></div>
+                            <div class="hlp-forget-pass-jindu-01 act">
+                                1
+                            </div>
+                        </div>
+                        <p class="hlp-forget-pass-desc act">安全认证</p>
+                    </div>
+                    <div class="hlp-forget-pass-item">
+                        <div class="hlp-forget-pass-jindu">
+                            <div class="hlp-forget-pass-line hlp-forget-pass-line-02 J_email_line2"></div>
+                            <div class="hlp-forget-pass-jindu-01 J_email_jindu2">
+                                2
+                            </div>
+                        </div>
+                        <p class="hlp-forget-pass-desc J_email_auth_text2"><?php if($data['user']['email']):?>修改邮箱<?php else:?>绑定邮箱<?php endif;?></p>
+                    </div>
+                    <div class="hlp-forget-pass-item">
+                        <div class="hlp-forget-pass-jindu">
+                            <div class="hlp-forget-pass-line hlp-forget-pass-line-03 J_email_line3"></div>
+                            <div class="hlp-forget-pass-jindu-01 J_email_jindu3">
+                                3
+                            </div>
+                        </div>
+                        <p class="hlp-forget-pass-desc J_email_auth_text3">操作成功</p>
+                        <div class="hlp-forget-pass-text"></div>
+                    </div>
+                </div>
+                <div class="hlp-forget-pass-sub J_email_safe_auth">
+                    <div class="help-tel-check-box act J_email_step_one">
+                        <div class="help-tel-check">通过手机<span class="J_email_send_code" data-phone="<?=$data['user']['mobile']?>" data-prefix_phone="<?=$data['user']['mobile_areacode']?>"><?=$hide_account?></span>验证</div>
+                        <div class="bttn-box-warning1 J_email_warning1">验证码发送失败</div>
+                    </div>
+                    <div class="help-tel-check-code-box J_email_step_one1">
+                        <div class="help-tel-check-item">
+                            <p>短信验证码已经发送至<span class="J_email_hide_account"><?=$hide_account?></span></p>
+                            <div class="help-tel-check-code">
+                                <input class="yzm J_email_yzm" type="text" name="" value="" />
+                                <input type="button" class="yzm-btn J_email_one1_step" value="验证" />
+                            </div>
+                            <div class="bttn-box-warning2 J_email_warning2">验证码发送失败</div>
+                            <p>未收到验证码？<span class="J_email_count_down">53s后重新发送</span></p>
+                        </div>
+                    </div>
+                    <div class="help-te-box J_email_step_two">
+                        <div class="per-bind-email">
+                            <input class="email-inpt J_email" type="text" placeholder="请输入邮箱" value=""/>
+                            <input type="button" class="yzm-btn J_email_two_step" value="绑定" />
+                        </div>
+                        <div class="bttn-box-warning J_email_warning">账号有误</div>
+                    </div>
+                </div>
+            </div>
+<!--            修改密码页面-->
+            <div class="per-edit-phone-box J_edit_pass_box">
+                <div class="alt-content02" name="zt">
+                    <p>修改密码</p>
+                    <div class="per-safe-title">您的账号当前处于安全环境</div>
+                </div>
+                <div class="per-safe-auth-box J_ep_safe_auth_title">
+                    <div class="hlp-forget-pass-item">
+                        <div class="hlp-forget-pass-jindu">
+                            <div class="hlp-forget-pass-line hlp-forget-pass-line-01 act"></div>
+                            <div class="hlp-forget-pass-jindu-01 act">
+                                1
+                            </div>
+                        </div>
+                        <p class="hlp-forget-pass-desc act">安全认证</p>
+                    </div>
+                    <div class="hlp-forget-pass-item">
+                        <div class="hlp-forget-pass-jindu">
+                            <div class="hlp-forget-pass-line hlp-forget-pass-line-02 J_edp_line2"></div>
+                            <div class="hlp-forget-pass-jindu-01 J_edp_jindu2">
+                                2
+                            </div>
+                        </div>
+                        <p class="hlp-forget-pass-desc J_edp_auth_text2">修改密码</p>
+                    </div>
+                    <div class="hlp-forget-pass-item">
+                        <div class="hlp-forget-pass-jindu">
+                            <div class="hlp-forget-pass-line hlp-forget-pass-line-03 J_edp_line3"></div>
+                            <div class="hlp-forget-pass-jindu-01 J_edp_jindu3">
+                                3
+                            </div>
+                        </div>
+                        <p class="hlp-forget-pass-desc J_edp_auth_text3">操作成功</p>
+                        <div class="hlp-forget-pass-text"></div>
+                    </div>
+                </div>
+                <div class="hlp-forget-pass-sub J_edp_safe_auth">
+                    <div class="help-tel-check-box act J_edp_step_one act">
+                        <div class="help-tel-check">通过手机<span class="J_edp_hide_account" data-phone="<?=$data['user']['mobile']?>" data-prefix_phone="<?=$data['user']['mobile_areacode']?>"><?=$hide_account?></span>验证</div>
+                        <div class="bttn-box-warning1 J_edp_warning1">验证码发送失败</div>
+                    </div>
+                    <div class="help-tel-check-code-box J_edp_step_one1">
+                        <div class="help-tel-check-item">
+                            <p>短信验证码已经发送至<span class="J_edp_hide_account"><?=$hide_account?></span></p>
+                            <div class="help-tel-check-code">
+                                <input class="yzm J_edp_yzm" type="text" name="" value="" />
+                                <input type="button" class="yzm-btn J_edp_one1_step" id="reg_prefix_phone" value="验证" />
+                            </div>
+                            <div class="bttn-box-warning2 J_edp_warning2">验证码发送失败</div>
+                            <p>未收到验证码？<span class="J_edp_count_down">53s后重新发送</span></p>
+                        </div>
+                    </div>
+                    <div class="help-pass-box J_edp_step_two">
+                        <div class="inp-box pasbox">
+                            <span class="inp-title">新密码</span>
+                            <input type="password" class="inp pas J_edp_new_pass" name="" placeholder="请输入密码" id="login_pwd" value="" onkeyup="value=value.replace(/[^(\w-*\.*)]/g,'')" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;" autocomplete="off">
+                            <input type="button" class="eye" value="">
+                        </div>
+                        <div class="inp-box pasbox">
+                            <span class="inp-title">确认密码</span>
+                            <input type="password" class="inp pas J_edp_sure_pass" name="" placeholder="请再次输入密码" id="login_pwd" value="" onkeyup="value=value.replace(/[^(\w-*\.*)]/g,'')" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;" autocomplete="off">
+                            <input type="button" class="eye" value="">
+                        </div>
+                        <div class="inp-box pasbox">
+                            <span class="inp-title"></span>
+                            <div class="bttn-box-warning3 J_edp_warning3">两次输入密码不一致</div>
+                        </div>
+                        <div class="inp-box pasbox">
+                            <span class="inp-title"></span>
+                            <input type="button" value="确认" class="inp-sure-btn J_edp_two_step"/>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-<!--    <div class="more-load" style="display:none;">加载中,请稍候...</div>-->
 </div>
 <script src="/js/jquery.js"></script>
 <script>
 /*-----------公共------------*/
 var arrall = {};
-arrall['relation1-page'] = 1;
-arrall['relation1-total'] = ('<?=$data['follow'][0]['total_page']?>'?parseInt('<?=$data['follow'][0]['total_page']?>'):0);
-arrall['relation3-page'] = 1;
-arrall['relation3-total'] = ('<?=$data['fans'][0]['total_page']?>'?parseInt('<?=$data['fans'][0]['total_page']?>'):0);
-arrall['relation2-page'] = 1;
-arrall['relation2-total'] = ('<?=$data['blacklist'][0]['total_page']?>'?parseInt('<?=$data['blacklist'][0]['total_page']?>'):0);
-arrall['comment-page'] = 1;
-arrall['comment-total'] = ('<?=$data['comment'][0]['total_page']?>'?parseInt('<?=$data['comment'][0]['total_page']?>'):0);
-arrall['reply-page'] = 1;
-arrall['reply-total'] = ('<?=$data['reply'][0]['total_page']?>'?parseInt('<?=$data['reply'][0]['total_page']?>'):0);
-arrall['system_message-page'] = 1;
-arrall['system_message-total'] = ('<?=$data['system_message'][0]['total_page']?>'?parseInt('<?=$data['system_message'][0]['total_page']?>'):0);
 arrall['favorite-page'] = 1;
 arrall['favorite-total'] = ('<?=$data['favorite'][0]['total_page']?>'?parseInt('<?=$data['favorite'][0]['total_page']?>'):0);
 arrall['watchlog-page'] = 1;
@@ -1648,25 +628,64 @@ relaAr['type'] = '1';
 relaAr['order'] = 'time';
 relaAr['searchword'] = '';
 relaAr['tabNum'] = 0;
-/*-----------收藏------------*/
-//批量删除-全选
-$(".per-qx-02>input").click(function() {
-    $(this).parents(".per-sp-box02").siblings(".per-tab-w05").find(".per-tab-box05.act .per-btn-cbox>input").addClass("act").attr("checked","checked");
-    var num = $(".fav_checkbox").length;
-    $(".per-sp-box02-h span").text(num);
+//个人中心类目切换,将所有复选框清空
+$(".J_per_tab>li").click(function() {
+    $(".per-tab-w02-new .RANbox-list-xx-new>li:last-of-type>.RANbox-choose>.J_choose_check").removeClass("act").removeClass("act1");
+    if($(this).hasClass("J_safe")){
+        $('.c_safe>.J_safe_list').addClass('act').siblings().removeClass('act');
+    }
+});
+/*-----------收藏（新）------------*/
+// 收藏页tab  切换
+$(".per-tab02-new>li").click(function() {
+    var tabNum = $(this).index();
+    $(this).addClass("act").siblings().removeClass("act");
+    $(".per-tab-w02-new").eq(tabNum).addClass("act").siblings().removeClass("act");
+    //删除样式还原
+    $(".per-sc-new").find(".per-sc-pl").addClass("act").siblings().removeClass("act");
+    //将勾选按钮去掉
+    $(".per-tab-w02-new.act .RANbox-list-xx-new>li:last-of-type>.RANbox-choose>.J_choose_check").removeClass("act").removeClass("act1");
+    $(this).parents(".per-sp-box-new").find(".J_del_num span").text(0);
+});
+//批量删除-全选,显示选中按钮，同时显示选中个数
+$(".per-sc-pl>li").click(function() {
+    //1.显示选中删除样式
+    $(".per-tab-w02-new.act .RANbox-list-xx-new>li:last-of-type>.RANbox-choose>.J_choose_check").addClass("act");
+    //2.删除按钮样式变动
+    $(this).parents(".per-sc-new").find(".per-sc-btn").addClass("act").siblings().removeClass("act");
+    //3.更改删除的数量
+    var num = $(".per-tab-box-new.act").find(".per-tab-w02-new.act .RANbox-list-xx-new").length;
+    $(this).parents('.per-sc-new').find(".J_del_num span").text(num);
 });
 //批量删除-单选
-function favchoose(that) {
-    $(that).toggleClass("act");
-    if($(that).hasClass("act")){
-        $(that).attr("checked","checked");
-    } else{
-        $(that).removeAttr("checked");
-    };
-    var num = $(".per-btn-cbox>input[type='checkbox']:checked").length;
-    $(".per-sp-box02-h span").text(num);
+function favchoose(obj) {
+    if($(obj).hasClass('act')){
+        $(obj).removeClass('act').addClass('act1');
+    }else{
+        $(obj).removeClass('act1').addClass('act');
+    }
+    //同时更新删除数量
+    var num = $(".per-tab-w02-new.act .RANbox-list-xx-new .J_choose_check.act").length;
+    $(".J_del_num span").text(num);
 }
+//取消全选
+$('.J_cancel_all').click(function(){
+    $(".per-tab-w02-new.act .RANbox-list-xx-new .J_choose_check.act").removeClass('act').addClass('act1');
+    $(".J_del_num span").text(0);
+})
+//取消
+$('.J_cancel').click(function(){
+    //1.显示选中删除样式
+    $(".per-tab-w02-new.act .RANbox-list-xx-new>li:last-of-type>.RANbox-choose>.J_choose_check").removeClass("act").removeClass("act1");
+    //2.删除按钮样式变动
+    $(this).parents(".per-sc-new").find(".per-sc-pl").addClass("act").siblings().removeClass("act");
+})
 //收藏条件切换
+var no_video_str = '<div class="no-video">'
+    +'<h2 class="per-zw-new" name="zt" >'
+    +'暂无内容，快去看看精彩视频吧~'
+    +'</h2>'
+    +'</div>';
 $(".per-slt-list-favorite>input").click(function() {
     var perSlt=$(this).val();
     var datavalue=$(this).attr('data-value');
@@ -1680,9 +699,9 @@ $(".per-slt-list-favorite>input").click(function() {
         arrall['favorite-page'] = 1;
         if(res.errno==0){
             var html = findfavoritelist(res.data,false);
-            $(".per-tab-box05.act").html(html);
+            $(".per-tab-w02-new.act .per-tab-video-list").html(html);
         }else{
-            $(".per-tab-box05.act").html('<h4 class="per-zw" name="zt">暂无内容</h4>');
+            $(".per-tab-w02-new.act .per-tab-video-list").html(no_video_str);
         }
         ztBlack();
     });
@@ -1694,64 +713,43 @@ $("#fav_searchbtn").click(function (){
         arrall['favorite-page'] = 1;
         if(res.errno==0){
             var html = findfavoritelist(res.data,false);
-            $(".per-tab-box05.act").html(html);
+            $(".per-tab-w02-new.act .per-tab-video-list").html(html);
         }else{
-            $(".per-tab-box05.act").html('<h4 class="per-zw" name="zt">暂无内容</h4>');
+            $(".per-tab-w02-new.act .per-tab-video-list").html(no_video_str);
         }
         ztBlack();
     });
 });
 function findfavoritelist(list,flag){
-    var show_deleteall = 'display:none';
-    var show_deleteone = 'display:block';
-    if(flag){
-        show_deleteall = 'display:block';
-        show_deleteone = 'display:none';
-    }
     var html = "";
-    for(var i=0;i<list.length;i++){
+    for(var i=0;i<list.length;i++) {
         var cat = list[i]['category'].split(' ');
         var catstr = "";
-        for(var k=0;k<cat.length;k++){
-            catstr += '<span>'+cat[k]+'</span>';
+        for (var k = 0; k < cat.length; k++) {
+            catstr += '<span>' + cat[k] + '</span>';
         }
-        html += '<div class="RANbox-list01 id_fav'+list[i]['video_id']+'" name="zt">'+
-            '<ul class="RANbox-list-xx per-img">'+
-                '<li>'+
-                    '<a href="/video/detail?video_id='+list[i]['video_id']+'"><img src="'+list[i]['cover']+'"></a>'+
-                '</li>'+
-                '<li>'+
-                    '<div class="RANbox-list01-t">'+
-                        '<a class="RAN-z-box01-name" href="/video/detail?video_id='+list[i]['video_id']+'" name="zt">'+list[i]['video_name']+'</a>'+
-                        '<div class="GNbox-type" name="zt">'+catstr+
-                        '</div>'+
-                    '</div>'+
-                    '<div class="RANbox-list01-b">'+
-                        '<div>'+
-                            '更新:<span>'+list[i]['flag']+'</span>'+
-                            '状态:<span>'+(list[i]['is_finished']==1? '完结' : '更新中')+'</span>'+
-                        '</div>'+
-                        '<div class="per-mtop">'+
-                            '上传:<span><span>'+list[i]['created_data']+'</span>'+
-                        '</div>'+
-                    '</div>'+
-                '</li>'+
-            '</ul>'+
-            '<div class="RANbox-list01-sj per-img">'+
-                '<ul class="SSjgPJ">'+
-                    '<li><span>'+list[i]['commentcount']+'</span></li>'+
-                    '<li><span>0</span></li>'+
-                    '<li><span>0</span></li>'+
-                    '<li><span>'+list[i]['total_views']+'</span></li>'+
-                '</ul>'+
-            '</div>'+
-            '<div class="per-btn-tow" name="zt" style="'+show_deleteone+'">'+
-                '<input type="button" name="" onclick="removefavorite('+list[i]['video_id']+')" value="删除" />'+
-            '</div>'+
-            '<div class="per-btn-cbox" style="'+show_deleteall+'">'+
-                '<input type="checkbox" name="per-qx" class="fav_checkbox" value="" onclick="favchoose(this);"/>'+
-            '</div>'+
-        '</div>';
+        html += '<div class="RANbox-list01-new id_fav' + list[i]['video_id'] + '" name="zt">' +
+            '<ul class="RANbox-list-xx-new">' +
+            '<li>' +
+            '<a href="/video/detail?video_id=' + list[i]['video_id'] + '"><img src="' + list[i]['cover'] + '"></a>' +
+            '</li>' +
+            '<li>' +
+            '<a class="RAN-z-box01-name-new" href="<?= Url::to(['detail', 'video_id' => $video['video_id']])?>" name="zt"><?=$video['video_name']?></a>' +
+            '<div class="GNbox-type-new" name="zt">' + catstr +
+            '</div>' +
+            '<div class="RANbox-list01-b-new">' +
+            '<span>' + (list[i]['is_finished'] == 1 ? '完结' : '更新中') + '</span>' +
+            '<span>' + list[i]['flag'] + '</span>' +
+            '</div>' +
+            '</li>' +
+            '<li>' +
+            '<div class="RANbox-choose">' +
+            '<div class="RANbox-choose-img J_choose_check" onclick="favchoose(this);"></div>' +
+            '</div>' +
+            '<input type="button" value="删除" onclick="removefavorite(' + list[i]['video_id'] + ')">' +
+            '</li>' +
+            '</ul>' +
+            '</div>';
     }
     return html;
 }
@@ -1760,8 +758,8 @@ function removefavorite(videoid){
     var arrindex = {};
     if(videoid=='all'){
         var videoids = '';
-        $(".fav_checkbox").each(function(){
-            if($(this).is(':checked')){
+        $(".J_choose_check").each(function(){
+            if($(this).hasClass('act')){
                 videoids += $(this).attr('data-value')+",";
             }
         });
@@ -1775,47 +773,92 @@ function removefavorite(videoid){
     $.get('/video/change-favorite',arrindex,function(res){
         if(res.errno==0 && res.data.status==0){
             if(videoid=='all'){
-                //$(".per-tab-box05.act").html('<h4 class="per-zw" name="zt">暂无内容</h4>');
+                var num = $(".per-tab-w02-new.act .RANbox-list-xx-new .J_choose_check.act").length;
+                var all_num = $(".per-tab-w02-new.act .RANbox-list-xx-new .J_choose_check").length;
+                if(num == all_num){
+                    $(".per-tab-w02-new.act .per-tab-video-list").html(no_video_str);
+                }
                 var videoar = videoids.split(",");
                 for(var i=0;i<videoar.length;i++){
+                    console.log(videoar[i]);
                     $(".id_fav"+videoar[i]).remove();
                 }
-                unselectAll();
             }else{
                 $(".id_fav"+videoid).remove();
             }
-            $(".alt-title").text("收藏记录删除成功");
-            $("#alt05").show();
+            unselectAll();
+            $("#pop-tip").text("删除成功");
+            $("#pop-tip").show();
         }
     });
 }
-$("#btnQX>input").click(function() {
-    unselectAll();
-});
 
 function unselectAll(){
-    //取消全选样式
-    $("#btnQX>input").parents(".per-sp-box02").removeClass("act").siblings(".per-sp-box").removeClass("act");
-    $("#btnQX>input").parents(".per-sp-box02").siblings(".per-tab-w05").find(".per-tab-box05.act .per-btn-tow").toggle();
-    $("#btnQX>input").parents(".per-sp-box02").siblings(".per-tab-w05").find(".per-tab-box05.act .per-btn-cbox").toggle();
-    //取消选择
-    $("#btnQX>input").parents(".per-sp-box02").siblings(".per-tab-w05").find(".per-tab-box05.act .per-btn-cbox>input").removeClass("act").removeAttr("checked");
-    $(".per-sp-box02-h span").text(0);
+    //同时更新删除数量
+    var num = $(".per-tab-w02-new.act .RANbox-list-xx-new .J_choose_check.act").length;
+    $(".J_del_num span").text(num);
 }
-/*-----------播放记录------------*/
+
+/*-----------播放记录(新)------------*/
+//分类获取播放记录
+function channelswatchlog(channel_id,obj){
+    $(obj).addClass('act').siblings().removeClass('act');
+    var arr = {};
+    if(channel_id != 'all'){
+        arr['channel_id'] = channel_id;
+    }
+    var str = $("#watchlog_stext").val();
+    if(str){
+        arr['searchword'] = str;
+    }
+    console.log(arr);
+    $.get('/video/search-watchlog',arr,function(res){
+        arrall['watchlog-page'] = 1;
+        console.log(res);
+        if(res.errno==0){
+            var html = findwatchloglist(res.data);
+            $(".per-tab-box-new.act").find(".per-tab-w02-new.act").html(html);
+        }else{
+            $(".per-tab-box-new.act").find(".per-tab-w02-new.act").html(no_video_str);
+        }
+        ztBlack();
+    });
+}
 //删除播放记录
 function removewatchlog(logid){
     var arrindex = {};
     arrindex['logid'] = logid;
+    console.log(logid);
+    if(logid=='all'){
+        var logid = '';
+        $(".J_choose_check").each(function(){
+            if($(this).hasClass('act')){
+                logid += $(this).attr('data-value')+",";
+            }
+        });
+        if(logid!=''){
+            logid = logid.logid(0,logid.length-1);
+            arrindex['logid'] = logid;
+        }
+    }
     $.get('/video/remove-watchlog',arrindex,function(res){
         if(res.errno==0 && res.data>0){
             if(logid=='all'){
-                $(".per-tab-box06.act").html('<h4 class="per-zw" name="zt">暂无内容</h4>');
+                //获取选中数量是否与现有总数一致，一致则清空
+                var num = $(".per-tab-w02-new.act .RANbox-list-xx-new .J_choose_check.act").length;
+                var all_num = $(".per-tab-w02-new.act .RANbox-list-xx-new .J_choose_check").length;
+                if(num == all_num){
+                    $(".per-tab-w02-new.act").html(no_video_str);
+                }
+                var logidar = logid.split(",");
+                for(var i=0;i<logidar.length;i++){
+                    $(".id_watchlog_"+logidar[i]).remove();
+                }
             }else{
                 $(".id_watchlog_"+logid).remove();
             }
-            $(".alt-title").text("播放记录删除成功");
-            $("#alt05").show();
+            $("#pop-tip").text("删除成功");
+            $("#pop-tip").show();
         }
     });
 }
@@ -1823,15 +866,17 @@ function removewatchlog(logid){
 $(function(){
     $("#watchlog_search").click(function(){
         var str = $("#watchlog_stext").val();
+        console.log(str);
         var arr = {};
         arr['searchword'] = str;
         $.get('/video/search-watchlog', arr,function(res){
             arrall['watchlog-page'] = 1;
+            console.log(res);
             if(res.errno==0){
                 var html = findwatchloglist(res.data);
-                $(".per-tab-box06.act").html(html);
+                $(".per-tab-box-new.act").find(".per-tab-w02-new.act").html(html);
             }else{
-                $(".per-tab-box06.act").html('<h4 class="per-zw" name="zt">暂无内容</h4>');
+                $(".per-tab-box-new.act").find(".per-tab-w02-new.act").html(no_video_str);
             }
             ztBlack();
         });
@@ -1840,223 +885,46 @@ $(function(){
 function findwatchloglist(list){
     var html = "";
     for(var i=0;i<list.length;i++){
-        var act = "";
-        if(i==0){
-            act = "act";
-        }else{
-            act = "";
-        }
-        html +='<div class="per-bf-lst ">'+
-                   '<div class="per-bf-lst-btn '+act+'">'+list[i]['date']+'</div>';
+        html += '<div class="per-bf-lst">'+
+                '<div class="per-bf-lst-btn">'+list[i]['date']+'</div>';
         var video = list[i]['list'];
-        for(var j=0;j<video.length;j++){
+        for(var j=0;j<video.length;j++) {
             var cat = video[j]['category'].split(' ');
             var catstr = "";
-            for(var k=0;k<cat.length;k++){
-                catstr += '<span>'+cat[k]+'</span>';
+            for (var k = 0; k < cat.length; k++) {
+                catstr += '<span>' + cat[k] + '</span>';
             }
-            html +='<ul class="per-bof-box id_watchlog_'+video[j]['log_id']+'" name="zt">'+
-                '<li class="per-bof-box-01">'+video[j]['show_times']+'</li>'+
-                '<li class="per-bof-box-02" name="zt">'+
-                    '<div class="RANbox-list01" name="zt">'+
-                        '<ul class="RANbox-list-xx per-img">'+
-                            '<li>'+
-                                '<a href="/video/detail?video_id='+video[j]['video_id']+'"><img src="'+video[j]['cover']+'"></a>'+
-                            '</li>'+
-                            '<li>'+
-                                '<div class="RANbox-list01-t">'+
-                                    '<a class="RAN-z-box01-name" href="/video/detail?video_id='+video[j]['video_id']+'" name="zt">'+video[j]['title']+'</a>'+
-                                    '<div class="GNbox-type" name="zt">'+catstr+'</div>'+
-                                '</div>'+
-                            '</li>'+
-                        '</ul>'+
-                        '<div class="per-btn-tow" name="zt">'+
-                            '<input type="button"  onclick="removewatchlog('+video[j]['log_id']+');" value="删除">'+
-                        '</div>'+
-                        '<div class="per-bf-bow02">'+
-                            '<div class="per-bf-bow02-h" name="zt">'+video[j]['flag']+'</div>'+
-                            '<ul class="per-bf-bow02-h02" name="zt">'+
-                                '<li class="per-bf-bow02-h02-jd" name="zt">'+
-                                    '<div style="width:'+video[j]['watch_percent']+'%;"> </div>'+
-                                '</li>'+
-                                '<li>'+video[j]['play_time']+'</li>'+
-                            '</ul>'+
-                        '</div>'+
-                    '</div>'+
-                '</li>'+
-            '</ul>';
+            html += '<ul class="per-bof-box id_watchlog_' + video[j]['log_id'] + '" name="zt">' +
+                '<li class="per-bof-box-01">' + video[j]['show_times'] + '</li>' +
+                '<li class="per-bof-box-02" name="zt">' +
+                '<div class="RANbox-list01" name="zt">' +
+                '<ul class="RANbox-list-xx RANbox-list-xx-new">' +
+                '<li>' +
+                '<a href="/video/detail?video_id=' + video[j]['video_id'] + '"><img src="' + video[j]['cover'] + '"></a>' +
+                '</li>' +
+                '<li>' +
+                '<a class="RAN-z-box01-name-new" href="/video/detail?video_id=' + video[j]['video_id'] + '" name="zt">' + video[j]['title'] + '</a>' +
+                '<div class="GNbox-type-new" name="zt">' + catstr +
+                '</div>' +
+                '<div class="RANbox-list01-b-new">' +
+                '<span>' + (list[i]['is_finished'] == 1 ? '完结' : '更新中') + '</span>' +
+                '<span>' + video[j]['flag'] + '</span>' +
+                '</div>' +
+                '</li>' +
+                '<li>' +
+                '<div class="RANbox-choose">' +
+                '<div class="RANbox-choose-img J_choose_check" data-value="1" onclick="favchoose(this);"></div>' +
+                '</div>' +
+                '<input type="button" value="删除" onclick="removewatchlog(' + video[j]['log_id'] + ');">' +
+                '</li>' +
+                '</ul>' +
+                '</div>' +
+                '</li>' +
+                '</ul>';
         }
         html += '</div>';
     }
     return html;
-}
-/*-----------消息------------*/
-//点赞
-// $(".per-btn-z").click(
-function commentAddlikes(that) {
-    // var that = this;
-    var value = $(that).attr('data-value');
-    var arr = {};
-    arr['id'] = value;
-    if($(that).hasClass("act")){
-        arr['cal'] = 'subtract';
-    }else{
-        arr['cal'] = 'plus';
-    }
-    $.get('/video/add-likes', arr,function(res){
-        if(res.errno==0 && res.data>=0){
-            $(that).toggleClass("act").siblings("span").toggleClass("act");
-            $(that).parent().find("span").html(res.data);
-        }
-    });
-}
-//消息删除
-// $(".per-btn-s").click(
-function removecomment(that) {
-    var value = $(that).attr('data-value');
-    var type = $(that).attr('data-type');
-    var arr = {};
-    arr['id'] = value;
-    arr['type'] = type;
-    $.get('/video/remove-message', arr,function(res){
-        if(res.errno==0 && res.data>0){
-            $('.'+type+'_'+value).remove();
-        }
-    });
-}
-/*-----------关注------------*/
-// 关注页tab  切换
-$(".per-tab03>li").click(function() {
-    var tabNum = $(this).index();
-    relaAr['tabNum'] = tabNum;
-    var that = this;
-    var type = $(this).attr("data-type");
-    relaAr['type'] = type;
-    // console.log(relaAr);
-    $.get('/video/search-relation',relaAr,function(res){
-        arrall['relation'+type+'-page'] = 1;
-        if(res.errno==0){
-            var html = findrelationlist(res.data,relaAr['type']);
-            $(".per-tab-w03>div").eq(relaAr['tabNum']).html(html);
-        }else{
-            $(".per-tab-box03.act").html('<h4 class="per-zw" name="zt">暂无内容</h4>');
-        }
-        $(that).addClass("act").siblings().removeClass("act");
-        $(".per-tab-w03>div").eq(tabNum).addClass("act").siblings().removeClass("act");
-        ztBlack();
-    });
-});
-//关注排序
-$(".per-slt-list-relation>input").click(function() {
-    var perSlt=$(this).val();
-    var datavalue=$(this).attr('data-value');
-    $(this).addClass("act").siblings().removeClass("act");
-    $(this).parents(".per-slt").find(".per-slt-name>input").val(perSlt);
-    $('.per-slt-name>input').removeClass("act");
-    $('.per-slt-list').removeClass("act");
-    relaAr['order'] = datavalue;
-    $.get('/video/search-relation',relaAr,function(res){
-        var r = $(".per-tab03>li.act").attr("data-type");
-        arrall['relation'+r+'-page'] = 1;
-        if(res.errno==0){
-            var html = findrelationlist(res.data,relaAr['type']);
-            $(".per-tab-w03>div").eq(relaAr['tabNum']).html(html);
-        }else{
-            $(".per-tab-box03.act").html('<h4 class="per-zw" name="zt">暂无内容</h4>');
-        }
-        ztBlack();
-    });
-});
-//关注搜索
-$("#rela_searchbtn").click(function (){
-    relaAr['searchword'] = $("#rela_search").val();
-    $.get('/video/search-relation',relaAr,function(res){
-        var r = $(".per-tab03>li.act").attr("data-type");
-        arrall['relation'+r+'-page'] = 1;
-        if(res.errno==0){
-            var html = findrelationlist(res.data,relaAr['type']);
-            $(".per-tab-w03>div").eq(relaAr['tabNum']).html(html);
-        }else{
-            $(".per-tab-box03.act").html('<h4 class="per-zw" name="zt">暂无内容</h4>');
-        }
-        ztBlack();
-    });
-});
-function findrelationlist(list,type){
-    var html = "";
-    for(var i=0;i<list.length;i++){
-        var avastr = "";
-        if(list[i]['avatar']!=""){
-            avastr = '<img src="'+list[i]['avatar']+'" />';
-        }else{
-            avastr = '<img src="/images/newindex/logon.png" />';
-        }
-        var gerstr = "";
-        if(list[i]['gender']==2){
-            gerstr = '<img src="/images/newindex/nan.png" />';
-        }else if(list[i]['gender']==1){
-            gerstr = '<img src="/images/newindex/nv.png" />';
-        }
-        var tabstr = '取消关注';
-        var otherurl = list[i]['other_uid'];
-        if(type==3){
-            otherurl = list[i]['uid'];
-            if(list[i]['tab']!=1){
-                tabstr = '关注';
-            }
-        }else if(type==2){
-            tabstr = '移除';
-        }
-        html+='<ul class="per-gz-box relations'+type+'-'+list[i]['uid']+'-'+list[i]['other_uid']+'" name="zt">'+
-            '<li>'+
-                '<a class="per-gz-h" href="/video/other-home?uid='+otherurl+'">'+avastr+'</a>'+
-            '</li>'+
-            '<li>'+
-                '<div class="per-gz-xx">'+
-                    '<a class="per-gz-name" name="zt" href="/video/other-home?uid='+otherurl+'">'+list[i]['nickname']+'</a>'+
-                    '<div class="per-gz-xb">'+gerstr+'</div>'+
-                    '<div class="per-gz-dz">'+
-                        //<img src="/images/newindex/hlp-dz-g.png" /><span>澳大利亚</span>
-                    '</div>'+
-                '</div>'+
-                '<div class="per-gz-qm">'+
-                    //测试用户个性签名
-                '</div>'+
-            '</li>'+
-            '<li>粉丝：<span>'+list[i]['fannum']+'</span></li>'+
-            '<li>作品：<span>0</span></li>'+
-            '<li>获赞：<span>0</span></li>'+
-            '<li class="per-li-r" name="zt">'+
-                '<input class="per-btn-x" onclick="changerelations(this);" data-value="'+list[i]['uid']+'-'+list[i]['other_uid']+'" data-type="'+type+'" type="button" value="'+tabstr+'" />'+
-            '</li>'+
-        '</ul>';
-    }
-    return html;
-}
-//关注/取消关注
-function changerelations(that){
-    // var that = this;
-    var ids = $(that).attr("data-value").split("-");
-    var type = $(that).attr("data-type");
-    var arr = {};
-    arr['uid'] = ids[0];
-    arr['other_uid'] = ids[1];
-    arr['type'] = type;
-    $.get('/video/change-relations', arr,function(res){
-        if(res.errno==0){
-            if(type=="3"){
-                if(res.data.status==0){
-                    $(that).val("关注");
-                }else if(res.data.status==1){
-                    $(that).val("取消关注");
-                }
-            }else{
-                if(res.data.status==0) {
-                    $('.relations'+type+'-'+ids[0]+'-'+ids[1]).remove();
-                }
-            }
-        }
-    });
 }
 /*-----------下拉加载更多------------*/
 var progress = false; // 是否正在请求中
@@ -2115,10 +983,10 @@ $(window).scroll(function () {
                         }else if(tab=="favorite"){
                             var favoflag = $(".per-sp-box02").hasClass("act")? true : false;
                             html = findfavoritelist(res.data,favoflag);
-                            $(".per-tab-box05.act").append(html);
+                            $(".per-tab-w02-new.act .per-tab-video-list").append(html);
                         }else if(tab=="watchlog"){
                             html = findwatchloglist(res.data);
-                            $(".per-tab-box06.act").append(html);
+                            $(".per-tab-w02-new.act").append(html);
                         }else if(tab=="comment"){
                             html = findcommentlist(res.data,type);
                             $(".per-tab-box04.act").append(html);

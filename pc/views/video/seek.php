@@ -73,25 +73,16 @@ $this->registerJs($js);
 <!--求片-->
 <div class="seekbox">
     <div class="RANbox-title-icon">
-        <img src="/images/newindex/pianku-w.png" />
+        <img src="/images/Index/dianying-5.png" />
     </div>
     <div class="RANbox-title-name">
-        —— 求片 ——
+        <span class="RANbox-title-line"></span> 求片 <span class="RANbox-title-line"></span>
     </div>
-    <div class="seekbox-img">
-        <img src="/images/newindex/bj-03.png" />
-    </div>
-    <!--求片填选内容-->
     <div class="seekbox02" name="zt">
-        <div class="seekbox02-text clrOrangered">
-            填写影片名称(只提供旧片)*
-        </div>
         <div class="seekbox-ipt">
-            <input type="text" name="zt" id="v_videoname" placeholder="输入片名" value="" />
+            <span class="seekbox-title">片名</span><input type="text" name="zt" id="v_videoname" placeholder="请输入片名" value="" />
         </div>
-        <div class="seekbox02-text02" name="zt">
-            <span>以下信息选填</span>
-        </div>
+        <div class="seekbox-tip">目前只提供旧片</div>
         <ul class="seekbox02-ul seek-bottom">
             <?php if(!empty($data)) :?>
                 <li>
@@ -111,14 +102,7 @@ $this->registerJs($js);
                     </select>
                 </li>
             <?php endif;?>
-            <li name="zt">
-                年份
-            </li>
             <li>
-<!--                <div class="seekbox-ipt">-->
-<!--                    <input type="text" name="zt" id="v_year" placeholder="输入片名年份" value="" />-->
-<!--                </div>-->
-
                 <select class="seek-slk" name="zt" id="v_year">
                     <?php foreach ($data['years'] as $year) :?>
                         <option value="<?=$year['year']?>"><?=$year['year']?></option>
@@ -127,23 +111,19 @@ $this->registerJs($js);
             </li>
         </ul>
 
-        <div class="seekbox02-text" name="zt">
-            导演
+        <div class="seekbox-ipt">
+            <span class="seekbox-title">导演</span><input type="text" name="zt" id="v_director" placeholder="请输入导演姓名" value="" />
         </div>
-        <div class="seekbox-ipt seek-bottom">
-            <input type="text" name="zt" id="v_director" placeholder="输入导演,人名之间用逗号隔开" value="" />
-        </div>
+        <div class="seekbox-tip">人名之间用逗号隔开</div>
 
-        <div class="seekbox02-text" name="zt">
-            演员
+        <div class="seekbox-ipt">
+            <span class="seekbox-title">演员</span><input type="text" name="zt" id="v_actors" placeholder="请输入演员姓名" value="" />
         </div>
-        <div class="seekbox-tta seek-bottom">
-            <textarea placeholder="请输入演员,最多50字,人名之间用逗号隔开" name="zt" id="v_actors"></textarea>
-        </div>
+        <div class="seekbox-tip">人名之间用逗号隔开</div>
 
-        <div class="seekbox-text03 seek-bottom" name="zt">
-            <span class="clrOrangered">*</span>完善影片信息能够提高求片的成功率哦！
-            <input class="seek-btn" type="button" name="" id="v_submit" value="提交" />
+        <div class="seekbox-text03" name="zt">
+            <span class="seekbox-title"> </span><input class="seek-btn" type="button" name="" id="v_submit" value="提交" />
         </div>
+        <div class="seekbox-tips">完善影片信息，求片成功率会更高</div>
     </div>
 </div>

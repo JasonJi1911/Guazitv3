@@ -132,8 +132,10 @@ class VideoController extends BaseController
             'tick'          => $tick,
             'tvpath'        => $version['tvdata'],
             'city'          => $city,
-            'pageTab'       => $pageTab
-
+            'pageTab'       => $pageTab ,
+            'is_show_background' => 1,//是否显示背景 1-显示 2-不显示
+            'is_show_navmenu' => 2,//是否显示顶部分类导航 1-显示 2-不显示
+            'rightnav_type' => 1 //右侧分类导航样式 1-首页 2-其他页样式
         ]);
     }
 

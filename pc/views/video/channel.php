@@ -41,17 +41,30 @@ NewIndexStyleAsset::register($this);
 <!--分类列表-->
 <div class="sort02" name="zt">
     <?php foreach ($info['search_box'] as $cates): ?>
-        <?php if($cates['label'] == '排序') : ?>
-            <div class="sort-box02">
-                <div class="sort-tle">
-                    排序
-                </div>
-                <div class="sort-list">
-                    <?php foreach ($cates['list'] as $key => $cate): ?>
-                        <a class="sort-a" href="<?= Url::to(['list', 'channel_id' => $channel_id, $cates['field'] => $cate['value']])?>"><?= $cate['display']?></a>
-                    <?php endforeach;?>
-                </div>
+<!--        --><?php //if($cates['label'] == '排序') : ?>
+<!--            <div class="sort-box02">-->
+<!--                <div class="sort-tle">-->
+<!--                    排序-->
+<!--                </div>-->
+<!--                <div class="sort-list">-->
+<!--                    --><?php //foreach ($cates['list'] as $key => $cate): ?>
+<!--                        <a class="sort-a" href="--><?//= Url::to(['list', 'channel_id' => $channel_id, $cates['field'] => $cate['value']])?><!--">--><?//= $cate['display']?><!--</a>-->
+<!--                    --><?php //endforeach;?>
+<!--                </div>-->
+<!--            </div>-->
+        <?php  if($cates['label'] == '地区'): ?>
+        <div class="sort-box02">
+            <div class="sort-tle">
+                地区
             </div>
+            <div class="sort-list">
+                <?php foreach ($cates['list'] as $key => $cate): ?>
+                    <?php if($key < 6) :?>
+                        <a href="<?= Url::to(['list', 'channel_id' => $channel_id, $cates['field'] => $cate['value']])?>"><?= $cate['display']?></a>
+                    <?php endif;?>
+                <?php endforeach;?>
+            </div>
+        </div>
         <?php  elseif($cates['label'] == '类型'): ?>
             <div class="sort-box02">
                 <div class="sort-tle">
@@ -60,19 +73,6 @@ NewIndexStyleAsset::register($this);
                 <div class="sort-list">
                     <?php foreach ($cates['list'] as $key => $cate): ?>
                         <?php if($key < 14) :?>
-                            <a href="<?= Url::to(['list', 'channel_id' => $channel_id, $cates['field'] => $cate['value']])?>"><?= $cate['display']?></a>
-                        <?php endif;?>
-                    <?php endforeach;?>
-                </div>
-            </div>
-        <?php  elseif($cates['label'] == '地区'): ?>
-            <div class="sort-box02">
-                <div class="sort-tle">
-                    地区
-                </div>
-                <div class="sort-list">
-                    <?php foreach ($cates['list'] as $key => $cate): ?>
-                        <?php if($key < 6) :?>
                             <a href="<?= Url::to(['list', 'channel_id' => $channel_id, $cates['field'] => $cate['value']])?>"><?= $cate['display']?></a>
                         <?php endif;?>
                     <?php endforeach;?>
@@ -120,20 +120,21 @@ NewIndexStyleAsset::register($this);
             ?>
             <ul class="Sports-box" name="zt">
                 <li class="Title-01">
-                    <img src="/images/newindex/logo-02.png" />
+<!--                    <img src="/images/newindex/logo-02.png" />-->
                     <a href="<?= Url::to(['list', 'channel_id' => $channel, 'tag' => $tag, 'area' => $area])?>">
                         <?= $labels['title']?>
                     </a>
+                    <a class="Title-more" href="<?= Url::to(['list', 'channel_id' => $channel, 'tag' => $tag, 'area' => $area])?>">更多></a>
                 </li>
                 <?php foreach ($labels['list'] as $key => $list): ?>
-                    <?php if($key < 8) :?>
+                    <?php if($key < 7) :?>
                     <li class="Movie-list">
                         <a class="Movie" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
                             <img class="Movie-img i_background_errorimg" src="<?= $list['cover']?>" />
-                            <div class="oth-time">
+<!--                            <div class="oth-time">-->
                                 <!--评分-->
-                                <?= $list['score']?>
-                            </div>
+<!--                                --><?//= $list['score']?>
+<!--                            </div>-->
                             <div class="palyBtn">
                                 <img src="/images/newindex/bofang.png" />
                             </div>

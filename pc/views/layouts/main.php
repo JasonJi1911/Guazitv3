@@ -37,17 +37,8 @@ AppAsset::register($this);
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<!--    <meta name="keywords" content="视频,视频分享,视频搜索,视频播放,视频社区">-->
-<!--    <meta name="description" content="分发，上传，社区一体的在线视频平台">-->
-    <link rel="shortcut icon" type="image/x-icon" href="/images/newindex/logo-02.png">
-    <link rel="icon" sizes="16x16 32x32 64x64" href="/images/newindex/logo_ico.ico">
-    <link rel="icon" type="image/png" sizes="196x196" href="/images/newindex/logo-02.png">
-    <link rel="icon" type="image/png" sizes="160x160" href="/images/newindex/logo-02.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="/images/newindex/logo-02.png">
-    <link rel="icon" type="image/png" sizes="64x64" href="/images/newindex/logo-02.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/images/newindex/logo-02.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/images/newindex/logo-02.png">
-    <!--    http://img.guazitv.tv/LOGO.ico-->
+    <meta name="description" content="瓜子TV是澳大利亚、新西兰华人影视视频分享平台，网站包含最新的电视剧、美剧、日韩剧、华语电影、好莱坞电影、以及各种动漫和重大体育赛事直播。在这里，一定有你想看的一切！">
+    <link rel="shortcut icon" type="image/x-icon" href="http://img.guazitv.tv/LOGO.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-R9BCW62LFW"></script>
@@ -57,7 +48,7 @@ AppAsset::register($this);
         gtag('js', new Date());
         gtag('config', 'G-R9BCW62LFW');
     </script>
-    
+
 <!--    <script>-->
 <!--        var _hmt = _hmt || [];-->
 <!--        (function() {-->

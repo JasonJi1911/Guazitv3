@@ -42,7 +42,7 @@ $(function(){
         // console.log(arrIndex); 
         //发送请求，获取数据
         $.get('/video/refresh-video', arrIndex, function(s) {
-            $('.box02').html(s); // 更新内容 
+            $('#searchVideos').html(s); // 更新内容 
             $('.totalresult1').text(totalnum); //刷新影片数
             dataloading(kTab);      
             page(1,page_size,totalnum);             
@@ -101,7 +101,7 @@ $(function(){
         // console.log(arrIndex);         
         //发送请求，获取数据
         $.get('/video/refresh-video', arrIndex, function(s) {
-            $('.box02').html(s); // 更新内容
+            $('#searchVideos').html(s); // 更新内容
             var totalnum = $("#parcount").val();
             zeroSearch(totalnum);
             $('.totalresult1').text(totalnum); //刷新影片数
@@ -125,7 +125,7 @@ $(function(){
         dataloading(false);     
         //发送请求，获取数据
         $.get('/video/refresh-video', arrIndex, function(s) {
-            $('.box02').html(s); // 更新内容
+            $('#searchVideos').html(s); // 更新内容
             var totalnum = $("#parcount").val();            
             zeroSearch(totalnum);
             $('.totalresult1').text(totalnum); //刷新影片数 
@@ -251,14 +251,14 @@ $this->registerJs($js);
 ?>
 <style>
     body {
-        background-color: #F9F9F9;
+        background-color: #F0F0F0;
     }
     .hiddenclass{display: none}
 </style>
-<div class="box01" name="zt">
-    <div class="conditionBox" name="zt">
+<div class="box01">
+    <div class="conditionBox">
         <!--搜索条件-->
-        <div class="SScondition haskeyword" name="zt">
+        <div class="SScondition haskeyword">
             <!--按钮点击关闭 class="SScondition"，并切换成筛选结果-->
             <!-- 搜索关键字 -->
             <div class="SScondition-btn">
@@ -268,64 +268,65 @@ $this->registerJs($js);
                 共有 <span class="totalresult1" id="id_totalresult1"><?= $info['total_count']?></span> 个搜索结果
             </div>
         </div>
-        <input id="afterinput" type="hidden" />
-        <!--类型选择-->
-        <?php foreach ($info['search_box'] as $cates): ?>
-            <?php if($cates['label'] != "排序") :?>
-                <div class="conditionType afterhidden">
-                    <div class="conditionType-all" name="zt">
-                        <a href="javascript:;"><?= $cates['label']?></a>
+        <div class="box01-content">
+            <div class="box01-search">
+            <input id="afterinput" type="hidden" />
+            <!--类型选择-->
+            <?php foreach ($info['search_box'] as $cates): ?>
+                <?php if($cates['label'] != "排序") :?>
+                    <div class="conditionType afterhidden">
+                        <div class="conditionType-all" name="zt">
+                            <a href="javascript:;"><?= $cates['label']?>:</a>
+                        </div>
+                        <ul class="condition">
+                            <?php foreach ($cates['list'] as $key => $cate): ?>
+                                <?php if($cates['field'] == 'channel_id' && $cate['checked'] == 1) : ?>
+                                    <input type="hidden" id="channel-id" value="<?= $cate['value']?>">
+                                <?php endif;?>
+                                <?php
+                                if($cates['field'] != 'channel_id'){//频道
+                                    if($cate['checked'] == 1){
+                                        $conditionAct = "conditionAct";
+                                    }else{
+                                        $conditionAct = "";
+                                    }
+                                }else{//非频道
+                                    if($key == 0 ){
+                                        $conditionAct = "conditionAct";
+                                    } else{
+                                        $conditionAct = "";
+                                    }
+                                }
+                                ?>
+                                <li>
+                                    <a href="javascript:;" class="videobtn <?= $conditionAct?>" data-value="<?= $cate['value']?>" data-type="<?= $cates['field']?>">
+                                        <?= $cate['display']?>
+                                    </a>
+                                </li>
+                            <?php endforeach;?>
+                        </ul>
                     </div>
-                    <ul class="condition" name="zt">
-                        <?php foreach ($cates['list'] as $key => $cate): ?>
-                            <?php if($cates['field'] == 'channel_id' && $cate['checked'] == 1) : ?>
-                                <input type="hidden" id="channel-id" value="<?= $cate['value']?>">
-                            <?php endif;?>
-                            <?php
-                            if($cates['field'] != 'channel_id'){//频道
-                                if($cate['checked'] == 1){
-                                    $conditionAct = "conditionAct";
-                                }else{
-                                    $conditionAct = "";
-                                }
-                            }else{//非频道
-                                if($key == 0 ){
-                                    $conditionAct = "conditionAct";
-                                } else{
-                                    $conditionAct = "";
-                                }
-                            }
-                            ?>
-                            <li>
-                                <a href="javascript:;" class="videobtn <?= $conditionAct?>" data-value="<?= $cate['value']?>" data-type="<?= $cates['field']?>">
-                                    <?= $cate['display']?>
-                                </a>
-                            </li>
-                        <?php endforeach;?>
-                    </ul>
+                <?php endif;?>
+            <?php endforeach;?>
+            </div>
+            <div class="AD-01">
+                <?php if(isset($advert['advert_id'])):?>
+                    <a href="<?=$advert['ad_skip_url']?>" target="_blank"><img src="<?=$advert['ad_image']?>" /></a>
+                <?php else :?>
+                    <a href="javascript:;"><img src="/images/newindex/AD0-1.png" /></a>
+                <?php endif;?>
+                <div class="GGtext">
+                    广告
                 </div>
-            <?php endif;?>
-        <?php endforeach;?>
-    </div>
-    <div class="AD-01" name="zt">
-        <?php if(isset($advert['advert_id'])):?>
-            <a href="<?=$advert['ad_skip_url']?>" target="_blank"><img src="<?=$advert['ad_image']?>" /></a>
-        <?php else :?>
-            <a href="javascript:;"><img src="/images/newindex/AD0-1.png" /></a>
-        <?php endif;?>
-        <div class="GGtext">
-            广告
+            </div>
         </div>
     </div>
 </div>
 
 <!--暂无搜索数据-->
 <div class="ss_no" name="zt" style="display: none;">
-    <h2>
-        抱歉亲，没有找到 <span><?= $keyword?></span> 相关的内容
-    </h2>
-    <h2>
-        您是否要求片？<a href="<?= Url::to(['/video/seek'])?>" target="_blank">立即求片</a>
+    <h2 class="per-zw-new" name="zt" >
+        暂无内容，快去看看精彩视频吧~
     </h2>
 </div>
 <!--排序-->
@@ -348,12 +349,14 @@ $this->registerJs($js);
 
 <!--筛选结果-->
 <div class="box02" style="display: none;">
+    <!--筛选剧集显示列表-->
+    <div id="searchVideos" name="zt">
 
-</div>
-<!--分页-->
-<div class="page" id="Page" name="zt">
-    <!--内容全在MyPage.js内-->
-</div>
+    </div>
+    <!--分页-->
+    <div class="page" id="Page" name="zt">
+        <!--内容全在MyPage.js内-->
+    </div>
 </div>
 <script src="/js/jquery.js"></script>
 <script src="/js/video/MyPage.js"></script>
