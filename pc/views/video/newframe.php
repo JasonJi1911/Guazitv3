@@ -690,30 +690,52 @@ if(empty($is_show_background) || $is_show_background != 1){
     </ul>
 </div>
 <?php else: ?>
-<div class="qy-float-anchor-1 det-nav" style="" id="det-nav">
-    <ul class="anchor-list">
-        <li class="list-item">
-<!--            <span onclick="rightUrl('seek')">在线求片</span>-->
-            <a href="<?= Url::to(['/video/seek'])?>" target="_blank" class="list-link"><img src="/images/Index/right-1.png"></a>
-        </li>
-        <li class="list-item">
-<!--            <span onclick="rightUrl('help')">联系客服</span>-->
-            <a href="<?= Url::to(['/video/help', 'tab' => ''])?>" class="list-link"><img src="/images/Index/right-2.png"></a>
-        </li>
-        <li class="list-item">
-<!--            <span onclick="rightUrl('personal')">个人中心</span>-->
-            <a href="<?= Url::to(['/video/personal'])?>" class="list-link"><img src="/images/Index/right-3.png"></a>
-        </li>
-        <li class="list-item">
-<!--            <span onclick="rightUrl('help')">帮助中心</span>-->
-            <a href="<?= Url::to(['/video/help'])?>" class="list-link"><img src="/images/Index/right-4.png"></a>
-        </li>
-        <li class="list-item">
-<!--            <span>返回顶部</span>-->
-            <a href="javascript:scroll(0,0)" class="list-link backToTop"><img src="/images/Index/right-5.png"></a>
-        </li>
-    </ul>
-</div>
+<!--<div class="qy-float-anchor-1 det-nav" style="" id="det-nav">-->
+<!--    <ul class="anchor-list">-->
+<!--        <li class="list-item">-->
+<!--<!--            <span onclick="rightUrl('seek')">在线求片</span>-->-->
+<!--            <a href="--><?//= Url::to(['/video/seek'])?><!--" target="_blank" class="list-link"><img src="/images/Index/right-1.png"></a>-->
+<!--        </li>-->
+<!--        <li class="list-item">-->
+<!--<!--            <span onclick="rightUrl('help')">联系客服</span>-->-->
+<!--            <a href="--><?//= Url::to(['/video/help', 'tab' => ''])?><!--" class="list-link"><img src="/images/Index/right-2.png"></a>-->
+<!--        </li>-->
+<!--        <li class="list-item">-->
+<!--<!--            <span onclick="rightUrl('personal')">个人中心</span>-->-->
+<!--            <a href="--><?//= Url::to(['/video/personal'])?><!--" class="list-link"><img src="/images/Index/right-3.png"></a>-->
+<!--        </li>-->
+<!--        <li class="list-item">-->
+<!--<!--            <span onclick="rightUrl('help')">帮助中心</span>-->-->
+<!--            <a href="--><?//= Url::to(['/video/help'])?><!--" class="list-link"><img src="/images/Index/right-4.png"></a>-->
+<!--        </li>-->
+<!--        <li class="list-item">-->
+<!--<!--            <span>返回顶部</span>-->-->
+<!--            <a href="javascript:scroll(0,0)" class="list-link backToTop"><img src="/images/Index/right-5.png"></a>-->
+<!--        </li>-->
+<!--    </ul>-->
+<!--</div>-->
+    <div class="rigNav" name="zt">
+        <div class="rigNav-icon01" id="HF">
+            <span onclick="rightUrl('seek')">在线求片</span>
+            <a href="<?= Url::to(['/video/seek'])?>" target="_blank">&nbsp;</a>
+        </div>
+        <div class="rigNav-icon02">
+            <span onclick="rightUrl('help','contact')">联系客服</span>
+            <a href="<?= Url::to(['/video/help', 'tab' => 'contact'])?>">&nbsp;</a>
+        </div>
+        <div class="rigNav-icon03">
+            <span>个人中心</span>
+            <a href="javascript:;">&nbsp;</a>
+        </div>
+        <div class="rigNav-icon04">
+            <span onclick="rightUrl('help')">帮助中心</span>
+            <a href="<?= Url::to(['/video/help', 'tab' => ''])?>">&nbsp;</a>
+        </div>
+        <div class="rigNav-top" id="backToTop">
+            <span>返回顶部</span>
+            <a href="javascript:;">&nbsp;</a>
+        </div>
+    </div>
 <?php endif;?>
 
 <!--VIP弹出层 id="alt02"-->
@@ -944,14 +966,14 @@ if(empty($is_show_background) || $is_show_background != 1){
         $("#alt07").css("display","none");
     }
     //右侧链接
-    function rightUrl(urlid){
+    function rightUrl(urlid,tab=''){
         if(urlid=='seek'){
             // window.location.href = '/video/seek';
             window.open('/video/seek');
         }else if(urlid=='help'){
-            window.location.href = '/video/help';
+            window.location.href = '/video/help?tab='+tab;
         }else if(urlid=='personal'){
-            window.location.href = '/video/personal';
+            window.location.href = '/video/personal?tab='+tab;
         }
     }
     function isvip(){
