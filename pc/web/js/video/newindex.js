@@ -986,7 +986,7 @@ $(document).ready(function() {
 					ts_this.parents(".J_safe").find(".J_jindu3").addClass('act');
 					ts_this.parents(".J_safe").find(".J_auth_text3").addClass('act');
 				}else{
-					$(".J_warning3").text("验证码修改失败");
+					$(".J_warning3").text("密码修改失败");
 					$(".J_warning3").show();
 				}
 			});

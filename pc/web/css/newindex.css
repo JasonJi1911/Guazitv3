@@ -446,8 +446,8 @@ body {
 
 /*--------搜索----------*/
 .navTopSearchBox {
-	/*padding-left: 360px;*/
-	/*padding-right: 360px;*/
+	padding-left: 360px;
+	padding-right: 360px;
 	text-align: center;
 	height: 100%;
 }
