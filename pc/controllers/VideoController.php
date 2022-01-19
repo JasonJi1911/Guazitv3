@@ -831,13 +831,16 @@ class VideoController extends BaseController
         $hotword = Yii::$app->api->get('/search/hot-word');
         //在线反馈信息
         $feedbackinfo = Yii::$app->api->get('/video/feedbackinfo');
+        //app版本
+        $appversion = Yii::$app->api->get('/search/app-version');
 
         return $this->render('newframe',[
             'pageTab'       => $pageTab,
             'channels'      => $channels,
             'hotword'       => $hotword,
             'feedbackinfo'  => $feedbackinfo,
-            'helptab'       => $helptab
+            'helptab'       => $helptab,
+            'appversion'   => $appversion
         ]);
     }
 

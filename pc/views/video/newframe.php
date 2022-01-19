@@ -626,7 +626,8 @@ if(empty($is_show_background) || $is_show_background != 1){
         echo $this->render('help',[
             'channels'      => $channels,
             'feedbackinfo'  => $feedbackinfo,
-            'helptab'       => $helptab
+            'helptab'       => $helptab,
+            'appversion'    => $appversion
         ]);
         break;
     case "adcenter" :
@@ -684,8 +685,8 @@ if(empty($is_show_background) || $is_show_background != 1){
                 <?php endif;?>
             <?php endforeach ?>
         <?php endif;?>
-        <li class="list-item"><a href="<?= Url::to(['collaboration'])?>" class="list-link">为您推荐</a></li>
-        <li class="list-item"><a href="<?= Url::to(['collaboration'])?>" class="list-link">联系客服</a></li>
+<!--        <li class="list-item"><a href="--><?//= Url::to(['collaboration'])?><!--" class="list-link">为您推荐</a></li>-->
+        <li class="list-item"><a href="<?= Url::to(['help', 'tab' => 'contact'])?>" class="list-link">联系客服</a></li>
         <li class="list-item"><a href="javascript:scroll(0,0)" class="list-link backToTop"><svg class="back-top-svg" viewBox="0 0 20 12" xmlns="https://www.w3.org/2000/svg"><path d="M10.784 2.305l6.91 6.911a1.045 1.045 0 1 1-1.477 1.478L10 4.477l-6.217 6.217a1.045 1.045 0 0 1-1.478-1.478l6.911-6.91c.189-.189.43-.29.677-.305h.214c.246.014.488.116.677.304z"></path></svg>顶部</a></li>
     </ul>
 </div>

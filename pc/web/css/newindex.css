@@ -264,9 +264,10 @@ body {
 	position: absolute;
 	top: 40px;
 	left: 400px;
-	/*width: 180px;*/
+	width: 483px;
 	text-align: center;
 	line-height: 18px;
+	overflow: auto;
 }
 
 .navTopMenu {
@@ -276,7 +277,7 @@ body {
 }
 
 .navTopMenu-text {
-	padding: 40px 24px 40px 0;
+	padding: 40px 20px 40px 0;
 	font-size: 18px;
 	font-weight: 400;
 	cursor: pointer;
@@ -2226,7 +2227,8 @@ Movie-Ranking-img-num {
 	padding: 10px;
 	box-sizing: border-box;
 	width: 100%;
-	background-color: #F9F9F9;
+	/*background-color: #F9F9F9;*/
+	background-color: rgba(0,0,0,0.8);
 	transition: bottom 0.4s;
 	z-index: 2;
 }
@@ -5797,6 +5799,7 @@ Movie-Ranking-img-num {
 	background-color: #FF556E;
 	color: #FBFBFB;
 	margin-top: 103px;
+	cursor: pointer;
 }
 
 .GNbox-button:nth-of-type(1)>a {
@@ -5808,6 +5811,7 @@ Movie-Ranking-img-num {
 	background: #FBFBFB;
 	border: 1px solid #FF556E;
 	margin-top: 9px;
+	cursor: pointer;
 }
 .GNbox-button-collect {
 	/*display: none;*/
@@ -5815,6 +5819,7 @@ Movie-Ranking-img-num {
 	color: #FBFBFB;
 	background: #C5C5C5;
 	margin-top: 9px;
+	cursor: pointer;
 }
 
 .RAN-b {
@@ -6784,7 +6789,7 @@ Movie-Ranking-img-num {
 	left: 50%;
 	margin-left: -75px;
 	width: 150px;
-	padding-bottom: 10px;
+	/*padding-bottom: 10px;*/
 	text-align: center;
 	background-color: #FFFFFF;
 	border-radius: 5px;
@@ -6831,10 +6836,12 @@ Movie-Ranking-img-num {
 
 .hlp-app-alt>a {
 	display: inline-block;
-	padding: 0px 10px;
-	height: 24px;
-	line-height: 24px;
-	font-size: 12px;
+	/*padding: 0px 10px;*/
+	width: 150px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	font-size: 18px;
 	color: #FFFFFF;
 	background-color: #FF556E;
 }
@@ -9214,6 +9221,10 @@ Movie-Ranking-img-num {
 	text-underline-offset:35px;
 }
 
+.box-per-tab>li.act>a {
+	color: #FF556E;
+}
+
 .per-img-icon {
 	position: relative;
 	width: 50px;
@@ -9260,6 +9271,7 @@ Movie-Ranking-img-num {
 	display: grid;
 	grid-template-columns: auto auto 381px;
 	grid-gap: 17px;
+	overflow-x: auto;
 }
 .per-sp-box-new>.per-tab02-new>li{
 	float: left;
@@ -9556,6 +9568,8 @@ Movie-Ranking-img-num {
 	border: 1px solid #DDDDDD;
 	border-radius: 5px;
 	padding-left: 10px;
+	font-size: 18px;
+	font-weight: 400;
 }
 .per-bind-email>.yzm-btn{
 	position: absolute;
@@ -12684,6 +12698,7 @@ Movie-Ranking-img-num {
 	color: #000000;
 	overflow: hidden;
 	margin-bottom: 17px;
+	cursor: pointer;
 }
 .gn-box>li:first-of-type{
 	float: left;
@@ -12693,6 +12708,9 @@ Movie-Ranking-img-num {
 }
 .gn-box>li:last-of-type{
 	float: right;
+}
+.gn-box>li:hover{
+	color: #FF556E;
 }
 .gn-box .chebox{
 	position: relative;
@@ -13055,8 +13073,11 @@ body.ZT-black,
 .Movie-box.ZT-black>.Title-03>a,
 .Ranking-name.ZT-black>a .Movie-name01.ZT-black,
 .Movie-star.ZT-black,
+.Movie-star,
 .Movie-btm.ZT-black,
+.Movie-btm,
 .Movie-content.ZT-black,
+.Movie-content,
 /*.Movie-name01.ZT-black,*/
 .Movie-name02.ZT-black,
 .Ranking-name.ZT-black>a,

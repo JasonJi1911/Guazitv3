@@ -1075,13 +1075,13 @@ else
                                 <ul class="per-now-box ul-box" name="zt">
                                     <li class="per-now-h">
                                         <div class="navTopLogonImg">
-                                            <a href="<?=Url::to(['/video/other-home','uid'=>$comment['uid']])?>">
+<!--                                            <a href="--><?//=Url::to(['/video/other-home','uid'=>$comment['uid']])?><!--">-->
                                                 <?php if($comment['avatar']):?>
                                                     <img src="<?=$comment['avatar']?>" />
                                                 <?php else :?>
                                                     <img src="/images/Index/user_c.png" />
                                                 <?php endif;?>
-                                            </a>
+<!--                                            </a>-->
                                         </div>
                                     </li>
                                     <li >
@@ -1105,13 +1105,13 @@ else
                                                         <li class="per-now-h">
                                                             <div class="navTopLogonImg">
                                                                 <!--                                                                <a href="javascript"><img src="/images/newindex/logon.png" /></a>-->
-                                                                <a href="<?=Url::to(['/video/other-home','uid'=>$reply['uid']])?>">
+<!--                                                                <a href="--><?//=Url::to(['/video/other-home','uid'=>$reply['uid']])?><!--">-->
                                                                     <?php if($reply['avatar']):?>
                                                                         <img src="<?=$reply['avatar']?>" />
                                                                     <?php else :?>
                                                                         <img src="/images/Index/user_c.png" />
                                                                     <?php endif;?>
-                                                                </a>
+<!--                                                                </a>-->
                                                             </div>
                                                         </li>
                                                         <li >
@@ -1587,11 +1587,11 @@ else
         }else{
             avatarstr = '<img src="/images/Index/user_c.png" />';
         }
-        html = '<li class="div-commentlist">'+
+        html = '<div class="div-commentlist">'+
             '<ul class="per-now-box ul-box" name="zt">'+
             '<li class="per-now-h">'+
-            '<div class="navTopLogonImg">'+
-            '<a href="/video/other-home?uid='+data['uid']+'">'+avatarstr+'</a>'+
+            '<div class="navTopLogonImg">'+avatarstr+
+            // '<a href="/video/other-home?uid='+data['uid']+'">'+avatarstr+'</a>'+
             '</div>'+
             '</li>'+
             '<li>'+
@@ -1607,8 +1607,10 @@ else
             '</li>'+
             '<li><input class="per-btn-reply" type="button" name="" onclick="showreply('+data['comment_id']+',this);" value="" /></li>'+
             '</ul>'+
-            '</li>';
-        $("#comment-part .div-commenttab").after(html);
+            '</li>'+
+            '</ul>'+
+            '</div>';
+        $("#comment-part").prepend(html);
         $("#comment-part").show();
     }
 
@@ -1704,8 +1706,8 @@ else
         }
         html = '<ul class="per-now-box ul-box" name="zt">'+
             '<li class="per-now-h">'+
-            '<div class="navTopLogonImg">'+
-            '<a href="/video/other-home?uid='+data['uid']+'">'+avatarstr+'</a>'+
+            '<div class="navTopLogonImg">'+avatarstr+
+            // '<a href="/video/other-home?uid='+data['uid']+'">'+avatarstr+'</a>'+
             '</div>'+
             '</li>'+
             '<li>'+

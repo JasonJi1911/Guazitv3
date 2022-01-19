@@ -277,42 +277,6 @@ $this->registerJs($js);
         </div>
     </div>
 </div>
-<!--排序-->
-<div class="box03">
-    <ul class="scPX" name="zt">
-        <?php foreach ($info['search_box'] as $cates): ?>
-            <?php if($cates['label'] == "排序") :?>
-                <?php $scJgAct0 = "scJgAct";$scJgAct1 = "";$scJgAct2 = "";
-                    foreach ($cates['list'] as $key => $cate) {
-                        if($cates['field'] == 'sort' && $cate['checked'] == 1){
-                            if($key == 0){
-                                $scJgAct0 = "scJgAct";
-                                $scJgAct1 = "";
-                                $scJgAct2 = "";
-                            }else if($key == 1){
-                                $scJgAct0 = "";
-                                $scJgAct1 = "scJgAct";
-                                $scJgAct2 = "";
-                            }else if($key == 2){
-                                $scJgAct0 = "";
-                                $scJgAct1 = "";
-                                $scJgAct2 = "scJgAct";
-                            }
-                        }
-                    }
-                ?>
-                <li class="videobtn <?=$scJgAct1?>" data-value="<?= ($cates['list'])[1]['value']?>" data-type="<?= $cates['field']?>"><span>添加时间</span></li>
-                <li class="videobtn <?=$scJgAct0?>" data-value="<?= ($cates['list'])[0]['value']?>" data-type="<?= $cates['field']?>"><span>人气高低</span></li>
-                <li class="videobtn <?=$scJgAct2?>" data-value="<?= ($cates['list'])[2]['value']?>" data-type="<?= $cates['field']?>"><span>评分高低</span></li>
-            <?php endif;?>
-        <?php endforeach;?>
-
-
-    </ul>
-<!--    <div class="scJg" name="zt">-->
-<!--        共有 <span id="searchNum">--><?//= $info['total_count']?><!--</span> 个筛选结果-->
-<!--    </div>-->
-</div>
 <!--筛选结果-->
 <div class="box02">
     <!--筛选剧集显示列表-->

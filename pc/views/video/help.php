@@ -944,10 +944,12 @@ $logo = LOGONAME;
                     <div class="hlp-app-btn-box">
                         <!--下载按钮-->
                         <div class="hlp-app-btn01 hlp-app-box-btn">
-                            <a href="javascript:;">
-                                 IOS下载
-                            </a>
-                            <div>
+                            <?php if($appversion["iosdata"]) :?>
+                                <a href="<?=$appversion["iosdata"]["file_path"]?>" class="button1">IOS下载</a>
+                            <?php else :?>
+                                <a href="###" class="button1">无IOS应用</a>
+                            <?php endif; ?>
+                           <!-- <div>
                                 <img src="/images/newindex/triangle-up.png"/>
                             </div>
                             <div class="hlp-app-alt">
@@ -959,14 +961,16 @@ $logo = LOGONAME;
                                     <li class="act"><img src="/images/newindex/ewm.jpg"/></li>
                                     <li><img src="/images/newindex/ewm02.jpg"/></li>
                                 </ul>
-                            </div>
+                            </div>-->
                         </div>
                         <!--下载按钮-->
                         <div class="hlp-app-btn01 hlp-app-box-btn">
-                            <a href="javascript:;">
-                                Android下载
-                            </a>
-                            <div>
+                            <?php if($appversion["androiddata"]) :?>
+                                <a href="<?=$appversion["androiddata"]["file_path"]?>" class="button2">Android下载</a>
+                            <?php else :?>
+                                <a href="<?=$appversion["iosdata"]["file_path"]?>" class="button2">无安卓应用</a>
+                            <?php endif; ?>
+                           <!-- <div>
                                 <img src="/images/newindex/triangle-up.png"/>
                             </div>
                             <div class="hlp-app-alt">
@@ -974,17 +978,25 @@ $logo = LOGONAME;
                                     <li class="act"><img src="/images/newindex/ewm02.jpg"/></li>
                                 </ul>
                                 <a href="javascript:;">点击此处下载</a>
-                            </div>
+                            </div>-->
                         </div>
                         <div class="hlp-app-btn01 hlp-app-box-btn">
                             <a href="javascript:;">
                                 Windows下载
                             </a>
+                            <div>
+                                <img src="/images/newindex/triangle-up.png"/>
+                            </div>
+                            <div class="hlp-app-alt">
+                                <a href="javascript:;">开发中</a>
+                            </div>
                         </div>
                         <div class="hlp-app-btn01 hlp-app-box-btn">
-                            <a href="javascript:;">
-                                Mac下载
-                            </a>
+                            <?php if($appversion["tvdata"]) :?>
+                                <a href="<?=$appversion["tvdata"]["file_path"]?>" class="button2">电视盒子下载</a>
+                            <?php else :?>
+                                <a href="<?=$appversion["iosdata"]["file_path"]?>" class="button2">无电视应用</a>
+                            <?php endif; ?>
                         </div>
                         <!--下载按钮-->
                         <!--<div class="hlp-app-btn01 hlp-app-box-btn">

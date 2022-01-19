@@ -4972,7 +4972,7 @@ a.anchor{
     width:100%;
     border-radius: 10px;
     margin-top: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 14px;
 }
 .advert_2{
     width: 100%;
@@ -4980,6 +4980,7 @@ a.anchor{
     border-radius: 10px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
+    margin-top: 6px;
 }
 .advert_content_title{
     width: 100%;
