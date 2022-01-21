@@ -5,6 +5,7 @@ use api\helpers\Common;
 use api\models\user\TaskInfo;
 use api\models\video\Actor;
 use api\models\video\TrailerTitle;
+use api\models\video\VideoUpdateTitle;
 use api\models\video\UserWatchLog;
 use api\models\video\VideoFavorite;
 use common\helpers\Tool;
@@ -1614,6 +1615,64 @@ class VideoLogic
                 }
             }
             $data['trailer'] = $trailerdata;
+            //写入缓存
+            $redis->setEx($key, json_encode($data));
+        }
+        return $data;
+    }
+
+    /*
+   * 获取更新列表的视频信息
+   */
+    public function getVideoUpdateInfo($channelId,$week=''){
+
+        $key = 'videoupdateinfo_channel_'.$channelId.'_'.$week;
+        $redis = new RedisStore();
+        if($videoupdateinfo = $redis->get($key)){
+            $data = json_decode($videoupdateinfo, true);
+            return $data;
+        }
+
+        $videoUpdateTitle = VideoUpdateTitle::findOne(['channel_id'=>$channelId]);
+        $data = [];
+        if($videoUpdateTitle){
+            $data['video_update_title'] = $videoUpdateTitle->toArray();
+            $fields = ['video_id', 'video_name', 'score', 'cover', 'horizontal_cover', 'flag', 'tag', 'play_times', 'intro', 'category', 'actors_id', 'summary', 'year','created_at'];
+            $videodao = new VideoDao();
+            $videoupdatedata = $videodao->findVideoUpdate($videoUpdateTitle['id'],$week);
+            if($videoupdatedata){
+                foreach ($videoupdatedata as $k=>$videoupdate){
+                    $videoInfo = $videodao->videoInfo($videoupdate['video_id'], $fields);
+                    $videoupdate['video_name']       = $videoInfo['video_name'];
+                    $videoupdate['score']            = $videoInfo['score'];
+                    $videoupdate['cover']            = $videoInfo['cover'];
+                    $videoupdate['horizontal_cover'] = $videoInfo['horizontal_cover'];
+                    $videoupdate['flag']             = $videoInfo['flag'];
+                    $videoupdate['tag']              = $videoInfo['tag'];
+                    $videoupdate['play_times']       = $videoInfo['play_times'];
+                    $videoupdate['intro']            = $videoInfo['intro'];
+                    $videoupdate['category']         = $videoInfo['category'];
+                    $videoupdate['summary']          = $videoInfo['summary'];
+                    $videoupdate['year']             = $videoInfo['year'];
+                    $videoupdate['created_at']       = $videoInfo['created_at'];
+
+                    $actorsId = $videoInfo['actors_id'] ? explode(',', $videoInfo['actors_id']) : [];
+                    //演员信息，根据type区分演员和导演
+                    $actorlist = $videodao->actorsInfo($actorsId);
+                    $director = $actors = [];
+                    foreach ($actorlist as &$actor) {  //循环影片所有的演员信息
+                        if ($actor['type'] == Actor::TYPE_ACTOR) {
+                            $actors[]   = $actor;
+                        } else {
+                            $director[] = $actor;
+                        }
+                    }
+                    $videoupdate['actors'] = array_values($actors);
+                    $videoupdate['director'] = array_values($director);
+                    $videoupdatedata[$k] = $videoupdate;
+                }
+            }
+            $data['video_update'] = $videoupdatedata;
             //写入缓存
             $redis->setEx($key, json_encode($data));
         }

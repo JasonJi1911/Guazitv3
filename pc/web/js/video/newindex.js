@@ -901,12 +901,12 @@ $(document).ready(function() {
 				//补接口-发送验证码接口
 				$.get('/video/send-code', arr, function (res) {
 					var sc_this = $(".J_safe_auth .J_send_code");
-					// if (res.errno == 0) {
+					if (res.errno == 0) {
 						setTimeCode(sc_this.parents(".J_safe_auth").find(".J_count_down"));
-					// } else {
-					// 	sc_this.parents(".J_safe_auth").find(".J_warning2").text("验证码发送失败");
-					// 	sc_this.parents(".J_safe_auth").find(".J_warning2").show();
-					// }
+					} else {
+						sc_this.parents(".J_safe_auth").find(".J_warning2").text("验证码发送失败");
+						sc_this.parents(".J_safe_auth").find(".J_warning2").show();
+					}
 				});
 			});
 			//点击验证码验证

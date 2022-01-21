@@ -267,13 +267,14 @@ body {
 	width: 483px;
 	text-align: center;
 	line-height: 18px;
-	overflow: auto;
+	display: flex;
 }
 
 .navTopMenu {
 	display: inline-block;
 	position: relative;
 	cursor: pointer;
+	overflow: hidden;
 }
 
 .navTopMenu-text {
@@ -528,6 +529,7 @@ body {
 	margin-left:17px;
 	display:flex;
 	flex-direction: row;
+	cursor: pointer;
 }
 
 .navTopSearchB {
@@ -1696,6 +1698,7 @@ body {
 	grid-column-end: 8;
 	padding: 20px 0px;
 	font-size: 28px;
+	cursor: pointer;
 }
 
 .Title-01>img {
@@ -2461,6 +2464,24 @@ Movie-Ranking-img-num {
 	grid-gap: 17px;
 	margin: 0px 165px;
 }
+
+/*更新列表--开始*/
+.movie-update{
+	margin-top: 22px;
+}
+.movie-update-time{
+	margin-left: 9px;
+}
+.movie-update-time>span{
+	display: inline-block;
+	font-size: 16px;
+	font-weight: 400;
+	color: #000000;
+}
+.movie-update-time>.movie-update-week{
+	width: 42px;
+}
+/*更新列表--结束*/
 
 @media screen and (max-width:1900px) {
 	.Sports-box {
@@ -12014,6 +12035,36 @@ Movie-Ranking-img-num {
 .ss_no>h2>a:hover{
 	color: #FF5722;
 }
+.ss_no{
+	/*margin: 0px 40px;*/
+	margin-top: 20px;
+	background-color: #FFFFFF;
+	text-align: center;
+	min-height: 500px;
+	line-height: 50px;
+	padding-top: 300px;
+	box-sizing: border-box;
+	background-image: url(../images/Index/no_video.png);
+	background-position: center 127px;
+	background-repeat: no-repeat;
+	background-size: 170px;
+}
+
+.ss-no-update{
+	text-align: center;
+	min-height: 314px;
+	line-height: 50px;
+	padding-top: 250px;
+	box-sizing: border-box;
+	background-image: url(../images/Index/no_video.png);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 170px;
+}
+.ss-no-update>h2{
+	color: #999999;
+	font-weight: normal;
+}
 
 /*---------最新剧集  红点标识---------*/
 .icon_spot{
@@ -13179,7 +13230,7 @@ body.ZT-black,
 .sort_content:hover>a>.sort-text,
 .RD-box.ZT-black>.Title-00>a:hover,
 .RD-box.ZT-black>.Title-01>a:hover,
-.NewTrailer-box-title.ZT-black>.Title-01>a:hover,
+.NewTrailer-box-title>.Title-01>a:hover,
 .Livemaches-box.ZT-black>.Title-01>a:hover,
 .Movie-box.ZT-black>.Title-02>a:hover,
 .Movie-box.ZT-black>.Title-03>a:hover,
@@ -13241,7 +13292,8 @@ body.ZT-black,
 .inp-box.ZT-black>input[type="text"],
 .inp-box.ZT-black>input[type="password"],
 .inp-box.ZT-black>.selectJ.act,
-.qy-footer>.wp>a:hover
+.qy-footer>.wp>a:hover,
+.movie-update-week:hover
 {
 	/*color: rgba(255, 255, 255, 1);*/
 	color: #FF556E;

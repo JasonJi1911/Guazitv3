@@ -4,6 +4,33 @@ use pc\assets\NewIndexStyleAsset;
 
 //$this->title = '';
 NewIndexStyleAsset::register($this);
+
+$js = <<<SCRIPT
+$(function(){
+    var swiper = new Swiper('.swiper-container', {
+        slidesPerView: 7,
+        slidesPerColumn: 1,
+        spaceBetween: 17,
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        breakpoints: {
+            1024: {
+                slidesPerView: 6,
+            },
+            1440: {
+                slidesPerView: 6,
+            },
+            1550: {
+                slidesPerView: 7,
+            },
+        }
+    });
+});
+SCRIPT;
+
+$this->registerJs($js);
 ?>
 <!--首页大轮播-->
 <div id="playBox" class="play-box">
@@ -95,6 +122,163 @@ NewIndexStyleAsset::register($this);
     <?php endforeach;?>
 </div>
 <!--视频列表-->
+<?php if($data['video_update']['video_update']):?>
+    <ul class="NewTrailer-box-title movie-update">
+        <li class="Title-01">
+            <a href="javascript:;"><?=$data['video_update']['video_update_title']['title']?></a>
+            <div class="movie-update-time">
+                <span class="movie-update-week J_movie_update_week" data-value="1">周一</span><span>|</span>
+                <span class="movie-update-week J_movie_update_week" data-value="2">周二</span><span>|</span>
+                <span class="movie-update-week J_movie_update_week" data-value="3">周三</span><span>|</span>
+                <span class="movie-update-week J_movie_update_week" data-value="4">周四</span><span>|</span>
+                <span class="movie-update-week J_movie_update_week" data-value="5">周五</span><span>|</span>
+                <span class="movie-update-week J_movie_update_week" data-value="6">周六</span><span>|</span>
+                <span class="movie-update-week J_movie_update_week" data-value="7">周日</span>
+            </div>
+        </li>
+    </ul>
+    <div class="ss-no-update J_update_empty" name="zt" style="display: none;">
+        <h2 class="per-zw-new" name="zt" >
+            暂无更新，快去看看精彩视频吧~
+        </h2>
+    </div>
+    <div class="swiper-container">
+        <ul class="swiper-wrapper J_video_update_content">
+            <?php foreach ($data['video_update']['video_update'] as $list): ?>
+            <li class="Movie-list swiper-slide">
+                <a class="Movie" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
+                    <img class="Movie-img i_background_errorimg" src="<?= $list['cover']?>" />
+                    <div class="palyBtn">
+                        <img src="/images/newindex/bofang.png" />
+                    </div>
+
+                    <div class="Movie-details" name="zt">
+                        <div class="Movie-name01" name="zt">
+                            <?= $list['video_name']?>
+                        </div>
+                        <ul class="Movie-type" name="zt">
+                            <?php foreach (explode(' ',$list['category']) as $category): ?>
+                                <li>
+                                    <?= $category?>
+                                </li>
+                            <?php endforeach;?>
+                        </ul>
+                        <div class="Movie-star" name="zt">
+                            主演：
+                            <?php if (!empty($list['actors'])) :?>
+                                <?php foreach ($list['actors'] as $key => $actor): ?>
+                                    <span><?= $actor['actor_name']?></span>
+                                <?php endforeach;?>
+                            <?php endif;?>
+                        </div>
+                        <div class="Movie-content" name="zt">
+                            简介：
+                            <span><?= $list['intro']?></span>
+                        </div>
+                        <ul class="Movie-btm" name="zt">
+                            <li><?= $list['play_times']?></li>
+                            <li><input class="XQ" type="button" value="详情" onclick="XQ('<?= $list['video_id']?>')"/></li>
+                        </ul>
+                    </div>
+                    <?php if(is_int($key/7)):?>
+                        <div class="Movie-page">
+                            <img src="/images/Index/left.png" />
+                        </div>
+                    <?php endif;?>
+                    <?php if(is_int(($key+1)/7)):?>
+                        <div class="Movie-page">
+                            <img src="/images/Index/right.png" />
+                        </div>
+                    <?php endif;?>
+                </a>
+                <a class="Movie-name02" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
+                    <?= $list['video_name']?>
+                </a>
+                <div class="Movie-type02" name="zt">
+                    <div>
+                        <?php foreach (explode(' ',$list['category']) as $category): ?>
+                            <span><?= $category?></span>
+                        <?php endforeach;?>
+                    </div>
+                    <div><?= $list['flag']?></div>
+                </div>
+            </li>
+            <!--详情弹出层,默认隐藏-->
+            <div class="alt" id="alt03<?= $list['video_id']?>">
+                    <div class="alt03-box" name="zt">
+                        <div class="alt03-box-t">
+                            <div class="alt03-box-R">
+                                <img class="i_background_errorimg" src="<?= $list['cover']?>"  />
+                            </div>
+                            <div class="alt03-box-L">
+                                <a class="XQ-name" name="zt" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>"><?= $list['video_name']?></a>
+                                <div class="GNbox">
+                                    <div class="GNbox-type" name="zt">
+                                        <?php foreach (explode(' ',$list['category']) as $category): ?>
+                                            <span>
+                                            <?= $category?>
+                                        </span>
+                                        <?php endforeach;?>
+                                    </div>
+                                    <div class="GNbox-RD" name="zt">
+                                        <?= $list['play_times']?>
+                                    </div>
+                                    <div class="GNbox-PF">
+                                        <span><?= $list['score']?></span>分
+                                    </div>
+                                </div>
+                                <ul class="XQ-text">
+                                    <li>年代:<span><?= $list['year']?></span></li>
+                                    <li>导演:<span>
+                                            <?php if (!empty($list['director'])) :?>
+                                                <?php foreach ($list['director'] as $key => $director): ?>
+                                                    <?= $director['actor_name']?>
+                                                <?php endforeach;?>
+                                            <?php endif;?>
+                                    </li>
+                                    <li>主演:
+                                        <span>
+                                        <?php if (!empty($list['actors'])) :?>
+                                            <?php foreach ($list['actors'] as $key => $actor): ?>
+                                                <?php if ($actor['actor_name'] !='') :?>
+                                                    <?php if ($key==0) :?>
+                                                        <?= $actor['actor_name']?>
+                                                    <?php else: ?>
+                                                        &nbsp;/&nbsp;<?= $actor['actor_name']?>
+                                                    <?php endif; ?>
+                                                <?php endif; ?>
+                                            <?php endforeach;?>
+                                        <?php endif;?>
+                                    </span>
+                                    </li>
+                                </ul>
+                                <div class="XQ-btn" name="zt">
+                                    <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">播放</a>
+                                    <input type="button" value="收藏" onclick="addfavors(<?=$list['video_id']?>)" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="alt03-box-Z">
+                            简介：<span><?= $list['intro']?></span>
+                        </p>
+                        <!--                                <div class="alt03-box-B">-->
+                        <!--                                    <div><span>173</span>评论</div>-->
+                        <!--                                    <div><span>173</span>赞</div>-->
+                        <!--                                    <div><span>50</span>踩</div>-->
+                        <!--                                    <div><span>12</span>分享 </div>-->
+                        <!--                                </div>-->
+                        <!--关闭按钮-->
+                        <input class="alt-GB" type="button" value="X" />
+                    </div>
+                </div>
+            <?php endforeach;?>
+        </ul>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+    </div>
+</ul>
+<?php endif;?>
 <?php if (!empty($data['label'])) :?>
     <?php foreach ($data['label'] as  $labels): ?>
         <?php if (!isset($labels['advert_id'])) : ?>
@@ -273,3 +457,117 @@ NewIndexStyleAsset::register($this);
         <?php endif; ?>
     <?php endforeach;?>
 <?php endif; ?>
+<script>
+    //获取更新列表
+    var is_click = true;
+    $('.J_movie_update_week').click(function(){
+        if(!is_click){
+            return false;
+        }
+        var week = $(this).attr('data-value');
+        var arr = {};
+        arr['channel_id'] = <?=$channel_id?>;
+        arr['week'] = week;
+        console.log(arr);
+        if($.inArray(week,[1,2,3,4,5,6,7])){
+            is_click = false;
+            $.get('/video/video-update', arr, function (res) {
+                is_click = true;
+                if(res['data']['video_update'].length == 0){
+                    $('.J_update_empty').show();
+                    $('.J_video_update_content').hide();
+                } else {
+                    $('.J_update_empty').hide();
+                    $('.J_video_update_content').show();
+                    html = updateContent(res['data']['video_update']);
+                    $('.J_video_update_content').html(html);
+                }
+            })
+        }
+    });
+
+    function updateContent(list){
+        var html = '';
+        for(var i=0;i<list.length;i++) {
+            var catstr = "";
+            var catstr1 = "";
+            var cat = list[i]['category'].split(' ');
+            for (var k = 0; k < cat.length; k++) {
+                catstr += '<li>' + cat[k] + '</li>';
+                catstr1 += '<span>' + cat[k] + '</span>';
+            }
+            var actorstr = "";
+            for (var k = 0; k < list[i]['actors'].length; k++) {
+                actorstr += '<span>' + list[i]['actors'][k]['actor_name'] + '</span>';
+            }
+            var directorstr = "";
+            for (var k = 0; k < list[i]['director'].length; k++) {
+                directorstr += '<span>' + list[i]['director'][k]['actor_name'] + '</span>';
+            }
+            html += '<li class="Movie-list swiper-slide">\n' +
+                '                <a class="Movie" href="/video/detail?video_id='+list[i]['video_id']+'">\n' +
+                '                    <img class="Movie-img i_background_errorimg" src="'+list[i]['cover']+'">\n' +
+                '                    <div class="palyBtn">\n' +
+                '                        <img src="/images/newindex/bofang.png">\n' +
+                '                    </div>\n' +
+                '                    <div class="Movie-details" name="zt">\n' +
+                '                        <div class="Movie-name01" name="zt">\n' +
+                '                            '+list[i]['video_name']+'                              </div>\n' +
+                '                        <ul class="Movie-type" name="zt">\n' + catstr +
+                '                        </ul>\n' +
+                '                        <div class="Movie-star" name="zt">\n' +
+                '                            主演：\n' +actorstr+
+                '                        </div>\n' +
+                '                        <div class="Movie-content" name="zt">\n' +
+                '                            简介：\n' +
+                '                            <span>'+list[i]['intro']+'</span>\n' +
+                '                        </div>\n' +
+                '                        <ul class="Movie-btm" name="zt">\n' +
+                '                            <li>'+list[i]['play_times']+'</li>\n' +
+                '                            <li><input class="XQ" type="button" value="详情" onclick="XQ('+list[i]['video_id']+')"></li>\n' +
+                '                        </ul>\n' +
+                '                    </div>\n' +
+                '                </a>\n' +
+                '                <a class="Movie-name02" name="zt" href="/video/detail?video_id='+list[i]['video_id']+'">'+list[i]['video_name']+'</a>\n' +
+                '                <div class="Movie-type02" name="zt">\n' +
+                '                   <div>'+catstr1+'</div>\n'+
+                '                   <div>'+list[i]['flag']+'</div>\n'+
+                '                </div>\n' +
+                '            </li>\n';
+            '            <div class="alt" id="alt03'+list[i]['video_id']+'">\n' +
+            '                <div class="alt03-box" name="zt">\n' +
+            '                    <div class="alt03-box-t">\n' +
+            '                        <div class="alt03-box-R">\n' +
+            '                            <img class="i_background_errorimg" src="'+list[i]['cover']+'">\n' +
+            '                        </div>\n' +
+            '                        <div class="alt03-box-L">\n' +
+            '                            <a class="XQ-name" name="zt" href="/video/detail?video_id='+list[i]['video_id']+'">'+list[i]['video_name']+'</a>\n' +
+            '                            <div class="GNbox">\n' +
+            '                                <div class="GNbox-type" name="zt">\n' +catstr1+
+            '                                </div>\n' +
+            '                                <div class="GNbox-RD" name="zt">\n' +list[i]['play_times']+
+            '                                </div>\n' +
+            '                                <div class="GNbox-PF">\n' +
+            '                                    <span></span>\n' +
+            '                                </div>\n' +
+            '                            </div>\n' +
+            '                            <ul class="XQ-text">\n' +
+            '                                <li>年代:<span>'+list[i]['year']+'</span></li>\n' +
+            '                                <li>导演:'+directorstr+'</li>' +
+            '                                <li>主演:'+actorstr+'</li>\n'+
+            '                            </ul>\n' +
+            '                            <div class="XQ-btn" name="zt">\n' +
+            '                                <a href="/video/detail?video_id='+list[i]['video_id']+'">播放</a>\n' +
+            '                                <input type="button" value="收藏" onclick="addfavors('+list[i]['video_id']+')">\n' +
+            '                            </div>\n' +
+            '                        </div>\n' +
+            '                    </div>\n' +
+            '                    <p class="alt03-box-Z">\n' +
+            '                        简介：<span>'+list[i]['intro']+'</span>\n' +
+            '                    <input class="alt-GB" type="button" id="" value="X">\n' +
+            '                </div>\n' +
+            '            </div>';
+        }
+        return html;
+    }
+</script>

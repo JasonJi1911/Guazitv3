@@ -240,6 +240,8 @@ class VideoController extends BaseController
 
         //获取频道信息
         $channel_id = Yii::$app->request->get('channel_id', 0);
+        //获取更新时间
+        $week = Yii::$app->request->get('week', '');
 
         $city = "";
         $redis = new RedisStore();
@@ -259,6 +261,12 @@ class VideoController extends BaseController
         }
         //请求首页信息
         $data = Yii::$app->api->get('/video/index', ['channel_id' => $channel_id, 'city'=> $city]);
+
+        //更新列表
+        $videoupdate = Yii::$app->api->get('/video/video-update', ['channel_id' => $channel_id,'week' => $week]);
+        if($videoupdate){
+            $data['video_update'] = $videoupdate;
+        }
 
         //请求频道、搜索信息
         $channels = Yii::$app->api->get('/video/channels');
@@ -281,6 +289,20 @@ class VideoController extends BaseController
             'hotword'       => $hotword,
             'info'          => $info,
         ]);
+    }
+
+    /**
+     * 获取更新列表
+     */
+    public function actionVideoUpdate(){
+        //获取频道信息
+        $channel_id = Yii::$app->request->get('channel_id', 0);
+        //获取更新时间
+        $week = Yii::$app->request->get('week', '');
+
+        //更新列表
+        $res = Yii::$app->api->get('/video/video-update', ['channel_id' => $channel_id,'week' => $week]);
+        return TOOL::responseJson(0,'success',$res);
     }
 
     /**

@@ -17,6 +17,7 @@ use api\models\video\HotRecommend;
 use api\models\video\HotRecommendList;
 use api\models\video\Industry;
 use api\models\video\Trailer;
+use api\models\video\VideoUpdate;
 use api\models\video\UserWatchLog;
 use api\models\video\Video;
 use api\models\video\VideoActor;
@@ -61,18 +62,18 @@ class VideoDao extends BaseDao
      */
     public function banner($channelId, $fields = [], $city='')
     {
-        
+
         $redis = new RedisStore();
-        
+
         $key = RedisKey::videoBanner($channelId);
         if($channelId == 0){
             $key = RedisKey::videoBannerProduct(\Yii::$app->common->product);
         }
-        
+
         if ($city != '') {
             $key = $key.'_'.md5($city);
         }
-        
+
         if ($str = $redis->get($key)) {
             $data = json_decode($str, true);
         } else {
@@ -81,7 +82,7 @@ class VideoDao extends BaseDao
             $bannerDataProvider = new ActiveDataProvider([
                 'query' => Banner::find()->andWhere(['channel_id' => $channelId])->andWhere(['in','product',[\Yii::$app->common->product,Common::PRODUCT_UNKNOWN]]),
             ]);
-            
+
             if ($city != '')
             {
                 $bannerDataProvider = new ActiveDataProvider([
@@ -90,7 +91,7 @@ class VideoDao extends BaseDao
                         ->andWhere(["city_id" => $citylist]),
                 ]);
             }
-        
+
             $data = $bannerDataProvider->toArray();
             // todo 优化
             foreach ($data as $k => $banner) {
@@ -111,7 +112,7 @@ class VideoDao extends BaseDao
         }
 
         //$redis->del($key);
-       
+
         //非APP端 过滤掉APP页面跳转
         foreach ($data as $k => &$v) {
             if ($v['action'] == Banner::ACTION_SCHEME && \Yii::$app->common->product != Common::PRODUCT_APP) {
@@ -123,10 +124,10 @@ class VideoDao extends BaseDao
                 $v['content'] = '/video/detail?video_id='. $v['content'];
             }
         }
-      
+
         //重新索引数据
         $data = array_values($data);
-      
+
         // 过滤字段
         $data = $this->filter($data, $fields);
 
@@ -162,7 +163,7 @@ class VideoDao extends BaseDao
         } else {
             /** @var Video $videoObj */
             $videoObj = Video::findOne(['id' => $videoId]);
-            
+
             if (!$videoObj) {
                 return [];
             }
@@ -532,7 +533,7 @@ class VideoDao extends BaseDao
             'intro',
             'category',
         ], true, ['channel_id', 'actors_id', 'actors', 'director', 'artist', 'chapters']);
-        
+
         $data['list'] = array_values($list);
 
         // 写入缓存
@@ -1403,6 +1404,24 @@ class VideoDao extends BaseDao
             return [];
         }
         $data = Trailer::find()->andWhere(['trailer_title_id'=>$trailer_title_id])->asArray()->all();
+        return $data;
+    }
+
+    /*
+     * 查更新列表
+     */
+    public function findVideoUpdate($video_update_title_id,$week=''){
+        if(!$video_update_title_id){
+            return [];
+        }
+        $week_where = [];
+        if(!empty($week)){
+            $week_where = ['week' => $week];
+        }
+        $data = VideoUpdate::find()
+            ->andWhere(['video_update_title_id'=>$video_update_title_id])
+            ->andWhere($week_where)
+            ->asArray()->all();
         return $data;
     }
 }

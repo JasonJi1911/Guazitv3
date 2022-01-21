@@ -71,26 +71,58 @@ $this->registerJs($js);
             <?php if(!empty($channels)) : ?>
                 <?php foreach ($channels['list'] as $key => $channel): ?>
                     <div class="sort_content">
+                        <?php
+                        switch($channel['channel_id']){
+                            case 0:
+                                $icon_img = "../images/Index/shouye.png";
+                                $icon_img_c = "../images/Index/shouye_c.png";
+                                break;
+                            case 1:
+                                $icon_img = "../images/Index/dianying.png";
+                                $icon_img_c = "../images/Index/dianying_c.png";
+                                break;
+                            case 2:
+                                $icon_img = "../images/Index/zhuireju.png";
+                                $icon_img_c = "../images/Index/zhuireju_c.png";
+                                break;
+                            case 3:
+                                $icon_img = "../images/Index/zongyi.png";
+                                $icon_img_c = "../images/Index/zongyi_c.png";
+                                break;
+                            case 4:
+                                $icon_img = "../images/Index/dongmanxian.png";
+                                $icon_img_c = "../images/Index/dongmanxian_c.png";
+                                break;
+                            case 32:
+                                $icon_img = "../images/Index/jilupian_2.png";
+                                $icon_img_c = "../images/Index/jilupian_2c.png";
+                                break;
+                            default:
+                                $icon_img = "";
+                                $icon_img_c = "";
+
+                        }
+                        ?>
                         <?php if($channel['channel_id'] == 0) : ?>
-                            <div class="sort_img J_sort_img_c" style="display:none;"><img src="../images/Index/shouye_c.png"></div>
-                            <div class="sort_img J_sort_img"><img src="../images/Index/shouye.png"></div>
-                            <a href="<?= Url::to(['/video/index'])?>" >
+                            <div class="sort_img J_sort_img_c" style="display:none;"><img src="<?=$icon_img_c?>"></div>
+                            <div class="sort_img J_sort_img"><img src="<?=$icon_img?>"></div>
+                            <a href="<?= Url::to(['/video/index'])?>">
                                 <div class="sort-text">
                                     <span><?= $channel['channel_name']?></span>
                                 </div>
                             </a>
                         <?php else:?>
-                            <div class="sort_img J_sort_img_c" style="display:none;"><img src="<?= $channel['icon']?>"></div>
-                            <div class="sort_img J_sort_img"><img src="<?= $channel['icon_gray']?>"></div>
+                            <div class="sort_img J_sort_img_c" style="display:none;"><img src="<?=$icon_img_c?>"></div>
+                            <div class="sort_img J_sort_img"><img src="<?=$icon_img?>"></div>
                             <a href="<?= Url::to(['video/channel', 'channel_id' => $channel['channel_id']])?>">
-                                <div class="sort-text">
-                                    <span><?= $channel['channel_name']?></span>
-                                    <? if($channel['num'] != 0) : ?>
-                                        <span class="sortSpan"><?=$channel['num']?></span>
-                                    <?php endif; ?>
-                                </div>
+                            <div class="sort-text">
+                                <span><?= $channel['channel_name']?></span>
+                                <? if($channel['num'] != 0) : ?>
+                                    <span class="sortSpan"><?=$channel['num']?></span>
+                                <?php endif; ?>
+                            </div>
                             </a>
-                        <?php endif;?>
+                    <?php endif;?>
                     </div>
                 <?php endforeach ?>
             <?php endif;?>
