@@ -125,7 +125,7 @@ $this->registerJs($js);
 <?php if($data['video_update']['video_update']):?>
     <ul class="NewTrailer-box-title movie-update">
         <li class="Title-01">
-            <a href="javascript:;"><?=$data['video_update']['video_update_title']['title']?></a>
+            <a href="javascript:;" class="J_movie_update_week" data-value=""><?=$data['video_update']['video_update_title']['title']?></a>
             <div class="movie-update-time">
                 <span class="movie-update-week J_movie_update_week" data-value="1">周一</span><span>|</span>
                 <span class="movie-update-week J_movie_update_week" data-value="2">周二</span><span>|</span>
@@ -468,22 +468,19 @@ $this->registerJs($js);
         var arr = {};
         arr['channel_id'] = <?=$channel_id?>;
         arr['week'] = week;
-        console.log(arr);
-        if($.inArray(week,[1,2,3,4,5,6,7])){
-            is_click = false;
-            $.get('/video/video-update', arr, function (res) {
-                is_click = true;
-                if(res['data']['video_update'].length == 0){
-                    $('.J_update_empty').show();
-                    $('.J_video_update_content').hide();
-                } else {
-                    $('.J_update_empty').hide();
-                    $('.J_video_update_content').show();
-                    html = updateContent(res['data']['video_update']);
-                    $('.J_video_update_content').html(html);
-                }
-            })
-        }
+        is_click = false;
+        $.get('/video/video-update', arr, function (res) {
+            is_click = true;
+            if(res['data']['video_update'].length == 0){
+                $('.J_update_empty').show();
+                $('.J_video_update_content').hide();
+            } else {
+                $('.J_update_empty').hide();
+                $('.J_video_update_content').show();
+                html = updateContent(res['data']['video_update']);
+                $('.J_video_update_content').html(html);
+            }
+        })
     });
 
     function updateContent(list){
