@@ -86,10 +86,10 @@ class VideoController extends BaseController
      */
     public function actionIndex()
     {
-     
+
         $channelId = $this->getParamOrFail('channel_id');
         $uid = $this->getParam('uid', 0);
-        
+
         $city = $this->getParam('city');
 
         $data = [];
@@ -112,7 +112,7 @@ class VideoController extends BaseController
         $data = array_merge($data, $channelData);
         return $data;
     }
-    
+
 
     /**
      * 首页&频道首页banner图
@@ -121,9 +121,9 @@ class VideoController extends BaseController
      */
     public function actionBanner()
     {
-      
+
         $channelId = $this->getParamOrFail('channel_id');
-        
+
         $city = $this->getParam('city');
 
         $data = [];
@@ -131,13 +131,13 @@ class VideoController extends BaseController
         // 获取banner数据
         $bannerFields = ['title','action', 'content', 'image','stitle'];
         $videoDao= new VideoDao();
-   
+
         $banner = $videoDao->banner($channelId, $bannerFields, $city);
         $data['banner'] = $banner;
 
         return $data;
     }
-    
+
     /**
      * 广告
      * @return array
@@ -145,10 +145,10 @@ class VideoController extends BaseController
      */
     public function actionAdvert()
     {
-      
+
         $page = $this->getParam('page');
         $city = $this->getParam('city');
-        
+
         // 获取广告
         $advertLogic = new AdvertLogic();
         //        $advert = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX);
@@ -156,7 +156,7 @@ class VideoController extends BaseController
             ? AdvertPosition::POSITION_VIDEO_INDEX_PC : AdvertPosition::POSITION_VIDEO_INDEX;
         $flashPos = Yii::$app->common->product == Common::PRODUCT_PC
             ? AdvertPosition::POSITION_FLASH_PC : AdvertPosition::POSITION_FLASH_WAP;
-            
+
         $playbeforePos = Yii::$app->common->product == Common::PRODUCT_PC
             ? AdvertPosition::POSITION_PLAY_BEFORE_PC : AdvertPosition::POSITION_PLAY_BEFORE;
         $videoTopPos = Yii::$app->common->product == Common::PRODUCT_PC
@@ -165,11 +165,11 @@ class VideoController extends BaseController
             ? AdvertPosition::POSITION_VIDEO_BOTTOM_PC : AdvertPosition::POSITION_VIDEO_BOTTOM_PC;
 
         $data = [];
-        
+
         if ($page == "home") {
             $advert = $advertLogic->advertByPosition($adposition, $city);
             $data['advert'] = $advert;
-            
+
             $flash = $advertLogic->advertByPosition($flashPos, $city);
             $data['flash'] = $flash;
         } else if($page == "detail"){
@@ -310,7 +310,7 @@ class VideoController extends BaseController
                 $where[] = [$item['field'] => $item['value']];
             }
         }
-        
+
         // 获取缓存的影视
         $videoDao = new VideoDao();
         $fields = ['video_id', 'video_name', 'score', 'tag', 'flag', 'play_times', 'cover', 'horizontal_cover', 'intro'];
@@ -330,7 +330,7 @@ class VideoController extends BaseController
         $videoId   = $this->getParamOrFail('video_id');
         $chapterId = $this->getParam('chapter_id');
         $sourceId  = $this->getParam('source_id');
-        
+
         $city = $this->getParam('city');
         $uid = $this->getParam('uid');
         // 不传入id则设置为空
@@ -802,6 +802,17 @@ class VideoController extends BaseController
         $channelId = $this->getParam('channel_id', 0);
         $videologic = new VideoLogic();
         $data = $videologic->getTrailerInfo($channelId);
+        return $data;
+    }
+
+    /*
+     * 更新列表
+     */
+    public function actionVideoUpdate(){
+        $channelId = $this->getParam('channel_id', 0);
+        $week = $this->getParam('week', "");
+        $videologic = new VideoLogic();
+        $data = $videologic->getVideoUpdateInfo($channelId,$week);
         return $data;
     }
 }
