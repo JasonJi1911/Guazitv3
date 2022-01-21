@@ -568,11 +568,11 @@ class VideoDao extends BaseDao
         $this->checkFilterParams($channelId, $tag, $area);
 
         //year==''或0（全部），取最新年份
-        if($year=='' || $year==0){
-            $maxorder = VideoYear::find()->max('display_order');
-            $maxyear = VideoYear::findOne(['display_order'=>$maxorder])->toArray();
-            $year = $maxyear['year_id'];
-        }
+//        if($year=='' || $year==0){
+//            $maxorder = VideoYear::find()->max('display_order');
+//            $maxyear = VideoYear::findOne(['display_order'=>$maxorder])->toArray();
+//            $year = $maxyear['year_id'];
+//        }
 
         $key = RedisKey::videoFilterList([$channelId, $sort, $tag, $area, $year, $type, $page, $pageSize, $playLimit,$sorttype, $status]);
 
