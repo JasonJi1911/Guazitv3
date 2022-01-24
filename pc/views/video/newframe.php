@@ -410,6 +410,7 @@ switch ($pageTab){
 $name_zt = "";
 $class_zt_black = "";
 $footer_color = "font-color-FFFFFF";
+$footer_bg_color = "";
 //if($pageTab != "newdetail") {//顶部导航默认透明或白色
 //    $name_zt = "zt";
 //    $class_zt_black = " ";
@@ -420,7 +421,8 @@ $footer_color = "font-color-FFFFFF";
 if(empty($is_show_background) || $is_show_background != 1){
     $name_zt = "zt";
     $class_zt_black = " navTopbgColor";
-    $footer_color = "font-color-000000";
+    $footer_bg_color = " qy-footer-bg-color";
+    $footer_color = " font-color-000000";
 }
 ?>
 <div class="navTopBox <?= $headclass?> <?= $class_zt_black?>" name="<?= $name_zt?>">
@@ -651,7 +653,7 @@ if(empty($is_show_background) || $is_show_background != 1){
         break;
 } ?>
 <!--底部导航-->
-<footer class="qy-footer">
+<footer class="qy-footer <?= $footer_bg_color?>">
     <div class="wp">
         <a class="browser <?= $footer_color?>" href="<?= Url::to(['collaboration'])?>">商务合作</a>
         <span class="<?= $footer_color?>">|</span>

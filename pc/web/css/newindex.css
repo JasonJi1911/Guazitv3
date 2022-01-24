@@ -2923,6 +2923,9 @@ Movie-Ranking-img-num {
 	font-weight: 400;
 	/*color: #000000;*/
 }
+.qy-footer-bg-color {
+	background-color: #F0F0F0;
+}
 
 .wp{
 	width: 994px;
@@ -12168,6 +12171,7 @@ Movie-Ranking-img-num {
 .ss-no-update>h2{
 	color: #999999;
 	font-weight: normal;
+	font-size: 16px;
 }
 
 /*---------最新剧集  红点标识---------*/
