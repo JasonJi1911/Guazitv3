@@ -673,6 +673,9 @@ body {
 		left: 0;
 		width: 100%;
 	}
+	.navTopSearchRight{
+		margin-left: 0;
+	}
 	.hotSearch {
 		display: none;
 	}
@@ -700,6 +703,9 @@ body {
 	.searchMenuBox {
 		left: 0;
 		width: 100%;
+	}
+	.navTopSearchRight{
+		margin-left: 0;
 	}
 	.hotSearch {
 		display: none;
