@@ -684,7 +684,7 @@ if(empty($is_show_background) || $is_show_background != 1){
         <?php if(!empty($channels)) : ?>
             <?php foreach ($channels['list'] as $key => $channel): ?>
                 <?php if($channel['channel_id'] != 0) : ?>
-                    <li class="list-item"><a href="<?= Url::to(['video/channel', 'channel_id' => $channel['channel_id']])?>" class="list-link"><?= $channel['channel_name']?></a></li>
+                    <li class="list-item"><a href="#section<?= $channel['channel_id']?>" class="list-link"><?= $channel['channel_name']?></a></li>
                 <?php endif;?>
             <?php endforeach ?>
         <?php endif;?>
