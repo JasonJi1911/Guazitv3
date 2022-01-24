@@ -123,7 +123,7 @@ $this->registerJs($js);
 </div>
 <!--视频列表-->
 <?php if($data['video_update']['video_update']):?>
-    <ul class="NewTrailer-box-title movie-update">
+    <ul class="NewTrailer-box movie-update">
         <li class="Title-01">
             <a href="javascript:;" class="J_movie_update_week" data-value=""><?=$data['video_update']['video_update_title']['title']?></a>
             <div class="movie-update-time">
@@ -136,16 +136,13 @@ $this->registerJs($js);
                 <span class="movie-update-week J_movie_update_week" data-value="7">周日</span>
             </div>
         </li>
-    </ul>
-    <div class="ss-no-update J_update_empty" name="zt" style="display: none;">
-        <h2 class="per-zw-new" name="zt" >
-            暂无更新，快去看看精彩视频吧~
-        </h2>
-    </div>
-    <div class="swiper-container">
-        <ul class="swiper-wrapper J_video_update_content">
-            <?php foreach ($data['video_update']['video_update'] as $list): ?>
-            <li class="Movie-list swiper-slide">
+        <div class="ss-no-update J_update_empty" name="zt" style="display: none;">
+            <h2 class="per-zw-new" name="zt" >
+                暂无更新，快去看看精彩视频吧~
+            </h2>
+        </div>
+        <?php foreach ($data['video_update']['video_update'] as $list): ?>
+            <li class="Movie-list">
                 <a class="Movie" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
                     <img class="Movie-img i_background_errorimg" src="<?= $list['cover']?>" />
                     <div class="palyBtn">
@@ -272,11 +269,8 @@ $this->registerJs($js);
                         <input class="alt-GB" type="button" value="X" />
                     </div>
                 </div>
-            <?php endforeach;?>
-        </ul>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-    </div>
+        <?php endforeach;?>
+    </ul>
 </ul>
 <?php endif;?>
 <?php if (!empty($data['label'])) :?>
@@ -501,7 +495,7 @@ $this->registerJs($js);
             for (var k = 0; k < list[i]['director'].length; k++) {
                 directorstr += '<span>' + list[i]['director'][k]['actor_name'] + '</span>';
             }
-            html += '<li class="Movie-list swiper-slide">\n' +
+            html += '<div class="swiper-slide"><li class="Movie-list swiper-slide">\n' +
                 '                <a class="Movie" href="/video/detail?video_id='+list[i]['video_id']+'">\n' +
                 '                    <img class="Movie-img i_background_errorimg" src="'+list[i]['cover']+'">\n' +
                 '                    <div class="palyBtn">\n' +
@@ -563,7 +557,7 @@ $this->registerJs($js);
             '                        简介：<span>'+list[i]['intro']+'</span>\n' +
             '                    <input class="alt-GB" type="button" id="" value="X">\n' +
             '                </div>\n' +
-            '            </div>';
+            '            </div></div>';
         }
         return html;
     }

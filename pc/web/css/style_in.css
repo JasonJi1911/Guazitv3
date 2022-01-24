@@ -3709,7 +3709,9 @@ a.anchor{
     line-height: 16px;
     max-height: 16px;
     margin-top: 10px;
-    font-size: 0;
+    color:#FFF;
+    font-size:16px;
+    display:flex;
 }
 .qy-mod-nav-link .qy-mod-crumb .crumb-li {
     display: inline-block;
@@ -4064,7 +4066,7 @@ a.anchor{
     float: left;
     color: #FFFFFF;
     bottom: 0px;
-    font-size: 22px;
+    font-size: 18px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -4073,7 +4075,7 @@ a.anchor{
     float: left;
     margin-left: 7px;
     height: 42px;
-    padding-top: 9px;
+    padding-top: 5px;
     color: #FFFFFF;
     font-size: 14px;
 }
@@ -4126,7 +4128,7 @@ a.anchor{
 .qy-episode-num {
     margin-top: 17px;
     margin-bottom: 14px;
-    margin-left: 25px;
+    /*margin-left: 25px;*/
     *zoom: 1;
 }
 .qy-episode-num .select-item {
@@ -4986,7 +4988,7 @@ a.anchor{
     width: 100%;
     height: 72px;
     line-height: 72px;
-    font-size: 28px;
+    font-size: 18px;
     font-weight: 400;
     color: #FFFFFF;
     text-align: center;
@@ -5012,7 +5014,7 @@ a.anchor{
 }
 .advert_content_ad>ul>li{
     padding-left: 63px;
-    font-size: 22px;
+    font-size: 16px;
     font-weight: 400;
     height: 56px;
     line-height: 56px;
@@ -5055,7 +5057,7 @@ a.anchor{
     height: 36px;
     line-height: 36px;
     color: #FFFFFF;
-    font-size: 24px;
+    font-size: 22px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -5478,7 +5480,7 @@ a.anchor{
     display: inline-block;
     vertical-align: top;
     letter-spacing: 0;
-    font-size: 24px;
+    font-size: 20px;
     color: #18191e;
 }
 .qy-play-fav-list .rank-item-link {
@@ -6971,7 +6973,7 @@ a.anchor{
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-size: 16px;
+    font-size: 12px;
     font-weight: 400;
     color: #666668;
 }

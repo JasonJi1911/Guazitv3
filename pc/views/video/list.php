@@ -30,6 +30,7 @@ $(function(){
         
         //发送请求，获取数据     
         $.get('/video/refresh-cate', arrIndex, function(s) {
+            console.log(s);
             var data = s.data.list;
             var content = refreshVideo(data);//加载影片数据
             $('#searchVideos').html(content); // 更新内容
@@ -287,6 +288,12 @@ $this->registerJs($js);
     <div class="page" id="Page" name="zt">
         <!--内容全在MyPage.js内-->
     </div>
+</div>
+<!--暂无搜索数据-->
+<div class="ss_no" name="zt" style="display: none;">
+    <h2 class="per-zw-new" name="zt" >
+        暂无内容，快去看看精彩视频吧~
+    </h2>
 </div>
 <script src="/js/jquery.js"></script>
 <script src="/js/video/MyPage.js"></script>

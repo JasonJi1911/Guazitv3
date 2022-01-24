@@ -30,7 +30,7 @@ use yii\helpers\Url;
 </script>
 <input type="hidden" id="login_id" value="<?=$data['main_uid']?>" />
 <!--观看历史/收藏-->
-<div class="navTopBtn">
+<div class="navTopBtn J_history">
     <div class="navTopBtnImg">
         &nbsp;
     </div>
@@ -161,6 +161,10 @@ use yii\helpers\Url;
 </div>
 <script>
 $(function(){
+    //查看历史记录
+    $(".J_history").click(function(){
+        showloggedin();
+    });
     //未登录状态-登录
     $("#notloggedin").click(function(){
         showloggedin();

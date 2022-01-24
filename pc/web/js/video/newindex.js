@@ -957,16 +957,19 @@ $(document).ready(function() {
 			console.log(new_pass,sure_pass);
 			if(new_pass == ''){
 				$(".J_warning3").text("请输入新密码");
+				$(".J_inp_box_warning").show();
 				$(".J_warning3").show();
 				return false;
 			}
 			if(sure_pass == ''){
 				$(".J_warning3").text("请输入确认密码");
+				$(".J_inp_box_warning").show();
 				$(".J_warning3").show();
 				return false;
 			}
 			if(sure_pass != new_pass){
 				$(".J_warning3").text("两次输入密码不一致");
+				$(".J_inp_box_warning").show();
 				$(".J_warning3").show();
 				return false;
 			}
@@ -1312,16 +1315,19 @@ $(document).ready(function() {
 			console.log(new_pass,sure_pass);
 			if(new_pass == ''){
 				$(".J_edp_warning3").text("请输入新密码");
+				$(".J_edp_inp_box").show();
 				$(".J_edp_warning3").show();
 				return false;
 			}
 			if(sure_pass == ''){
 				$(".J_edp_warning3").text("请输入确认密码");
+				$(".J_edp_inp_box").show();
 				$(".J_edp_warning3").show();
 				return false;
 			}
 			if(sure_pass != new_pass){
 				$(".J_edp_warning3").text("两次输入密码不一致");
+				$(".J_edp_inp_box").show();
 				$(".J_edp_warning3").show();
 				return false;
 			}
@@ -1341,6 +1347,7 @@ $(document).ready(function() {
 					$("#pop-tip").show();
 				}else{
 					$(".J_edp_warning3").text("密码修改失败");
+					$(".J_edp_inp_box").show();
 					$(".J_edp_warning3").show();
 				}
 			});

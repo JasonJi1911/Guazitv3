@@ -99,7 +99,7 @@ select {
 /*-------全局样式-------*/
 body {
 	min-width: 1336px;
-	background-color: #FFFFFF;
+	/*background-color: #FFFFFF;*/
 }
 
 .clrWhite {
@@ -113,6 +113,9 @@ body {
 .clrGrey {
 	color: #999999;
 	overflow: hidden;
+}
+.swiper-slide{
+	max-width: 207.7px;
 }
 
 .clrGrey-btn {
@@ -244,6 +247,7 @@ body {
 	overflow: hidden;
 	cursor:pointer;
 	cursor:hand;
+	background-size: 154px 45px;
 }
 
 .navTopWZ {
@@ -266,7 +270,7 @@ body {
 	left: 400px;
 	width: 483px;
 	text-align: center;
-	line-height: 18px;
+	line-height: 16px;
 	display: flex;
 }
 
@@ -279,16 +283,22 @@ body {
 
 .navTopMenu-text {
 	padding: 40px 20px 40px 0;
-	font-size: 18px;
+	font-size: 16px;
 	font-weight: 400;
 	cursor: pointer;
 	color: #FFFFFF;
 }
 .navTopMenu-text-choice{
+	display: none;
+	width: 80px;
 	background-image: url(../images/hotPlay/xiangxia.png);
 	background-position: right center;
 	background-repeat: no-repeat;
 	background-size: 14px;
+	font-size: 18px;
+	font-weight: 400;
+	cursor: pointer;
+	color: #FFFFFF;
 }
 
 .navTopMenuBox>.navTopMenu>.navTopMenu-text>a {
@@ -456,7 +466,7 @@ body {
 
 .navTopSearchBox-r {
 	position: absolute;
-	right: 373px;
+	left: 980px;
 	text-align: center;
 }
 
@@ -476,7 +486,7 @@ body {
 	padding-right: 10px;
 	width: 298px;
 	height: 100%;
-	font-size: 18px;
+	font-size: 16px;
 	color: #FFFFFF;
 }
 
@@ -504,7 +514,7 @@ body {
 
 .hotSearch {
 	float: left;
-	font-size:18px;
+	font-size:16px;
 	width:54px;
 	color:#FFF;
 	margin-top:19px;
@@ -532,6 +542,15 @@ body {
 	cursor: pointer;
 }
 
+.navTopSearchB-response {
+	display: none;
+	width: 21px;
+	height: 21px;
+	background-image: url(../images/Index/sousuo.png);
+	margin-top:18px;
+	margin-left:11px;
+}
+
 .navTopSearchB {
 	width: 21px;
 	height: 21px;
@@ -543,7 +562,7 @@ body {
 .navTopSearchBText{
 	width:36px;
 	line-height: 18px;
-	font-size:18px;
+	font-size:16px;
 	font-weight:500;
 	color:#FFF;
 	margin-left:8px;
@@ -625,10 +644,51 @@ body {
 /*.navTopSearchText:focus+.searchMenuBox {
 	display: block;
 }*/
-
+@media screen and (max-width:1900px) {
+	.navTopMenuBox {
+		left: 350px;
+	}
+	.navTopSearchBox-r {
+		left: 740px;
+	}
+	.navTopMenu-text {
+		display: none;
+	}
+	.navTopMenu-text-choice {
+		display: block;
+	}
+}
+@media screen and (max-width:1580px) {
+	.navTopSearchBox-r {
+		left: 540px;
+		right: 355px;
+	}
+	.navTopSearch {
+		width: 300px;
+	}
+	.navTopSearchText {
+		width: 190px;
+	}
+	.searchMenuBox {
+		left: 0;
+		width: 100%;
+	}
+	.hotSearch {
+		display: none;
+	}
+	.navTopSearchB-response {
+		display: block;
+	}
+	.verticalLine {
+		display: none;
+	}
+	.navTopSearchBoxB {
+		display: none;
+	}
+}
 @media screen and (max-width:1230px) {
 	.navTopSearchBox {
-		padding-left: 280px;
+		padding-left: 355px;
 		padding-right: 355px;
 	}
 	.navTopSearch {
@@ -640,6 +700,31 @@ body {
 	.searchMenuBox {
 		left: 0;
 		width: 100%;
+	}
+	.hotSearch {
+		display: none;
+	}
+	.navTopSearchB-response {
+		display: block;
+	}
+	.verticalLine {
+		display: none;
+	}
+	.navTopSearchBoxB {
+		display: none;
+	}
+	/*类目只显示全部	*/
+	.navTopMenuBox {
+		left: 330px;
+	}
+	.navTopSearchBox-r {
+		left: 420px;
+	}
+	.navTopMenu-text {
+		display: none;
+	}
+	.navTopMenu-text-choice {
+		display: block;
 	}
 }
 
@@ -1258,14 +1343,14 @@ body {
 }
 
 .navTopLogon-A {
-	font-size: 18px;
+	font-size: 16px;
 	font-weight: 500;
 	color: #FF556E;
 	cursor: pointer;
 }
 
 .navTopLogon-btn {
-	font-size: 18px;
+	font-size: 16px;
 	font-weight: 500;
 	color: #B9B9B9;
 	cursor: pointer;
@@ -1356,7 +1441,7 @@ body {
 /*设置列表ul下的li*/
 .iconList ul li {
 	height: 9.5%;
-	font-size: 18px;
+	font-size: 14px;
 	text-align: right;
 	color: #A7A7A7;
 	cursor: pointer;
@@ -1377,7 +1462,7 @@ body {
 /*当图片变化时，图标也跟着变化*/
 .iconList ul li.current a {
 	font-weight: bold;
-	font-size: 32px;
+	font-size: 22px;
 	color: #FFFFFF;
 }
 
@@ -1533,12 +1618,12 @@ body {
 }
 
 .sort_content>.sort_img>img {
-	width: 35px;
-	height: 35px;
+	width: 30px;
+	height: 30px;
 }
 
 .sort-text {
-	font-size: 22px;
+	font-size: 20px;
 	color:#FFFFFF;
 	margin-left:7px;
 }
@@ -1591,14 +1676,14 @@ body {
 	grid-gap: 80px;
 	/*padding: 15px 40px;*/
 	background-color: #F9F9F9;
-	font-size: 18px;
+	font-size: 14px;
 	box-sizing: border-box;
 	overflow: hidden;
 	padding: 29px 165px 35px 165px;
 }
 
 .sort-tle {
-	font-size: 28px;
+	font-size: 16px;
 	font-weight: 400;
 	color: #939393;
 	padding-bottom: 15px;
@@ -1668,7 +1753,7 @@ body {
 	grid-column-start: 1;
 	grid-column-end: 7;
 	padding: 20px 0px;
-	font-size: 28px;
+	font-size: 20px;
 }
 
 .RD-box .Title-big {
@@ -1676,7 +1761,7 @@ body {
 	color:#FFFFFF;
 }
 
-.NewTrailer-box-title .Title-big {
+.NewTrailer-box .Title-big {
 	margin-top:5px;
 	color:#FFFFFF;
 }
@@ -1697,7 +1782,7 @@ body {
 	grid-column-start: 1;
 	grid-column-end: 8;
 	padding: 20px 0px;
-	font-size: 28px;
+	font-size: 20px;
 	cursor: pointer;
 }
 
@@ -1728,7 +1813,7 @@ body {
 	width: 100%;
 	height: 38px;
 	text-align: center;
-	font-size: 18px;
+	font-size: 16px;
 }
 
 .Coming-online-line {
@@ -1935,6 +2020,7 @@ body {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 	grid-gap: 17px;
+	margin: 0px 165px;
 }
 
 /*--------电影和电影排行榜-----------*/
@@ -1949,7 +2035,7 @@ body {
 	grid-column-start: 1;
 	grid-column-end: 7;
 	padding: 20px 0px;
-	font-size: 28px;
+	font-size: 20px;
 	display: flex;
 }
 
@@ -2005,7 +2091,7 @@ body {
 .Title-04 {
 	padding-top: 29px;
 	padding-bottom: 29px;
-	font-size: 25px;
+	font-size: 20px;
 	font-weight: 500;
 	color: #22232A;
 }
@@ -2026,8 +2112,8 @@ body {
 	grid-column-start: 7;
 	grid-column-end: 9;
 	grid-row: 2 / sapn 3;
-	border: solid 1px #F4F4F4;
-	background-color: #F9F9F9;
+	/*border: solid 1px #F4F4F4;*/
+	/*background-color: #F9F9F9;*/
 	box-sizing: border-box;
 }
 
@@ -2078,10 +2164,13 @@ Movie-Ranking-img-num {
 	/*flex-direction: row;*/
 	width:130px;
 	margin-top:7px;
-	font-size:16px;
+	font-size:12px;
 	line-height: 16px;
 	color:#666668;
 	/*justify-content:space-between;*/
+}
+.Movie-Ranking-right-bottom>span {
+	margin-right: 3px;
 }
 
 .Movie-Ranking-bottom-border {
@@ -2369,7 +2458,7 @@ Movie-Ranking-img-num {
 .Movie-type02 {
 	display: grid;
 	grid-template-columns: auto auto;
-	font-size: 16px;
+	font-size: 12px;
 	color: #666668;
 	padding-top: 5px;
 	padding-left: 5px;
@@ -2421,6 +2510,9 @@ Movie-Ranking-img-num {
 	.Movie-box>.Movie-list:nth-last-of-type(2) {
 		display: none;
 	}
+	/*.Movie-box>.Movie-Ranking {*/
+	/*	display: block;*/
+	/*}*/
 }
 
 @media screen and (max-width:1680px) {
@@ -2457,14 +2549,6 @@ Movie-Ranking-img-num {
 	background-color: pink;
 }
 
-/*--------体育-----------*/
-.Sports-box {
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-	grid-gap: 17px;
-	margin: 0px 165px;
-}
-
 /*更新列表--开始*/
 .movie-update{
 	margin-top: 22px;
@@ -2483,13 +2567,20 @@ Movie-Ranking-img-num {
 }
 /*更新列表--结束*/
 
+/*--------体育-----------*/
+.Sports-box {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+	grid-gap: 17px;
+	margin: 0px 165px;
+}
 @media screen and (max-width:1900px) {
 	.Sports-box {
-		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
 	}
 	.Sports-box .Title-01 {
 		grid-column-start: 1;
-		grid-column-end: 8;
+		grid-column-end: 7;
 	}
 	.Sports-box>.Movie-list:last-of-type {
 		display: none;
@@ -2505,9 +2596,6 @@ Movie-Ranking-img-num {
 		grid-column-end: 7;
 	}
 	.Sports-box>.Movie-list:last-of-type {
-		display: none;
-	}
-	.Sports-box>.Movie-list:nth-last-of-type(2) {
 		display: none;
 	}
 }
@@ -2589,7 +2677,7 @@ Movie-Ranking-img-num {
 		grid-column-start: 1;
 		grid-column-end: 8;
 	}
-	.Livemaches-box>.Movie-list:last-of-type {
+	.Livemaches-box>.Livemaches-Movie-list:last-of-type {
 		display: none;
 	}
 }
@@ -2602,10 +2690,7 @@ Movie-Ranking-img-num {
 		grid-column-start: 1;
 		grid-column-end: 7;
 	}
-	.Livemaches-box>.Movie-list:last-of-type {
-		display: none;
-	}
-	.Livemaches-box>.Movie-list:nth-last-of-type(2) {
+	.Livemaches-box>.Livemaches-Movie-list:last-of-type {
 		display: none;
 	}
 }
@@ -2820,7 +2905,7 @@ Movie-Ranking-img-num {
 	padding-top: 73px;
 	padding-bottom: 72px;
 	text-align: center;
-	font-size: 18px;
+	font-size: 16px;
 	color: hsla(0,0%,100%,.3);
 	line-height: 43px;
 	font-weight: 400;
@@ -2828,7 +2913,7 @@ Movie-Ranking-img-num {
 }
 
 .qy-footer .browser {
-	font-size: 20px;
+	font-size: 16px;
 	font-weight: 400;
 	/*color: #000000;*/
 }
@@ -3902,7 +3987,7 @@ Movie-Ranking-img-num {
 	/*padding: 0 15px;*/
 	height: 33px;
 	line-height: 33px;
-	font-size: 18px;
+	font-size: 14px;
 	overflow: hidden;
 	font-weight: 500;
 	color: #9C9C9C;
@@ -3913,7 +3998,7 @@ Movie-Ranking-img-num {
 	padding: 0 15px;
 	height: 33px;
 	line-height: 33px;
-	font-size: 18px;
+	font-size: 14px;
 	overflow: hidden;
 	font-weight: 500;
 }
@@ -3967,6 +4052,7 @@ Movie-Ranking-img-num {
 
 .AD-01>a>img {
 	width: 100%;
+	height: 100%;
 	padding: 0;
 	border-radius: 10px;
 }
@@ -4060,7 +4146,7 @@ Movie-Ranking-img-num {
 .scJgAct {
 	/*background-color: #FF5722;*/
 	/*color: #FFFFFF;*/
-	font-size: 18px;
+	font-size: 16px;
 	font-weight: 500;
 	color: #000000;
 }
@@ -4083,7 +4169,7 @@ Movie-Ranking-img-num {
 	margin-left: 14px;
 	height: 62px;
 	line-height: 62px;
-	font-size: 18px;
+	font-size: 16px;
 	font-weight: 500;
 	color: #000000;
 }
@@ -4124,7 +4210,7 @@ Movie-Ranking-img-num {
 	min-width: 32px;
 	height: 30px;
 	line-height: 30px;
-	font-size: 18px;
+	font-size: 14px;
 	list-style: none;
 	margin: 0px 5px;
 }
@@ -4186,7 +4272,7 @@ Movie-Ranking-img-num {
 
 .SScondition-btn>input {
 	height: 100%;
-	font-size: 18px;
+	font-size: 16px;
 	font-weight: 500;
 	color: #000000;
 	padding: 0px 50px;
@@ -4246,7 +4332,7 @@ Movie-Ranking-img-num {
 /*}*/
 
 .SSjgName>a>span {
-	font-size: 22px;
+	font-size: 18px;
 	font-weight: 500;
 	color: #FF556E;
 }
@@ -4261,7 +4347,7 @@ Movie-Ranking-img-num {
 /*}*/
 
 .SSjg>p {
-	font-size: 15px;
+	font-size: 14px;
 	color: #78797C;
 	margin-top: 21px;
 }
@@ -5058,7 +5144,7 @@ Movie-Ranking-img-num {
 	display: inline-block;
 	height: 20px;
 	line-height: 20px;
-	font-size: 15px;
+	font-size: 12px;
 	color: #78797C;
 	padding-right: 5px;
 	/*padding: 0px 10px;*/
@@ -5245,7 +5331,7 @@ Movie-Ranking-img-num {
 
 .GNbox-PL {
 	padding: 0px 0px 16px 0px;
-	font-size: 25px;
+	font-size: 20px;
 	font-weight: 500;
 	color: #22232A;
 	/*padding-left: 35px;*/
@@ -5413,7 +5499,7 @@ Movie-Ranking-img-num {
 	display: block;
 	margin-top: 22px;
 	margin-bottom: 18px;
-	font-size: 18px;
+	font-size: 16px;
 	font-weight: 500;
 	color: #22232A;
 }
@@ -5431,7 +5517,7 @@ Movie-Ranking-img-num {
 	float: left;
 	height: 16px;
 	line-height: 16px;
-	font-size: 16px;
+	font-size: 12px;
 	color: #666668;
 	font-weight: 400;
 	/*padding: 0px 10px;*/
@@ -5530,7 +5616,7 @@ Movie-Ranking-img-num {
 
 .RANbox-title-name {
 	padding-top: 10px;
-	font-size: 38px;
+	font-size: 34px;
 	font-weight: 400;
 	color: #FFFFFF;
 	text-align: center;
@@ -5548,6 +5634,7 @@ Movie-Ranking-img-num {
 	margin-top: 31px;
 	width: 100%;
 	height: 98px;
+	line-height: 98px;
 	text-align: center;
 	/*background-color: rgba(0, 0, 0, 0.2);*/
 	background-color: #F9F9F9;
@@ -5557,8 +5644,8 @@ Movie-Ranking-img-num {
 .RANbox-tab>li {
 	display: inline-block;
 	padding: 0 20px;
-	margin: 27px 20px auto 20px;
-	font-size: 22px;
+	margin: 0 20px;
+	font-size: 16px;
 	color: #5A5A5A;
 	font-weight: 500;
 	/*color: rgba(255, 255, 255, 0.7);*/
@@ -5572,7 +5659,7 @@ Movie-Ranking-img-num {
 .RANbox-tab>li.act {
 	/*background-color: #FF5722;*/
 	/*color: #FFFFFF;*/
-	font-size: 24px;
+	font-size: 16px;
 	color: #FF556E;
 	text-decoration:underline;
 	text-underline-offset:8px;
@@ -5619,7 +5706,7 @@ Movie-Ranking-img-num {
 .RANbox-help-title-name>span {
 	display: block;
 	float: left;
-	font-size: 22px;
+	font-size: 20px;
 	font-weight: 500;
 	color: #FFFFFF;
 	padding-top: 75px;
@@ -5632,7 +5719,7 @@ Movie-Ranking-img-num {
 	height: 50px;
 	left: 50%;
 	margin-left: -25px;
-	margin-bottom: 16px;
+	/*margin-bottom: 16px;*/
 }
 
 .RANbox-help {
@@ -5650,19 +5737,23 @@ Movie-Ranking-img-num {
 
 .RANbox-help-tab>li {
 	display: inline-block;
-	padding: 27px 20px 30px 20px;
+	padding: 47px 20px 30px 20px;
 	margin-right: 65px;
-	font-size: 24px;
+	font-size: 16px;
 	color: #373737;
 	font-weight: 400;
 	cursor: pointer;
 }
 
 .RANbox-help-tab>li.act {
-	font-size: 24px;
+	font-size: 16px;
 	color: #FF556E;
 	text-decoration:underline;
-	text-underline-offset:35px;
+	text-underline-offset:42px;
+}
+.RANbox-help-tab img{
+	width: 40px;
+	height: 40px;
 }
 
 .RANbox-help {
@@ -5684,7 +5775,7 @@ Movie-Ranking-img-num {
 
 .RAN-name {
 	/*float: left;*/
-	font-size: 27px;
+	font-size: 22px;
 	font-weight: 500;
 	color: #2B2B2B;
 	text-align: center;
@@ -5984,7 +6075,7 @@ Movie-Ranking-img-num {
 
 .RANbox-list01-b {
 	line-height: 20px;
-	font-size: 15px;
+	font-size: 14px;
 	color: #78797C;
 	margin-top: 9px;
 }
@@ -6290,7 +6381,7 @@ Movie-Ranking-img-num {
 	padding-left: 14px;
 	/*width: 230px;*/
 	color: #373737;
-	font-size: 24px;
+	font-size: 16px;
 	cursor: pointer;
 	display: flex;
 	float: left;
@@ -6339,6 +6430,7 @@ Movie-Ranking-img-num {
 	background-position: right center;
 	background-repeat: no-repeat;
 	border-bottom: 3px solid #F6F6F6;
+	background-size: 10px;
 }
 
 .hlp-text.act {
@@ -6346,13 +6438,13 @@ Movie-Ranking-img-num {
 }
 
 .hlp-text01 {
-	font-size: 24px;
+	font-size: 16px;
 	cursor: pointer;
 }
 
 .hlp-text02 {
 	display: none;
-	font-size: 20px;
+	font-size: 14px;
 	/*line-height: 24px;*/
 	color: #9A9A9B;
 	/*margin-bottom: 35px;*/
@@ -6506,6 +6598,7 @@ Movie-Ranking-img-num {
 .hlp-mm {
 	margin: 0 auto;
 	padding-top: 137px;
+	padding-bottom: 137px;
 	box-sizing: border-box;
 	overflow: hidden;
 	width: 600px;
@@ -8588,7 +8681,7 @@ Movie-Ranking-img-num {
 	position: absolute;
 	top: 36px;
 	left: 0;
-	font-size: 24px;
+	font-size: 14px;
 	font-weight: 400;
 	color: #373737;
 }
@@ -8622,7 +8715,7 @@ Movie-Ranking-img-num {
 .per-bof-box-01 {
 	position: absolute;
 	top: 43%;
-	font-size: 24px;
+	font-size: 14px;
 	font-weight: 400;
 	color: #BEBEBE;
 	left: -210px;
@@ -9206,7 +9299,7 @@ Movie-Ranking-img-num {
 	margin-left: 17px;
 }
 .per-title-name>p{
-	font-size: 22px;
+	font-size: 20px;
 	font-weight: 500;
 	color: #FFFFFF;
 	margin-left: 98px;
@@ -9225,21 +9318,25 @@ Movie-Ranking-img-num {
 	padding-left: 241px;
 	padding-right: 229px;
 }
+.box-per-tab img{
+	width: 40px;
+	height: 40px;
+}
 .box-per-tab>li {
 	display: inline-block;
 	padding: 0 20px;
-	margin: 27px 20px auto 20px;
-	font-size: 22px;
+	margin: 47px 20px auto 20px;
+	font-size: 16px;
 	color: #5A5A5A;
 	font-weight: 500;
 	cursor: pointer;
 }
 
 .box-per-tab>li.act {
-	font-size: 24px;
+	font-size: 16px;
 	color: #FF556E;
 	text-decoration:underline;
-	text-underline-offset:35px;
+	text-underline-offset:42px;
 }
 
 .box-per-tab>li.act>a {
@@ -9252,7 +9349,7 @@ Movie-Ranking-img-num {
 	height: 50px;
 	left: 50%;
 	margin-left: -25px;
-	margin-bottom: 16px;
+	/*margin-bottom: 16px;*/
 }
 .per-tab-box-new{
 	display: none;
@@ -9275,12 +9372,12 @@ Movie-Ranking-img-num {
 	overflow: hidden;
 	z-index: 8;
 	padding: 18px 70px;
-	height: 54px;
-	line-height: 54px;
+	height: 40px;
+	line-height: 40px;
 	text-align: center;
 	background: #FF556E;
 	border-radius: 5px;
-	font-size: 18px;
+	font-size: 16px;
 	font-weight: 500;
 	color: #FFFFFF;
 }
@@ -9297,7 +9394,7 @@ Movie-Ranking-img-num {
 .per-sp-box-new>.per-tab02-new>li{
 	float: left;
 	margin-right: 72px;
-	font-size: 24px;
+	font-size: 16px;
 	font-weight: 400;
 	color: #373737;
 	cursor:pointer;
@@ -9306,7 +9403,7 @@ Movie-Ranking-img-num {
 	color: #FF556E;
 }
 .per-sc-new{
-	font-size: 24px;
+	font-size: 16px;
 	font-weight: 400;
 	color: #373737;
 	justify-self: right;
@@ -9319,8 +9416,9 @@ Movie-Ranking-img-num {
 	display: block;
 }
 .per-sc-pl>li{
-	padding-left: 39px;
+	padding-left: 20px;
 	background: url('../images/Index/shanchu.png') no-repeat left center;
+	background-size: 16px;
 }
 .per-sc-btn{
 	display: none;
@@ -9340,7 +9438,7 @@ Movie-Ranking-img-num {
 	border: 2px solid #E3E3E3;
 	border-radius: 23px;
 	padding: 0 27px;
-	font-size: 24px;
+	font-size: 16px;
 	font-weight: 400;
 	color: #2A2A2A;
 }
@@ -9356,7 +9454,7 @@ Movie-Ranking-img-num {
 	float: left;
 	height: 60px;
 	line-height: 60px;
-	font-size: 24px;
+	font-size: 16px;
 	font-weight: 400;
 }
 .per-ss-new>input:first-of-type {
@@ -9366,7 +9464,7 @@ Movie-Ranking-img-num {
 	background-image: url(../images/Index/sousuo_c.png);
 	background-position: right center;
 	background-repeat: no-repeat;
-	background-size: 21px;
+	background-size: 16px;
 }
 .per-ss-new>input:last-of-type {
 	padding: 0 10px;
@@ -9396,7 +9494,7 @@ Movie-Ranking-img-num {
 	background-size: 170px;
 }
 .no-video>h2{
-	font-size: 20px;
+	font-size: 16px;
 	font-weight: 400;
 	color: #9A9A9B;
 }
@@ -9454,7 +9552,7 @@ Movie-Ranking-img-num {
 .RAN-z-box01-name-new {
 	display: block;
 	margin-bottom: 12px;
-	font-size: 22px;
+	font-size: 16px;
 	font-weight: 500;
 	color: #000000;
 }
@@ -9466,13 +9564,13 @@ Movie-Ranking-img-num {
 	display: inline-block;
 	height: 20px;
 	line-height: 20px;
-	font-size: 18px;
+	font-size: 14px;
 	color: #78797C;
 	padding-right: 15px;
 }
 .RANbox-list01-b-new {
 	line-height: 20px;
-	font-size: 18px;
+	font-size: 14px;
 	font-weight: 500;
 	color: #78797C;
 }
@@ -9481,7 +9579,7 @@ Movie-Ranking-img-num {
 .per-sp-box-new>.per-tab02-new-02>li{
 	float: left;
 	margin-right: 34px;
-	font-size: 24px;
+	font-size: 16px;
 	font-weight: 400;
 	color: #373737;
 }
@@ -9529,7 +9627,7 @@ Movie-Ranking-img-num {
 	width: 100%;
 	height: 136px;
 	line-height: 136px;
-	font-size: 22px;
+	font-size: 16px;
 	font-weight: 500;
 	color: #373737;
 	border-bottom: 2px solid #F5F5F6;
@@ -9562,7 +9660,7 @@ Movie-Ranking-img-num {
 }
 .per-safe-title{
 	margin-top: 25px;
-	font-size: 20px;
+	font-size: 18px;
 	font-weight: 400;
 	color: #373737;
 	background: url('../images/Index/anquan-2.png') no-repeat left center;
@@ -9589,7 +9687,7 @@ Movie-Ranking-img-num {
 	border: 1px solid #DDDDDD;
 	border-radius: 5px;
 	padding-left: 10px;
-	font-size: 18px;
+	font-size: 16px;
 	font-weight: 400;
 }
 .per-bind-email>.yzm-btn{
@@ -9600,7 +9698,7 @@ Movie-Ranking-img-num {
 	height: 50px;
 	background: #FF556E;
 	border-radius: 5px;
-	font-size: 18px;
+	font-size: 16px;
 	font-weight: 400;
 	color: #FFFFFF;
 }
@@ -11292,7 +11390,7 @@ Movie-Ranking-img-num {
 }
 
 .SSjg-category {
-	font-size: 18px;
+	font-size: 14px;
 	font-weight: 400;
 	color: #78797C;
 }
@@ -11703,7 +11801,7 @@ Movie-Ranking-img-num {
 	background-color: #FFFFFF;
 	min-width: 900px;
 	white-space: nowrap;
-	font-size: 20px;
+	font-size: 18px;
 	font-weight: 400;
 	color: #373737;
 }
@@ -12121,7 +12219,7 @@ Movie-Ranking-img-num {
 .hlp-forget-pass-title{
 	margin-top: 41px;
 	margin-left: 261px;
-	font-size: 20px;
+	font-size: 18px;
 	font-weight: 400;
 	color: #373737;
 	padding-left: 20px;
@@ -12222,7 +12320,7 @@ Movie-Ranking-img-num {
 .hlp-forget-pass-sub .inp-title{
 	width: 80px;
 	margin-right: 17px;
-	font-size: 20px;
+	font-size: 16px;
 	font-weight: 500;
 	color: #373737;
     text-align: right;
@@ -12253,24 +12351,24 @@ Movie-Ranking-img-num {
 .bttn-box-warning{
 	display: none;
 	margin: 24px auto 0px 60px;
-	font-size: 18px;
+	font-size: 16px;
 	color: #FF556E;
 }
 .bttn-box-warning1{
 	display: none;
 	margin: 24px auto 0px 130px;
-	font-size: 18px;
+	font-size: 16px;
 	color: #FF556E;
 }
 .bttn-box-warning2{
 	display: none;
 	margin: 24px 0;
-	font-size: 18px;
+	font-size: 16px;
 	color: #FF556E;
 }
 .bttn-box-warning3{
 	display: none;
-	font-size: 18px;
+	font-size: 16px;
 	color: #FF556E;
 }
 .hlp-forget-pass-sub .bttn-box{
@@ -12287,7 +12385,7 @@ Movie-Ranking-img-num {
 	margin-left: 80px !important;
 }
 .hlp-forget-pass-sub .bttn-box>input{
-	font-size: 18px;
+	font-size: 16px;
 	font-weight: 500;
 	color: #FFFFFF;
 }
@@ -12298,7 +12396,7 @@ Movie-Ranking-img-num {
 	background: #FF556E;
 	border-radius: 5px;
 	text-align: center;
-	font-size: 18px;
+	font-size: 16px;
 	font-weight: 500;
 	color: #FFFFFF;
 }
@@ -12333,7 +12431,7 @@ Movie-Ranking-img-num {
 	left: 30px;
 	height: 50px;
 	line-height: 50px;
-	font-size: 18px;
+	font-size: 16px;
 	font-weight: 400;
 	color: #373737;
 	text-align: left;
@@ -12384,7 +12482,7 @@ Movie-Ranking-img-num {
 	height: 36px;
 	line-height: 36px;
 	/*text-align: center;*/
-	font-size: 18px;
+	font-size: 16px;
 	padding-left: 17px;
 	cursor: pointer;
 }
@@ -12414,6 +12512,7 @@ Movie-Ranking-img-num {
 	color: #FEFEFF;
 	text-align: center;
 	margin: 0 auto;
+	cursor: pointer;
 }
 .help-tel-check-code-box{
 	display: none;
@@ -12426,7 +12525,7 @@ Movie-Ranking-img-num {
 	margin: 0 auto;
 }
 .help-tel-check-item>p{
-	font-size: 18px;
+	font-size: 16px;
 	font-weight: 400;
 	color: #373737;
 }
@@ -12440,7 +12539,7 @@ Movie-Ranking-img-num {
 	position: relative;
 }
 .help-tel-check-code-box .yzm{
-	font-size: 18px;
+	font-size: 16px;
 	padding-left: 15px;
 	padding-right: 15px;
 }
@@ -12451,7 +12550,7 @@ Movie-Ranking-img-num {
 	width: 112px;
 	height: 100%;
 	border-radius: 5px;
-	font-size: 18px;
+	font-size: 16px;
 	font-weight: 400;
 	color: #FFFFFF;
 }
@@ -13231,6 +13330,7 @@ body.ZT-black,
 .RD-box.ZT-black>.Title-00>a:hover,
 .RD-box.ZT-black>.Title-01>a:hover,
 .NewTrailer-box-title>.Title-01>a:hover,
+.NewTrailer-box>.Title-01>a:hover,
 .Livemaches-box.ZT-black>.Title-01>a:hover,
 .Movie-box.ZT-black>.Title-02>a:hover,
 .Movie-box.ZT-black>.Title-03>a:hover,

@@ -989,59 +989,6 @@ else
     <div class="qy-play-con">
         <div class="play-con-mn">
             <div class="play-con-mnc">
-                <div class="qy-mod-wrap qy-aura3">
-                    <div class="qy-play-role-tab j_people_wrap">
-                        <div class="slider slider-nav role-tab">
-                            <?php foreach ($data['info']['actors'] as $key => $act) : ?>
-                                <div class="role-item j_people_item j_slide_item">
-                                    <div class="role-wrap">
-                                        <div class="role-img-wrap">
-                                            <img src="<?= $act['avatar'] ?>"
-                                                 alt="<?= $act['actor_name'] ?>" class="role-img">
-                                        </div>
-                                        <div class="role-con ranking-name">
-                                            <h3 class="actor-name">
-                                                <a href="javasctipt:return false;"
-                                                   title="<?= $act['actor_name'] ?>"
-                                                   class="role-name-link"><?= $act['actor_name'] ?></a>
-                                                <!--                                                    <a href="javasctipt:return false;" class="ranking-num">NO.537</a>-->
-                                            </h3>
-                                            <!--                                                <p class="role-name">饰 渤王</p>-->
-                                        </div>
-                                        <i class="line"></i>
-                                    </div>
-                                </div>
-                            <?php endforeach;?>
-                        </div>
-                        <div class="slider slider-for">
-                            <?php foreach ($data['info']['actorvideos'] as $key => $actvideos) : ?>
-                                <div class="swiper-container">
-                                    <ul class="swiper-wrapper" name="zt">
-                                        <!--电影列表-->
-                                        <?php foreach ($actvideos as $i => $vi) : ?>
-                                            <li class="Movie-list swiper-slide">
-                                                <a class="Movie" href="<?= Url::to(['detail', 'video_id' => $vi['video_id']])?>">
-                                                    <img class="Movie-img i_background_errorimg" src="<?= $vi['cover']?>" />
-                                                </a>
-                                                <a class="Movie-name02" href="<?= Url::to(['detail', 'video_id' => $vi['video_id']])?>">
-                                                    <?= $vi['video_name']?>
-                                                </a>
-                                                <div class="Movie-type02" name="zt">
-                                                    <div>
-                                                        <?= $vi['intro']?>
-                                                        <!-- 更新01 -->
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        <?php endforeach ?>
-                                    </ul>
-                                    <div class="swiper-button-next"></div>
-                                    <div class="swiper-button-prev"></div>
-                                </div>
-                            <?php endforeach;?>
-                        </div>
-                    </div>
-                </div>
                 <div class="c"></div>
 
                 <div class="GNbox-PL" id="GNbox-PL" name="zt">

@@ -306,7 +306,7 @@ header("Access-Control-Allow-Origin:*");
                 </div>
             </div>
             <div class="alt_register J_alt_register" style="display:none;">
-                <div class="alt-reback J_alt_reback"><&nbsp;返回</div>
+                <div class="alt-reback J_alt_reback">返回</div>
                 <ul class="tab-nav" name="zt">
                     <li class="user_register">
                         注册账号
@@ -461,7 +461,7 @@ if(empty($is_show_background) || $is_show_background != 1){
                             <?php endif;?>
                         <?php endforeach;?>
                     <?php endif;?>
-                    <span class="navTopMenu-text navTopMenu-text-choice" name="zt">
+                    <span class="navTopMenu-text-choice" name="zt">
                         全部
                         <ul class="navTopMenu-one J_navtop_menu">
                         <!--导航菜单--一级-->
@@ -527,6 +527,7 @@ if(empty($is_show_background) || $is_show_background != 1){
                         <span class="navTopSearchA"></span>
                         <span class="hotSearch">热搜榜</span>&nbsp;
                     </a>
+                    <div class="navTopSearchB-response"></div>
                     <div class="verticalLine"></div>
                     <div class="navTopSearchBoxB">
                         <div class="navTopSearchB"></div>
@@ -681,7 +682,7 @@ if(empty($is_show_background) || $is_show_background != 1){
         <?php if(!empty($channels)) : ?>
             <?php foreach ($channels['list'] as $key => $channel): ?>
                 <?php if($channel['channel_id'] != 0) : ?>
-                    <li class="list-item"><a href="#section<?= $channel['channel_id']?>" class="list-link"><?= $channel['channel_name']?></a></li>
+                    <li class="list-item"><a href="<?= Url::to(['video/channel', 'channel_id' => $channel['channel_id']])?>" class="list-link"><?= $channel['channel_name']?></a></li>
                 <?php endif;?>
             <?php endforeach ?>
         <?php endif;?>
