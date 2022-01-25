@@ -9,9 +9,9 @@ body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,
 }
 
 * {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
+    /*-webkit-box-sizing: border-box;*/
+    /*-moz-box-sizing: border-box;*/
+    /*box-sizing: border-box;*/
 }
 *:before,
 *:after {
@@ -3903,7 +3903,7 @@ a.anchor{
     padding-top: 73px;
     padding-bottom: 72px;
     text-align: center;
-    font-size: 18px;
+    font-size: 16px;
     color: hsla(0,0%,100%,.3);
     line-height: 43px;
     font-weight: 400;
@@ -3917,7 +3917,7 @@ a.anchor{
 }
 
 .qy-footer .browser {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 400;
     /*color: #000000;*/
 }
