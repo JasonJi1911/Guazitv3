@@ -620,6 +620,9 @@ function initialUrl($url)
     .dplayer .dplayer-controller .dplayer-icons {
         height: 90px;
     }
+    .dplayer .dplayer-controller .dplayer-icons .dplayer-volume .dplayer-volume-bar-wrap .dplayer-volume-bar{
+        top: 43px;
+    }
 </style>
 <img id="load1-img" src="/images/video/load.gif" />
 <div class="Dplayer_box">
