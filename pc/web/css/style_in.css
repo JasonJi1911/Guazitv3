@@ -4179,7 +4179,7 @@ a.anchor{
 .qy-play-list .play-list-item-new {
     margin-bottom: 15px;
     margin-right: 27px;
-    padding-left: 44px;
+    padding-left: 30px;
     cursor: pointer;
     *zoom: 1;
     overflow: hidden;
@@ -4189,6 +4189,7 @@ a.anchor{
     background: #303139;
     border-radius: 5px;
     color: #FFFFFF;
+    font-size: 16px;
 }
 .qy-play-list .play-list-item-new:hover {
     color: #FF556E;
@@ -5622,9 +5623,9 @@ a.anchor{
     vertical-align: top;}
 
 @media screen and (max-width: 1355px) {
-    .qy-play-container {
-        width:994px
-    }
+    /*.qy-play-container {*/
+    /*    width:994px*/
+    /*}*/
     .qy-flash-box {
         height:342px
     }
@@ -5645,9 +5646,9 @@ a.anchor{
 }
 
 @media screen and (min-width: 1356px) and (max-width:1559px) {
-    .qy-play-container {
-        width:1196px
-    }
+    /*.qy-play-container {*/
+    /*    width:1196px*/
+    /*}*/
     .qy-flash-box {
         height:456px
     }
@@ -5668,9 +5669,9 @@ a.anchor{
 }
 
 @media screen and (min-width: 1560px) and (max-width:1795px) {
-    .qy-play-container {
-        width:1400px
-    }
+    /*.qy-play-container {*/
+    /*    width:1400px*/
+    /*}*/
     .qy-flash-box {
         height:669px
     }
@@ -7466,9 +7467,9 @@ a.anchor{
 	.qy-header.home2020 .header-inner {
 	    width: 1105px;
 	}
-	.qy-play-container {
-	    width: 1100px;
-	}
+	/*.qy-play-container {*/
+	/*    width: 1100px;*/
+	/*}*/
 	.qy-header.home2020 .qy-search .search-box {
 	    padding-right: 50px;
 	}
@@ -7552,9 +7553,9 @@ a.anchor{
 		/*margin-left: -95px;*/
 		padding-left: 10px;
 	}
-	.qy-play-container {
-	    width: 920px;
-	}
+	/*.qy-play-container {*/
+	/*    width: 920px;*/
+	/*}*/
 }
 
 @media screen and (max-width: 1768px){
