@@ -499,11 +499,11 @@ else
                                             <span class="func-name qy-comment J_comment"  onclick="window.location.href = '#GNbox-PL'" ><?=$data['commentcount']?></span>
                                         </div>
                                     </div>
-                                    <div class="func-item func-like-v1">
-                                        <div class="func-inner">
-                                            <span class="func-name qy-dianzan"><?= $data['info']['total_views']?></span>
-                                        </div>
-                                    </div>
+<!--                                    <div class="func-item func-like-v1">-->
+<!--                                        <div class="func-inner">-->
+<!--                                            <span class="func-name qy-dianzan">--><?//= $data['info']['total_views']?><!--</span>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
                                     <div class="func-item func-collect">
                                         <div class="func-inner">
                                             <span class="func-name qy-shoucang" id="id_favors"><?= $data['info']['total_favors']?></span>
@@ -825,7 +825,7 @@ else
                     <?php endif;?>
                 <?php endforeach;?>
             <?php endif;?>
-            <div class="advert_2">
+            <div class="advert_2 J_xini_advert">
                 <div class="advert_content">
                     <div class="advert_content_title">悉尼交易市场</div>
                     <div class="advert_content_ad">
@@ -871,7 +871,7 @@ else
                 <div class="advert_content last">
                     <div class="advert_content_title last">
                         悉尼交易市场
-                        <img src="/images/Index/chahao.png">
+                        <img src="/images/Index/chahao.png" class="J_del_advert">
                     </div>
                     <div class="advert_content_ad last">
                         <ul>
@@ -1781,6 +1781,10 @@ else
         $(".rBtn-01").find('input').val(num);
         $("#GNbox-PL").find('span').html("("+num+")");
     }
+    //关闭广告
+    $('.J_del_advert').click(function(){
+        $('.J_xini_advert').hide();
+    });
 </script>
 </body>
 </html>

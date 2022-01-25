@@ -28,7 +28,10 @@ $logo = LOGONAME;
     <ul class="RANbox-help-tab">
         <!--        class="act"-->
         <li class="c_question">
-            <div class="help-img-icon"><img src="/images/Index/changjianwenti.png"></div>
+            <div class="help-img-icon">
+                <img class="J_per_tab_img" src="/images/Index/changjianwenti.png" style="display:none;">
+                <img class="J_per_tab_img_c" src="/images/Index/changjianwenti_c.png">
+            </div>
             常见问题
         </li>
 <!--        <li>-->
@@ -40,23 +43,38 @@ $logo = LOGONAME;
 <!--            在线反馈-->
 <!--        </li>-->
         <li class="c_pwd">
-            <div class="help-img-icon"><img src="/images/Index/wangjimima.png"></div>
+            <div class="help-img-icon">
+                <img class="J_per_tab_img" src="/images/Index/wangjimima.png">
+                <img class="J_per_tab_img_c" src="/images/Index/wangjimima.png" style="display:none;">
+            </div>
             忘记密码
         </li>
         <li class="c_aboutUs">
-            <div class="help-img-icon"><img src="/images/Index/guanyuwomen.png"></div>
+            <div class="help-img-icon">
+                <img class="J_per_tab_img" src="/images/Index/guanyuwomen.png">
+                <img class="J_per_tab_img_c" src="/images/Index/guanyuwomen.png" style="display:none;">
+            </div>
             关于我们
         </li>
         <li class="c_terms">
-            <div class="help-img-icon"><img src="/images/Index/xieyiyaoqingx.png"></div>
+            <div class="help-img-icon">
+                <img class="J_per_tab_img" src="/images/Index/xieyiyaoqingx.png">
+                <img class="J_per_tab_img_c" src="/images/Index/xieyiyaoqingx.png" style="display:none;">
+            </div>
             用户协议
         </li>
         <li class="c_contact">
-            <div class="help-img-icon"><img src="/images/Index/lianxiwomen.png"></div>
+            <div class="help-img-icon">
+                <img class="J_per_tab_img" src="/images/Index/lianxiwomen.png">
+                <img class="J_per_tab_img_c" src="/images/Index/lianxiwomen_c.png" style="display:none;">
+            </div>
             联系我们
         </li>
         <li class="c_appdownload">
-            <div class="help-img-icon"><img src="/images/Index/xiazai-3.png"></div>
+            <div class="help-img-icon">
+                <img class="J_per_tab_img" src="/images/Index/xiazai-3.png">
+                <img class="J_per_tab_img_c" src="/images/Index/xiazai-3_c.png" style="display:none;">
+            </div>
             app下载
         </li>
     </ul>

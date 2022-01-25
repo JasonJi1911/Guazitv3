@@ -464,7 +464,7 @@ if(empty($is_show_background) || $is_show_background != 1){
                         <?php endforeach;?>
                     <?php endif;?>
                     <span class="navTopMenu-text-choice" name="zt">
-                        全部
+                        <p class="navTopMenu-text-choice-all">全部</p>
                         <ul class="navTopMenu-one J_navtop_menu">
                         <!--导航菜单--一级-->
                         <li class="" name="zt">

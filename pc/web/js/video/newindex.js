@@ -293,6 +293,9 @@ $(document).ready(function() {
 		var ranTabNum = $(this).index();
 		$(this).addClass("act").siblings().removeClass("act");
 		$(".RANbox-help>div").eq(ranTabNum).addClass("act").siblings().removeClass("act");
+		//图标为选中样式
+		$(this).find('.J_per_tab_img').hide().siblings('.J_per_tab_img_c').show();
+		$(this).siblings().find('.J_per_tab_img').show().siblings('.J_per_tab_img_c').hide();
 	});
 });
 
@@ -1107,7 +1110,7 @@ $(document).ready(function() {
 				yzm_this.parents(".J_safe_list").addClass('act');
 				//弹出提示框
 				$("#pop-tip").text("手机号绑定成功");
-				$("#pop-tip").show();
+				$("#pop-tip").show().delay(1500).fadeOut();
 				// } else {
 				// 	yzm_this.find(".J_warning2").text("验证码发送失败");
 				// 	yzm_this.find(".J_warning2").show();
@@ -1213,7 +1216,7 @@ $(document).ready(function() {
 					$(".J_is_bind_email").text(email);
 					//弹出提示框
 					$("#pop-tip").text("邮箱绑定成功");
-					$("#pop-tip").show();
+					$("#pop-tip").show().delay(1500).fadeOut();
 				}else{
 					$(".J_email_warning").text("绑定失败");
 					$(".J_email_warning").show();
@@ -1344,7 +1347,7 @@ $(document).ready(function() {
 					ts_this.parents(".J_edit_pass_box").removeClass('act').siblings(".J_safe_list").addClass('act');
 					//弹出提示框
 					$("#pop-tip").text("密码修改成功");
-					$("#pop-tip").show();
+					$("#pop-tip").show().delay(1500).fadeOut();
 				}else{
 					$(".J_edp_warning3").text("密码修改失败");
 					$(".J_edp_inp_box").show();

@@ -222,15 +222,15 @@ function initialUrl($url)
     /*-----声音------*/
 
     .dplayer .dplayer-controller .dplayer-icons .dplayer-icon {
-        width: 40px;
+        width: 45px;
         margin-right: 0px;
     }
     .dplayer .dplayer-controller .dplayer-icons .dplayer-icon {
-        width: 40px;
+        width: 45px;
     }
 
     .dplayer .dplayer-controller .dplayer-icons .dplayer-icon.dplayer-volume-icon {
-        width: 40px;
+        width: 45px;
     }
     /*选集样式*/
     .palyer-js {
@@ -615,6 +615,10 @@ function initialUrl($url)
 
     .selected_quantity{
         color: #FF556E;
+    }
+
+    .dplayer .dplayer-controller .dplayer-icons {
+        height: 90px;
     }
 </style>
 <img id="load1-img" src="/images/video/load.gif" />

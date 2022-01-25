@@ -57,20 +57,32 @@ $(document).ready(function() {
         </div>
         <ul class="box-per-tab J_per_tab">
             <li class="c_favorite act J_collect">
-                <div class="per-img-icon"><img src="/images/Index/icon_collect.png"></div>
+                <div class="per-img-icon">
+                    <img class="J_per_tab_img" src="/images/Index/icon_collect.png" style="display: none;">
+                    <img class="J_per_tab_img_c" src="/images/Index/icon_collect_c.png">
+                </div>
                 我的收藏
             </li>
             <li class="c_watchlog J_watch">
-                <div class="per-img-icon"><img src="/images/Index/bofangjilu_line.png"></div>
+                <div class="per-img-icon">
+                    <img class="J_per_tab_img" src="/images/Index/bofangjilu_line.png">
+                    <img class="J_per_tab_img_c" src="/images/Index/bofangjilu_line_c.png" style="display: none;">
+                </div>
                 播放记录
             </li>
             <li class="c_safe J_safe">
-                <div class="per-img-icon"><img src="/images/Index/anquanzhongxin.png"></div>
+                <div class="per-img-icon">
+                    <img class="J_per_tab_img" src="/images/Index/anquanzhongxin.png">
+                    <img class="J_per_tab_img_c" src="/images/Index/anquanzhongxin_c.png" style="display: none;">
+                </div>
                 安全中心
             </li>
             <li class="J_seek">
                 <a target="_blank" href="<?= Url::to(['/video/seek'])?>">
-                    <div class="per-img-icon"><img src="/images/Index/dianying-4.png"></div>求片
+                    <div class="per-img-icon">
+                        <img class="J_per_tab_img" src="/images/Index/dianying-4.png">
+                        <img class="J_per_tab_img_c" src="/images/Index/dianying-4.png" style="display: none;">
+                    </div>求片
                 </a>
             </li>
         </ul>
@@ -631,6 +643,9 @@ relaAr['searchword'] = '';
 relaAr['tabNum'] = 0;
 //个人中心类目切换,将所有复选框清空
 $(".J_per_tab>li").click(function() {
+    //图标为选中样式
+    $(this).find('.J_per_tab_img').hide().siblings('.J_per_tab_img_c').show();
+    $(this).siblings().find('.J_per_tab_img').show().siblings('.J_per_tab_img_c').hide();
     $(".per-tab-w02-new .RANbox-list-xx-new>li:last-of-type>.RANbox-choose>.J_choose_check").removeClass("act").removeClass("act1");
     if($(this).hasClass("J_safe")){
         $('.c_safe>.J_safe_list').addClass('act').siblings().removeClass('act');
@@ -789,7 +804,7 @@ function removefavorite(videoid){
             }
             unselectAll();
             $("#pop-tip").text("删除成功");
-            $("#pop-tip").show();
+            $("#pop-tip").show().delay(1500).fadeOut();
         }
     });
 }
@@ -859,7 +874,7 @@ function removewatchlog(logid){
                 $(".id_watchlog_"+logid).remove();
             }
             $("#pop-tip").text("删除成功");
-            $("#pop-tip").show();
+            $("#pop-tip").show().delay(1500).fadeOut();
         }
     });
 }

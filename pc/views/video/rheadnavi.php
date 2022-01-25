@@ -163,7 +163,12 @@ use yii\helpers\Url;
 $(function(){
     //查看历史记录
     $(".J_history").click(function(){
-        showloggedin();
+        var uid = finduser();
+        if(!isNaN(uid) && uid!="") {
+            $(".LSmenuBox").show();
+        } else {
+            showloggedin();
+        }
     });
     //未登录状态-登录
     $("#notloggedin").click(function(){
