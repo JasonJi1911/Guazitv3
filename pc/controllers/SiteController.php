@@ -135,10 +135,10 @@ class SiteController extends BaseController
             }
         }
 
-        $this->XmlFile($data['label']);
+        $this->XmlFile($data['label'],$channel_id);
         return \Yii::createObject($xml);
     }
-    public function XmlFile($data){
+    public function XmlFile($data,$channel_id=0){
         //  创建一个XML文档并设置XML版本和编码。。
         $dom=new \DomDocument('1.0', 'utf-8');
         //  创建根节点
@@ -178,7 +178,13 @@ class SiteController extends BaseController
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
         $dom->loadXML($dom->saveXML(),LIBXML_NOERROR);
-        $res = file_put_contents('sitemap.xml',$dom->saveXML());
+
+        $filename = "sitemap";
+        if($channel_id != 0){
+            $filename = $filename.$channel_id;
+        }
+
+        $res = file_put_contents($filename.'.xml',$dom->saveXML());
 //        return $dom->saveXML();
     }
 
