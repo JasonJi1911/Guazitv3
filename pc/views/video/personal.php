@@ -23,27 +23,43 @@ $(document).ready(function() {
     if(tab=='watchlog'){
         $('.c_watchlog').addClass('act');
         $('.c_watchlog').siblings().removeClass('act');
+        $('.c_watchlog .J_per_tab_img_c').show().siblings().hide();
+        $('.c_watchlog').siblings().find('.J_per_tab_img_c').hide().siblings().show();
     }else if(tab=='message'){
         $('.c_message').addClass('act');
         $('.c_message').siblings().removeClass('act');
+        $('.c_message .J_per_tab_img_c').show().siblings().hide();
+        $('.c_message').siblings().find('.J_per_tab_img_c').hide().siblings().show();
     }else if(tab=='favorite'){
         $('.c_favorite').addClass('act');
         $('.c_favorite').siblings().removeClass('act');
+        $('.c_favorite .J_per_tab_img_c').show().siblings().hide();
+        $('.c_favorite').siblings().find('.J_per_tab_img_c').hide().siblings().show();
     }else if(tab=='task'){
         $('.c_task').addClass('act');
         $('.c_task').siblings().removeClass('act');
+        $('.c_task .J_per_tab_img_c').show().siblings().hide();
+        $('.c_task').siblings().find('.J_per_tab_img_c').hide().siblings().show();
     }else if(tab=='upload'){
         $('.c_upload').addClass('act');
         $('.c_upload').siblings().removeClass('act');
+        $('.c_upload .J_per_tab_img_c').show().siblings().hide();
+        $('.c_upload').siblings().find('.J_per_tab_img_c').hide().siblings().show();
     }else if(tab=='relation'){
         $('.c_relation').addClass('act');
         $('.c_relation').siblings().removeClass('act');
+        $('.c_relation J_per_tab_img_c').show().siblings().hide();
+        $('.c_relation').siblings().find('.J_per_tab_img_c').hide().siblings().show();
     }else if(tab=='safe'){
         $('.c_safe').addClass('act');
         $('.c_safe').siblings().removeClass('act');
+        $('.c_safe .J_per_tab_img_c').show().siblings().hide();
+        $('.c_safe').siblings().find('.J_per_tab_img_c').hide().siblings().show();
     }else{//c_question
         $('.c_upload').addClass('act');
         $('.c_upload').siblings().removeClass('act');
+        $('.c_upload .J_per_tab_img_c').show().siblings().hide();
+        $('.c_upload').siblings().find('.J_per_tab_img_c').hide().siblings().show();
     }
 });
 </script>

@@ -250,9 +250,9 @@ JS;
 $this->registerJs($js);
 ?>
 <style>
-    body {
-        background-color: #F0F0F0;
-    }
+    /*body {*/
+    /*    background-color: #F9F9F9;*/
+    /*}*/
     .hiddenclass{display: none}
 </style>
 <div class="box01">

@@ -529,11 +529,11 @@ if(empty($is_show_background) || $is_show_background != 1){
                         <span class="navTopSearchA"></span>
                         <span class="hotSearch">热搜榜</span>&nbsp;
                     </a>
-                    <div class="navTopSearchB-response"></div>
+                    <div class="navTopSearchB-response" onclick="savewords();"></div>
                     <div class="verticalLine"></div>
-                    <div class="navTopSearchBoxB">
+                    <div class="navTopSearchBoxB" onclick="savewords();">
                         <div class="navTopSearchB"></div>
-                        <div class="navTopSearchBText" onclick="savewords();">搜索</div>
+                        <div class="navTopSearchBText">搜索</div>
                     </div>
                 </div
             </div>
@@ -704,8 +704,8 @@ if(empty($is_show_background) || $is_show_background != 1){
             <a href="<?= Url::to(['/video/help', 'tab' => 'contact'])?>">&nbsp;</a>
         </div>
         <div class="rigNav-icon03">
-            <span>个人中心</span>
-            <a href="javascript:;">&nbsp;</a>
+            <span onclick="rightUrl('personal')">个人中心</span>
+            <a href="<?= Url::to(['/video/personal'])?>">&nbsp;</a>
         </div>
         <div class="rigNav-icon04">
             <span onclick="rightUrl('help')">帮助中心</span>

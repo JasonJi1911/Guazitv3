@@ -1056,19 +1056,31 @@ $logo = LOGONAME;
             var helptab = $('#helptab').val();
             if (helptab == 'feedback') {
                 $('.c_feedback').addClass('act');
+                $('.c_feedback .J_per_tab_img_c').show().siblings().hide();
+                $('.c_feedback').siblings().find('.J_per_tab_img_c').hide().siblings().show();
             } else if (helptab == 'aboutUs') {
                 $('.c_aboutUs').addClass('act');
+                $('.c_aboutUs .J_per_tab_img_c').show().siblings().hide();
+                $('.c_aboutUs').siblings().find('.J_per_tab_img_c').hide().siblings().show();
             } else if (helptab == 'terms') {
                 $('.c_terms').addClass('act');
+                $('.c_terms .J_per_tab_img_c').show().siblings().hide();
+                $('.c_terms').siblings().find('.J_per_tab_img_c').hide().siblings().show();
             } else if (helptab == 'contact') {
                 $('.c_contact').addClass('act');
+                $('.c_contact .J_per_tab_img_c').show().siblings().hide();
+                $('.c_contact').siblings().find('.J_per_tab_img_c').hide().siblings().show();
             } else if (helptab == 'pwd') {
                 $('.c_pwd').addClass('act');
+                $('.c_pwd .J_per_tab_img_c').show().siblings().hide();
+                $('.c_pwd').siblings().find('.J_per_tab_img_c').hide().siblings().show();
             } else if (helptab == 'appdownload') {
                 showwarning();
                 // $('.c_appdownload').addClass('act');
             } else {//c_question
                 $('.c_question').addClass('act');
+                $('.c_question .J_per_tab_img_c').show().siblings().hide();
+                $('.c_question').siblings().find('.J_per_tab_img_c').hide().siblings().show();
             }
         });
         //在线反馈提交

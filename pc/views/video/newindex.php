@@ -351,16 +351,6 @@ $this->registerJs($js);
                             <li><input class="XQ" type="button" value="详情" onclick="XQ('<?= $list['video_id']?>')"/></li>
                         </ul>
                     </div>
-                    <?php if(is_int($key/7)):?>
-                        <div class="Movie-page">
-                            <img src="/images/Index/left.png" />
-                        </div>
-                    <?php endif;?>
-                    <?php if(is_int(($key+1)/7)):?>
-                        <div class="Movie-page">
-                            <img src="/images/Index/right.png" />
-                        </div>
-                    <?php endif;?>
                 </a>
                 <a class="Movie-name02 font-color-FFFFFF" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
                     <?= $list['video_name']?>
