@@ -492,7 +492,7 @@ class VideoController extends BaseController
      */
     public function actionRefreshVideo()
     {
-        $keyword = Yii::$app->request->get('keyword');
+        $keyword = Yii::$app->request->get('keyword','');
         $channel_id = Yii::$app->request->get('channel_id', 0);
         $sort = Yii::$app->request->get('sort', 'new');
         $sorttype = Yii::$app->request->get('sorttype', 'desc');//排序高低
@@ -506,8 +506,19 @@ class VideoController extends BaseController
         $status = Yii::$app->request->get('status', 0); // 剧集是否完结：全部 / 更新中
 
         //搜索首页信息
-        $data = Yii::$app->api->get('/search/new-result', ['keyword' => $keyword, 'channel_id' => $channel_id, 'tag' => $tag, 'sort' => $sort,'sorttype' => $sorttype,
-            'area' => $area, 'play_limit' => $play_limit, 'year' => $year, 'page_num' => $page_num, 'page_size' =>$page_size ,'type' => 1, 'status' => $status]);
+//        $data = Yii::$app->api->get('/search/new-result', ['keyword' => $keyword, 'channel_id' => $channel_id, 'tag' => $tag, 'sort' => $sort,'sorttype' => $sorttype,
+//            'area' => $area, 'play_limit' => $play_limit, 'year' => $year, 'page_num' => $page_num, 'page_size' =>$page_size ,'type' => 1, 'status' => $status]);
+        $data = [];
+        if(!empty($keyword)){
+            $data = Yii::$app->api->get('/search/new-result', ['keyword' => $keyword, 'channel_id' => $channel_id, 'tag' => $tag, 'sort' => $sort,'sorttype' => $sorttype,
+                'area' => $area, 'play_limit' => $play_limit, 'year' => $year, 'page_num' => $page_num, 'page_size' =>$page_size ,'type' => 1, 'status' => $status]);
+        }else{
+            if($channel_id==0){
+                $channel_id = 2;
+            }
+            $data = Yii::$app->api->get('/video/filters', ['channel_id' => $channel_id, 'tag' => $tag, 'sort' => $sort, 'sorttype' => $sorttype, 'area' => $area,
+                'play_limit' => $play_limit, 'year' => $year, 'page_num' => $page_num, 'page_size' =>$page_size ,'type' => 1, 'status' => $status]);
+        }
         $data['tvNum'] = $tvNum;//集数的显示个数
         return $this->renderPartial('partialresult', ['info' => $data]);
     }

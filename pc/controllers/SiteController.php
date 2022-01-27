@@ -128,7 +128,7 @@ class SiteController extends BaseController
                     $video = [];
                     $video['loc'] = PC_HOST_PATH.Url::to(['detail', 'video_id' => $list['video_id']]);
                     $video['score'] = $list['score'];
-                    $video['title'] = '瓜子TV|'.$list['video_name'];
+                    $video['title'] = LOGONAME.'TV|'.$list['video_name'];
                     $video['year'] = $list['year'];
                     array_push($xml['data'], $video);
                 }
@@ -165,7 +165,7 @@ class SiteController extends BaseController
                     //  title
                     $node = $dom->createElement('title');
                     $item->appendchild($node);
-                    $text = $dom->createTextNode('瓜子tv|'.$list['video_name']);
+                    $text = $dom->createTextNode(LOGONAME.'TV|'.$list['video_name']);
                     $node->appendchild($text);
                     //  year
                     $node = $dom->createElement('year');

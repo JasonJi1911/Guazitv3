@@ -51,71 +51,86 @@ $(function(){
         });
     });    
     
+    var isFlag = true;
     $(document).on('click', '.videobtn', function() {//cate-list-li
-        var type = $(this).attr('data-type');
-        var value = $(this).attr('data-value');
-        
-        //追加筛选参数
-        arrIndex[type] = value;
-        
-        var kword = $('#searchkeywords').val();
-        arrIndex['keyword'] = kword;
-        if(kword.trim()!=''){//有关键字
-            kTab = true;
-        }else{//无关键字
-            kTab = false;
-        }
-        
-        //点击非页码，默认页面为1
-        if(type!="page_num"){            
-           arrIndex['page_num']= 1; 
-        }        
-        if(type=="sort"){//排序样式
-            if($(this).hasClass("scJgAct")) {
-                $(this).find("span").toggleClass("pxBj");//箭头切换
-                if($(this).find("span").hasClass("pxBj")){
-                    arrIndex['sorttype'] = 'asc';//排序正序
-                }else{
-                    arrIndex['sorttype']='desc';
-                }  
-            } else {
-                $(this).addClass("scJgAct").siblings().removeClass("scJgAct");
-                $(this).siblings().find("span").removeClass("pxBj");                
-                arrIndex['sorttype']='desc';
+        if(isFlag){  
+            isFlag = false;
+            var type = $(this).attr('data-type');
+            var value = $(this).attr('data-value');
+            
+            //追加筛选参数
+            arrIndex[type] = value;
+            
+            var kword = $('#searchkeywords').val();
+            arrIndex['keyword'] = kword;
+            if(kword.trim()!=''){//有关键字
+                kTab = true;
+            }else{//无关键字
+                kTab = false;
             }
-        }        
-        var that = $(this);   
-        if(type == "channel_id"){
-            //发送请求，获取数据        
-            $.get('/video/refresh-cate', arrIndex, function(s) {
-                refreshCate(s.data.search_box);
-            }); 
-            that.addClass("conditionAct").parents(".conditionType").find(".condition>li>a").removeClass("conditionAct");
-        }else{
-            if(type!="sort"){
-                that.addClass("conditionAct").parents('li').siblings().find('a').removeClass("conditionAct");
-                that.addClass("conditionAct").parents('.conditionType').find('.conditionType-all>a').removeClass("conditionAct");
-            }
-        }
-        // console.log(kword+","+kTab);
-        // console.log(arrIndex);         
-        //发送请求，获取数据
-        $.get('/video/refresh-video', arrIndex, function(s) {
-            $('#searchVideos').html(s); // 更新内容
-            var totalnum = $("#parcount").val();
-            zeroSearch(totalnum);
-            $('.totalresult1').text(totalnum); //刷新影片数
-            dataloading(kTab); 
-            //点击非页码，默认页面为1                
+            
+            //点击非页码，默认页面为1
             if(type!="page_num"){            
-               page(1,page_size,totalnum);
+               arrIndex['page_num']= 1; 
+            }        
+            if(type=="sort"){//排序样式
+                if($(this).hasClass("scJgAct")) {
+                    $(this).find("span").toggleClass("pxBj");//箭头切换
+                    if($(this).find("span").hasClass("pxBj")){
+                        arrIndex['sorttype'] = 'asc';//排序正序
+                    }else{
+                        arrIndex['sorttype']='desc';
+                    }  
+                } else {
+                    $(this).addClass("scJgAct").siblings().removeClass("scJgAct");
+                    $(this).siblings().find("span").removeClass("pxBj");                
+                    arrIndex['sorttype']='desc';
+                }
+            }        
+            var that = $(this);   
+            if(type == "channel_id"){
+                //发送请求，获取数据        
+                $.get('/video/refresh-cate', arrIndex, function(s) {
+                    refreshCate(s.data.search_box);
+                }); 
+                that.addClass("conditionAct").parents(".conditionType").find(".condition>li>a").removeClass("conditionAct");
             }else{
-               page(value,page_size,totalnum);
-               scrollPosition('.box02');
-            }            
-            var bodycolor = $("body").attr("class");
-            colorHF(bodycolor);    
-        });
+                if(type!="sort"){
+                    that.addClass("conditionAct").parents('li').siblings().find('a').removeClass("conditionAct");
+                    that.addClass("conditionAct").parents('.conditionType').find('.conditionType-all>a').removeClass("conditionAct");
+                }
+            }
+            // console.log(kword+","+kTab);
+            // console.log(arrIndex);         
+            //发送请求，获取数据
+            $.ajax({
+                url: '/video/refresh-video',
+                data: arrIndex,
+                type:'get',
+                cache:false,
+                success:function(s) {
+                    $('#searchVideos').html(s); // 更新内容
+                    var totalnum = $("#parcount").val();
+                    zeroSearch(totalnum);
+                    $('.totalresult1').text(totalnum); //刷新影片数
+                    dataloading(kTab); 
+                    //点击非页码，默认页面为1                
+                    if(type!="page_num"){            
+                       page(1,page_size,totalnum);
+                    }else{
+                       page(value,page_size,totalnum);
+                       scrollPosition('.box02');
+                    }            
+                    var bodycolor = $("body").attr("class");
+                    colorHF(bodycolor); 
+                    isFlag = true;
+                },
+                error : function() {
+                    console.log("数据加载失败");
+                    isFlag = true;
+                }
+            });
+        }
     });
     
     <!--关闭关键字-->

@@ -51,66 +51,82 @@ $(function(){
     });
     
     //筛选条件点击加载
+    var isFlag = true;
     $(document).on('click', '.videobtn', function() {
-        var type = $(this).attr('data-type');
-        var value = $(this).attr('data-value');        
-        
-        //追加筛选参数
-        arrIndex[type] = value;
-        //点击非页码，默认页面为1
-        if(type!="page_num"){            
-           arrIndex['page_num']= 1; 
-        }        
-        if(type=="sort"){//排序样式
-            if($(this).hasClass("scJgAct")) {
-                $(this).find("span").toggleClass("pxBj");//箭头切换
-                if($(this).find("span").hasClass("pxBj")){
-                    arrIndex['sorttype'] = 'asc';//排序正序
-                }else{
-                    arrIndex['sorttype']='desc';
-                }  
-            } else {
-                $(this).addClass("scJgAct").siblings().removeClass("scJgAct");
-                $(this).siblings().find("span").removeClass("pxBj");                
-                arrIndex['sorttype']='desc';
-            }
-        }        
-        // console.log("条件");    
-        // console.log(arrIndex); 
-        var that = $(this);        
-        if(type!="sort"){//不重新加载条件
-            that.addClass("conditionAct").parents('li').siblings().find('a').removeClass("conditionAct");
-            that.addClass("conditionAct").parents('.conditionType').find('.conditionType-all>a').removeClass("conditionAct");
-        }
-        //发送请求，获取数据     
-        $.get('/video/refresh-cate', arrIndex, function(s) {
-            var data = s.data.list;
-            var content = refreshVideo(data);                
-            if(type == "channel_id"){
-                refreshCate(s.data.search_box);//加载筛选条件
-                that.addClass("conditionAct").parents(".conditionType").find(".condition>li>a").removeClass("conditionAct");
-	        }
-            $('#searchVideos').html(content); // 更新内容
-            $('#searchNum').text(s.data.total_count); //刷新影片数
-            //背景色处理
-            var bodycolor = $("body").attr("class");
-            if(bodycolor.indexOf("ZT-black")>=0){
-                $("#searchVideos").find("[name='zt']").addClass("ZT-black");
-                $(".conditionBox").find("[name='zt']").addClass("ZT-black");
-            }else{               
-                $("#searchVideos").find("[name='zt']").removeClass("ZT-black");
-                $(".conditionBox").find("[name='zt']").removeClass("ZT-black");
-            }  
-            //点击非页码，默认页面为1                
+        if(isFlag){  
+            isFlag = false;
+            var type = $(this).attr('data-type');
+            var value = $(this).attr('data-value');        
+            
+            //追加筛选参数
+            arrIndex[type] = value;
+            //点击非页码，默认页面为1
             if(type!="page_num"){            
-               page(1,page_size);
-            }else{
-               page(value,page_size);
-               scrollPosition('.box02');
+               arrIndex['page_num']= 1; 
+            }        
+            if(type=="sort"){//排序样式
+                if($(this).hasClass("scJgAct")) {
+                    $(this).find("span").toggleClass("pxBj");//箭头切换
+                    if($(this).find("span").hasClass("pxBj")){
+                        arrIndex['sorttype'] = 'asc';//排序正序
+                    }else{
+                        arrIndex['sorttype']='desc';
+                    }  
+                } else {
+                    $(this).addClass("scJgAct").siblings().removeClass("scJgAct");
+                    $(this).siblings().find("span").removeClass("pxBj");                
+                    arrIndex['sorttype']='desc';
+                }
+            }        
+            // console.log("条件");    
+            // console.log(arrIndex); 
+            var that = $(this);        
+            if(type!="sort"){//不重新加载条件
+                that.addClass("conditionAct").parents('li').siblings().find('a').removeClass("conditionAct");
+                that.addClass("conditionAct").parents('.conditionType').find('.conditionType-all>a').removeClass("conditionAct");
             }
-            // console.log("结果");   
-            // console.log(s.data.total_count+","+data[0]['video_name']);  
-        });
+            //发送请求，获取数据   
+            $.ajax({
+                url: '/video/refresh-cate',
+                data: arrIndex,
+                type:'get',
+                cache:false,
+                dataType:'json',
+                success:function(s) {  
+                    var data = s.data.list;
+                    var content = refreshVideo(data);                
+                    if(type == "channel_id"){
+                        refreshCate(s.data.search_box);//加载筛选条件
+                        that.addClass("conditionAct").parents(".conditionType").find(".condition>li>a").removeClass("conditionAct");
+                    }
+                    $('#searchVideos').html(content); // 更新内容
+                    $('#searchNum').text(s.data.total_count); //刷新影片数
+                    //背景色处理
+                    var bodycolor = $("body").attr("class");
+                    if(bodycolor.indexOf("ZT-black")>=0){
+                        $("#searchVideos").find("[name='zt']").addClass("ZT-black");
+                        $(".conditionBox").find("[name='zt']").addClass("ZT-black");
+                    }else{               
+                        $("#searchVideos").find("[name='zt']").removeClass("ZT-black");
+                        $(".conditionBox").find("[name='zt']").removeClass("ZT-black");
+                    }  
+                    //点击非页码，默认页面为1                
+                    if(type!="page_num"){            
+                       page(1,page_size);
+                    }else{
+                       page(value,page_size);
+                       scrollPosition('.box02');
+                    }
+                    // console.log("结果");   
+                    // console.log(s.data.total_count+","+data[0]['video_name']); 
+                    isFlag = true;
+                },
+                error : function() {
+                    console.log("数据加载失败");
+                    isFlag = true;
+                }
+            }); 
+        }
     });        
     
     //筛选条件
@@ -233,6 +249,7 @@ $this->registerJs($js);
     }
 </style>
 <!--筛选条件-->
+<input id="searchNum" value="<?= $info['total_count']?>" />
 <div class="box01" name="zt">
     <div class="conditionBox" name="zt">
         <div class="box02-content">

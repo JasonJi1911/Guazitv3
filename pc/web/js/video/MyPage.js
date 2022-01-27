@@ -13,11 +13,12 @@ function Page() {
 	this.initMathod = function(a) {
 		$.extend(this.config, a.params);
 		this.requestFunction = a.requestFunction;
-		this.renderPage()
+		this.renderPage();
 	};
 	this.renderPage = function() {
 		this.requestFunction();
 		this.pageHtml();
+		/*
 		$(P.config.elemId).on("click", "a", function() {
 			var a = $(this).parent().hasClass("disabled");
 			if(a) {
@@ -27,7 +28,7 @@ function Page() {
 			P.config.pageIndex = b;
 			P.requestFunction();
 			P.pageHtml()
-		})
+		})*/
 	};
 	this.pageHtml = function() {
 		var a = this.config;
