@@ -14252,7 +14252,7 @@ body.ZT-black,
 	border-radius: 10px;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr;
-	margin-top: 6px auto 0 auto;
+	margin: 6px auto 0 auto;
 }
 .advert_content_title{
 	width: 100%;
