@@ -14246,13 +14246,13 @@ body.ZT-black,
 .video-right-ad-img>img{
 	width:100%;
 }
-.advert_2{
+.box05>.advert_2{
 	width: 100%;
 	background: #1E2126;
 	border-radius: 10px;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr;
-	margin-top: 6px;
+	margin-top: 6px auto 0 auto;
 }
 .advert_content_title{
 	width: 100%;
