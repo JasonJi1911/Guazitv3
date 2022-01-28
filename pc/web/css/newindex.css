@@ -1369,9 +1369,9 @@ body {
 	.navTopLogon {
 		margin-left: 10px;
 	}
-	.navTopSearchBox-r {
-		left:
-	}
+	/*.navTopSearchBox-r {*/
+	/*	left:*/
+	/*}*/
 }
 
 
@@ -1386,6 +1386,12 @@ body {
 .play-box img {
 	display: block;
 	width: 100%;
+}
+
+.video-detail-ad img {
+	margin-top: 14px;
+	margin-bottom: 14px;
+	border-radius: 10px;
 }
 
 .play-ad-box {
@@ -2093,8 +2099,8 @@ body {
 /*}*/
 
 .Title-04 {
-	padding-top: 29px;
-	padding-bottom: 29px;
+	/*padding-top: 29px;*/
+	padding-bottom: 8px;
 	font-size: 20px;
 	font-weight: 500;
 	color: #22232A;
@@ -2186,8 +2192,8 @@ Movie-Ranking-img-num {
 
 .Movie-Ranking02 {
 	margin-bottom: 20px;
-	border: solid 1px #F4F4F4;
-	background-color: #F9F9F9;
+	/*border: solid 1px #F4F4F4;*/
+	/*background-color: #F9F9F9;*/
 	box-sizing: border-box;
 }
 
@@ -2197,6 +2203,7 @@ Movie-Ranking-img-num {
 	height: 11%;
 	display: grid;
 	grid-template-columns: 1fr 4fr 1fr;
+	border-bottom: 1px solid #ddd;
 }
 
 .Ranking-mun {
@@ -2241,16 +2248,24 @@ Movie-Ranking-img-num {
 	color: #FF556E;
 }
 
-.Ranking-type {
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
-	grid-gap: 5px;
-}
+/*.Ranking-type {*/
+/*	display: grid;*/
+/*	grid-template-columns: 0.5fr 0.5fr 0.5fr 0.5fr;*/
+/*	grid-gap: 5px;*/
+/*}*/
 
-.Ranking-type>div {
-	background-color: #F4F4F4;
-	padding: 5px 0px;
-	text-align: center;
+/*.Ranking-type>div {*/
+/*	!*background-color: #F4F4F4;*!*/
+/*	padding: 5px 0px;*/
+/*	!*text-align: center;*!*/
+/*	font-size: 12px;*/
+/*	color: #999999;*/
+/*	white-space: nowrap;*/
+/*	overflow: hidden;*/
+/*}*/
+
+.Ranking-type>span {
+	margin-right: 16px;
 	font-size: 12px;
 	color: #999999;
 	white-space: nowrap;
@@ -2669,11 +2684,12 @@ Movie-Ranking-img-num {
 .Livemaches-title {
 	position: absolute;
 	left: 0;
+	top: 50%;
+	margin-top:-24px;
 	background-color: rgba(0, 0, 0, 0.7);
 	padding: 0px 10px;
 	box-sizing: border-box;
 	width: 100%;
-	margin-top:-50%;
 	height: 49px;
 	line-height: 49px;
 	overflow: hidden;
@@ -4481,23 +4497,569 @@ Movie-Ranking-img-num {
 /*----------播放页-----------*/
 .box05 {
 	width: 100%;
-	padding-top: 80px;
+	padding-top: 62px;
 	padding-bottom: 40px;
 	overflow: hidden;
+	background-color: #131519;
 }
 
 .box05>div {
 	position: relative;
-	width: 1830px;
-	margin: 0px auto;
+	width: 1600px;
+	margin: 0 auto;
 	overflow: hidden;
 }
-
+.play-video-container {
+	display: grid;
+	grid-template-columns: auto 411px;
+	height: 823px;
+}
+.play-video-left-container {
+	width: 1189px;
+}
 .play {
-	width: 1430px;
+	width: 1189px;
 	height: 775px;
 	box-sizing: border-box;
 	border: solid 1px #FFFFFF;
+}
+.player-sd{
+	background-color: #1E2126;
+}
+.player-sdc {
+	box-sizing: border-box;
+	padding-left: 15px;
+	position: relative;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+.qy-player-side-loading {
+	position: absolute;
+	width: 60px;
+	height: 46px;
+	top: 50%;
+	left: 50%;
+	margin-left: -30px;
+	margin-top: -23px;
+	text-align: center;
+}
+.qy-player-side-loading {
+	position: absolute;
+	width: 60px;
+	height: 46px;
+	top: 50%;
+	left: 50%;
+	margin-left: -30px;
+	margin-top: -23px;
+	text-align: center;
+}
+.qy-player-side-loading .loading-txt {
+	margin-top: 10px;
+	line-height: 1;
+	font-size: 12px;
+	color: #999;
+}
+.qy-player-side {
+	position: relative;
+	height: 100%;
+	background-color: #1E2126;
+	border-radius: 4px;
+}
+.qy-player-side-head {
+	padding: 8px 16px 0 0;
+}
+.header-txt{
+	margin-top: 10px;
+}
+.qy-player-side-head .header-link {
+	display: block;
+	float: left;
+	color: #FFFFFF;
+	bottom: 0px;
+	font-size: 18px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.update-tip-1 {
+	float: left;
+	margin-left: 7px;
+	padding-top: 5px;
+	color: #FFFFFF;
+	font-size: 14px;
+}
+.qy-player-side-body {
+	height: 813px;
+	padding-bottom: 4px;
+	box-sizing: border-box;
+	*zoom: 1;
+}
+.qy-player-side-body .body-inner {
+	float: left;
+	width: 100%;
+	height: 100%;
+	margin-right: -20px;
+	overflow: hidden;
+	overflow-y: auto;
+}
+/* 定义滚动条样式 */
+.qy-player-side-body .body-inner::-webkit-scrollbar {
+	width: 6px;
+	background-color: transparent;
+}
+/*定义滚动条轨道 内阴影+圆角*/
+.qy-player-side-body .body-inner::-webkit-scrollbar-track {
+	background-color: transparent;
+}
+/*定义滑块 内阴影+圆角*/
+.qy-player-side-body .body-inner::-webkit-scrollbar-thumb {
+	border-radius: 8px;
+	background-color: rgba(255,255,255,.1);
+}
+.qy-player-side-body .side-scrollbar {
+	position: relative;
+	float: right;
+	width: 10px;
+}
+.qy-player-side-body .padding-box {
+	padding-right: 20px;
+}
+.qy-episode-update {
+	margin-bottom: 12px;
+	overflow: hidden;
+}
+.qy-episode-update .update-tip {
+	margin: -3px 0;
+	line-height: 19px;
+	color: #FFFFFF;
+	font-size: 14px;
+}
+.qy-episode-tab {
+	position: relative;
+	margin-top: 10px;
+	margin-bottom: 20px;
+	border-radius: 4px;
+	background-color: #1f2128;
+}
+.qy-episode-tab .tab-bar {
+	/*margin-left: 10px;*/
+	margin-right: 6px;
+	*zoom: 1;
+}
+.qy-episode-tab .bar-li {
+	float: left;
+	position: relative;
+	margin-left: 20px;
+	height: 32px;
+	line-height: 32px;
+	font-size: 14px;
+	text-align: center;
+	color: #999;
+}
+.qy-episode-tab .bar-li:first-child {
+	margin-left: 0;
+}
+.qy-episode-tab .bar-link {
+	display: block;
+	color: inherit;
+}
+.qy-episode-tab .bar-li:after {
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	margin-left: -6px;
+	width: 12px;
+	height: 2px;
+	border-radius: 3px;
+	background-color:rgb(255, 85, 110);
+}
+.qy-episode-tab .bar-li.hover:after {
+	content: "";
+}
+.qy-episode-tab .bar-li.hover, .qy-episode-tab .bar-li:hover {
+	color:rgb(255, 85, 110);
+}
+.h20 {
+	height: 20px;
+	clear: both;
+}
+.qy-episode-num {
+	margin-top: 17px;
+	margin-bottom: 14px;
+	/*margin-left: 25px;*/
+	*zoom: 1;
+}
+.qy-episode-num .select-item {
+	position: relative;
+	float: left;
+	min-width: 66px;
+	height: auto;
+	line-height: 44px;
+	border-radius: 4px;
+	color: #ccc;
+	font-size: 15px;
+	font-family: Arial,PingFang SC,Microsoft Yahei;
+	text-align: center;
+	cursor: pointer;
+	transition: all .2s;
+}
+.qy-episode-num .select-item.selected {
+	background-color: #222328;
+	color: #FF556E;
+}
+.qy-episode-num .select-link {
+	display: block;
+	color: inherit;
+}
+.qy-player-side-list {
+	padding-right: 1px;
+}
+.qy-play-list-title {
+	padding-top: 8px;
+	padding-bottom: 6px;
+	line-height: 20px;
+	font-size: 18px;
+}
+.qy-play-list-title, .qy-play-list-title a.list-title {
+	color: hsla(0,0%,100%,.9);
+}
+.qy-play-list .play-list-item {
+	position: relative;
+	margin-bottom: 12px;
+	padding-right: 19px;
+	cursor: pointer;
+	*zoom: 1;
+	overflow: hidden;
+}
+.qy-play-list .play-list-item:first-child {
+	padding-top: 8px;
+}
+.qy-play-list .play-list-item-new {
+	margin-bottom: 15px;
+	margin-right: 27px;
+	padding-left: 30px;
+	cursor: pointer;
+	*zoom: 1;
+	overflow: hidden;
+	/*width: 399px;*/
+	height: 45px;
+	line-height: 45px;
+	background: #303139;
+	border-radius: 5px;
+	color: #FFFFFF;
+	font-size: 16px;
+}
+.qy-play-list .play-list-item-new:hover {
+	color: #FF556E;
+}
+.qy-play-list .mod-left {
+	float: left;
+	margin-right: 14px;
+}
+.qy-play-list .mod-right {
+	overflow: hidden;
+}
+.qy-play-list .mod-img-link {
+	display: block;
+	position: relative;
+	border-radius: 3px;
+	overflow: hidden;
+}
+.qy-play-list .mod-img {
+	width: 116px;
+	height: 65px;
+	transition: all .2s;
+}
+.qy-play-list .icon-b {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 40px;
+	background-image: linear-gradient(180deg,transparent,rgba(0,0,0,.1) 30%,rgba(0,0,0,.5));
+	padding: 0 8px;
+}
+.qy-play-list .playing-icon {
+	display: none;
+	position: absolute;
+	left: 8px;
+	bottom: 8px;
+	width: 10px;
+	height: 8px;
+	background: url(../images/NewVideo/playon-green.gif) no-repeat;
+}
+.qy-play-list .qy-mod-label {
+	position: absolute;
+	right: 8px;
+	padding-top: 14px;
+	line-height: 26px;
+	color: #fff;
+	font-size: 12px;
+	text-align: right;
+}
+.qy-play-list .main-title {
+	margin-top: 2px;
+	max-height: 40px;
+	font-size: 0;
+	overflow: hidden;
+}
+.qy-play-list .title-link {
+	display: block;
+	font-size: 14px;
+	line-height: 20px;
+	color: hsla(0,0%,100%,.7);
+}
+.qy-play-list .des-title, .qy-play-list .sub-title {
+	margin-top: 6px;
+	line-height: 14px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.qy-play-list .sub-title {
+	font-size: 0;
+}
+.qy-play-list .count {
+	display: inline-block;
+	color: hsla(0,0%,100%,.3);
+	line-height: 1;
+	font-size: 13px;
+	font-family: Arial;
+	vertical-align: bottom;
+}
+.qy-episode-num .icon-tr {
+	position: absolute;
+	top: 2px;
+	right: 2px;
+}
+.qy-episode-num .icon-tr img {
+	vertical-align: top;
+}
+.c {
+	clear: both;
+}
+.nn {
+	display: none;
+}
+.dn {
+	display: none;
+}
+.dn {
+	display: block;
+}
+.qy-episode-txt {
+	margin-top: 20px;
+	margin-bottom: 14px;
+}
+.qy-episode-txt .select-item {
+	position: relative;
+	padding-left: 10px;
+	padding-right: 10px;
+	height: 32px;
+	line-height: 32px;
+	font-size: 0;
+	color: hsla(0,0%,100%,.7);
+	box-sizing: border-box;
+	cursor: pointer;
+	transition: all .2s;
+	*zoom: 1;
+}
+.qy-episode-txt .select-item.selected {
+	padding-right: 28px;
+	border-radius: 3px;
+	background-color: #1d2129;
+	color:rgb(255, 85, 110);
+}
+.qy-episode-txt .select-inline {
+	display: inline-block;
+	max-width: 100%;
+	box-sizing: border-box;
+}
+.qy-episode-txt .select-title {
+	font-size: 14px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.qy-episode-txt .select-pre {
+	position: absolute;
+	width: 35px;
+	font-size: 15px;
+	font-family: Arial,PingFangSC-Regular,Microsoft Yahei;
+}
+.qy-episode-txt .select-link {
+	padding-left: 39px;
+	font-size: 14px;
+	color: inherit;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.qy-episode-txt .playon-icon {
+	display: none;
+	position: absolute;
+	right: 10px;
+	top: 12px;
+	width: 10px;
+	height: 8px;
+	background: url(../images/NewVideo/playon-green.gif) no-repeat;
+}
+.qy-episode-txt .select-item.selected .playon-icon {
+	display: inline-block;
+}
+.AD-02-nd-right {
+	margin-top: 26px;
+	width: 384px;
+	/*height: 275px;*/
+	/*overflow: hidden;*/
+}
+.AD-02-nd-right img {
+	width: 100%;
+	height: 100%;
+}
+.player-mnb {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	/*position: relative;*/
+	width: 100%;
+	height: 48px;
+	line-height: 48px;
+	*zoom: 1;
+	background-color: #000000;
+	color: #B4B4B4;
+}
+.player-mnb-left {
+	padding-left: 10px;
+	-ms-flex-negative: 0;
+	flex-shrink: 0;
+	float: left;
+}
+.player-mnb-mid {
+	float: left;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-flex: 1;
+	-ms-flex: 1;
+	flex: 1;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	position: relative;
+	/*padding-left: 21px;*/
+	padding-right: 18px;
+	height: 100%;
+	font-size: 16px;
+	color: #B4B4B4;
+}
+.player-mnb-mid:before {
+	content: "";
+	top: 11px;
+	width: 1px;
+	height: 26px;
+	background-color: #373a41;
+	margin-right: 18px;
+}
+.player-mnb-mid .func-item {
+	margin-right: 18px;
+}
+.qy-player-wrap .player-mnb-right {
+	-ms-flex-negative: 0;
+	flex-shrink: 0;
+	float: right;
+}
+.qy-flash-func {
+	margin-right: 18px;
+	*zoom: 1;
+}
+.qy-flash-func .func-item {
+	float: left;
+	position: relative;
+	margin-left: 18px;
+	margin-top: 13px;
+}
+.qy-flash-func .func-item {
+	float: left;
+	position: relative;
+	margin-left: 18px;
+	margin-top: 13px;
+}
+.qy-flash-func .func-more {
+	margin: 13px -10px 0 8px;
+}
+.qy-flash-func .func-inner {
+	line-height: 22px;
+	cursor: pointer;
+}
+.qy-flash-func .qy-comment{
+	padding-left: 25px;
+	background: url('../images/Index/pinglun.png') no-repeat left center;
+	background-size: 20px 19px;
+}
+.qy-flash-func .qy-comment:hover{
+	background: url('../images/Index/pinglun_c.png') no-repeat left center;
+}
+.qy-flash-func .qy-dianzan{
+	padding-left: 25px;
+	background: url('../images/Index/dianzan.png') no-repeat left center;
+}
+.qy-flash-func .qy-shoucang{
+	padding-left: 25px;
+	background: url('../images/Index/shoucang-4.png') no-repeat left center;
+}
+.player-mnb-mid .qy-shouji{
+	padding-left: 20px;
+	background: url('../images/Index/shouji.png') no-repeat left center;
+}
+.player-mnb-mid .qy-qiupian{
+	padding-left: 32px;
+	background: url('../images/Index/qiupian.png') no-repeat left center;
+	color: #B4B4B4;
+}
+.qy-flash-func .func-more>.func-inner {
+	padding: 5px 10px 10px;
+}
+.qy-flash-func .func-more-icon {
+	display: inline-block;
+	position: relative;
+	width: 2px;
+	height: 12px;
+	vertical-align: top;
+}
+.qy-flash-func .func-more-icon .more-dot, .qy-flash-func .func-more-icon:after, .qy-flash-func .func-more-icon:before {
+	position: absolute;
+	width: 2px;
+	height: 2px;
+	background-color: hsla(0,0%,100%,.5);
+	border-radius: 50%;
+}
+.qy-flash-func .func-more-icon .more-dot {
+	top: 5px;
+}
+.qy-flash-func .func-more-icon:before {
+	content: "";
+	top: 0;
+}
+.qy-flash-func .func-more-icon:after {
+	content: "";
+	bottom: 0;
+}
+.qy-flash-func {
+	margin-right: 18px;
+	*zoom: 1;
+}
+.qy-flash-func .func-item {
+	float: left;
+	position: relative;
+	margin-left: 18px;
+}
+.qy-flash-func .func-inner:hover .func-dwn-icon,
+.qy-flash-func .func-inner:hover .func-name,
+.player-mnb-mid .func-inner:hover .func-name,
+.qy-flash-func .func-inner:hover .qy-svgicon {
+	color:#FF556E;
 }
 
 .AD-02 {
@@ -4975,12 +5537,25 @@ Movie-Ranking-img-num {
 @media screen and (max-width:1910px) {
 	.box05>div {
 		width: 1445px;
-		margin: 0px auto;
+		margin: 0 auto;
+	}
+	.play-video-left-container {
+		width: 1025px;
 	}
 	.play {
-		width: 1055px;
+		width: 1025px;
 		height: 640px;
-		background-color: #FFFFFF;
+	}
+	.play-video-container {
+		display: grid;
+		grid-template-columns: auto 420px;
+		height: 690px;
+	}
+	.qy-player-side-body {
+		height: 690px;
+	}
+	.AD-02-nd-right {
+		width: 392px;
 	}
 	.BtnGZ {
 		bottom: 90px;
@@ -5011,12 +5586,26 @@ Movie-Ranking-img-num {
 
 @media screen and (max-width:1525px) {
 	.box05>div {
-		width: 1256px;
-		margin: 0px auto;
+		width: 1207px;
+		margin: 0 auto;
+	}
+	.play-video-left-container {
+		width: 857px;
 	}
 	.play {
-		width: 900px;
+		width: 857px;
 		height: 500px;
+	}
+	.play-video-container {
+		display: grid;
+		grid-template-columns: auto 350px;
+		height: 550px;
+	}
+	.qy-player-side-body {
+		height: 550px;
+	}
+	.AD-02-nd-right {
+		width: 320px;
 	}
 	.AD-02 {
 		width: 346px;
@@ -5078,11 +5667,11 @@ Movie-Ranking-img-num {
 
 .box06>div {
 	display: grid;
-	grid-template-columns: auto 380px;
+	grid-template-columns: auto 416px;
 	grid-gap: 20px;
 	position: relative;
-	width: 1830px;
-	margin: 0px auto;
+	width: 1600px;
+	margin: 0 auto;
 	overflow: hidden;
 }
 
@@ -5109,10 +5698,6 @@ Movie-Ranking-img-num {
 	font-weight: bold;
 }
 
-.GNbox {
-	overflow: hidden;
-}
-
 .GNbox>div {
 	float: left;
 	height: 40px;
@@ -5123,7 +5708,7 @@ Movie-Ranking-img-num {
 .GNbox-TJ {
 	padding-left: 30px;
 	font-size: 18px;
-	margin-right: 30px;
+	margin-right: 18px;
 	background-position: left center;
 	background-repeat: no-repeat;
 	background-size: 24px;
@@ -5131,17 +5716,18 @@ Movie-Ranking-img-num {
 }
 
 .GNbox-xq {
-	background-image: url(../images/newindex/xiangqing.png);
+	color: #B3B3B3;
+	background-image: url(../images/Index/jianjie.png);
 }
 
 .GNbox-xq:hover {
-	color: #FF5722;
-	background-image: url(../images/newindex/xiangqing-o.png);
+	color: #FF556E;
+	background-image: url(../images/Index/jianjie.png);
 }
 
 .GNbox-xq.act {
-	color: #FF5722;
-	background-image: url(../images/newindex/xiangqing-o.png);
+	color: #FF556E;
+	background-image: url(../images/Index/jianjie.png);
 }
 
 .GNbox-TJ {
@@ -5149,37 +5735,37 @@ Movie-Ranking-img-num {
 }
 
 .GNbox-TJ:hover {
-	color: #FF5722;
+	color: #FF556E;
 	background-image: url(../images/newindex/tongji-o.png);
 }
 
 .GNbox-TJ.act {
-	color: #FF5722;
+	color: #FF556E;
 	background-image: url(../images/newindex/tongji-o.png);
 }
 
 .GNbox-xq>span,
 .GNbox-TJ>span {
 	padding-right: 24px;
-	background-image: url(../images/newindex/icon-down.png);
+	background-image: url(../images/Index/xiangxia.png);
 	background-position: right center;
 	background-repeat: no-repeat;
-	background-size: 16px;
+	background-size: 18px;
 }
 
 .GNbox-xq:hover>span,
 .GNbox-TJ:hover>span {
-	background-image: url(../images/newindex/icon-down-o.png);
+	background-image: url(../images/Index/xiangxia_c.png);
 }
 
 .GNbox-xq.act>span,
 .GNbox-TJ.act>span {
-	background-image: url(../images/newindex/up-o.png);
+	background-image: url(../images/Index/xiangxia_c.png);
 }
 
 .GNbox-xq.act:hover>span,
 .GNbox-TJ.act:hover>span {
-	background-image: url(../images/newindex/up-o.png);
+	background-image: url(../images/Index/xiangxia_c.png);
 }
 
 .GNbox-type>span {
@@ -5194,19 +5780,30 @@ Movie-Ranking-img-num {
 	/*background-color: #F4F4F4;*/
 }
 
+.video-detail-GNbox-type>span {
+	color: #B3B3B3;
+	padding: 0px 8px;
+	margin-left: 8px;
+	background-color: #303137;
+	border-radius: 4px;
+}
+
 .xsp-time {
 	display: none;
 	font-size: 12px;
 }
 
 .GNbox-RD {
-	margin: 0px 10px;
+	margin: 0px 18px;
 	padding-left: 20px;
 	font-size: 14px;
-	background-image: url(../images/newindex/huo.png);
+	background-image: url(../images/Index/redu.png);
 	background-position: left center;
 	background-repeat: no-repeat;
 	background-size: 16px;
+}
+.video-detail-GNbox-RD {
+	color: #B3B3B3;
 }
 
 .GNbox-PF {
@@ -5247,7 +5844,7 @@ Movie-Ranking-img-num {
 }
 
 .GNbox-xq-text>div>span {
-	color: #000000;
+	color: #FFFFFF;
 }
 
 .GNbox-xspxq-K {
@@ -5610,7 +6207,7 @@ Movie-Ranking-img-num {
 	.box06>div {
 		grid-template-columns: auto 346px;
 		grid-gap: 10px;
-		width: 1256px;
+		width: 1207px;
 	}
 }
 
@@ -13130,7 +13727,6 @@ body.ZT-black,
 .Ranking-type.ZT-black>div,
 .alt02-xz.ZT-black,
 .alt02-top.ZT-black,
-.box05,
 .Altsjk,
 .alt03-box.ZT-black,
 .helpbox02,
@@ -13649,4 +14245,80 @@ body.ZT-black,
 }
 .video-right-ad-img>img{
 	width:100%;
+}
+.advert_2{
+	width: 100%;
+	background: #1E2126;
+	border-radius: 10px;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	margin-top: 6px;
+}
+.advert_content_title{
+	width: 100%;
+	height: 72px;
+	line-height: 72px;
+	font-size: 18px;
+	font-weight: 400;
+	color: #FFFFFF;
+	text-align: center;
+	background: #4886E1;
+	border-right: #5C9EFF 4px solid;
+}
+.advert_content_title.last{
+	border-right: 0;
+}
+.advert_2>.advert_content:first-child>.advert_content_title{
+	border-top-left-radius: 10px;
+}
+.advert_2>.advert_content:last-child>.advert_content_title{
+	border-top-right-radius: 10px;
+}
+.advert_content_ad>ul{
+	padding-top: 14px;
+	padding-bottom: 20px;
+	border-right: 4px solid #2E3239;
+}
+.advert_content_ad.last>ul{
+	border-right: 0;
+}
+.advert_content_ad>ul>li{
+	padding-left: 63px;
+	font-size: 16px;
+	font-weight: 400;
+	height: 56px;
+	line-height: 56px;
+	background: url("/images/Index/duobianxing.png") no-repeat 32px center;;
+}
+.advert_content_ad>ul>li>a{
+	color: #FFFFFF;
+}
+.advert_content_title.last>img{
+	float: right;
+	margin-top: 18px;
+	margin-right: 11px;
+	width: 32px;
+	height: 32px;
+}
+
+.player-title {
+	margin-top: 36px;
+	float: left;
+	max-width: 100%;
+	height: 36px;
+	line-height: 36px;
+	color: #FFFFFF;
+	font-size: 22px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-weight: 400;
+}
+.player-title>.sub-title {
+	color: #FFFFFF;
+	font-size: 18px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-weight: 400;
 }

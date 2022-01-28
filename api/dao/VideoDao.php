@@ -1176,7 +1176,7 @@ class VideoDao extends BaseDao
         if ($data['list']) {
             $videoId = array_column($data['list'], 'video_id');
             $videoInfo = $this->batchGetVideo($videoId, ['video_id', 'video_name', 'cover', 'horizontal_cover',
-                'flag', 'tag','category','is_finished','created_at','total_views'], true);
+                'flag', 'tag','category','is_finished','created_at','total_views','type'], true);
             foreach ($data['list'] as $k => $info) {
                 //总评论数
                 $commentcount = VideoChapter::find()->andWhere(['video_id'=>$info['video_id']])
@@ -1188,6 +1188,7 @@ class VideoDao extends BaseDao
                 $info['horizontal_cover'] = $videoInfo[$info['video_id']]['horizontal_cover'];
                 $info['flag']             = $videoInfo[$info['video_id']]['flag'];
                 $info['tag']              = $videoInfo[$info['video_id']]['tag'];
+                $info['type']              = $videoInfo[$info['video_id']]['type'];
                 $info['category']         = $videoInfo[$info['video_id']]['category'];
                 $info['is_finished']      = $videoInfo[$info['video_id']]['is_finished'];
                 $info['created_at']       = $videoInfo[$info['video_id']]['created_at'];

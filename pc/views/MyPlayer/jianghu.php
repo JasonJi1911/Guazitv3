@@ -551,7 +551,7 @@ function initialUrl($url)
     }
     #load1-img {
         position:absolute;
-        width: 1430px;
+        width: 1189px;
         height: 775px;
         box-sizing: border-box;
         border: solid 1px #FFFFFF;
@@ -561,14 +561,14 @@ function initialUrl($url)
 
     @media screen and (max-width:1910px) {
         #load1-img {
-            width: 1055px;
+            width: 1025px;
             height: 640px;
         }
     }
 
     @media screen and (max-width:1525px) {
         #load1-img {
-            width: 900px;
+            width: 857px;
             height: 500px;
         }
     }
@@ -586,6 +586,10 @@ function initialUrl($url)
 
     .icon-forward:hover svg path,.icon-rewind:hover svg path {
         fill: #FF556E;
+    }
+
+    .dplayer .dplayer-controller {
+        line-height: 90px;
     }
 
     .dplayer .dplayer-controller .dplayer-icons .dplayer-icon.dplayer-volume-icon:hover svg path {

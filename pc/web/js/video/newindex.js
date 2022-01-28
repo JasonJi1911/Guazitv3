@@ -238,13 +238,15 @@ $(document).ready(function() {
 		$(this).toggleClass("act");
 		$(".GNbox-TJ").removeClass("act");
 		$(".GNbox-TJ-K").hide();
-		$(".GNbox-xq-K").toggle(500);
+		$(".GNbox-xq-K").toggle();
+		// $(".GNbox-xq-K").toggle(500);
 	});
 	$(".GNbox-TJ").click(function() {
 		$(this).toggleClass("act");
 		$(".GNbox-xq").removeClass("act");
 		$(".GNbox-xq-K").hide();
-		$(".GNbox-TJ-K").toggle(500);
+		$(".GNbox-xq-K").toggle();
+		// $(".GNbox-TJ-K").toggle(500);
 	});
 	//  集数切换效果
 	$(".GNbox-JS>a").click(function() {

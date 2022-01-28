@@ -106,7 +106,11 @@ use yii\helpers\Url;
                                 <div><?=$f['video_name']?>&nbsp;&nbsp</div>
                                 <div><?=$f['is_finished']==1? '完结' : '更新中' ?></div>
                                 <div>
-                                    <span><?=$f['flag']?></span>
+                                    <?php if($f['is_finished']==1):?>
+                                        <span></span>
+                                    <?php else:?>
+                                        <span><?=$f['flag']?></span>
+                                    <?php endif;?>
                                     <!--<span>天前</span>-->
                                 </div>
                             </a>
