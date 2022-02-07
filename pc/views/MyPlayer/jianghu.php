@@ -988,6 +988,8 @@ function initialUrl($url)
                         advert['ad_link'] = res.data.advert.playbefore.ad_skip_url;
                         if(res.data.advert.playbefore.ad_image.indexOf('.mp4')>=0){
                             advert['ad_type'] = 'mp4';
+                        }else if(res.data.advert.playbefore.ad_image.indexOf('.m3u8')>=0){
+                            advert['ad_type'] = 'mp4';
                         }else{
                             advert['ad_type'] = 'img';
                         }
