@@ -1388,7 +1388,7 @@ else
                 $.get('/video/change-favorite',arrindex,function(res){
                     favor_tab = true;
                     if(res.errno==0){
-                        $(".rBtn-04").toggleClass("act");
+                        $(".qy-shoucang").toggleClass("act");
                         if(res.data.status==0){
                             $(that).text(--total_favors);
                         }else{

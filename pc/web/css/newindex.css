@@ -3040,7 +3040,8 @@ Movie-Ranking-img-num {
 	background-color: #FFFFFF;
 	overflow: hidden;
 	z-index: 3;
-	background-position: center 12px;
+	/*background-position: center 12px;*/
+	background-position: center;
 	background-repeat: no-repeat;
 	/*background-size: 26px;*/
 }
@@ -3048,21 +3049,36 @@ Movie-Ranking-img-num {
 .rigNav-top>a {
 	background-image: url(../images/Index/right-5.png);
 }
+.rigNav-top:hover>a {
+	background-image: url(../images/Index/right-5h.png);
+}
 
 .rigNav-icon01>a {
 	background-image: url(../images/Index/right-1.png);
+}
+.rigNav-icon01:hover>a {
+	background-image: url(../images/Index/right-1h.png);
 }
 
 .rigNav-icon02>a {
 	background-image: url(../images/Index/right-2.png);
 }
+.rigNav-icon02:hover>a {
+	background-image: url(../images/Index/right-2h.png);
+}
 
 .rigNav-icon03>a {
 	background-image: url(../images/Index/right-3.png);
 }
+.rigNav-icon03:hover>a {
+	background-image: url(../images/Index/right-3h.png);
+}
 
 .rigNav-icon04>a {
 	background-image: url(../images/Index/right-4.png);
+}
+.rigNav-icon04:hover>a {
+	background-image: url(../images/Index/right-4h.png);
 }
 
 /*.rigNav-icon05>a {*/
@@ -3071,9 +3087,9 @@ Movie-Ranking-img-num {
 
 
 /*---hover---*/
-.rigNav>div:hover>a {
-	background-position: center -31.5px;
-}
+/*.rigNav>div:hover>a {*/
+/*	background-position: center -31.5px;*/
+/*}*/
 
 .rigNav>div>span {
 	position: absolute;
@@ -5008,6 +5024,10 @@ Movie-Ranking-img-num {
 .qy-flash-func .qy-shoucang{
 	padding-left: 25px;
 	background: url('../images/Index/shoucang-4.png') no-repeat left center;
+}
+.qy-flash-func .qy-shoucang.act{
+	padding-left: 25px;
+	background: url('../images/Index/shoucang-4h.png') no-repeat left center;
 }
 .player-mnb-mid .qy-shouji{
 	padding-left: 20px;
@@ -9145,11 +9165,11 @@ Movie-Ranking-img-num {
 }
 
 .per-btn-z:hover {
-	background-image: url(../images/Index/aixin.png);
+	background-image: url(../images/Index/aixin_c.png);
 }
 
 .per-btn-z.act {
-	background-image: url(../images/Index/aixin.png);
+	background-image: url(../images/Index/aixin_c.png);
 }
 .per-now-box-03 .per-btn-reply{
 	display: block;

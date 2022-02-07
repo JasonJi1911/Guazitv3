@@ -45,21 +45,21 @@ $logo = LOGONAME;
         <li class="c_pwd">
             <div class="help-img-icon">
                 <img class="J_per_tab_img" src="/images/Index/wangjimima.png">
-                <img class="J_per_tab_img_c" src="/images/Index/wangjimima.png" style="display:none;">
+                <img class="J_per_tab_img_c" src="/images/Index/wangjimima_c.png" style="display:none;">
             </div>
             忘记密码
         </li>
         <li class="c_aboutUs">
             <div class="help-img-icon">
                 <img class="J_per_tab_img" src="/images/Index/guanyuwomen.png">
-                <img class="J_per_tab_img_c" src="/images/Index/guanyuwomen.png" style="display:none;">
+                <img class="J_per_tab_img_c" src="/images/Index/guanyuwomen_c.png" style="display:none;">
             </div>
             关于我们
         </li>
         <li class="c_terms">
             <div class="help-img-icon">
                 <img class="J_per_tab_img" src="/images/Index/xieyiyaoqingx.png">
-                <img class="J_per_tab_img_c" src="/images/Index/xieyiyaoqingx.png" style="display:none;">
+                <img class="J_per_tab_img_c" src="/images/Index/xieyiyaoqingx_c.png" style="display:none;">
             </div>
             用户协议
         </li>
