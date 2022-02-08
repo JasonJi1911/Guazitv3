@@ -2,8 +2,8 @@
 use yii\helpers\Url;
 
 // $this->title = '瓜子TV-澳新华人在线视频分享网站';
-$this->title = '吉祥视频';
-$this->registerMetaTag(['name' => 'keywords', 'content' => '吉祥,视频,吉祥视频,澳洲吉祥视频,澳洲,新西兰,澳新,电影,电视剧,榜单,综艺,动画,记录片']);
+$this->title = '视频列表-瓜子TV|澳洲瓜子tv|澳新瓜子|澳新tv|澳新瓜子tv - m.guazitv.tv';
+$this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子,tv,瓜子tv,澳洲瓜子tv,澳洲,新西兰,澳新,电影,电视剧,榜单,综艺,动画,记录片']);
 
 $js = <<<JS
 $(function(){
@@ -122,7 +122,7 @@ $this->registerJs($js);
 </style>
 <header class="video-header video-list-header">
     <div class="video-header-top clearfix">
-        <a href="<?= Url::to(['/'])?>" class="logo fl">吉祥视频</a>
+        <a href="<?= Url::to(['/'])?>" class="logo fl">瓜子TV</a>
         <div class="search-cont fr">
             <div class="search-notice"><?= empty($hot['tab'][0]['list'][0]['video_name']) ? '': $hot['tab'][0]['list'][0]['video_name']?></>
         </div>

@@ -2,9 +2,9 @@
 use yii\helpers\Url;
 use pc\assets\StyleMap;
 
-$this->registerMetaTag(['name' => 'keywords', 'content' => '吉祥,视频,吉祥视频,澳洲吉祥视频,澳洲,新西兰,澳新,电影,电视剧,榜单,综艺,动画,记录片']);
+$this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子,tv,瓜子tv,澳洲瓜子tv,澳洲,新西兰,澳新,电影,电视剧,榜单,综艺,动画,记录片']);
 //$this->metaTags['keywords'] = '瓜子,tv,瓜子tv,澳洲瓜子tv,澳洲,新西兰,澳新,电影,电视剧,榜单,综艺,动画,记录片';
-$this->title = '吉祥视频|澳洲吉祥视频|澳新吉祥|澳新视频|澳新吉祥视频';
+$this->title = '瓜子TV|澳洲瓜子tv|澳新瓜子|澳新tv|澳新瓜子tv - guazitv.tv';
 StyleMap::register($this);
 ?>
 <style>
