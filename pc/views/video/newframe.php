@@ -549,7 +549,14 @@ if(empty($is_show_background) || $is_show_background != 1){
             'data'          => $data,
             'channels'      => $channels,
             'channel_id'    => $channel_id,
-            'hotword'       => $hotword
+            'hotword'       => $hotword,
+            'tick'          => $tick,
+            'tvpath'        => $version['tvdata'],
+            'city'          => $city,
+            'pageTab'       => $pageTab ,
+            'is_show_background' => $is_show_background,//是否显示背景 1-显示 2-不显示
+            'is_show_navmenu' => $is_show_navmenuv,//是否显示顶部分类导航 1-显示 2-不显示
+            'rightnav_type' => $rightnav_type
         ]);
         break;
     case "list":

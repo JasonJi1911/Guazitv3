@@ -171,7 +171,7 @@ body {
 	position: fixed;
 	left: 0;
 	top: 0;
-	z-index: 6;
+	z-index: 10;
 	width: 100%;
 	height: 62px;
 }
@@ -3018,7 +3018,7 @@ Movie-Ranking-img-num {
 	bottom: 20px;
 	right: 39px;
 	box-shadow: 5px 2px 5px rgba(0, 0, 0, 0.2);
-	z-index: 4;
+	z-index: 7;
 }
 
 .rigNav>div {

@@ -631,7 +631,9 @@ function initialUrl($url)
 <img id="load1-img" src="/images/video/load.gif" />
 <div class="Dplayer_box">
     <div class="player_av">
-        <div class="box" id="player1">
+        <div class="box" id="player_ad">
+        </div>
+        <div class="box" id="player1" style="display: none;">
         </div>
     </div>
 </div>
@@ -965,7 +967,7 @@ function initialUrl($url)
         if(cf_ray && cf_ray.length>3){
             citycode = cf_ray.substring(cf_ray.length-3);
         }
-        // citycode = 'SYD';
+        citycode = 'MEL';
         // console.log(citycode);
         var arrIndex = {};
         arrIndex['citycode'] = citycode;
@@ -1037,8 +1039,22 @@ function initialUrl($url)
         advertinfo(advert,qualitystr);
     }
     function advertinfo(advert,qualitystr){
+
+        //视频 player1
+        <?php $default_qua = 0;?>
+        $('#load1-img').remove();
+        var ini_video = {
+            quality: eval('(' + qualitystr + ')'),
+            pic: '',
+            defaultQuality: <?php echo $default_qua;?>,
+            defaultPlayLimit:'<?php echo $source[$default_qua]['play_limit'];?>'
+        };
+        initialPlayer(ini_video);
+        dp1.pause();
+
+        //广告 player_ad
         var dp = new DPlayer({
-            element: document.getElementById('player1'),
+            element: document.getElementById('player_ad'),
             theme: '#FF556E',
             loop: false,
             lang: 'zh-cn',
@@ -1074,7 +1090,7 @@ function initialUrl($url)
                 }
             );
 
-            $("#player1").append('<div class="AD-box" id="AD-box"><a href="' + l +'">广告剩余：<span id="time_ad">10</span>S</a></div>' +
+            $("#player_ad").append('<div class="AD-box" id="AD-box"><a href="' + l +'">广告剩余：<span id="time_ad">10</span>S</a></div>' +
                 '<div class="ADxq-box" id="ADxq-box"><a id="link" target="_blank" href="' + l + '">查看详情<svg t="1628136750461" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M572.197 505.905a19.707 19.707 0 0 1-5.976 13.397L300.215 785.31c-3.438 3.438-8.558 5.705-13.129 5.705s-9.728-2.304-13.129-5.705l-28.562-28.562c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129L469.98 505.905 245.395 281.32c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l28.562-28.562c3.438-3.438 8.558-5.705 13.129-5.705s9.728 2.304 13.129 5.705l266.277 266.277a19.534 19.534 0 0 1 5.714 13.465z m219.428 0a19.707 19.707 0 0 1-5.976 13.397L519.643 785.31c-3.438 3.438-8.558 5.705-13.129 5.705s-9.728-2.304-13.129-5.705l-28.562-28.562c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l224.585-224.585L464.823 281.32c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l28.562-28.562c3.438-3.438 8.558-5.705 13.129-5.705s9.728 2.304 13.129 5.705L785.92 492.777a19.534 19.534 0 0 1 5.714 13.465z"></path></svg></a></div>' +
                 '<div class="ADMask" id="ADMask"></div>');
 
@@ -1095,16 +1111,18 @@ function initialUrl($url)
                         $('#ADxq-box').remove();
                         $('#ADMask').remove();
                         dp.destroy();
-
-                        <?php $default_qua = 0;?>
-                        $('#load1-img').remove();
-                        var ini_video = {
-                            quality: eval('(' + qualitystr + ')'),
-                            pic: '',
-                            defaultQuality: <?php echo $default_qua;?>,
-                            defaultPlayLimit:'<?php echo $source[$default_qua]['play_limit'];?>'
-                        };
-                        initialPlayer(ini_video);
+                        $("#player_ad").hide();
+                        $("#player1").show();
+                        dp1.play();
+<!--                        --><?php //$default_qua = 0;?>
+//                        $('#load1-img').remove();
+//                        var ini_video = {
+//                            quality: eval('(' + qualitystr + ')'),
+//                            pic: '',
+//                            defaultQuality: <?php //echo $default_qua;?>//,
+//                            defaultPlayLimit:'<?php //echo $source[$default_qua]['play_limit'];?>//'
+//                        };
+//                        initialPlayer(ini_video);
                     }
                 }, 1000);
             }, 1);
@@ -1123,7 +1141,7 @@ function initialUrl($url)
                 }
             );
 
-            $("#player1").append('<div class="AD-box" id="AD-box"><a href="' + l +'">广告剩余：<span id="time_ad">10</span>S</a></div>' +
+            $("#player_ad").append('<div class="AD-box" id="AD-box"><a href="' + l +'">广告剩余：<span id="time_ad">10</span>S</a></div>' +
                 '<div class="ADxq-box" id="ADxq-box"><a id="link" target="_blank" href="' + l + '">查看详情<svg t="1628136750461" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M572.197 505.905a19.707 19.707 0 0 1-5.976 13.397L300.215 785.31c-3.438 3.438-8.558 5.705-13.129 5.705s-9.728-2.304-13.129-5.705l-28.562-28.562c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129L469.98 505.905 245.395 281.32c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l28.562-28.562c3.438-3.438 8.558-5.705 13.129-5.705s9.728 2.304 13.129 5.705l266.277 266.277a19.534 19.534 0 0 1 5.714 13.465z m219.428 0a19.707 19.707 0 0 1-5.976 13.397L519.643 785.31c-3.438 3.438-8.558 5.705-13.129 5.705s-9.728-2.304-13.129-5.705l-28.562-28.562c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l224.585-224.585L464.823 281.32c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l28.562-28.562c3.438-3.438 8.558-5.705 13.129-5.705s9.728 2.304 13.129 5.705L785.92 492.777a19.534 19.534 0 0 1 5.714 13.465z"></path></svg></a></div>' +
                 '<div class="ADMask" id="ADMask"></div>');
 
@@ -1131,9 +1149,15 @@ function initialUrl($url)
                 document.getElementById('link').click();
                 $('#link').trigger('click');
             });
+            // $("#player_ad").on('click', function() {
+            //     console.log(Math.floor(dp.video.duration));
+            //     dp.play();
+            // });
 
             dp.on('loadedmetadata', function () {
                 document.getElementById('time_ad').innerText = Math.floor(dp.video.duration);
+                // document.getElementById('player_ad').click();
+                dp.play();
             });
             dp.on('timeupdate', function () {
                 document.getElementById('time_ad').innerText = Math.floor(dp.video.duration - dp.video.currentTime);
@@ -1149,28 +1173,34 @@ function initialUrl($url)
                 dp.destroy();
             });
             dp.on('destroy', function () {
-                <?php $default_qua = 0;?>
-                $('#load1-img').remove();
-                var ini_video = {
-                    quality: eval('(' + qualitystr + ')'),
-                    pic: '',
-                    defaultQuality: <?php echo $default_qua;?>,
-                    defaultPlayLimit:'<?php echo $source[$default_qua]['play_limit'];?>'
-                };
-                initialPlayer(ini_video);
+                $("#player_ad").hide();
+                $("#player1").show();
+                dp1.play();
+<!--                --><?php //$default_qua = 0;?>
+//                $('#load1-img').remove();
+//                var ini_video = {
+//                    quality: eval('(' + qualitystr + ')'),
+//                    pic: '',
+//                    defaultQuality: <?php //echo $default_qua;?>//,
+//                    defaultPlayLimit:'<?php //echo $source[$default_qua]['play_limit'];?>//'
+//                };
+//                initialPlayer(ini_video);
             });
         }else if(advert['ad_type']==''){
+            console.log("no ad");
             dp.destroy();
-
-            <?php $default_qua = 0;?>
-            $('#load1-img').remove();
-            var ini_video = {
-                quality: eval('(' + qualitystr + ')'),
-                pic: '',
-                defaultQuality: <?php echo $default_qua;?>,
-                defaultPlayLimit:'<?php echo $source[$default_qua]['play_limit'];?>'
-            };
-            initialPlayer(ini_video);
+            $("#player_ad").hide();
+            $("#player1").show();
+            dp1.play();
+<!--            --><?php //$default_qua = 0;?>
+//            $('#load1-img').remove();
+//            var ini_video = {
+//                quality: eval('(' + qualitystr + ')'),
+//                pic: '',
+//                defaultQuality: <?php //echo $default_qua;?>//,
+//                defaultPlayLimit:'<?php //echo $source[$default_qua]['play_limit'];?>//'
+//            };
+//            initialPlayer(ini_video);
         }
     }
 </script>

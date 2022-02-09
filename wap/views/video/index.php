@@ -272,12 +272,12 @@ header('X-Frame-Options:Deny');
                     <span class="change">换一换</span>
                 </a>
             </div>
-        <?php  else: ?>
-            <div class="video-add-column">
-                <a href="">
-                    <img src="" alt="">
-                </a>
-            </div>
+<!--        --><?php // else: ?>
+<!--            <div class="video-add-column">-->
+<!--                <a href="">-->
+<!--                    <img src="" alt="">-->
+<!--                </a>-->
+<!--            </div>-->
         <?php endif; ?>
     <?php endforeach;?>
 <?php endif; ?>
@@ -390,3 +390,42 @@ header('X-Frame-Options:Deny');
     </div>
 </div>
 <?php endif; ?>
+<script>
+    //按城市加载广告
+    $(function () {
+        var req = new XMLHttpRequest();
+        req.open('GET', document.location, false);
+        req.send(null);
+        var cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
+        var citycode = '';
+        if(cf_ray && cf_ray.length>3){
+            citycode = cf_ray.substring(cf_ray.length-3);
+        }
+        // citycode = 'SYD';
+        // console.log(citycode);
+        var arrIndex = {};
+        arrIndex['citycode'] = citycode;
+        arrIndex['page'] = 'wapindex';
+        arrIndex['chapterId'] = 0;
+        $.ajax({
+            url: '/video/advert-info',
+            data: arrIndex,
+            type:'get',
+            cache:false,
+            dataType:'json',
+            success:function(res) {
+                if(res.errno==0){
+                    var dataar = res.data.advert;
+                    if(dataar.length>0){
+                        for(var i=0;i<dataar.length;i++){
+                            $(".video-index-column").eq(i).before('<div class="video-add-column"><a href="'+dataar[i].ad_skip_url+'"> <img src="'+dataar[i].ad_image+'" alt=""></a></div>');
+                        }
+                    }
+                }
+            },
+            error : function() {
+                console.log("广告加载失败");
+            }
+        });
+    });
+</script>

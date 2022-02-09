@@ -1,4 +1,6 @@
 <?php
+
+use api\models\advert\AdvertPosition;
 use yii\helpers\Url;
 use pc\assets\NewIndexStyleAsset;
 
@@ -816,12 +818,13 @@ $this->registerJs($js);
                     <?php endforeach;?>
                 </ul>
             <?php endif; ?>
-        <?php else : ?><!-- 广告 -->
-            <div class="play-ad-box video-add-column">
-                <a href="<?=$labels['ad_skip_url']?>" target="_blank">
-                    <img src="<?=$labels['ad_image']?>" alt="">
-                </a>
-            </div>
+<!--        --><?php //else : ?>
+            <!--广告 -->
+<!--            <div class="play-ad-box video-add-column">-->
+<!--                <a href="--><?//=$labels['ad_skip_url']?><!--" target="_blank">-->
+<!--                    <img src="--><?//=$labels['ad_image']?><!--" alt="">-->
+<!--                </a>-->
+<!--            </div>-->
         <?php endif; ?>
     <?php endforeach;?>
     <!--赛事直播-->
@@ -939,4 +942,57 @@ $this->registerJs($js);
     });
     //获取今日预告总条数
     var trailer_length = <?=count($data['trailer']['trailer'])?>;
+
+    //按城市加载广告
+    $(function () {
+        var req = new XMLHttpRequest();
+        req.open('GET', document.location, false);
+        req.send(null);
+        var cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
+        var citycode = '';
+        if(cf_ray && cf_ray.length>3){
+            citycode = cf_ray.substring(cf_ray.length-3);
+        }
+        // citycode = 'SYD';
+        // console.log(citycode);
+        var arrIndex = {};
+        arrIndex['citycode'] = citycode;
+        arrIndex['page'] = 'newindex';
+        arrIndex['chapterId'] = 0;
+        $.ajax({
+            url: '/video/advert-info',
+            data: arrIndex,
+            type:'get',
+            cache:false,
+            dataType:'json',
+            success:function(res) {
+                if(res.errno==0){
+                    var dataar = {};
+                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC1?>']!=[]){
+                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC1?>'];
+                        $(".Movie-box").eq(0).before('<div class="play-ad-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"> <img src="'+dataar.ad_image+'" alt=""></a></div>');
+                    }
+                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC2?>']!=[]){
+                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC2?>'];
+                        $(".Movie-box").eq(1).before('<div class="play-ad-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"> <img src="'+dataar.ad_image+'" alt=""></a></div>');
+                    }
+                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC3?>']!=[]){
+                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC3?>'];
+                        $(".Movie-box").eq(2).before('<div class="play-ad-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"> <img src="'+dataar.ad_image+'" alt=""></a></div>');
+                    }
+                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC4?>']!=[]){
+                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC4?>'];
+                        $(".Movie-box").eq(3).before('<div class="play-ad-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"> <img src="'+dataar.ad_image+'" alt=""></a></div>');
+                    }
+                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC5?>']!=[]){
+                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC5?>'];
+                        $(".Movie-box").eq(4).before('<div class="play-ad-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"> <img src="'+dataar.ad_image+'" alt=""></a></div>');
+                    }
+                }
+            },
+            error : function() {
+                console.log("广告加载失败");
+            }
+        });
+    });
 </script>

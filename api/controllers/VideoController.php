@@ -188,6 +188,29 @@ class VideoController extends BaseController
         }else if($page == "list"){
             $advert = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_LIST_PC, $city);
             $data['advert'] = $advert;
+        }else if($page == "newindex"){
+            $data['advert'] = [
+                AdvertPosition::POSITION_VIDEO_INDEX_PC1 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX_PC1, $city),
+                AdvertPosition::POSITION_VIDEO_INDEX_PC2 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX_PC2, $city),
+                AdvertPosition::POSITION_VIDEO_INDEX_PC3 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX_PC3, $city),
+                AdvertPosition::POSITION_VIDEO_INDEX_PC4 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX_PC4, $city),
+                AdvertPosition::POSITION_VIDEO_INDEX_PC5 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX_PC5, $city),
+            ];
+        }else if($page == "channel"){
+            $data['advert'] = [
+                AdvertPosition::POSITION_VIDEO_CHANNEL_PC1 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC1, $city),
+                AdvertPosition::POSITION_VIDEO_CHANNEL_PC2 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC2, $city),
+                AdvertPosition::POSITION_VIDEO_CHANNEL_PC3 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC3, $city),
+                AdvertPosition::POSITION_VIDEO_CHANNEL_PC4 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC4, $city),
+                AdvertPosition::POSITION_VIDEO_CHANNEL_PC5 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC5, $city),
+                AdvertPosition::POSITION_VIDEO_CHANNEL_PC6 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC6, $city),
+                AdvertPosition::POSITION_VIDEO_CHANNEL_PC7 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC7, $city),
+                AdvertPosition::POSITION_VIDEO_CHANNEL_PC8 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC8, $city),
+                AdvertPosition::POSITION_VIDEO_CHANNEL_PC9 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC9, $city),
+                AdvertPosition::POSITION_VIDEO_CHANNEL_PC10 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC10, $city),
+            ];
+        }else if($page == "wapindex"){
+            $data['advert'] = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX, $city);;
         }
 
         return $data;
@@ -256,6 +279,9 @@ class VideoController extends BaseController
         $playLimit = !empty($playLimit) ? $playLimit : '';
         $channelId = !empty($channelId) ? $channelId : '';
 
+        $videoDao = new VideoDao();
+        //year==''或0（全部），默认显示最新年份
+        $year = $videoDao->findMaxYear($year);
         // 筛选项
         $data = [];
         // 当请求为第一页时，返回筛选页头部信息
@@ -264,7 +290,6 @@ class VideoController extends BaseController
             $data = $videoLogic->filterHeaders($channelId, $sort, $tag, $area, $year, $type, $playLimit, $status);
         }
         // 根据条件取视频信息
-        $videoDao = new VideoDao();
         $video = $videoDao->filterVideoList2($channelId, $sort, $sorttype, $tag, $area, $year, $type, $playLimit, $page, $pageSize, $status);
 
         $data = array_merge($data, $video);

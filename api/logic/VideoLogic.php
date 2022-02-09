@@ -540,7 +540,9 @@ class VideoLogic
                 'query' => Video::find()
 //                    ->joinWith('years')
                     ->select('id')
-                    ->andWhere(['like', 'title', $keyword])
+                    ->andWhere(['or',
+                        ['like', 'title', $keyword],
+                        ['like', 'summary', $keyword]])
                     ->andFilterWhere(['channel_id' => $channelId])
                     ->andFilterWhere(['like', 'category_ids' , $tag])
                     ->andFilterWhere(['area' => $area])
@@ -554,7 +556,10 @@ class VideoLogic
                 'query' => Video::find()
 //                    ->joinWith('video_year')
                     ->select('id')
-                    ->andWhere(['like', 'title', $keyword])
+//                    ->andWhere(['like', 'title', $keyword])
+                    ->andWhere(['or',
+                        ['like', 'title', $keyword],
+                        ['like', 'summary', $keyword]])
                     ->andFilterWhere(['channel_id' => $channelId])
                     ->andFilterWhere(['like', 'category_ids' , $tag])
                     ->andFilterWhere(['area' => $area])

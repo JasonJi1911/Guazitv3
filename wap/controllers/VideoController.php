@@ -314,9 +314,11 @@ class VideoController extends BaseController
         }
 
         //查线路
-        $sources = Yii::$app->api->get('/video/chapter-sources',['uid'=>$uid,'chapterId'=>$chapterId,]);
-        if($sources){
-            $data['sources'] = $sources;
+        if($chapterId!=0){
+            $sources = Yii::$app->api->get('/video/chapter-sources',['uid'=>$uid,'chapterId'=>$chapterId,]);
+            if($sources){
+                $data['sources'] = $sources;
+            }
         }
         if($data){
             $errno = 0;

@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Url;
 use pc\assets\NewIndexStyleAsset;
+use api\models\advert\AdvertPosition;
 
 //$this->title = '';
 NewIndexStyleAsset::register($this);
@@ -444,12 +445,12 @@ $this->registerJs($js);
                     <?php endif;?>
                 <?php endforeach;?>
             </ul>
-        <?php  else: ?>
-            <div class="play-box video-add-column">
-                <a href="<?=$labels['ad_skip_url']?>" target="_blank">
-                    <img src="<?=$labels['ad_image']?>" alt="">
-                </a>
-            </div>
+<!--        --><?php // else: ?>
+<!--            <div class="play-box video-add-column">-->
+<!--                <a href="--><?//=$labels['ad_skip_url']?><!--" target="_blank">-->
+<!--                    <img src="--><?//=$labels['ad_image']?><!--" alt="">-->
+<!--                </a>-->
+<!--            </div>-->
         <?php endif; ?>
     <?php endforeach;?>
 <?php endif; ?>
@@ -564,4 +565,77 @@ $this->registerJs($js);
         }
         return html;
     }
+
+    //按城市加载广告
+    $(function () {
+        var req = new XMLHttpRequest();
+        req.open('GET', document.location, false);
+        req.send(null);
+        var cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
+        var citycode = '';
+        if(cf_ray && cf_ray.length>3){
+            citycode = cf_ray.substring(cf_ray.length-3);
+        }
+        // citycode = 'SYD';
+        // console.log(citycode);
+        var arrIndex = {};
+        arrIndex['citycode'] = citycode;
+        arrIndex['page'] = 'channel';
+        arrIndex['chapterId'] = 0;
+        $.ajax({
+            url: '/video/advert-info',
+            data: arrIndex,
+            type:'get',
+            cache:false,
+            dataType:'json',
+            success:function(res) {
+                if(res.errno==0){
+                    var dataar = {};
+                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC1?>']!=[]){
+                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC1?>'];
+                        $(".Sports-box").eq(0).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
+                    }
+                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC2?>']!=[]){
+                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC2?>'];
+                        $(".Sports-box").eq(1).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
+                    }
+                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC3?>']!=[]){
+                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC3?>'];
+                        $(".Sports-box").eq(2).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
+                    }
+                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC4?>']!=[4]){
+                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC4?>'];
+                        $(".Sports-box").eq(3).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
+                    }
+                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC5?>']!=[]){
+                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC5?>'];
+                        $(".Sports-box").eq(4).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
+                    }
+                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC6?>']!=[]){
+                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC6?>'];
+                        $(".Sports-box").eq(5).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
+                    }
+                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC7?>']!=[]){
+                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC7?>'];
+                        $(".Sports-box").eq(6).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
+                    }
+                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC8?>']!=[]){
+                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC8?>'];
+                        $(".Sports-box").eq(7).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
+                    }
+                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC9?>']!=[]){
+                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC9?>'];
+                        $(".Sports-box").eq(8).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
+                    }
+                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC10?>']!=[]){
+                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC10?>'];
+                        $(".Sports-box").eq(9).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
+                    }
+                }
+            },
+            error : function() {
+                console.log("广告加载失败");
+            }
+        });
+    });
 </script>
