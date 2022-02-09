@@ -1042,7 +1042,6 @@ function initialUrl($url)
 
         //视频 player1
         <?php $default_qua = 0;?>
-        $('#load1-img').remove();
         var ini_video = {
             quality: eval('(' + qualitystr + ')'),
             pic: '',
@@ -1082,13 +1081,13 @@ function initialUrl($url)
             var l = bb1.link;
             console.log("image: "+bb1.pic);
 
-            $('#load1-img').remove();
             dp.switchVideo(
                 {
                     url: '',
                     pic: bb1.pic,
                 }
             );
+            $('#load1-img').remove();
 
             $("#player_ad").append('<div class="AD-box" id="AD-box"><a href="' + l +'">广告剩余：<span id="time_ad">10</span>S</a></div>' +
                 '<div class="ADxq-box" id="ADxq-box"><a id="link" target="_blank" href="' + l + '">查看详情<svg t="1628136750461" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M572.197 505.905a19.707 19.707 0 0 1-5.976 13.397L300.215 785.31c-3.438 3.438-8.558 5.705-13.129 5.705s-9.728-2.304-13.129-5.705l-28.562-28.562c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129L469.98 505.905 245.395 281.32c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l28.562-28.562c3.438-3.438 8.558-5.705 13.129-5.705s9.728 2.304 13.129 5.705l266.277 266.277a19.534 19.534 0 0 1 5.714 13.465z m219.428 0a19.707 19.707 0 0 1-5.976 13.397L519.643 785.31c-3.438 3.438-8.558 5.705-13.129 5.705s-9.728-2.304-13.129-5.705l-28.562-28.562c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l224.585-224.585L464.823 281.32c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l28.562-28.562c3.438-3.438 8.558-5.705 13.129-5.705s9.728 2.304 13.129 5.705L785.92 492.777a19.534 19.534 0 0 1 5.714 13.465z"></path></svg></a></div>' +
@@ -1132,7 +1131,6 @@ function initialUrl($url)
             var bb1 = adslists[0];
             var l = bb1.link;
 
-            $('#load1-img').remove();
             dp.switchVideo(
                 {
                     url: bb1.video,
@@ -1140,6 +1138,17 @@ function initialUrl($url)
                     type: 'auto'
                 }
             );
+            var playflag = false;
+            //3秒执行，广告NaN直接删除，播放视频
+            setTimeout(function(){
+                if(!playflag){
+                    $('#load1-img').remove();
+                    $("#player_ad").hide();
+                    dp.destroy();
+                    $("#player1").show();
+                    dp1.play();
+                }
+            },3000);
 
             $("#player_ad").append('<div class="AD-box" id="AD-box"><a href="' + l +'">广告剩余：<span id="time_ad">10</span>S</a></div>' +
                 '<div class="ADxq-box" id="ADxq-box"><a id="link" target="_blank" href="' + l + '">查看详情<svg t="1628136750461" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M572.197 505.905a19.707 19.707 0 0 1-5.976 13.397L300.215 785.31c-3.438 3.438-8.558 5.705-13.129 5.705s-9.728-2.304-13.129-5.705l-28.562-28.562c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129L469.98 505.905 245.395 281.32c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l28.562-28.562c3.438-3.438 8.558-5.705 13.129-5.705s9.728 2.304 13.129 5.705l266.277 266.277a19.534 19.534 0 0 1 5.714 13.465z m219.428 0a19.707 19.707 0 0 1-5.976 13.397L519.643 785.31c-3.438 3.438-8.558 5.705-13.129 5.705s-9.728-2.304-13.129-5.705l-28.562-28.562c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l224.585-224.585L464.823 281.32c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l28.562-28.562c3.438-3.438 8.558-5.705 13.129-5.705s9.728 2.304 13.129 5.705L785.92 492.777a19.534 19.534 0 0 1 5.714 13.465z"></path></svg></a></div>' +
@@ -1149,14 +1158,11 @@ function initialUrl($url)
                 document.getElementById('link').click();
                 $('#link').trigger('click');
             });
-            // $("#player_ad").on('click', function() {
-            //     console.log(Math.floor(dp.video.duration));
-            //     dp.play();
-            // });
 
             dp.on('loadedmetadata', function () {
                 document.getElementById('time_ad').innerText = Math.floor(dp.video.duration);
-                // document.getElementById('player_ad').click();
+                playflag = true;
+                $('#load1-img').remove();
                 dp.play();
             });
             dp.on('timeupdate', function () {
@@ -1187,8 +1193,8 @@ function initialUrl($url)
 //                initialPlayer(ini_video);
             });
         }else if(advert['ad_type']==''){
-            console.log("no ad");
             dp.destroy();
+            $('#load1-img').remove();
             $("#player_ad").hide();
             $("#player1").show();
             dp1.play();
