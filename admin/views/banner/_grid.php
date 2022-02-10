@@ -73,6 +73,13 @@ use admin\models\video\Video;
                 return Html::img($model->image->resize(500,120),['width' => 200,'height' => 120]);
             }
         ],
+        [
+            'label' => 'Banner展示渠道',
+            'format' => 'raw',
+            'value' => function($model){
+                return Banner::$sourceBanner[$model->product];
+            }
+        ],
         'display_order',
         'cityName',
         '@status',

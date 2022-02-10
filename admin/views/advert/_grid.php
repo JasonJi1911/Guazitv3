@@ -85,6 +85,16 @@ $this->params['breadcrumbs'][] = $this->title;
         '@status',
         'cityName',
         [
+            'attribute' => 'platform',
+            'format' => 'raw',
+            'value' => function($model) {
+                if (!empty($model->platform)) {
+                    return Advert::$platformmap[$model->platform];
+                }
+                return '--';
+            }
+        ],
+        [
             'class' => 'metronic\grid\ActionColumn',
             'template' => '{update} {shelve} {delete}',
             'buttons' => [

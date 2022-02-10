@@ -28,6 +28,7 @@ use Yii;
  * @property int $click 点击量
  * @property int $status 状态（1-开启，2-关闭）
  * @property int $city_id 城市id
+ * @property string $platform 平台-播放平台(RY/GZ)
  * @property int $created_at 创建时间
  * @property int $updated_at 更新时间
  * @property int $deleted_at 删除时间
@@ -64,6 +65,14 @@ class Advert extends \xiang\db\ActiveRecord implements StatusToggleInterface,Sou
         self::AD_TYPE_CHUANSHANJIA => '穿山甲广告',
         self::AD_TYPE_GOOGLE => 'google广告',
         self::AD_TYPE_GUANGDIANTONG => '广点通广告',
+    ];
+
+
+    const PLATFORM_GZ = 'GZ'; // 瓜子
+    const PLATFORM_RY = 'RY'; // 如意
+    public static $platformmap=[
+        self::PLATFORM_GZ        => '瓜子',
+        self::PLATFORM_RY        => '如意',
     ];
 
     /**

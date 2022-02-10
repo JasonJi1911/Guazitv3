@@ -8,6 +8,7 @@ use common\models\IpAddress;
 
 class Advert extends \common\models\advert\Advert
 {
+    public $imageurl;
     /**
      * {@inheritdoc}
      */
@@ -18,8 +19,10 @@ class Advert extends \common\models\advert\Advert
             [['title'], 'string', 'max' => 64],
             [['ad_key', 'ad_android_key'], 'string', 'max' => 128],
             [['skip_url'], 'string', 'max' => 256],
-            [['url_type', 'title', 'skip_url'], 'required'],
-            [['city_id'],'default','value'=>0]
+            [['url_type', 'title', 'skip_url','platform'], 'required'],
+            [['city_id'],'default','value'=>0],
+            [['platform'], 'string', 'max' => 2],
+            [['imageurl'], 'safe'],
         ];
     }
 
@@ -47,7 +50,8 @@ class Advert extends \common\models\advert\Advert
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'deleted_at' => 'Deleted At',
-            'cityName' => '地域'
+            'cityName' => '地域',
+            'platform' => '平台'
         ];
     }
 
@@ -58,6 +62,15 @@ class Advert extends \common\models\advert\Advert
     public function getAdvertPosition()
     {
         return $this->hasOne(AdvertPosition::className(), ['id' => 'position_id']);
+    }
+
+
+    public function beforeSave($insert)
+    {
+        if(!empty($this->imageurl) && strpos($this->imageurl, '.m3u8')!==false){
+            $this->image = $this->imageurl;
+        }
+        return parent::beforeSave($insert);
     }
 
     public function afterSave($insert, $changedAttributes)

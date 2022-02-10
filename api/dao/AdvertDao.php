@@ -39,12 +39,12 @@ class AdvertDao extends BaseDao
             array_push($citylist, 0);
             //所有广告
             $advert = Advert::find()->select('id,position_id')
-                ->where(['position_id' => $position, 'status' => Advert::STATUS_OPEN])
+                ->where(['position_id' => $position, 'status' => Advert::STATUS_OPEN,'platform'=>PLATFORM])
                 ->all();
 
             if ($city)
                 $advert = Advert::find()->select('id,position_id')
-                    ->where(['position_id' => $position, 'status' => Advert::STATUS_OPEN, 'city_id' => $citylist])
+                    ->where(['position_id' => $position, 'status' => Advert::STATUS_OPEN, 'city_id' => $citylist,'platform'=>PLATFORM])
                     ->all();
             //循环把广告id写入到位置数组里
             $data = [];
@@ -76,7 +76,7 @@ class AdvertDao extends BaseDao
             $data = json_decode($data, true);
         } else {
             //查询当前位置的广告位信息
-            $advert = Advert::findOne(['id' => $advertId]);
+            $advert = Advert::findOne(['id' => $advertId,'platform'=>PLATFORM]);
             if (!$advert) {
                 return [];
             }
@@ -96,7 +96,7 @@ class AdvertDao extends BaseDao
     {
         $dataProvider = new ActiveDataProvider([
             'query' => Advert::find()
-                ->where(['id' => $advertId])
+                ->where(['id' => $advertId,'platform'=>PLATFORM])
         ]);
 
         return $dataProvider->toArray($this->_fields);

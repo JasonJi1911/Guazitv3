@@ -63,7 +63,7 @@ function initialUrl($url)
 <script src="/MyPlayer/js/DPlayer.min-1.7.js?v=5" type="text/javascript" charset="utf-8"></script>
 <style>
     .selected_quantity{
-        color: #FF5722;
+        color: #FF556E;
     }
 
     .box {
@@ -176,7 +176,7 @@ function initialUrl($url)
     .AD-box>a>span {
         display: inline-block;
         min-width: 16px;
-        color: #FF5722;
+        color: #FF556E;
         text-align: center;
     }
 
@@ -187,7 +187,7 @@ function initialUrl($url)
         height: 30px;
         border-radius: 30px;
         overflow: hidden;
-        background-color: #FF5722;
+        background-color: #FF556E;
         opacity: 0.6;
     }
 
@@ -248,7 +248,7 @@ function initialUrl($url)
 
     .palyer-js:hover {
         /*color: rgba(255, 255, 255, 1);*/
-        color: #FF5722;
+        color: #FF556E;
     }
 
     .player-next-chapter:hover {/*无效上一集样式*/
@@ -344,11 +344,11 @@ function initialUrl($url)
     }
 
     .player-tab>div.player-tab-a:hover {
-        color: #FF5722;
+        color: #FF556E;
     }
 
     .player-tab>div.act {
-        color: #FF5722;
+        color: #FF556E;
     }
 
     .player-tab-all,
@@ -371,7 +371,7 @@ function initialUrl($url)
     }
 
     .player-tab-all:hover {
-        color: #FF5722;
+        color: #FF556E;
         background-image: url(/MyPlayer/img/icon-down-o.png);
     }
 
@@ -381,7 +381,7 @@ function initialUrl($url)
     }
 
     .player-tab-sq:hover {
-        color: #FF5722;
+        color: #FF556E;
         background-image: url(/MyPlayer/img/up-o.png);
     }
 
@@ -420,12 +420,12 @@ function initialUrl($url)
     }
 
     .player-box-JS>a:hover {
-        color: #FF5722;
+        color: #FF556E;
     }
 
     .player-box-JS>a.act {
         color: #FFFFFF;
-        background-color: #FF5722;
+        background-color: #FF556E;
     }
 
     .QXD-vip {
@@ -439,7 +439,7 @@ function initialUrl($url)
         height: 40px;
         line-height: 40px;
         font-size: 14px;
-        color: #FF5722;
+        color: #FF556E;
         text-align: center;
     }
 
@@ -453,7 +453,7 @@ function initialUrl($url)
         display: inline-block;
         padding: 0px 10px;
         margin: 0px 5px;
-        color: #FF5722;
+        color: #FF556E;
         font-size: 12px;
         box-sizing: border-box;
     }
@@ -464,11 +464,11 @@ function initialUrl($url)
     }
 
     .QXD-vip-02-a2 {
-        border: solid 1px #FF5722;
+        border: solid 1px #FF556E;
     }
 
     .QXD-vip-02-a2:hover {
-        background-color: #FF5722;
+        background-color: #FF556E;
         color: #FFFFFF;
     }
 
