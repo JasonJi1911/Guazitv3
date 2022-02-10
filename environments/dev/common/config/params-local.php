@@ -32,6 +32,12 @@ define('QQURL','https://cache4.jhdyw.vip:8091/jhcs.php?url=');
 define('IQIYIURL','https://cache4.jhdyw.vip:8091/jhcs.php?url=');
 //其他(视频url转换)
 define('OTHERURL','https://cache4.jhdyw.vip:8091/jhcs.php?url=');
+//短信验证码长度
+define('SMSCODE_LENGTH',6);
+//短信密钥
+define('SMS_ACCESS_KEY','0qZxe0AMh7wlMI2RBfD3sTbul');
+//广告播放平台
+define('PLATFORM','GZ');
 
 return [
     'sign_secret_key' => [ //签名key

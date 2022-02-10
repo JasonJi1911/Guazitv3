@@ -967,7 +967,7 @@ function initialUrl($url)
         if(cf_ray && cf_ray.length>3){
             citycode = cf_ray.substring(cf_ray.length-3);
         }
-        citycode = 'MEL';
+        // citycode = 'MEL';
         // console.log(citycode);
         var arrIndex = {};
         arrIndex['citycode'] = citycode;

@@ -166,7 +166,7 @@ $type =initialUrl($url);
         if(cf_ray && cf_ray.length>3){
             citycode = cf_ray.substring(cf_ray.length-3);
         }
-        citycode = 'SYD';
+        // citycode = 'SYD';
         // console.log(citycode);
         $.ajax( {
             url:'/video/advert-info',
