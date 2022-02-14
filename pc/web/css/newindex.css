@@ -4162,6 +4162,9 @@ Movie-Ranking-img-num {
 	.box02>.HrBox>.HrBox-li:last-of-type {
 		display: block;
 	}
+	#searchVideos>.Sports-box>.Movie-list:last-of-type {
+		display: block;
+	}
 }
 
 @media screen and (max-width:1680px) {
@@ -4175,6 +4178,12 @@ Movie-Ranking-img-num {
 		display: block;
 	}
 	.box02>.HrBox>.HrBox-li:nth-last-of-type(2) {
+		display: block;
+	}
+	#searchVideos>.Sports-box>.Movie-list:last-of-type {
+		display: block;
+	}
+	#searchVideos>.Sports-box>.Movie-list:nth-last-of-type(2) {
 		display: block;
 	}
 }
@@ -6346,7 +6355,7 @@ Movie-Ranking-img-num {
 .RANbox-help-title {
 	overflow: hidden;
 	height: 176px;
-	margin-top: 98px;
+	margin-top: 62px;
 }
 
 .RANbox-help-title-name {

@@ -1446,8 +1446,8 @@ button[data-balloon] {
 	display: inline-block;
 	position: relative;
 	-webkit-box-shadow: #dfdfdf 0 0 0 0 inset;
-	box-shadow: inset 0 0 0 0 #FF5722;
-	border: 1px solid #FF5722;
+	box-shadow: inset 0 0 0 0 #FF556E;
+	border: 1px solid #FF556E;
 	height: 20px;
 	width: 32px;
 	border-radius: 10px;
@@ -1484,7 +1484,7 @@ button[data-balloon] {
 
 .dplayer .dplayer-controller .dplayer-icons .dplayer-toggle input:checked+label:before {
 	width: 30px;
-	background:#FF5722;
+	background:#FF556E;
 }
 
 .dplayer .dplayer-controller .dplayer-icons .dplayer-toggle input:checked+label:after {
@@ -2113,11 +2113,11 @@ button[data-balloon] {
 }
 
 .player-tab>div.player-tab-a:hover {
-	color: #FF5722;
+	color: #FF556E;
 }
 
 .player-tab>div.act {
-	color: #FF5722;
+	color: #FF556E;
 }
 
 .player-tab-all,
@@ -2140,7 +2140,7 @@ button[data-balloon] {
 }
 
 .player-tab-all:hover {
-	color: #FF5722;
+	color: #FF556E;
 	background-image: url(../img/icon-down-o.png);
 }
 
@@ -2150,7 +2150,7 @@ button[data-balloon] {
 }
 
 .player-tab-sq:hover {
-	color: #FF5722;
+	color: #FF556E;
 	background-image: url(../img/up-o.png);
 }
 
@@ -2183,12 +2183,12 @@ button[data-balloon] {
 }
 
 .player-box-JS>a:hover {
-	color: #FF5722;
+	color: #FF556E;
 }
 
 .player-box-JS>a.act {
 	color: #FFFFFF;
-	background-color: #FF5722;
+	background-color: #FF556E;
 }
 .QXD-vip{
 	background-color: #2a2a32;
@@ -2200,7 +2200,7 @@ button[data-balloon] {
 	height: 40px;
 	line-height: 40px;
 	font-size: 14px;
-	color: #FF5722;
+	color: #FF556E;
 	text-align: center;
 }
 .QXD-vip-02{
@@ -2212,7 +2212,7 @@ button[data-balloon] {
 	display: inline-block;
 	padding:0px 10px;
 	margin: 0px 5px;
-	color: #FF5722;
+	color: #FF556E;
 	font-size: 8px;
 	box-sizing: border-box;
 }
@@ -2221,10 +2221,10 @@ button[data-balloon] {
 	border: solid 1px #1c1d2f;
 }
 .QXD-vip-02-a2{
-	border: solid 1px #FF5722;
+	border: solid 1px #FF556E;
 }
 .QXD-vip-02-a2:hover{
-	background-color: #FF5722;
+	background-color: #FF556E;
 	color: #FFFFFF;
 }
 .dplayer-quality-item.QXDvip{

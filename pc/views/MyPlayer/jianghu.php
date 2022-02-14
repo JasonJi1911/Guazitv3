@@ -588,9 +588,9 @@ function initialUrl($url)
         fill: #FF556E;
     }
 
-    .dplayer .dplayer-controller {
-        line-height: 90px;
-    }
+    /*.dplayer .dplayer-controller {*/
+    /*    line-height: 90px;*/
+    /*}*/
 
     .dplayer .dplayer-controller .dplayer-icons .dplayer-icon.dplayer-volume-icon:hover svg path {
         fill: #FF556E;
@@ -973,6 +973,11 @@ function initialUrl($url)
         arrIndex['citycode'] = citycode;
         arrIndex['page'] = 'detail';
         arrIndex['chapterId'] = '<?=$play_chapter_id?>';
+
+        var advert = {};
+        advert['ad_type'] = '';
+        advert['ad_url'] = '';
+        advert['ad_link'] = '';
         $.ajax({
             url:'/video/advert-info',
             data:arrIndex,
@@ -981,10 +986,6 @@ function initialUrl($url)
             dataType:'json',
             success:function(res) {
                 if(res.errno == 0){
-                    var advert = {};
-                    advert['ad_type'] = '';
-                    advert['ad_url'] = '';
-                    advert['ad_link'] = '';
                     if(res.data.advert.playbefore.ad_image){
                         advert['ad_url'] = res.data.advert.playbefore.ad_image;
                         advert['ad_link'] = res.data.advert.playbefore.ad_skip_url;
@@ -996,27 +997,24 @@ function initialUrl($url)
                             advert['ad_type'] = 'img';
                         }
                     }
-                    var sources = res.data.sources;
-                    var qualitystr = '';
-                    for(var i in sources){
-                        qualitystr += "{name: '"+sources[i].name+"',url: '"+sources[i].resource_url+"',type: 'auto',limit: '"+sources[i].play_limit+"'},";
-                    }
-                    qualitystr = "["+qualitystr+"]";
-                    advertinfo(advert,qualitystr);
+                    // var sources = res.data.sources;
+                    // var qualitystr = '';
+                    // for(var i in sources){
+                    //     qualitystr += "{name: '"+sources[i].name+"',url: '"+sources[i].resource_url+"',type: 'auto',limit: '"+sources[i].play_limit+"'},";
+                    // }
+                    // qualitystr = "["+qualitystr+"]";
+                    // advertinfo(advert,qualitystr);
+                    defaultAdvertInfo(advert);
                 }else{
-                    defaultAdvertInfo();
+                    defaultAdvertInfo(advert);
                 }
             },
             error : function() {
-                defaultAdvertInfo();
+                defaultAdvertInfo(advert);
             }
         });
     });
-    function defaultAdvertInfo(){
-        var advert = {};
-        advert['ad_type'] = '';
-        advert['ad_url'] = '';
-        advert['ad_link'] = '';
+    function defaultAdvertInfo(advert){
         var qualitystr = '';
         <?php
         $qstr = '';
