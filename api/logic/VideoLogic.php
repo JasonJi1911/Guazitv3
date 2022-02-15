@@ -607,7 +607,7 @@ class VideoLogic
         }
 
         // $videoDao = new VideoDao();
-        $videos = $videoDao->batchGetVideo($seriesId, ['video_id', 'video_name', 'category', 'cover', 'horizontal_cover', 'intro', 'flag', 'score', 'play_times','title', 'area', 'year', 'tag', 'director', 'artist', 'created_at','total_views'], false, ['channel_id', 'actors_id', 'actors', 'director', 'artist', 'chapters']);
+        $videos = $videoDao->batchGetVideo($seriesId, ['video_id', 'video_name', 'category', 'cover', 'horizontal_cover', 'intro', 'flag', 'score', 'play_times','title', 'area', 'year', 'tag', 'director', 'artist', 'created_at','total_views'], false, ['channel_id', 'channel_name', 'actors_id', 'actors', 'director', 'artist', 'chapters']);
 
         foreach ($videos as $k=>&$videoInfo) {
             if($videoInfo['chapters']){
@@ -618,7 +618,6 @@ class VideoLogic
         }
 
         $data['list'] = $videos;
-        $data['total_count'] = count($videos,0);
 
         array_unshift($videoChannel,  ['channel_id' => '', 'channel_name' => '全部']);
         $data['tabs'] = $videoChannel;
@@ -763,7 +762,9 @@ class VideoLogic
             $video['mime_type']     = substr(strrchr($video['resource_url'][$sourceId], '.'), 1);
             $video['last_chapter']  = isset($videos[$key-1]) ? $videos[$key-1]['chapter_id'] : 0;
             $video['next_chapter']  = isset($videos[$key+1]) ? $videos[$key+1]['chapter_id'] : 0;
-//            unset($video['resource_url']); // 安全考虑，删除剧集播放连接，防止全部播放连接一次性全返回
+            if(Yii::$app->common->product == Common::PRODUCT_APP){
+                unset($video['resource_url']); // 安全考虑，删除剧集播放连接，防止全部播放连接一次性全返回
+            }
             if(empty($video['resource_url']))
             {
                 unset($videos[$key]);

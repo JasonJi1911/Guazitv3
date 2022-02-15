@@ -92,8 +92,8 @@ $(function(){
                 //发送请求，获取数据        
                 $.get('/video/refresh-cate', arrIndex, function(s) {
                     refreshCate(s.data.search_box);
+                    that.addClass("conditionAct").parents(".conditionType").find(".condition>li>a").removeClass("conditionAct");
                 }); 
-                that.addClass("conditionAct").parents(".conditionType").find(".condition>li>a").removeClass("conditionAct");
             }else{
                 if(type!="sort"){
                     that.addClass("conditionAct").parents('li').siblings().find('a').removeClass("conditionAct");

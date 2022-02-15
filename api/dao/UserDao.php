@@ -298,8 +298,11 @@ class UserDao extends BaseDao
      * 修改密码
      */
     public function modifypasswordByMobile($mobile,$password){
+        if(!$mobile){
+            return 0;
+        }
         $user = new User();
-        $user->oldAttributes = User::find()->andWhere(['mobile' => $mobile])->asArray()->one();
+        $user->oldAttributes = User::findOne(['mobile' => $mobile]);
         $param['password_hash'] = $password;
         $param['password_flag'] = User::PASSWORD_FLAG_YES;
         $rows = $user->updateAttributes($param);

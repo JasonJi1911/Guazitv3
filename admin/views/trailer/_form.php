@@ -20,8 +20,8 @@ $this->registerJsFile('/js/video-select2.js', ['depends' => 'metronic\assets\Sel
     <?php echo $form->field($model, 'video_id')->select2($model->video_id ? [$model->video_id => $model->video->title ] : [], ['class' => 'series'])->wrapper(['width' => 5])->hint('作品信息必填,否则前端将无法展示')->label('作品');?>
 <?php endif;?>
 
-    <?= $form->field($model, 'title')->textInput(['maxlength' => true, 'placeholder' => '标题']) ?>
-    <?= $form->field($model, 'stitle')->textInput(['maxlength' => true, 'placeholder' => '副标题']) ?>
+<!--    --><?//= $form->field($model, 'title')->textInput(['maxlength' => true, 'placeholder' => '标题']) ?>
+<!--    --><?//= $form->field($model, 'stitle')->textInput(['maxlength' => true, 'placeholder' => '副标题']) ?>
     <?= $form->field($model, 'online_time')->datetimePickerInput(['value' => date('Y-m-d H:i:s', $model->online_time ? $model->online_time : time()), 'start-date' => date('Y-m-d')])?>
     <?= $form->field($model, 'display_order')->numberInput(['min' => 0, 'max' => '255'])->wrapper(['width' => 3])->hint('0 ~ 255之间，值越大，显示越靠前') ?>
     <?= $form->field($model, 'status')->dropDownList($model::$statusMap)->wrapper(['width' => 2]) ?>

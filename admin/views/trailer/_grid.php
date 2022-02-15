@@ -32,8 +32,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 return $model->video->title;
             }
         ],
-        'title',
-        'stitle',
+//        'title',
+//        'stitle',
         'online_time:datetime',
         'display_order',
         '@status',

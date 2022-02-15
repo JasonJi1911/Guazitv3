@@ -444,7 +444,7 @@ else
                                                             <a href="javascript:void(0);"
                                                                class="bar-link"
                                                                data-source-id="<?= $source['resId']?>">
-                                                                <?= $source['resName'] ?>
+                                                                <?= $source['resName']."(".count($source['data'])."集)" ?>
                                                             </a>
                                                         </li>
                                                     <?php endforeach;?>
@@ -636,7 +636,7 @@ else
                                 <?php endforeach;?>
                                 <?php if($adtab) :?>
                                     <div class="video-right-ad-img J_video_right_ad_img">
-                                        <img "<?=$advert['ad_image']?>" onerror="this.src='/images/NewVideo/GG03.png'">
+                                        <img "<?=$advert['ad_image']?>" onerror="this.src='/images/NewVideo/GG03_2.png'">
                                     </div>
                                 <?php endif;?>
                                 <div class="AD-02-nd-right">
@@ -650,10 +650,10 @@ else
                                         <?php endforeach;?>
                                         <?php if($adtab) :?>
                                             <a href="<?=$advert['ad_skip_url']?>" target="_blank">
-                                                <img src="<?=$advert['ad_image']?>" onerror="this.src='/images/NewVideo/GG03.png'"/>
+                                                <img src="<?=$advert['ad_image']?>" onerror="this.src='/images/NewVideo/GG03_2.png'"/>
                                             </a>
                                         <?php else :?>
-                                            <img src="/images/NewVideo/GG03.png"/>
+                                            <img src="/images/NewVideo/GG03_2.png"/>
                                         <?php endif;?>
                                     <?php endif;?>
                                 </div>
@@ -1516,7 +1516,7 @@ else
             var str = '<div id="addreplydiv" class="GNbox-PLsr '+black+'" name="zt">' +
                 '<textarea placeholder="在此输入回复内容"></textarea>' +
                 '<div class="GNbox-PL-box">' +
-                '<input class="GNbox-Btnfs" type="button" name="" onclick="sendreply('+id+');" value="发送" />' +
+                '<input class="GNbox-Btnfs" type="button" name="" onclick="sendreply('+id+');" value="发布" />' +
                 '</div>' +
                 '</div>';
             $("#addreplydiv").remove();

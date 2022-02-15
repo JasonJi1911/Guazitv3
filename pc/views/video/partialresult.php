@@ -18,7 +18,7 @@ use yii\helpers\Url;
         </a>
         <div class="SSjg">
             <div class="SSjgName" name="zt">
-                <span class="SSjgTitle"><?= $info['title']?></span>
+                <span class="SSjgTitle"><?= $list['channel_name']?></span>
                 <a href="<?= Url::to(['detail', 'video_id' => $firstChap['video_id'], 'chapter_id' => $firstChap['chapter_id'], 'source_id' => $firstChap['source_id']])?>">
                     <span><?= $list['video_name']?></span>
                 </a>

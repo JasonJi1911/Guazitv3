@@ -78,7 +78,7 @@ use yii\helpers\Url;
                             &nbsp;清除历史
                         </div>
                         <div class="LSmenuBottom-rg">
-                            <a href="<?= Url::to(['/video/personal', 'ptab' => 'watchlog'])?>">查看更多&nbsp;》</a>
+                            <a href="<?= Url::to(['/video/personal', 'ptab' => 'watchlog'])?>">查看更多&nbsp;></a>
                         </div>
                     </div>
                 <?php endif;?>
@@ -123,7 +123,7 @@ use yii\helpers\Url;
                             &nbsp;清除历史
                         </div>
                         <div class="LSmenuBottom-rg">
-                            <a href="<?= Url::to(['/video/personal', 'ptab' => 'favorite'])?>">查看更多&nbsp;》</a>
+                            <a href="<?= Url::to(['/video/personal', 'ptab' => 'favorite'])?>">查看更多&nbsp;></a>
                         </div>
                     </div>
                 <?php endif;?>

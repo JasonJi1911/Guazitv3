@@ -591,44 +591,44 @@ $this->registerJs($js);
             success:function(res) {
                 if(res.errno==0){
                     var dataar = {};
-                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC1?>']!=[]){
-                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC1?>'];
+                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC1?>'];
+                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
                         $(".Sports-box").eq(0).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
                     }
-                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC2?>']!=[]){
-                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC2?>'];
+                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC2?>'];
+                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
                         $(".Sports-box").eq(1).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
                     }
-                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC3?>']!=[]){
-                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC3?>'];
+                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC3?>'];
+                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
                         $(".Sports-box").eq(2).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
                     }
-                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC4?>']!=[4]){
-                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC4?>'];
+                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC4?>'];
+                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
                         $(".Sports-box").eq(3).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
                     }
-                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC5?>']!=[]){
-                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC5?>'];
+                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC5?>'];
+                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
                         $(".Sports-box").eq(4).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
                     }
-                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC6?>']!=[]){
-                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC6?>'];
+                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC6?>'];
+                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
                         $(".Sports-box").eq(5).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
                     }
-                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC7?>']!=[]){
-                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC7?>'];
+                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC7?>'];
+                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
                         $(".Sports-box").eq(6).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
                     }
-                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC8?>']!=[]){
-                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC8?>'];
+                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC8?>'];
+                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
                         $(".Sports-box").eq(7).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
                     }
-                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC9?>']!=[]){
-                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC9?>'];
+                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC9?>'];
+                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
                         $(".Sports-box").eq(8).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
                     }
-                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC10?>']!=[]){
-                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC10?>'];
+                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC10?>'];
+                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
                         $(".Sports-box").eq(9).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
                     }
                 }

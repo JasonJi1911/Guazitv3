@@ -104,6 +104,10 @@ $this->registerJs($js);
                                 $icon_img = "../images/Index/jilupian_2.png";
                                 $icon_img_c = "../images/Index/jilupian_2c.png";
                                 break;
+                            case 39:
+                                $icon_img = "../images/Index/tiyu.png";
+                                $icon_img_c = "../images/Index/tiyu_c.png";
+                                break;
                             default:
                                 $icon_img = "";
                                 $icon_img_c = "";
@@ -111,24 +115,28 @@ $this->registerJs($js);
                         }
                         ?>
                         <?php if($channel['channel_id'] == 0) : ?>
-                            <div class="sort_img J_sort_img_c" style="display:none;"><img src="<?=$icon_img_c?>"></div>
-                            <div class="sort_img J_sort_img"><img src="<?=$icon_img?>"></div>
-                            <a href="<?= Url::to(['/video/index'])?>">
-                                <div class="sort-text">
-                                    <span><?= $channel['channel_name']?></span>
-                                </div>
-                            </a>
-                        <?php else:?>
-                            <div class="sort_img J_sort_img_c" style="display:none;"><img src="<?=$icon_img_c?>"></div>
-                            <div class="sort_img J_sort_img"><img src="<?=$icon_img?>"></div>
-                            <a href="<?= Url::to(['video/channel', 'channel_id' => $channel['channel_id']])?>">
-                            <div class="sort-text">
-                                <span><?= $channel['channel_name']?></span>
-                                <? if($channel['num'] != 0) : ?>
-                                    <span class="sortSpan"><?=$channel['num']?></span>
-                                <?php endif; ?>
+                            <div class="sort_img">
+                                <a href="<?= Url::to(['/video/index'])?>" style="display: flex;align-items: center;flex-direction: row;">
+                                    <img class="J_sort_img_c" src="<?=$icon_img_c?>" style="display:none;">
+                                    <img class="J_sort_img" src="<?=$icon_img?>">
+                                    <div class="sort-text">
+                                        <span><?= $channel['channel_name']?></span>
+                                    </div>
+                                </a>
                             </div>
-                            </a>
+                        <?php else:?>
+                            <div class="sort_img">
+                                <a href="<?= Url::to(['video/channel', 'channel_id' => $channel['channel_id']])?>">
+                                    <img class="J_sort_img_c" src="<?=$icon_img_c?>" style="display:none;">
+                                    <img class="J_sort_img" src="<?=$icon_img?>">
+                                    <div class="sort-text">
+                                        <span><?= $channel['channel_name']?></span>
+                                        <? if($channel['num'] != 0) : ?>
+                                            <span class="sortSpan"><?=$channel['num']?></span>
+                                        <?php endif; ?>
+                                    </div>
+                                </a>
+                            </div>
                     <?php endif;?>
                     </div>
                 <?php endforeach ?>
@@ -313,128 +321,135 @@ $this->registerJs($js);
             <a class="Title-big" href="javaScript:;"><?=$data['trailer']['trailer_title']['title']?></a>
         </li>
         <!--电影列表-->
-        <?php foreach ($data['trailer']['trailer'] as $list): ?>
-            <li class="Movie-list">
-                <div class="Coming-online">
-                    <div class="Coming-online-line"></div>
-                    <div class="Coming-online-text">即将上线</div>
-                </div>
-                <a class="Movie" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
-                    <img class="Movie-img i_background_errorimg" src="<?= $list['cover']?>" />
-                    <div class="palyBtn">
-                        <img src="/images/newindex/bofang.png" />
+        <?php foreach ($data['trailer']['trailer'] as $key=>$list): ?>
+            <?php if($key < 7) :?>
+                <? if($key<6){
+                    $trailerstyle = "display:block";
+                }else{
+                    $trailerstyle = "";
+                }?>
+                <li class="Movie-list" style="<?=$trailerstyle?>"  >
+                    <div class="Coming-online">
+                        <div class="Coming-online-line"></div>
+                        <div class="Coming-online-text"><?=date('Y-m-d',$list['online_time'])?></div>
                     </div>
+                    <a class="Movie" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
+                        <img class="Movie-img i_background_errorimg" src="<?= $list['cover']?>" />
+                        <div class="palyBtn">
+                            <img src="/images/newindex/bofang.png" />
+                        </div>
 
-                    <div class="Movie-details" name="zt">
-                        <div class="Movie-name01" name="zt">
-                            <?= $list['video_name']?>
-                        </div>
-                        <ul class="Movie-type" name="zt">
-                            <?php foreach (explode(' ',$list['category']) as $category): ?>
-                                <li>
-                                    <?= $category?>
-                                </li>
-                            <?php endforeach;?>
-                        </ul>
-                        <div class="Movie-star" name="zt">
-                            主演：
-                            <?php if (!empty($list['actors'])) :?>
-                                <?php foreach ($list['actors'] as $key => $actor): ?>
-                                    <span><?= $actor['actor_name']?></span>
-                                <?php endforeach;?>
-                            <?php endif;?>
-                        </div>
-                        <div class="Movie-content" name="zt">
-                            简介：
-                            <span><?= $list['intro']?></span>
-                        </div>
-                        <ul class="Movie-btm" name="zt">
-                            <li><?= $list['play_times']?></li>
-                            <li><input class="XQ" type="button" value="详情" onclick="XQ('<?= $list['video_id']?>')"/></li>
-                        </ul>
-                    </div>
-                </a>
-                <a class="Movie-name02 font-color-FFFFFF" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
-                    <?= $list['video_name']?>
-                </a>
-                <div class="Movie-type02" name="zt">
-                    <div>
-                        <?php foreach (explode(' ',$list['category']) as $category): ?>
-                            <span><?= $category?></span>
-                        <?php endforeach;?>
-                    </div>
-                    <div></div>
-                </div>
-            </li>
-            <!--详情弹出层,默认隐藏-->
-            <div class="alt" id="alt03<?= $list['video_id']?>">
-                <div class="alt03-box" name="zt">
-                    <div class="alt03-box-t">
-                        <div class="alt03-box-R">
-                            <img class="i_background_errorimg" src="<?= $list['cover']?>"  />
-                        </div>
-                        <div class="alt03-box-L">
-                            <a class="XQ-name" name="zt" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>"><?= $list['video_name']?></a>
-                            <div class="GNbox">
-                                <div class="GNbox-type" name="zt">
-                                    <?php foreach (explode(' ',$list['category']) as $category): ?>
-                                        <span>
-                                            <?= $category?>
-                                        </span>
-                                    <?php endforeach;?>
-                                </div>
-                                <div class="GNbox-RD" name="zt">
-                                    <?= $list['play_times']?>
-                                </div>
-                                <div class="GNbox-PF">
-                                    <span><?= $list['score']?></span>分
-                                </div>
+                        <div class="Movie-details" name="zt">
+                            <div class="Movie-name01" name="zt">
+                                <?= $list['video_name']?>
                             </div>
-                            <ul class="XQ-text">
-                                <li>年代:<span><?= $list['year']?></span></li>
-                                <li>导演:<span>
-                                            <?php if (!empty($list['director'])) :?>
-                                                <?php foreach ($list['director'] as $key => $director): ?>
-                                                    <?= $director['actor_name']?>
+                            <ul class="Movie-type" name="zt">
+                                <?php foreach (explode(' ',$list['category']) as $category): ?>
+                                    <li>
+                                        <?= $category?>
+                                    </li>
+                                <?php endforeach;?>
+                            </ul>
+                            <div class="Movie-star" name="zt">
+                                主演：
+                                <?php if (!empty($list['actors'])) :?>
+                                    <?php foreach ($list['actors'] as $key => $actor): ?>
+                                        <span><?= $actor['actor_name']?></span>
+                                    <?php endforeach;?>
+                                <?php endif;?>
+                            </div>
+                            <div class="Movie-content" name="zt">
+                                简介：
+                                <span><?= $list['intro']?></span>
+                            </div>
+                            <ul class="Movie-btm" name="zt">
+                                <li><?= $list['play_times']?></li>
+                                <li><input class="XQ" type="button" value="详情" onclick="XQ('<?= $list['video_id']?>')"/></li>
+                            </ul>
+                        </div>
+                    </a>
+                    <a class="Movie-name02 font-color-FFFFFF" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
+                        <?= $list['video_name']?>
+                    </a>
+                    <div class="Movie-type02" name="zt">
+                        <div>
+                            <?php foreach (explode(' ',$list['category']) as $category): ?>
+                                <span><?= $category?></span>
+                            <?php endforeach;?>
+                        </div>
+                        <div></div>
+                    </div>
+                </li>
+                <!--详情弹出层,默认隐藏-->
+                <div class="alt" id="alt03<?= $list['video_id']?>">
+                    <div class="alt03-box" name="zt">
+                        <div class="alt03-box-t">
+                            <div class="alt03-box-R">
+                                <img class="i_background_errorimg" src="<?= $list['cover']?>"  />
+                            </div>
+                            <div class="alt03-box-L">
+                                <a class="XQ-name" name="zt" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>"><?= $list['video_name']?></a>
+                                <div class="GNbox">
+                                    <div class="GNbox-type" name="zt">
+                                        <?php foreach (explode(' ',$list['category']) as $category): ?>
+                                            <span>
+                                                <?= $category?>
+                                            </span>
+                                        <?php endforeach;?>
+                                    </div>
+                                    <div class="GNbox-RD" name="zt">
+                                        <?= $list['play_times']?>
+                                    </div>
+                                    <div class="GNbox-PF">
+                                        <span><?= $list['score']?></span>分
+                                    </div>
+                                </div>
+                                <ul class="XQ-text">
+                                    <li>年代:<span><?= $list['year']?></span></li>
+                                    <li>导演:<span>
+                                                <?php if (!empty($list['director'])) :?>
+                                                    <?php foreach ($list['director'] as $key => $director): ?>
+                                                        <?= $director['actor_name']?>
+                                                    <?php endforeach;?>
+                                                <?php endif;?>
+                                    </li>
+                                    <li>主演:
+                                        <span>
+                                            <?php if (!empty($list['actors'])) :?>
+                                                <?php foreach ($list['actors'] as $key => $actor): ?>
+                                                    <?php if ($actor['actor_name'] !='') :?>
+                                                        <?php if ($key==0) :?>
+                                                            <?= $actor['actor_name']?>
+                                                        <?php else: ?>
+                                                            &nbsp;/&nbsp;<?= $actor['actor_name']?>
+                                                        <?php endif; ?>
+                                                    <?php endif; ?>
                                                 <?php endforeach;?>
                                             <?php endif;?>
-                                </li>
-                                <li>主演:
-                                    <span>
-                                        <?php if (!empty($list['actors'])) :?>
-                                            <?php foreach ($list['actors'] as $key => $actor): ?>
-                                                <?php if ($actor['actor_name'] !='') :?>
-                                                    <?php if ($key==0) :?>
-                                                        <?= $actor['actor_name']?>
-                                                    <?php else: ?>
-                                                        &nbsp;/&nbsp;<?= $actor['actor_name']?>
-                                                    <?php endif; ?>
-                                                <?php endif; ?>
-                                            <?php endforeach;?>
-                                        <?php endif;?>
-                                    </span>
-                                </li>
-                            </ul>
-                            <div class="XQ-btn" name="zt">
-                                <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">播放</a>
-                                <input type="button" value="收藏" onclick="addfavors(<?=$list['video_id']?>)" />
+                                        </span>
+                                    </li>
+                                </ul>
+                                <div class="XQ-btn" name="zt">
+                                    <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">播放</a>
+                                    <input type="button" value="收藏" onclick="addfavors(<?=$list['video_id']?>)" />
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <p class="alt03-box-Z">
-                        简介：<span><?= $list['intro']?></span>
-                    </p>
-                    <!--                                <div class="alt03-box-B">-->
-                    <!--                                    <div><span>173</span>评论</div>-->
-                    <!--                                    <div><span>173</span>赞</div>-->
-                    <!--                                    <div><span>50</span>踩</div>-->
-                    <!--                                    <div><span>12</span>分享 </div>-->
-                    <!--                                </div>-->
-                    <!--关闭按钮-->
-                    <input class="alt-GB" type="button" value="X" />
+                        <p class="alt03-box-Z">
+                            简介：<span><?= $list['intro']?></span>
+                        </p>
+                        <!--                                <div class="alt03-box-B">-->
+                        <!--                                    <div><span>173</span>评论</div>-->
+                        <!--                                    <div><span>173</span>赞</div>-->
+                        <!--                                    <div><span>50</span>踩</div>-->
+                        <!--                                    <div><span>12</span>分享 </div>-->
+                        <!--                                </div>-->
+                        <!--关闭按钮-->
+                        <input class="alt-GB" type="button" value="X" />
+                    </div>
                 </div>
-            </div>
+            <?php endif;?>
         <?php endforeach ?>
     </ul>
     <?php endif;?>
@@ -689,7 +704,7 @@ $this->registerJs($js);
                                 <a class="Movie" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
                                     <img class="Movie-img i_background_errorimg" src="<?= $list['cover']?>" />
                                     <!--                                    <div class="oth-time">-->
-                                    <!--                                        <!--评分-->-->
+                                                                            <!--评分-->
                                     <!--                                        --><?//= $list['score']?>
                                     <!--                                    </div>-->
                                     <div class="palyBtn">
@@ -967,24 +982,29 @@ $this->registerJs($js);
             dataType:'json',
             success:function(res) {
                 if(res.errno==0){
+                    console.log(res);
                     var dataar = {};
-                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC1?>']!=[]){
-                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC1?>'];
+                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC1?>'];
+                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
                         $(".Movie-box").eq(0).before('<div class="play-ad-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"> <img src="'+dataar.ad_image+'" alt=""></a></div>');
                     }
-                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC2?>']!=[]){
+                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC2?>'];
+                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
                         dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC2?>'];
                         $(".Movie-box").eq(1).before('<div class="play-ad-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"> <img src="'+dataar.ad_image+'" alt=""></a></div>');
                     }
-                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC3?>']!=[]){
+                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC3?>'];
+                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
                         dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC3?>'];
                         $(".Movie-box").eq(2).before('<div class="play-ad-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"> <img src="'+dataar.ad_image+'" alt=""></a></div>');
                     }
-                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC4?>']!=[]){
+                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC4?>'];
+                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
                         dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC4?>'];
                         $(".Movie-box").eq(3).before('<div class="play-ad-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"> <img src="'+dataar.ad_image+'" alt=""></a></div>');
                     }
-                    if(res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC5?>']!=[]){
+                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC5?>'];
+                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
                         dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC5?>'];
                         $(".Movie-box").eq(4).before('<div class="play-ad-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"> <img src="'+dataar.ad_image+'" alt=""></a></div>');
                     }

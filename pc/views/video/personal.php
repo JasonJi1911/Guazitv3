@@ -395,7 +395,7 @@ $(document).ready(function() {
                 </li>
                 <li>
                     <span class="per-safe-title-c">登录密码</span>
-                    <span class="per-safe-content"><?php if($data['user']['password_flag']==0):?>未设置<?php else:?>已设置<?php endif;?></span>
+                    <span class="per-safe-content J_is_bind_pass"><?php if($data['user']['password_flag']==0):?>未设置<?php else:?>已设置<?php endif;?></span>
                     <span class="per-safe-action J_per_edit_pass">修改</span>
                 </li>
 <!--                <li>-->

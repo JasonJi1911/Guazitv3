@@ -1404,7 +1404,7 @@ class VideoDao extends BaseDao
         if(!$trailer_title_id){
             return [];
         }
-        $data = Trailer::find()->andWhere(['trailer_title_id'=>$trailer_title_id])->asArray()->all();
+        $data = Trailer::find()->andWhere(['trailer_title_id'=>$trailer_title_id])->limit(10)->asArray()->all();
         return $data;
     }
 

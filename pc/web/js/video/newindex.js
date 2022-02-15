@@ -1238,8 +1238,8 @@ $(document).ready(function() {
 		var prefix_phone = "";
 		var hide_account = "";
 		var arr = {};
-		account = $(this).attr("data-phone");
-		prefix_phone = $(this).attr("data-prefix_phone");
+		account = $(".J_ep_hide_account").attr("data-phone");
+		prefix_phone = $(".J_ep_hide_account").attr("data-prefix_phone");
 		arr['mobile_areacode'] = prefix_phone;
 		arr['mobile'] = account;
 		//补接口-发送验证码接口
@@ -1347,6 +1347,7 @@ $(document).ready(function() {
 					//显示安全中心列表页
 					ts_this.parents(".J_edp_step_two").removeClass('act').siblings(".J_edp_step_one").addClass('act');
 					ts_this.parents(".J_edit_pass_box").removeClass('act').siblings(".J_safe_list").addClass('act');
+					$(".J_is_bind_pass").html("已设置");
 					//弹出提示框
 					$("#pop-tip").text("密码修改成功");
 					$("#pop-tip").show().delay(1500).fadeOut();

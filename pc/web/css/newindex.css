@@ -1621,13 +1621,22 @@ body {
 	align-items: center;
 	flex-direction: row;
 	position: relative;
+	text-align: center;
 }
 
 .sort_content>.sort_img {
-	margin-left: 32px;
+	/* margin-left: 32px; */
+	margin: 0 auto;
 }
 
-.sort_content>.sort_img>img {
+.sort_img>a {
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+}
+
+.sort_content>.sort_img>a>img {
+	display: inline-block;
 	width: 30px;
 	height: 30px;
 }
@@ -1636,6 +1645,7 @@ body {
 	font-size: 20px;
 	color:#FFFFFF;
 	margin-left:7px;
+	display: inline-block;
 }
 
 .VIPlink {
@@ -2532,6 +2542,9 @@ Movie-Ranking-img-num {
 	.Movie-box>.Movie-Ranking {
 		display: block;
 	}
+	.NewTrailer-box>.Movie-list:last-of-type {
+		display: none;
+	}
 }
 
 @media screen and (max-width:1680px) {
@@ -2565,6 +2578,9 @@ Movie-Ranking-img-num {
 	.Movie-Ranking {
 		display: block;
 	}
+	.NewTrailer-box>.Movie-list:last-of-type {
+		display: none;
+	}
 }
 @media screen and (max-width:1450px) {
 	/*调整首页类目按钮宽度和高度*/
@@ -2572,7 +2588,8 @@ Movie-Ranking-img-num {
 		width: 133px;
 	}
 	.sort_content>.sort_img {
-		margin-left: 20px;
+		/*margin-left: 20px;*/
+		margin: 0 auto;
 	}
 	.Movie {
 		height: 233px;
@@ -4190,8 +4207,9 @@ Movie-Ranking-img-num {
 
 .box03 {
 	/*margin: 40px;*/
-	margin-left: 195px;
+	padding-left: 195px;
 	overflow: hidden;
+	background: #F8F7F9;
 }
 
 .scPX {
@@ -5789,12 +5807,12 @@ Movie-Ranking-img-num {
 
 .GNbox-xq.act>span,
 .GNbox-TJ.act>span {
-	background-image: url(../images/Index/xiangxia_c.png);
+	background-image: url(../images/Index/xiangxia_cc.png);
 }
 
 .GNbox-xq.act:hover>span,
 .GNbox-TJ.act:hover>span {
-	background-image: url(../images/Index/xiangxia_c.png);
+	background-image: url(../images/Index/xiangxia_cc.png);
 }
 
 .GNbox-type>span {
@@ -6320,9 +6338,9 @@ Movie-Ranking-img-num {
 	cursor: pointer;
 }
 
-/*.RANbox-tab>li:hover {*/
-/*	color: #FF5722;*/
-/*}*/
+.RANbox-tab>li:hover {
+	color: #FF556E;
+}
 
 .RANbox-tab>li.act {
 	/*background-color: #FF5722;*/
@@ -7508,7 +7526,8 @@ Movie-Ranking-img-num {
 	font-size: 16px;
 }
 
-.hlp-app-box {
+/*设置按钮显示小手*/
+.hlp-app-box, .per-safe-action, .per-sc-pl>li, .per-sc-btn>li {
 	cursor: pointer;
 }
 
@@ -10051,12 +10070,12 @@ Movie-Ranking-img-num {
 	color: #FFFFFF;
 }
 .per-sp-box-new{
-	padding: 0 239px;
+	padding-left: 239px;
 	height: 108px;
 	line-height: 108px;
 	border-bottom: 3px solid #F6F6F6;
 	display: grid;
-	grid-template-columns: auto auto 381px;
+	grid-template-columns: auto auto auto;
 	grid-gap: 17px;
 	overflow-x: auto;
 }
@@ -10114,7 +10133,7 @@ Movie-Ranking-img-num {
 .per-ss-new {
 	float: right;
 	margin-top: 24px;
-	width: 381px;
+	width: 250px;
 	height: 60px;
 	background: #F6F6F6;
 	border-radius: 30px;
@@ -13993,7 +14012,7 @@ body.ZT-black,
 .LSmenu>li>a:hover,
 .sort-menu.ZT-black>li>a:hover,
 .sort-recommend.ZT-black>li>a:hover,
-.sort_content:hover>a>.sort-text,
+.sort_content:hover>.sort_img>a>.sort-text,
 .RD-box.ZT-black>.Title-00>a:hover,
 .RD-box.ZT-black>.Title-01>a:hover,
 .NewTrailer-box-title>.Title-01>a:hover,
