@@ -8,7 +8,7 @@ NewIndexStyleAsset::register($this);
 $js = <<<JS
 $(function(){
     var tvNum = 7;//电视剧显示集数
-    var page_size = "32";//默认一行8个    
+    var page_size = "28";//默认一行8个    
     var kTab = false;
     var arrIndex = {};
     arrIndex['page_num'] = 1;       

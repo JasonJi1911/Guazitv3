@@ -60,7 +60,7 @@ function initialUrl($url)
 
 <link rel="stylesheet" href="/MyPlayer/css/base.css">
 <link rel="stylesheet" href="/MyPlayer/css/DPlayer.min.css?v=2">
-<script src="/MyPlayer/js/DPlayer.min-1.7.js?v=5" type="text/javascript" charset="utf-8"></script>
+<script src="/MyPlayer/js/DPlayer.min-1.7.js?v=6" type="text/javascript" charset="utf-8"></script>
 <style>
     .selected_quantity{
         color: #FF556E;

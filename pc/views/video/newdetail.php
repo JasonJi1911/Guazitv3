@@ -350,11 +350,11 @@ else
                                     <span class="func-name qy-comment J_comment"  onclick="window.location.href = '#GNbox-PL'" ><?=$data['commentcount']?></span>
                                 </div>
                             </div>
-                            <!--                                    <div class="func-item func-like-v1">-->
-                            <!--                                        <div class="func-inner">-->
-                            <!--                                            <span class="func-name qy-dianzan">--><?//= $data['info']['total_views']?><!--</span>-->
-                            <!--                                        </div>-->
-                            <!--                                    </div>-->
+                            <div class="func-item func-like-v1">
+                                <div class="func-inner">
+                                    <span class="func-name qy-dianzan"><?= $data['info']['total_views']?></span>
+                                </div>
+                            </div>
                             <div class="func-item func-collect">
                                 <div class="func-inner">
                                     <span class="func-name qy-shoucang" id="id_favors"><?= $data['info']['total_favors']?></span>

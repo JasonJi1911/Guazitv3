@@ -8,7 +8,7 @@ NewIndexStyleAsset::register($this);
 $js = <<<JS
 $(function(){
     //筛选影片
-    var page_size = "32";//默认一行8个
+    var page_size = "28";//默认一行8个
     var arrIndex = {};
     arrIndex['page_num'] = 1;       
     arrIndex['sorttype'] = 'desc';//排序默认倒叙

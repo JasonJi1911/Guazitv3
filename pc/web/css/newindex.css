@@ -459,7 +459,8 @@ body {
 
 .navTopSearchBox-r {
 	position: absolute;
-	left: 940px;
+	left: auto;
+	right: 300px;
 	text-align: center;
 }
 
@@ -467,7 +468,7 @@ body {
 	position: relative;
 	display: inline-block;
 	margin-top: 11px;
-	width: 543px;
+	width: 450px;
 	height: 40px;
 	border-radius: 28px;
 	background: linear-gradient(100deg, #5B5A5A, #5C3138);
@@ -477,7 +478,7 @@ body {
 	float: left;
 	padding-left: 20px;
 	padding-right: 10px;
-	width: 298px;
+	width: 200px;
 	height: 100%;
 	font-size: 16px;
 	color: #FFFFFF;
@@ -486,7 +487,7 @@ body {
 .navTopSearchRight {
 	display: flex;
 	flex-direction: row;
-	margin-left: 326px;
+	/*margin-left: 326px;*/
 }
 
 .navTopSearchA {
@@ -641,23 +642,16 @@ body {
 }*/
 @media screen and (max-width:1900px) {
 	.navTopMenuBox {
-		left: 350px;
+		left: 320px;
 	}
-	.navTopSearchBox-r {
-		left: 680px;
-	}
-	.navTopMenu-text {
-		display: none;
-	}
-	.navTopMenu-text-choice {
-		display: block;
-	}
+	/*.navTopMenu-text {*/
+	/*	display: none;*/
+	/*}*/
+	/*.navTopMenu-text-choice {*/
+	/*	display: block;*/
+	/*}*/
 }
 @media screen and (max-width:1580px) {
-	.navTopSearchBox-r {
-		left: 540px;
-		right: 355px;
-	}
 	.navTopSearch {
 		width: 300px;
 	}
@@ -684,43 +678,47 @@ body {
 		display: none;
 	}
 }
-@media screen and (max-width:1230px) {
+@media screen and (max-width:1300px) {
 	.navTopSearchBox {
 		padding-left: 315px;
 		padding-right: 355px;
 	}
+
 	.navTopSearch {
 		width: 300px;
 	}
+
 	.navTopSearchText {
 		width: 190px;
 	}
+
 	.searchMenuBox {
 		left: 0;
 		width: 100%;
 	}
-	.navTopSearchRight{
+
+	.navTopSearchRight {
 		margin-left: 0;
 	}
+
 	.hotSearch {
 		display: none;
 	}
+
 	.navTopSearchB-response {
 		display: block;
 	}
+
 	.verticalLine {
 		display: none;
 	}
+
 	.navTopSearchBoxB {
 		display: none;
 	}
-	/*类目只显示全部	*/
-	.navTopMenuBox {
-		left: 260px;
-	}
-	.navTopSearchBox-r {
-		left: 370px;
-	}
+}
+
+@media screen and (max-width:1400px) {
 	.navTopMenu-text {
 		display: none;
 	}
@@ -742,8 +740,9 @@ body {
 .navTopBtn {
 	position: relative;
 	float: left;
-	margin-left: 40px;
-	min-width: 50px;
+	/*margin-left: 40px;*/
+	margin-right: -20px;
+	min-width: 35px;/*50*/
 	height: 50px;
 	line-height: 50px;
 	color: #B9B9B9;
@@ -809,15 +808,17 @@ body {
 /*	line-height: 16px;*/
 /*}*/
 
-@media screen and (max-width:1600px) {
+@media screen and (max-width:1500px) {
 	.navTopBtn {
-		margin-left: 20px;
+		/*margin-left: 20px;*/
+		margin-right: 0px;
 	}
 }
 
 @media screen and (max-width:1400px) {
 	.navTopBtn {
-		margin-left: 0px;
+		/*margin-left: 0px;*/
+		margin-right: 0px;
 	}
 }
 
@@ -1369,9 +1370,6 @@ body {
 	.navTopLogon {
 		margin-left: 10px;
 	}
-	/*.navTopSearchBox-r {*/
-	/*	left:*/
-	/*}*/
 }
 
 
@@ -2154,6 +2152,7 @@ body {
 .Movie-Ranking-img {
 	width:40px;
 	height: 52px;
+	align-items: center;
 }
 
 Movie-Ranking-img-num {
@@ -5108,6 +5107,9 @@ Movie-Ranking-img-num {
 .qy-flash-func .func-inner:hover .qy-svgicon {
 	color:#FF556E;
 }
+.qy-flash-func .func-inner:hover .qy-dianzan {
+	color: #B4B4B4;
+}
 
 .AD-02 {
 	position: absolute;
@@ -6516,7 +6518,10 @@ Movie-Ranking-img-num {
 .RAN-z-box01>.clr03 {
 	color: #F55D6C;
 }
-
+.RAN-z-box01>.top3 {
+	display: flex;
+	align-items: center;
+}
 .RAN-z-box01>li:nth-of-type(2) {
 	width: 148px;
 	/*height: 170px;*/
@@ -6562,6 +6567,17 @@ Movie-Ranking-img-num {
 	width: 100%;
 	box-sizing: border-box;
 	padding-left: 207px;
+	overflow: hidden;
+}
+.RAN-z-box022 {
+	/*position: absolute;*/
+	/*right: 0;*/
+	bottom: 12px;
+	height: 30px;
+	line-height: 30px;
+	width: 100%;
+	box-sizing: border-box;
+	/*padding-left: 207px;*/
 	overflow: hidden;
 }
 .RANbox-list01-b>.RAN-z-box02{
@@ -6734,7 +6750,7 @@ Movie-Ranking-img-num {
 .RANbox-list-xx {
 	padding-top: 26px;
 	display: grid;
-	grid-template-columns: 148px auto 90px;
+	grid-template-columns: 40px 148px auto 90px;
 	grid-gap: 13px;
 }
 
@@ -6743,14 +6759,24 @@ Movie-Ranking-img-num {
 	border-radius: 10px;
 }
 
+.RANbox-list-xx>li:first-of-type{
+	display: flex;
+	align-items: center;
+}
+
 .RANbox-list-xx>li:first-of-type img {
+	width: 40px;
+	height: 52px;
+	align-items: center;
+}
+.RANbox-list-xx>li:nth-of-type(2) img {
 	width: 148px;
 	height: 214px;
 	transition: all 0.2s;
 	border-radius: 10px;
 }
 
-.RANbox-list-xx>li:first-of-type:hover img {
+.RANbox-list-xx>li:nth-of-type(2):hover img {
 	transform: scale(1.2);
 }
 
@@ -13430,6 +13456,15 @@ Movie-Ranking-img-num {
 	font-size: 14px;
 }
 .font-color-FFFFFF {
+	color: #FFFFFF
+}
+a.font-color-FFFFFF:visited{
+	color: #FFFFFF
+}
+a.font-color-FFFFFF:active{
+	color: #FFFFFF
+}
+a.font-color-FFFFFF:focus{
 	color: #FFFFFF
 }
 .font-color-FF556E {

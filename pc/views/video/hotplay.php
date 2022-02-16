@@ -79,7 +79,7 @@ $this->registerJs($js);
                                 <div class="RAN-z">
                                     <ul class="RAN-z-box01">
 <!--                                        <li class="clr0--><?//=$key+1?><!--">--><?//=$key+1?><!--</li>-->
-                                        <li><img class="Movie-Ranking-img" src="/images/hotPlay/<?= $key+1?>.png"></li>
+                                        <li class="top3"><img class="Movie-Ranking-img" src="/images/hotPlay/<?= $key+1?>.png"></li>
                                         <li>
                                             <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
                                                 <img class="i_background_errorimg" src="<?= $list['cover']?>" />
@@ -140,11 +140,12 @@ $this->registerJs($js);
                         <?php if($key < 10) { ?>
                         <div class="RANbox-content">
                             <div class="RANbox-list01">
-                                <img class="Movie-Ranking-img" src="/images/hotPlay/bangdan<?= $key+1?>.png">
+<!--                                    <img class="Movie-Ranking-img" src="/images/hotPlay/bangdan--><?//= $key+1?><!--.png">-->
 <!--                                <div class="clr0--><?//= $key+1?><!--">-->
 <!--                                    --><?//= $key+1?>
 <!--                                </div>-->
                                 <ul class="RANbox-list-xx">
+                                    <li><img class="Movie-Ranking-img" src="/images/hotPlay/bangdan<?= $key+1?>.png"></li>
                                     <li>
                                         <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
                                             <img class="i_background_errorimg" src="<?= $list['cover']?>" />
@@ -192,7 +193,7 @@ $this->registerJs($js);
                                                 <span>简介:</span>
                                                 <span><?=$list['intro']?></span>
                                             </div>
-                                            <div class="RAN-z-box02">
+                                            <div class="RAN-z-box022">
                                                 <div class="RAN-z-box02-L">
                                                     <?= str_replace(["播放:","热度:"],["",""],$list['play_times'])?>
                                                 </div>
