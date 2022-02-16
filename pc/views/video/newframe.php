@@ -447,7 +447,7 @@ if(empty($is_show_background) || $is_show_background != 1){
                     <!--导航菜单--一级-->
                     <span class="navTopMenu-text" name="zt">
                     <a href="<?= Url::to(['/video/index'])?>" >
-                        首页
+                        推荐
                     </a>
                 </span>
                     <?php if(!empty($channels)) :?>
@@ -455,7 +455,7 @@ if(empty($is_show_background) || $is_show_background != 1){
                             <?php if ($key < 6) :?>
                                 <span class="navTopMenu-text" name="zt">
                             <?php if($channel['channel_name'] != '首页'): ?>
-                                <a href="<?= Url::to(['video/channel', 'channel_id' => $channel['channel_id']])?>">
+                                <a href="<?= Url::to(['/video/channel', 'channel_id' => $channel['channel_id']])?>">
                                     <?= $channel['channel_name']?>
                                 </a>
                             <?php endif;?>
@@ -477,7 +477,7 @@ if(empty($is_show_background) || $is_show_background != 1){
                                 <li class="" name="zt">
                                     <?php if($channel['channel_name'] != '首页'): ?>
                                         <a class="
-                                    " href="<?= Url::to(['/video/list', 'channel_id' => $channel['channel_id']])?>" >
+                                    " href="<?= Url::to(['/video/channel', 'channel_id' => $channel['channel_id']])?>" >
                                             <?= $channel['channel_name']?>
                                         </a>
                                     <?php endif;?>
@@ -664,14 +664,14 @@ if(empty($is_show_background) || $is_show_background != 1){
     <div class="wp">
         <a class="browser <?= $footer_color?>" href="<?= Url::to(['collaboration'])?>">商务合作</a>
         <span class="<?= $footer_color?>">|</span>
+<!--        <a class="browser1" href="###"></a>-->
+<!--        <a class="browser --><?//= $footer_color?><!--" href="--><?//= Url::to(['map'])?><!--">网站地图</a>-->
+<!--        <span class="--><?//= $footer_color?><!--">|</span>-->
         <a class="browser1" href="###"></a>
-        <a class="browser <?= $footer_color?>" href="<?= Url::to(['map'])?>">网站地图</a>
+        <a class="browser <?= $footer_color?>" href="<?=WAP_HOST_PATH?>">手机端</a>
         <span class="<?= $footer_color?>">|</span>
         <a class="browser1" href="###"></a>
-        <a class="browser <?= $footer_color?>" href="https://m.guazitv.tv">手机端</a>
-        <span class="<?= $footer_color?>">|</span>
-        <a class="browser1" href="###"></a>
-        <a class="browser <?= $footer_color?>" href="https://www.guazitv.tv">电脑端</a>
+        <a class="browser <?= $footer_color?>" href="<?=PC_HOST_PATH?>">电脑端</a>
         <span class="<?= $footer_color?>">|</span>
         <a class="browser1" href="###"></a>
         <a class="browser <?= $footer_color?>" href="<?= Url::to(['site/share-down'])?>">APP下载</a>
