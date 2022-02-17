@@ -3,7 +3,7 @@ namespace pc\models;
 
 use Yii;
 use yii\base\Model;
-// use pc\models\User;
+use pc\models\User;
 
 /**
  * Login form
@@ -12,6 +12,7 @@ class LoginForm extends Model
 {
 //    public $username;
     public $mobile;
+    public $mobile_areacode;
     public $email;
     public $password;
 //    public $captcha;
@@ -27,9 +28,10 @@ class LoginForm extends Model
     {
         return [
             // username and password are both required
-            [['mobile'], 'required'],
+            [['mobile','mobile_areacode'], 'required'],
 //            ['captcha', 'captcha'],
             [['mobile'], 'string', 'max' => 11],
+            [['mobile_areacode'], 'string', 'max' => 10],
             [['email'], 'string', 'max' => 32],
             // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
@@ -91,7 +93,12 @@ class LoginForm extends Model
             return false;
         }
         if($this->flag==0){//密码登录
-            return $this->validate();
+            $u = User::findOne(['mobile' => $this->mobile,'mobile_areacode' => $this->mobile_areacode, 'status' => User::STATUS_ENABLED]);
+            if($u){
+                return $this->validate();
+            }else{
+                return false;
+            }
         }else{//短信验证码登录
             return true;
         }

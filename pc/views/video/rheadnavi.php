@@ -194,9 +194,9 @@ $(function(){
             return false;
         }else{
             var ismobile = isMobilePhone(account);
-            if(!ismobile){
+            if(ismobile && !valimobile(account,prefix_phone)){
                 $("#login_account").parent().addClass("wor");
-                $(".J_login_warning").text("账号格式错误");
+                $(".J_login_warning").text("手机号格式错误");
                 $(".J_login_warning").show();
                 tab = false;
                 return false;
@@ -221,10 +221,14 @@ $(function(){
             return false;
         }
         if(tab){
+            $(".J_login_warning").text("正在登录中...");
+            $(".J_login_warning").show();
             arrIndex['flag'] = 0;//flag: 0-密码；1-短信验证码
             console.log(arrIndex);
             $.get('/site/new-login',arrIndex,function(res){
                 // console.log(res);
+                $(".J_login_warning").text("登录成功");
+                $(".J_login_warning").show();
                 $("#login_submit").removeClass("login-loading");
                 if(res.errno==0 && res.data){
                     //登陆成功,页面刷新
@@ -261,9 +265,9 @@ $(function(){
             return false;
         }else{
             var ismobile = isMobilePhone(account);
-            if(!ismobile){
+            if(ismobile && !valimobile(account,prefix_phone)){
                 $(obj).parent().siblings('.J_tel').addClass("wor");
-                $(obj).parent().siblings(".loginTip").text("账号格式错误");
+                $(obj).parent().siblings(".loginTip").text("手机号格式错误");
                 $(obj).parent().siblings(".loginTip").show();
                 tab = false;
                 return false;
@@ -343,9 +347,9 @@ $(function(){
             return false;
         }else{
             var ismobile = isMobilePhone(account);
-            if(!ismobile){
+            if(ismobile && !valimobile(account,prefix_phone)){
                 $("#login_sms_account").parent().addClass("wor");
-                $(".J_login_warning1").text("账号格式错误");
+                $(".J_login_warning1").text("手机号格式错误");
                 $(".J_login_warning1").show();
                 tab = false;
                 return false;
@@ -370,10 +374,14 @@ $(function(){
             return false;
         }
         if(tab){
+            $(".J_login_warning1").text("正在登录中...");
+            $(".J_login_warning1").show();
             arrIndex['flag'] = 1;//flag: 0-密码；1-短信验证码
             console.log('短信登录参数---',arrIndex);
             $.get('/site/new-login',arrIndex,function(res){
                 // console.log(res);
+                $(".J_login_warning1").text("登录成功");
+                $(".J_login_warning1").show();
                 console.log('短信登录结果---',res);
                 // $("#login_submit").removeClass("login-loading");
                 if(res.errno==0 && res.data){
@@ -407,7 +415,7 @@ $(function(){
             return false;
         }else{
             var ismobile = isMobilePhone(phone);
-            if(!ismobile){
+            if(ismobile && !valimobile(account,prefix_phone)){
                 $("#reg_account").parent().addClass("wor");
                 $(".J_login_warning2").text("手机号格式错误");
                 $(".J_login_warning2").show();
@@ -434,11 +442,15 @@ $(function(){
             return false;
         }
         if(tab){
+            $(".J_login_warning2").text("正在注册中...");
+            $(".J_login_warning2").show();
             console.log('注册接口参数------',arrIndex);
             $.get('/video/register', arrIndex, function(res) {
                 console.log('注册接口------',res);
                 if(res.errno==0){
                     //注册成功,页面刷新
+                    $(".J_login_warning2").text("注册成功");
+                    $(".J_login_warning2").show();
                     var zd = $("#zd").hasClass("act")? 1:0;
                     if(!isNaN(res.data.uid) && res.data.uid!=""){
                         saveuser(res.data.uid,zd);
@@ -447,7 +459,7 @@ $(function(){
                 }else{
                     var mes = "";
                     if(res.data!=''){
-                        mes = res.data.message;
+                        mes = res.error;
                     }else{
                         mes = '注册失败';
                     }
@@ -527,5 +539,17 @@ function removetab(tab){
             }
         });
     }
+}
+
+function valimobile(mobile,mobile_areacode){
+    var r = true;
+    if(mobile_areacode == "+61"){
+        if((mobile.length==10 && mobile.indexOf("04")==0) || (mobile.length==9 && mobile.indexOf("4")==0)){
+            r = true;
+        }else{
+            r = false;
+        }
+    }
+    return r;
 }
 </script>

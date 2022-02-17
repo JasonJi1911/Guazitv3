@@ -151,7 +151,8 @@ class VideoController extends BaseController
 
         $citycode = $this->getParam('citycode', "");
         $videodao = new VideoDao();
-        $city = $videodao->findcity($citycode);
+        $citys = $videodao->findcity($citycode);
+        $city = $citys['city_name'];
         // 获取广告
         $advertLogic = new AdvertLogic();
         //        $advert = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX);

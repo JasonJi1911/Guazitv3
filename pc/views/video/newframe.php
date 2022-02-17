@@ -2,7 +2,7 @@
 use yii\helpers\Url;
 use pc\assets\NewIndexStyleAsset;
 
-$this->registerMetaTag(['name' => 'keywords', 'content' => LOGONAME.'视频,澳洲'.LOGONAME.'视频,新西兰'.LOGONAME.'视频,澳新'.LOGONAME.'视频,'.LOGONAME.'影视,电影,电视剧,榜单,综艺,动画,记录片']);
+//$this->registerMetaTag(['name' => 'keywords', 'content' => LOGONAME.'视频,澳洲'.LOGONAME.'视频,新西兰'.LOGONAME.'视频,澳新'.LOGONAME.'视频,'.LOGONAME.'影视,电影,电视剧,榜单,综艺,动画,记录片']);
 
 switch ($pageTab) {
     case "newdetail" :
@@ -246,7 +246,7 @@ header("Access-Control-Allow-Origin:*");
                                 <?php endif;?>
                             </ul>
                             <input type="button" class="selectJ" id="login_prefix_phone" value="<?=$selectVal?>" data="<?=$selectData?>"/>
-                            <input type="text" class="J_account" name="" placeholder="请输入登录账号" id="login_account" value="" />
+                            <input type="text" class="J_account" name="" placeholder="请输入手机号" id="login_account" value="" />
                         </div>
                         <!--    报错样式 wor-->
                         <div class="inp-box mb-16 pasbox">
@@ -259,7 +259,7 @@ header("Access-Control-Allow-Origin:*");
                                 <a href="<?= Url::to(['/video/help', 'tab' => 'pwd'])?>">忘记密码</a>
                             </li>
                         </ul>
-                        <div class="loginTip J_login_warning">请输入登录账号</div>
+                        <div class="loginTip J_login_warning">请输入手机号</div>
                         <div class="bttn-box mb-30">
                             <input type="button" id="login_submit" value="登录" />
                         </div>
@@ -291,14 +291,14 @@ header("Access-Control-Allow-Origin:*");
                                 <?php endif;?>
                             </ul>
                             <input type="button" class="selectJ J_prefix_phone" id="sms_prefix_phone" value="<?=$selectVal?>" data="<?=$selectData?>"/>
-                            <input type="text" class="J_account" name="" placeholder="请输入登录账号" id="login_sms_account" value="" />
+                            <input type="text" class="J_account" name="" placeholder="请输入手机号" id="login_sms_account" value="" />
                         </div>
                         <!--    报错样式 wor-->
                         <div class="inp-box mb-25 smsbox">
                             <input type="text" class="inp" name="" placeholder="请输入验证码" value="" id="smscode"  onKeyUp="value=value.replace(/[^0-9]/i,'')" />
                             <input type="button" class="sms_code J_sms_code"  value="获取验证码" source="sms"/>
                         </div>
-                        <div class="loginTip J_login_warning1">请输入登录账号</div>
+                        <div class="loginTip J_login_warning1">请输入手机号</div>
                         <div class="bttn-box mb-30">
                             <input type="button" id="login_sms_submit" value="登录" />
                         </div>

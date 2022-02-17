@@ -236,6 +236,7 @@ class SiteController extends BaseController
         if($flag==0){//密码登录
             $model = new LoginForm();
             $model->mobile = $mobile;
+            $model->mobile_areacode = $mobile_areacode;
             $model->password = $password;
             $model->flag = 0;
             if ( $model->login()) {

@@ -982,7 +982,6 @@ $this->registerJs($js);
             dataType:'json',
             success:function(res) {
                 if(res.errno==0){
-                    console.log(res);
                     var dataar = {};
                     dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC1?>'];
                     if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
