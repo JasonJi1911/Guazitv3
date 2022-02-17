@@ -424,7 +424,7 @@ else
                                         <?php if($data['channel_id'] == '2'){?>
                                             更新至<?= count($data['info']['videos'])?>集
                                         <?php } elseif($data['channel_id'] == '3'){?>
-                                            更新至<?= $data['info']['videos'][count($data['info']['videos'])-1]['title']?>
+                                            更新至<?= $data['info']['videos'][0]['title']?>
                                         <?php } elseif($data['channel_id'] >= 4){?>
                                             更新至第<?= count($data['info']['videos'])?>集
                                         <?php } ?>
@@ -555,7 +555,7 @@ else
                                                         <a href="javascript:void(0);"
                                                            class="bar-link"
                                                            data-source-id="<?= $source['resId']?>">
-                                                            <?= $source['resName'] ?>
+                                                            <?= $source['resName']."(".count($source['data'])."集)"  ?>
                                                         </a>
                                                     </li>
                                                 <?php endforeach;?>
@@ -596,7 +596,7 @@ else
                                                         <a href="javascript:void(0);"
                                                            class="bar-link"
                                                            data-source-id="<?= $source['resId']?>">
-                                                            <?= $source['resName'] ?>
+                                                            <?= $source['resName']."(".count($source['data'])."集)"  ?>
                                                         </a>
                                                     </li>
                                                 <?php endforeach;?>

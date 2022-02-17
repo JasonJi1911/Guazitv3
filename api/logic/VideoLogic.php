@@ -646,7 +646,11 @@ class VideoLogic
         }
 
         // 获取影片剧集信息
-        $videos = $videoDao->videoChapter($videoId, [], true);
+        $order = 'asc';
+        if($videoInfo['channel_id']==3){//综艺倒序
+            $order = 'desc';
+        }
+        $videos = $videoDao->videoChapter($videoId, [], true, $order);
         if (!$videos) { // 没有剧集抛出异常
             throw new ApiException(ErrorCode::EC_VIDEO_CHAPTER_NOT_EXIST);
         }

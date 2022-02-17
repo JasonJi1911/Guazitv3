@@ -772,6 +772,9 @@ $(document).ready(function() {
 		var tabNum = $(this).index();
 		$(this).addClass("act").siblings().removeClass("act");
 		$(".alt-logon .tab-box>div").eq(tabNum).addClass("act").siblings().removeClass("act");
+		if(tabNum==1){
+			$("#login_sms_submit").val("登录/注册");
+		}
 	});
 	//自动登录切换样式
 	$(".gn-box .chebox").click(function() {
@@ -846,9 +849,15 @@ $(document).ready(function() {
 		$(this).parents('.J_safe_list').removeClass("act").siblings('.J_ep').addClass("act");
 	});
 	$('.J_per_edit_email').click(function(){
+		$(".J_email_line3").removeClass('act');
+		$(".J_email_jindu3").removeClass('act');
+		$(".J_email_auth_text3").removeClass('act');
 		$(this).parents('.J_safe_list').removeClass("act").siblings('.J_email_box').addClass("act");
 	});
 	$('.J_per_edit_pass').click(function(){
+		$(".J_edp_line3").removeClass('act');
+		$(".J_edp_jindu3").removeClass('act');
+		$(".J_edp_auth_text3").removeClass('act');
 		$(this).parents('.J_safe_list').removeClass("act").siblings('.J_edit_pass_box').addClass("act");
 	});
 	//忘记密码
@@ -1124,86 +1133,98 @@ $(document).ready(function() {
 	//绑定邮箱
 	//第一步：发送短信验证码-第一步
 	is_click = true;
-	$('.J_email_send_code').click(function () {
-		if(!is_click){
-			return false;
-		}
-		var account = "";
-		var prefix_phone = "";
-		var hide_account = "";
-		var arr = {};
-		account = $(this).attr("data-phone");
-		prefix_phone = $(this).attr("data-prefix_phone");
-		//补接口-发送验证码接口
-		arr['mobile'] = account;
-		arr['mobile_areacode'] = prefix_phone;
-		console.log(arr);
-		$.get('/video/send-code', arr, function (res) {
-			is_click = true;
-			if(res.errno==0){
-				//跳转到发送短信验证码页面
-				var _this = $('.J_email_step_one');
-				_this.removeClass('act');
-				_this.parents(".J_email_safe_auth").find(".J_email_step_one1").addClass('act');
-				//赋值短信信息
-				_this.parents(".J_email_safe_auth").find(".J_email_hide_account").text(hide_account);
-				setTimeCode(_this.parents(".J_email_safe_auth").find(".J_email_count_down"));
-			}else{
-				$(".J_email_warning1").text("验证码发送失败");
-				$(".J_email_warning1").show();
-			}
-		});
-		//重新发送短信验证码
-		is_click = false;
-		$('.J_email_safe_auth').on("click",".J_send_code",function () {
-			is_click = true;
-			console.log('重新发送参数--',arr);
-			//补接口-发送验证码接口
-			$.get('/video/send-code', arr, function (res) {
-				console.log('重新发送结果--',res);
-				var sc_this = $(".J_email_safe_auth .J_send_code");
-				if (res.errno == 0) {
-					setTimeCode(sc_this.parents(".J_email_step_one1").find(".J_email_count_down"));
-				} else {
-					sc_this.parents(".J_email_step_one1").find(".J_email_warning2").text(res.error);
-					sc_this.parents(".J_email_step_one1").find(".J_email_warning2").show();
-				}
-			});
-		});
-		//验证手机号-验证码是否正确
-		var code = "";
-		$('.J_email_one1_step').click(function(){
+	// $('.J_email_send_code').click(function () {
+	// 	if(!is_click){
+	// 		return false;
+	// 	}
+	// 	var account = "";
+	// 	var prefix_phone = "";
+	// 	var hide_account = "";
+	// 	var arr = {};
+	// 	account = $('.J_email_send_code').attr("data-phone");
+	// 	prefix_phone = $('.J_email_send_code').attr("data-prefix_phone");
+	// 	//补接口-发送验证码接口
+	// 	arr['mobile'] = account;
+	// 	arr['mobile_areacode'] = prefix_phone;
+	// 	console.log(arr);
+	// 	$.get('/video/send-code', arr, function (res) {
+	// 		is_click = true;
+	// 		if(res.errno==0){
+	// 			//跳转到发送短信验证码页面
+	// 			var _this = $('.J_email_step_one');
+	// 			_this.removeClass('act');
+	// 			_this.parents(".J_email_safe_auth").find(".J_email_step_one1").addClass('act');
+	// 			//赋值短信信息
+	// 			_this.parents(".J_email_safe_auth").find(".J_email_hide_account").text(hide_account);
+	// 			setTimeCode(_this.parents(".J_email_safe_auth").find(".J_email_count_down"));
+	// 		}else{
+	// 			$(".J_email_warning1").text("验证码发送失败");
+	// 			$(".J_email_warning1").show();
+	// 		}
+	// 	});
+	// 	//重新发送短信验证码
+	// 	is_click = false;
+	// 	$('.J_email_safe_auth').on("click",".J_send_code",function () {
+	// 		is_click = true;
+	// 		console.log('重新发送参数--',arr);
+	// 		//补接口-发送验证码接口
+	// 		$.get('/video/send-code', arr, function (res) {
+	// 			console.log('重新发送结果--',res);
+	// 			var sc_this = $(".J_email_safe_auth .J_send_code");
+	// 			if (res.errno == 0) {
+	// 				setTimeCode(sc_this.parents(".J_email_step_one1").find(".J_email_count_down"));
+	// 			} else {
+	// 				sc_this.parents(".J_email_step_one1").find(".J_email_warning2").text(res.error);
+	// 				sc_this.parents(".J_email_step_one1").find(".J_email_warning2").show();
+	// 			}
+	// 		});
+	// 	});
+	// 	//验证手机号-验证码是否正确
+	// 	var code = "";
+	// 	$('.J_email_one1_step').click(function(){
+	// 		if(!is_click){
+	// 			return false;
+	// 		}
+	// 		var yzm_this = $('.J_email_one1_step');
+	// 		code = yzm_this.parents(".J_email_step_one1").find(".J_email_yzm").val();
+	// 		if (code == "") {
+	// 			$(".J_email_warning2").text("验证码不能为空");
+	// 			$(".J_email_warning2").show();
+	// 			return false;
+	// 		}
+	// 		is_click = false;
+	// 		//补接口-对接短信验证接口
+	// 		arr['code'] = code;
+	// 		$.get('/video/vali-code', arr, function (res) {
+	// 			is_click = true;
+	// 			if (res.errno == 0) {
+	// 				//跳转到填写新手机页面
+	// 				yzm_this.parents(".J_email_step_one1").removeClass('act').siblings('.J_email_step_two').addClass('act');
+	// 				//点亮第二步骤
+	// 				yzm_this.parents(".J_email_safe").find(".J_email_line2").addClass('act');
+	// 				yzm_this.parents(".J_email_safe").find(".J_email_jindu2").addClass('act');
+	// 				yzm_this.parents(".J_email_safe").find(".J_email_auth_text2").addClass('act');
+	// 			} else {
+	// 				$(".J_email_warning2").text("验证码不正确");
+	// 				$(".J_email_warning2").show();
+	// 			}
+	// 		});
+	// 	})
+		//第二步骤：填写邮箱。并进行绑定或者修改
+		$('.J_email_two_step').click(function () {
 			if(!is_click){
 				return false;
 			}
-			var yzm_this = $('.J_email_one1_step');
-			code = yzm_this.parents(".J_email_step_one1").find(".J_email_yzm").val();
-			if (code == "") {
-				$(".J_email_warning2").text("验证码不能为空");
-				$(".J_email_warning2").show();
-				return false;
-			}
 			is_click = false;
-			//补接口-对接短信验证接口
-			arr['code'] = code;
-			$.get('/video/vali-code', arr, function (res) {
-				is_click = true;
-				if (res.errno == 0) {
-					//跳转到填写新手机页面
-					yzm_this.parents(".J_email_step_one1").removeClass('act').siblings('.J_email_step_two').addClass('act');
-					//点亮第二步骤
-					yzm_this.parents(".J_email_safe").find(".J_email_line2").addClass('act');
-					yzm_this.parents(".J_email_safe").find(".J_email_jindu2").addClass('act');
-					yzm_this.parents(".J_email_safe").find(".J_email_auth_text2").addClass('act');
-				} else {
-					$(".J_email_warning2").text("验证码不正确");
-					$(".J_email_warning2").show();
-				}
-			});
-		})
-		//第二步骤：填写邮箱。并进行绑定或者修改
-		$('.J_email_two_step').click(function () {
-			var email = $('.J_email').val()
+			var account = "";
+			var prefix_phone = "";
+			var arr = {};
+			account = $('.J_email_send_code').attr("data-phone");
+			prefix_phone = $('.J_email_send_code').attr("data-prefix_phone");
+			//补接口-发送验证码接口
+			arr['mobile'] = account;
+			arr['mobile_areacode'] = prefix_phone;
+			var email = $('.J_email').val();
 			arr['email'] = email;
 			var _this = $('.J_email_two_step');
 			//补接口-绑定邮箱
@@ -1213,100 +1234,106 @@ $(document).ready(function() {
 				is_click = true;
 				if(res.errno==0){
 					//修改成功，显示安全中心列表页，隐藏当前页面
-					_this.parents(".J_email_step_two").removeClass('act').siblings(".J_email_step_one").addClass('act');
-					_this.parents(".J_email_box").removeClass('act').siblings(".J_safe_list").addClass('act');
+					// _this.parents(".J_email_step_two").removeClass('act').siblings(".J_email_step_one").addClass('act');
+					$(".J_email_line3").addClass('act');
+					$(".J_email_jindu3").addClass('act');
+					$(".J_email_auth_text3").addClass('act');
 					$(".J_is_bind_email").text(email);
+					$('.J_email').val("");
 					//弹出提示框
 					$("#pop-tip").text("邮箱绑定成功");
+					setTimeout(function() {
+						_this.parents(".J_email_box").removeClass('act').siblings(".J_safe_list").addClass('act');
+					}, 1500)
 					$("#pop-tip").show().delay(1500).fadeOut();
 				}else{
-					$(".J_email_warning").text("绑定失败");
+					$(".J_email_warning").text(res.data.msg);
 					$(".J_email_warning").show();
 				}
 			});
 		});
-	});
+	// });
 
 	//修改密码
 	//第一步：发送短信验证码-第一步
 	is_click = true;
-	$('.J_edp_step_one').click(function () {
-		if(!is_click){
-			return false;
-		}
-		var account = "";
-		var prefix_phone = "";
-		var hide_account = "";
-		var arr = {};
-		account = $(".J_ep_hide_account").attr("data-phone");
-		prefix_phone = $(".J_ep_hide_account").attr("data-prefix_phone");
-		arr['mobile_areacode'] = prefix_phone;
-		arr['mobile'] = account;
-		//补接口-发送验证码接口
-		$.get('/video/send-code', arr, function (res) {
-			is_click = true;
-			if(res.errno==0){
-				//跳转到发送短信验证码页面
-				var _this = $('.J_edp_step_one');
-				_this.removeClass('act');
-				_this.parents(".J_edp_safe_auth").find(".J_edp_step_one1").addClass('act');
-				//赋值短信信息
-				_this.parents(".J_edp_safe_auth").find(".J_edp_hide_account").text(hide_account);
-				setTimeCode(_this.parents(".J_edp_safe_auth").find(".J_edp_count_down"));
-			}else{
-				$(".J_edp_warning1").text("验证码发送失败");
-				$(".J_edp_warning1").show();
-			}
-		});
-		//验证验证码是否正确
-		var code = "";
-		$('.J_edp_one1_step').click(function(){
-			if(!is_click){
-				return false;
-			}
-			var yzm_this = $('.J_edp_one1_step');
-			code = yzm_this.parents(".J_edp_step_one1").find(".J_edp_yzm").val();
-			if (code == "") {
-				$(".J_edp_warning2").text("验证码不能为空");
-				$(".J_edp_warning2").show();
-				return false;
-			}
-			is_click = false;
-			//补接口-对接短信验证接口
-			arr['code'] = code;
-			$.get('/video/vali-code', arr, function (res) {
-				is_click = true;
-				if (res.errno == 0) {
-					//跳转到安全中心页面
-					yzm_this.parents(".J_edp_step_one1").removeClass('act');
-					yzm_this.parents(".J_edp_safe_auth").find(".J_edp_step_two").addClass('act');
-					//点亮第二步骤
-					yzm_this.parents(".J_edp_safe").find(".J_edp_line2").addClass('act');
-					yzm_this.parents(".J_edp_safe").find(".J_edp_jindu2").addClass('act');
-					yzm_this.parents(".J_edp_safe").find(".J_edp_auth_text2").addClass('act');
-				} else {
-					$(".J_edp_warning2").text("验证码不正确");
-					$(".J_edp_warning2").show();
-				}
-			});
-		})
-		//重新发送短信验证码
-		is_click = false;
-		$('.J_edp_safe_auth').on("click",".J_send_code",function () {
-			is_click = true;
-			console.log('重新发送参数--',arr);
-			//补接口-发送验证码接口
-			$.get('/video/send-code', arr, function (res) {
-				console.log('重新发送结果--',res);
-				var sc_this = $(".J_edp_safe_auth .J_send_code");
-				if (res.errno == 0) {
-					setTimeCode(sc_this.parents(".J_edp_step_one1").find(".J_edp_count_down"));
-				} else {
-					sc_this.parents(".J_edp_step_one1").find(".J_edp_warning2").text(res.error);
-					sc_this.parents(".J_edp_step_one1").find(".J_edp_warning2").show();
-				}
-			});
-		});
+	// $('.J_edp_step_one').click(function () {
+	// 	if(!is_click){
+	// 		return false;
+	// 	}
+	// 	var account = "";
+	// 	var prefix_phone = "";
+	// 	var hide_account = "";
+	// 	var arr = {};
+	// 	account = $(".J_ep_hide_account").attr("data-phone");
+	// 	prefix_phone = $(".J_ep_hide_account").attr("data-prefix_phone");
+	// 	arr['mobile_areacode'] = prefix_phone;
+	// 	arr['mobile'] = account;
+	// 	//补接口-发送验证码接口
+	// 	$.get('/video/send-code', arr, function (res) {
+	// 		is_click = true;
+	// 		if(res.errno==0){
+	// 			//跳转到发送短信验证码页面
+	// 			var _this = $('.J_edp_step_one');
+	// 			_this.removeClass('act');
+	// 			_this.parents(".J_edp_safe_auth").find(".J_edp_step_one1").addClass('act');
+	// 			//赋值短信信息
+	// 			_this.parents(".J_edp_safe_auth").find(".J_edp_hide_account").text(hide_account);
+	// 			setTimeCode(_this.parents(".J_edp_safe_auth").find(".J_edp_count_down"));
+	// 		}else{
+	// 			$(".J_edp_warning1").text("验证码发送失败");
+	// 			$(".J_edp_warning1").show();
+	// 		}
+	// 	});
+	// 	//验证验证码是否正确
+	// 	var code = "";
+	// 	$('.J_edp_one1_step').click(function(){
+	// 		if(!is_click){
+	// 			return false;
+	// 		}
+	// 		var yzm_this = $('.J_edp_one1_step');
+	// 		code = yzm_this.parents(".J_edp_step_one1").find(".J_edp_yzm").val();
+	// 		if (code == "") {
+	// 			$(".J_edp_warning2").text("验证码不能为空");
+	// 			$(".J_edp_warning2").show();
+	// 			return false;
+	// 		}
+	// 		is_click = false;
+	// 		//补接口-对接短信验证接口
+	// 		arr['code'] = code;
+	// 		$.get('/video/vali-code', arr, function (res) {
+	// 			is_click = true;
+	// 			if (res.errno == 0) {
+	// 				//跳转到安全中心页面
+	// 				yzm_this.parents(".J_edp_step_one1").removeClass('act');
+	// 				yzm_this.parents(".J_edp_safe_auth").find(".J_edp_step_two").addClass('act');
+	// 				//点亮第二步骤
+	// 				yzm_this.parents(".J_edp_safe").find(".J_edp_line2").addClass('act');
+	// 				yzm_this.parents(".J_edp_safe").find(".J_edp_jindu2").addClass('act');
+	// 				yzm_this.parents(".J_edp_safe").find(".J_edp_auth_text2").addClass('act');
+	// 			} else {
+	// 				$(".J_edp_warning2").text("验证码不正确");
+	// 				$(".J_edp_warning2").show();
+	// 			}
+	// 		});
+	// 	})
+	// 	//重新发送短信验证码
+	// 	is_click = false;
+	// 	$('.J_edp_safe_auth').on("click",".J_send_code",function () {
+	// 		is_click = true;
+	// 		console.log('重新发送参数--',arr);
+	// 		//补接口-发送验证码接口
+	// 		$.get('/video/send-code', arr, function (res) {
+	// 			console.log('重新发送结果--',res);
+	// 			var sc_this = $(".J_edp_safe_auth .J_send_code");
+	// 			if (res.errno == 0) {
+	// 				setTimeCode(sc_this.parents(".J_edp_step_one1").find(".J_edp_count_down"));
+	// 			} else {
+	// 				sc_this.parents(".J_edp_step_one1").find(".J_edp_warning2").text(res.error);
+	// 				sc_this.parents(".J_edp_step_one1").find(".J_edp_warning2").show();
+	// 			}
+	// 		});
+	// 	});
 		//第二步骤：填写新密码
 		var new_pass = ''
 		var sure_pass = '';
@@ -1314,6 +1341,13 @@ $(document).ready(function() {
 			if(!is_click){
 				return false;
 			}
+			var account = "";
+			var prefix_phone = "";
+			var arr = {};
+			account = $(".J_ep_hide_account").attr("data-phone");
+			prefix_phone = $(".J_ep_hide_account").attr("data-prefix_phone");
+			arr['mobile_areacode'] = prefix_phone;
+			arr['mobile'] = account;
 			var ts_this = $(".J_edp_two_step");
 			new_pass = $('.J_edp_new_pass').val();
 			sure_pass = $('.J_edp_sure_pass').val();
@@ -1345,20 +1379,27 @@ $(document).ready(function() {
 				is_click = true;
 				if(res.errno==0){
 					//显示安全中心列表页
-					ts_this.parents(".J_edp_step_two").removeClass('act').siblings(".J_edp_step_one").addClass('act');
-					ts_this.parents(".J_edit_pass_box").removeClass('act').siblings(".J_safe_list").addClass('act');
+					// ts_this.parents(".J_edp_step_two").removeClass('act').siblings(".J_edp_step_one").addClass('act');
+					$(".J_edp_line3").addClass('act');
+					$(".J_edp_jindu3").addClass('act');
+					$(".J_edp_auth_text3").addClass('act');
 					$(".J_is_bind_pass").html("已设置");
+					$('.J_edp_new_pass').val("");
+					$('.J_edp_sure_pass').val("");
 					//弹出提示框
+					setTimeout(function() {
+						ts_this.parents(".J_edit_pass_box").removeClass('act').siblings(".J_safe_list").addClass('act');
+					}, 1500);
 					$("#pop-tip").text("密码修改成功");
 					$("#pop-tip").show().delay(1500).fadeOut();
 				}else{
-					$(".J_edp_warning3").text("密码修改失败");
+					$(".J_edp_warning3").text(res.data.msg);
 					$(".J_edp_inp_box").show();
 					$(".J_edp_warning3").show();
 				}
 			});
-		})
-	});
+		});
+	// });
 
 	//电话号隐藏显示
 	function hideAccount(account) {

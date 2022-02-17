@@ -6,9 +6,9 @@
 use pc\assets\AppAsset;
 use yii\helpers\Html;
 
-$this->registerMetaTag(['name' => 'keywords', 'content' => LOGONAME.'视频,'.LOGONAME.'TV,北美视频分享网,北美华人影视视频,美国影视网,加拿大影视网,美国'.LOGONAME.'视频,加拿大'.LOGONAME.'视频,北美华人在线追剧,海外华人,免费视频,国产剧,在线视频,电视剧,综艺']);
-$this->registerMetaTag(['name' => 'description', 'content' => LOGONAME.'视频('.PC_HOST_NAME.')为中文在线影视分享平台汇集了最新热门的电影,国产剧,港台剧,欧美剧,韩剧,日剧,综艺,动漫,纪录片等免费在线观看,为北美及全球的华人提供海量高清影视视频,打造免费、无广告的在线影视播放平台']);
-$this->title = LOGONAME. '视频,'.LOGONAME.'TV,北美'.LOGONAME.'视频,北美影视网,北美华人视频网站,北美华人影视视频,北美华人海外在线观看';
+$this->registerMetaTag(['name' => 'keywords', 'content' => LOGONAME.'TV,澳洲'.LOGONAME.'tv,新西兰'.LOGONAME.'tv,澳新'.LOGONAME.'tv,'.LOGONAME.'视频,'.LOGONAME.'影视,电影,电视剧,榜单,综艺,动画,记录片']);
+$this->registerMetaTag(['name' => 'description', 'content' => LOGONAME.'TV是澳大利亚、新西兰华人影视视频分享平台，网站包含最新的电视剧、美剧、日韩剧、华语电影、好莱坞电影、以及各种动漫和重大体育赛事直播。在这里，一定有你想看的一切！']);
+$this->title = LOGONAME. 'TV - 澳新华人在线视频分享平台,海量高清视频在线观看';
 $this->registerMetaTag(['name' => 'robots', 'content' => 'index,follow']);
 $this->registerMetaTag(['name' => 'GOOGLEBOT', 'content' => 'index,follow']);
 $this->registerMetaTag(['name' => 'Author', 'content' => PC_HOST_NAME]);

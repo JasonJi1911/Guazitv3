@@ -139,8 +139,9 @@ class ChannelLogic
         // 获取分类数据
         $tagFields = ['cat_id', 'name'];
         $channelTags = $this->channelCategory($channelId, $tagFields);
-        // 获取前三个分类
-        $channelTags = array_slice($channelTags, 0, 3);
+        // 获取前三个分类，
+        //20220217 改取7个分类
+        $channelTags = array_slice($channelTags, 0, 7);
 
         foreach ($channelTags as $key => &$value){
             $value['search'] = [

@@ -668,7 +668,7 @@ class VideoDao extends BaseDao
      * @param bool  $index
      * @return array
      */
-    public function videoChapter($videoId, $fields = [], $index = false)
+    public function videoChapter($videoId, $fields = [], $index = false, $order='asc')
     {
         //静态缓存
         if (self::$chapterInfo) {
@@ -682,7 +682,7 @@ class VideoDao extends BaseDao
                 $dataProvider= new ActiveDataProvider([
                     'query' => VideoChapter::find()
                         ->where(['video_id' => $videoId])
-                        ->orderBy('display_order asc, id asc')
+                        ->orderBy('display_order '.$order.', id '.$order)
                 ]);
                 $data = $dataProvider->toArray();
                 $redis->setEx($key, json_encode($data, JSON_UNESCAPED_UNICODE));

@@ -519,12 +519,12 @@ $(document).ready(function() {
                     </div>
                     <div class="hlp-forget-pass-item">
                         <div class="hlp-forget-pass-jindu">
-                            <div class="hlp-forget-pass-line hlp-forget-pass-line-02 J_email_line2"></div>
-                            <div class="hlp-forget-pass-jindu-01 J_email_jindu2">
+                            <div class="hlp-forget-pass-line hlp-forget-pass-line-02 J_email_line2 act"></div>
+                            <div class="hlp-forget-pass-jindu-01 J_email_jindu2 act">
                                 2
                             </div>
                         </div>
-                        <p class="hlp-forget-pass-desc J_email_auth_text2"><?php if($data['user']['email']):?>修改邮箱<?php else:?>绑定邮箱<?php endif;?></p>
+                        <p class="hlp-forget-pass-desc J_email_auth_text2 act"><?php if($data['user']['email']):?>修改邮箱<?php else:?>绑定邮箱<?php endif;?></p>
                     </div>
                     <div class="hlp-forget-pass-item">
                         <div class="hlp-forget-pass-jindu">
@@ -538,11 +538,11 @@ $(document).ready(function() {
                     </div>
                 </div>
                 <div class="hlp-forget-pass-sub J_email_safe_auth">
-                    <div class="help-tel-check-box act J_email_step_one">
+                    <div class="help-tel-check-box J_email_step_one">
                         <div class="help-tel-check">通过手机<span class="J_email_send_code" data-phone="<?=$data['user']['mobile']?>" data-prefix_phone="<?=$data['user']['mobile_areacode']?>"><?=$hide_account?></span>验证</div>
                         <div class="bttn-box-warning1 J_email_warning1">验证码发送失败</div>
                     </div>
-                    <div class="help-tel-check-code-box J_email_step_one1">
+                    <div class="help-tel-check-code-box ">
                         <div class="help-tel-check-item">
                             <p>短信验证码已经发送至<span class="J_email_hide_account"><?=$hide_account?></span></p>
                             <div class="help-tel-check-code">
@@ -553,7 +553,7 @@ $(document).ready(function() {
                             <p>未收到验证码？<span class="J_email_count_down">53s后重新发送</span></p>
                         </div>
                     </div>
-                    <div class="help-te-box J_email_step_two">
+                    <div class="help-te-box J_email_step_two act">
                         <div class="per-bind-email">
                             <input class="email-inpt J_email" type="text" placeholder="请输入邮箱" value=""/>
                             <input type="button" class="yzm-btn J_email_two_step" value="绑定" />
@@ -580,12 +580,12 @@ $(document).ready(function() {
                     </div>
                     <div class="hlp-forget-pass-item">
                         <div class="hlp-forget-pass-jindu">
-                            <div class="hlp-forget-pass-line hlp-forget-pass-line-02 J_edp_line2"></div>
-                            <div class="hlp-forget-pass-jindu-01 J_edp_jindu2">
+                            <div class="hlp-forget-pass-line hlp-forget-pass-line-02 J_edp_line2 act"></div>
+                            <div class="hlp-forget-pass-jindu-01 J_edp_jindu2 act">
                                 2
                             </div>
                         </div>
-                        <p class="hlp-forget-pass-desc J_edp_auth_text2">修改密码</p>
+                        <p class="hlp-forget-pass-desc J_edp_auth_text2 act">修改密码</p>
                     </div>
                     <div class="hlp-forget-pass-item">
                         <div class="hlp-forget-pass-jindu">
@@ -599,7 +599,7 @@ $(document).ready(function() {
                     </div>
                 </div>
                 <div class="hlp-forget-pass-sub J_edp_safe_auth">
-                    <div class="help-tel-check-box act J_edp_step_one act">
+                    <div class="help-tel-check-box J_edp_step_one">
                         <div class="help-tel-check">通过手机<span class="J_edp_hide_account" data-phone="<?=$data['user']['mobile']?>" data-prefix_phone="<?=$data['user']['mobile_areacode']?>"><?=$hide_account?></span>验证</div>
                         <div class="bttn-box-warning1 J_edp_warning1">验证码发送失败</div>
                     </div>
@@ -614,7 +614,7 @@ $(document).ready(function() {
                             <p>未收到验证码？<span class="J_edp_count_down">53s后重新发送</span></p>
                         </div>
                     </div>
-                    <div class="help-pass-box J_edp_step_two">
+                    <div class="help-pass-box J_edp_step_two act">
                         <div class="inp-box pasbox">
                             <span class="inp-title">新密码</span>
                             <input type="password" class="inp pas J_edp_new_pass" name="" placeholder="请输入密码" id="login_pwd" value="" onkeyup="value=value.replace(/[^(\w-*\.*)]/g,'')" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;" autocomplete="off">

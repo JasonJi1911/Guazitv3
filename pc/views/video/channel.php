@@ -302,9 +302,15 @@ $this->registerJs($js);
             <ul class="Sports-box" name="zt">
                 <li class="Title-01">
 <!--                    <img src="/images/newindex/logo-02.png" />-->
-                    <a href="<?= Url::to(['list', 'channel_id' => $channel, 'tag' => $tag, 'area' => $area])?>">
+                    <a href="<?= Url::to(['list', 'channel_id' => $channel, 'tag' => $tag, 'area' => $area])?>" class="margin_r5" >
                         <?= $labels['title']?>
                     </a>
+                    <?php foreach ($data['tags'] as $k => $t): ?>
+                        <?php if(!empty($t['cat_id'])) : ?>
+                            <a class="Title-more margin_l5" href="<?= Url::to(['list', 'channel_id' => $channel, 'tag' => $t['cat_id'], 'area' => $area])?>"><?=$t['name']?></a>
+                            <div class="channel-title-shu margin_l5">|</div>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
                     <a class="Title-more" href="<?= Url::to(['list', 'channel_id' => $channel, 'tag' => $tag, 'area' => $area])?>">更多></a>
                 </li>
                 <?php foreach ($labels['list'] as $key => $list): ?>
