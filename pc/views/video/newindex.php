@@ -1013,5 +1013,14 @@ $this->registerJs($js);
                 console.log("广告加载失败");
             }
         });
+
+        $('#det-nav>ul>.list-item>a.list-link').click(function () {
+            var target = $(this).attr('data-id');
+            console.log(target);
+            $('html, body').animate({
+                scrollTop: $(target).offset().top - 62
+            }, 500);
+            return false;
+        });
     });
 </script>

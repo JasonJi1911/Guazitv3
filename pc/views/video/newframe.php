@@ -117,7 +117,10 @@ header("Access-Control-Allow-Origin:*");
 <!--<script src="/js/video/gVerify.js"></script>-->
 <script>
     $(document).ready(function(){
-        $("[name='zt']").addClass("ZT-black");
+        var pagetab = "<?=$pageTab?>";
+        if(pagetab == "newindex"){
+            $("[name='zt']").addClass("ZT-black");
+        }
         var mobile_flag = isMobile();
         if(mobile_flag){
             window.location = '<?=WAP_HOST_PATH?>';
@@ -691,7 +694,7 @@ if(empty($is_show_background) || $is_show_background != 1){
         <?php if(!empty($channels)) : ?>
             <?php foreach ($channels['list'] as $key => $channel): ?>
                 <?php if($channel['channel_id'] != 0) : ?>
-                    <li class="list-item"><a href="#section<?= $channel['channel_id']?>" class="list-link"><?= $channel['channel_name']?></a></li>
+                    <li class="list-item"><a data-id="#section<?= $channel['channel_id']?>" class="list-link"><?= $channel['channel_name']?></a></li>
                 <?php endif;?>
             <?php endforeach ?>
         <?php endif;?>
