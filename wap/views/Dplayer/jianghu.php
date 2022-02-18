@@ -138,7 +138,7 @@ $type =initialUrl($url);
     function initialPlayer(e) {
         dp = new DPlayer({
             element: document.getElementById('player1'),
-            theme: '#FF5722',
+            theme: '#FF556E',
             loop: false,
             lang: 'zh-cn',
             hotkey: true,

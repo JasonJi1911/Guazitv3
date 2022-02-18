@@ -1427,7 +1427,7 @@
 			};
 			for(var a in t) t.hasOwnProperty(a) && !e.hasOwnProperty(a) && (e[a] = t[a]);
 			return e.video && !e.video.type && (e.video.type = "auto"), "object" === d(e.danmaku) && e.danmaku && !e.danmaku.user && (e.danmaku.user = "DIYgod"), e.subtitle && (!e.subtitle.type && (e.subtitle.type = "webvtt"), !e.subtitle.fontSize && (e.subtitle.fontSize = "20px"), !e.subtitle.bottom && (e.subtitle.bottom = "40px"), !e.subtitle.color && (e.subtitle.color = "#fff")), e.video.quality && (e.video.url = e.video.quality[e.video.defaultQuality].url), e.lang && (e.lang = e.lang.toLowerCase()), e.contextmenu = e.contextmenu.concat([{
-				text: "吉祥视频，乐享生活",
+				text: "瓜子TV",
 				click: function(e) {
 					// e.infoPanel.triggle()
 				}

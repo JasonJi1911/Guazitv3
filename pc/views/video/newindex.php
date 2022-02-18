@@ -956,7 +956,12 @@ $this->registerJs($js);
         $(this).find('.Livemaches-yuyue').hide();
     });
     //获取今日预告总条数
-    var trailer_length = <?=count($data['trailer']['trailer'])?>;
+    <?php
+    $trailercount = 0;
+    if($data['trailer']['trailer']){
+        $trailercount = count($data['trailer']['trailer']);
+    }?>
+    var trailer_length = <?=$trailercount?>;
 
     //按城市加载广告
     $(function () {
