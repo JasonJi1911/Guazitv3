@@ -572,7 +572,10 @@ else
                                                                         <?= (empty($source_id) && $key == 0) || ($source['resId'] == $source_id) ? 'dn' : 'nn'?>"
                                                                      id='srctab-<?=$source['resId']?>'>
                                                                     <?php foreach ($source['data'] as $value) : ?>
-                                                                        <a href="<?= Url::to(['video/detail', 'video_id'=>$value['video_id'], 'chapter_id'=>$value['chapter_id']])?>"><li class="play-list-item-new"><?= $value['title']?></li></a>
+                                                                        <a href="<?= Url::to(['video/detail', 'video_id'=>$value['video_id'], 'chapter_id'=>$value['chapter_id']])?>">
+                                                                            <li class="play-list-item-new <?= $data['info']['play_chapter_id'] == $value['chapter_id']
+                                                                            && ((empty($source_id) && $key == 0) || ($source['resId'] == $source_id))? 'selected' : ''?>"><?= $value['title']?></li>
+                                                                        </a>
                                                                     <?php endforeach;?>
                                                                 </ul>
                                                             <?php endforeach;?>

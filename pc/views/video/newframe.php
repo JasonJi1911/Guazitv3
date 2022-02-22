@@ -472,7 +472,7 @@ if(empty($is_show_background) || $is_show_background != 1){
                         <!--导航菜单--一级-->
                         <li class="" name="zt">
                             <a href="<?= Url::to(['/video/index'])?>" >
-                                首页
+                                推荐
                             </a>
                         </li>
                         <?php if(!empty($channels)) :?>

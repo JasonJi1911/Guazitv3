@@ -36,7 +36,7 @@ $this->registerJs($js);
 <!--首页大轮播-->
 <div id="playBox" class="play-box">
     <!--图片列表-->
-    <div id="imgList">
+    <div id="imgList" style="background-color:#000;">
         <?php if(!empty($data['banner'])) : ?>
             <?php foreach ($data['banner'] as $key => $banner): ?>
                 <a href="<?= str_replace("/detail","/detail",$banner['content'])?>" target="_blank"
@@ -87,7 +87,7 @@ $this->registerJs($js);
             </div>
             <div class="sort-list">
                 <?php foreach ($cates['list'] as $key => $cate): ?>
-                    <?php if($key < 6) :?>
+                    <?php if($key < 10) :?>
                         <a href="<?= Url::to(['list', 'channel_id' => $channel_id, $cates['field'] => $cate['value']])?>"><?= $cate['display']?></a>
                     <?php endif;?>
                 <?php endforeach;?>
@@ -113,7 +113,7 @@ $this->registerJs($js);
                 </div>
                 <div class="sort-list">
                     <?php foreach ($cates['list'] as $key => $cate): ?>
-                        <?php if($key < 8) :?>
+                        <?php if($key < 10) :?>
                             <a href="<?= Url::to(['list', 'channel_id' => $channel_id, $cates['field'] => $cate['value']])?>"><?= $cate['display']?></a>
                         <?php endif;?>
                     <?php endforeach;?>

@@ -1152,7 +1152,8 @@ body {
 	margin-left: 5px;
 	line-height: 62px;
 	font-size: 16px;
-	color: #8F8F8F;
+	/*color: #8F8F8F;*/
+	color:#fff;
 }
 
 .navTopLogonName:hover {
@@ -1540,26 +1541,26 @@ body {
 }
 
 .sortSpan {
-	/*margin-left: 5px;*/
-	/*width: 16px;*/
-	/*height: 16px;*/
-	/*line-height: 16px;*/
-	/*text-align: center;*/
-	/*font-size: 10px;*/
-	/*background-color: #FF556E;*/
-	/*color: #FFFFFF;*/
-	/*border-radius: 3px;*/
-	width: 49px;
-	height: 29px;
-	background: #FF556E;
-	border-radius: 15px;
-	font-size: 20px;
-	font-weight: 400;
+	margin-left: 5px;
+	width: 20px;
+	height: 16px;
+	line-height: 16px;
+	text-align: center;
+	font-size: 10px;
+	background-color: #FF556E;
 	color: #FFFFFF;
+	border-radius: 6px;
+	/*width: 49px;*/
+	/*height: 29px;*/
+	/*background: #FF556E;*/
+	/*border-radius: 15px;*/
+	/*font-size: 20px;*/
+	/*font-weight: 400;*/
+	/*color: #FFFFFF;*/
 	text-align: center;
 	position: absolute;
-	top: -25px;
-	right: -20px;
+	top: 6px;
+	/*right: -20px;*/
 }
 
 .sort-recommend {
@@ -1644,6 +1645,7 @@ body {
 	color:#FFFFFF;
 	margin-left:7px;
 	display: inline-block;
+	position: relative;
 }
 
 .VIPlink {
@@ -1690,14 +1692,13 @@ body {
 
 .sort02 {
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-columns: 2fr 1fr 1fr;
 	grid-gap: 80px;
-	/*padding: 15px 40px;*/
+	padding: 29px 165px;
 	background-color: #F9F9F9;
 	font-size: 14px;
 	box-sizing: border-box;
 	overflow: hidden;
-	padding: 29px 165px 35px 165px;
 }
 
 .sort-tle {
@@ -1716,7 +1717,7 @@ body {
 
 .sort02>div:nth-of-type(2)>.sort-list {
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 	grid-gap: 10px;
 	overflow: hidden;
 }
@@ -1730,7 +1731,7 @@ body {
 
 .sort02>div:last-of-type>.sort-list {
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 	grid-gap: 10px;
 	overflow: hidden;
 }
@@ -2296,7 +2297,8 @@ Movie-Ranking-img-num {
 	display: block;
 	position: relative;
 	width: 100%;
-	height: 295px;
+	/*height: 295px;*/
+	height: auto;
 	overflow: hidden;
 	border-radius: 10px;
 }
@@ -2304,7 +2306,8 @@ Movie-Ranking-img-num {
 .Movie-img {
 	display: block;
 	width: 100%;
-	min-height: 314px;
+	height:auto;
+	/*min-height: 314px;*/
 }
 
 .palyBtn {
@@ -2590,12 +2593,12 @@ Movie-Ranking-img-num {
 		/*margin-left: 20px;*/
 		margin: 0 auto;
 	}
-	.Movie {
-		height: 233px;
-	}
-	.Movie-img {
-		max-height: 233px;
-	}
+	/*.Movie {*/
+	/*	height: 233px;*/
+	/*}*/
+	/*.Movie-img {*/
+	/*	max-height: 233px;*/
+	/*}*/
 	/*调整排行榜间距*/
 	.Movie-Ranking-flex-row {
 		height: 55px;
@@ -2604,12 +2607,12 @@ Movie-Ranking-img-num {
 		margin-top: 0;
 	}
 	/*调整视频图片高度*/
-	.Movie {
-		height: 233px;
-	}
-	.Movie-img {
-		max-height: 233px;
-	}
+	/*.Movie {*/
+	/*	height: 233px;*/
+	/*}*/
+	/*.Movie-img {*/
+	/*	max-height: 233px;*/
+	/*}*/
 }
 /*赛事直播*/
 .game-box {
@@ -4155,6 +4158,7 @@ Movie-Ranking-img-num {
 
 .box02 {
 	background-color: #FFFFFF;
+	padding-top: 40px;
 }
 
 .box02>.HrBox,
@@ -4245,10 +4249,10 @@ Movie-Ranking-img-num {
 
 .scJgAct {
 	/*background-color: #FF556E;*/
-	/*color: #FFFFFF;*/
+	color: #FF556E;
 	font-size: 16px;
 	font-weight: 500;
-	color: #000000;
+	/*color: #000000;*/
 }
 
 .videobtn>span {
@@ -4267,8 +4271,8 @@ Movie-Ranking-img-num {
 .scJg {
 	float: left;
 	margin-left: 14px;
-	height: 40px;
-	line-height: 40px;
+	height: 50px;
+	line-height: 50px;
 	font-size: 16px;
 	font-weight: 500;
 	color: #000000;
@@ -4792,6 +4796,9 @@ Movie-Ranking-img-num {
 	color: #FFFFFF;
 	font-size: 16px;
 }
+.qy-play-list .play-list-item-new.selected {
+	color: #FF556E;
+}
 .qy-play-list .play-list-item-new:hover {
 	color: #FF556E;
 }
@@ -4910,6 +4917,12 @@ Movie-Ranking-img-num {
 .qy-episode-txt .select-item.selected {
 	padding-right: 28px;
 	border-radius: 3px;
+	background-color: #1d2129;
+	color:rgb(255, 85, 110);
+}
+.qy-episode-txt .select-item:hover {
+	/*padding-right: 28px;*/
+	/*border-radius: 3px;*/
 	background-color: #1d2129;
 	color:rgb(255, 85, 110);
 }
@@ -14337,16 +14350,6 @@ body.ZT-black,
 	grid-template-columns: 1fr 1fr 1fr 1fr;
 	margin: 6px auto 0 auto;
 }
-@media screen and (max-width: 1910px) {
-	.box05>.advert_2 {
-		width: 1445px;
-	}
-}
-@media screen and (max-width: 1525px) {
-	.box05>.advert_2 {
-		width: 1207px;
-	}
-}
 .advert_content_title{
 	width: 100%;
 	height: 72px;
@@ -14357,9 +14360,6 @@ body.ZT-black,
 	text-align: center;
 	background: #4886E1;
 	border-right: #5C9EFF 4px solid;
-}
-.advert_content_title.last{
-	border-right: 0;
 }
 .advert_2>.advert_content:first-child>.advert_content_title{
 	border-top-left-radius: 10px;
@@ -14386,12 +14386,54 @@ body.ZT-black,
 .advert_content_ad>ul>li>a{
 	color: #FFFFFF;
 }
+.advert_content_title.last{
+	border-right: 0;
+}
 .advert_content_title.last>img{
 	float: right;
 	margin-top: 18px;
 	margin-right: 11px;
 	width: 32px;
 	height: 32px;
+}
+@media screen and (max-width: 1910px) {
+	.box05>.advert_2 {
+		width: 1445px;
+	}
+	.advert_content_title{
+		height: 62px;
+		line-height: 62px;
+	}
+	.advert_content_ad>ul>li{
+		height: 51px;
+		line-height: 51px;
+	}
+	.advert_content_title.last>img{
+		float: right;
+		margin-top: 18px;
+		margin-right: 11px;
+		width: 32px;
+		height: 32px;
+	}
+	.advert_content_title.last>img{
+		margin-top: 15px;
+	}
+}
+@media screen and (max-width: 1525px) {
+	.box05>.advert_2 {
+		width: 1207px;
+	}
+	.advert_content_title{
+		height: 55px;
+		line-height: 55px;
+	}
+	.advert_content_ad>ul>li{
+		height: 45px;
+		line-height: 45px;
+	}
+	.advert_content_title.last>img{
+		margin-top: 11px;
+	}
 }
 
 .player-title {
@@ -14426,4 +14468,40 @@ body.ZT-black,
 
 .channel-title-shu{
 	display: inline-block;font-size: 16px;
+}
+
+/*detail页-右侧选中颜色*/
+.qy-play-list .play-list-item.selected .title-link, .qy-play-list .play-list-item:hover .title-link {
+	color: #FF556E;
+}
+
+.qy-advunder-show .qy-play-list .img-border {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	border: 2px solid rgb(255, 85, 110);
+	transition: all .2s;
+}
+.qy-advunder-show .qy-play-list .play-list-item.selected .img-border {
+	display: block;
+}
+
+.qy-episode-num .select-item:hover {
+	color: #FF556E;
+}
+
+@media screen and (min-width: 1560px) {
+	.qy-episode-num .select-item {
+		width:70px
+	}
+	/*.qy-flash-func .func-download,.qy-flash-func .func-give-piece,.qy-flash-func .func-share {*/
+	/*	display:block*/
+	/*}*/
+
+	/*.qy-flash-func .func-more .qy-give-piece-tip {*/
+	/*	display: none*/
+	/*}*/
 }

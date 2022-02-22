@@ -14,7 +14,8 @@ $(function(){
     arrIndex['sorttype'] = 'desc';//排序默认倒叙
     arrIndex['channel_id'] = $('#channel-id').val();
     arrIndex['tag'] = $('#tag-id').val();
-    arrIndex['area'] = $('#area-id').val();    
+    arrIndex['area'] = $('#area-id').val();  
+    arrIndex['year'] = $('#year-id').val();   
     arrIndex['page_size'] = page_size;
     //首次加载
     $(document).ready(function() {
@@ -26,11 +27,12 @@ $(function(){
             page_size = "28";//一行7个
         }        
         arrIndex['page_size'] = page_size;
-        arrIndex['sort']='new';
+        arrIndex['sort']='hot';
         
         //发送请求，获取数据     
+            //console.log(arrIndex);
         $.get('/video/refresh-cate', arrIndex, function(s) {
-            console.log(s);
+            //console.log(s);
             var data = s.data.list;
             var content = refreshVideo(data);//加载影片数据
             $('#searchVideos').html(content); // 更新内容
@@ -232,7 +234,7 @@ $(function(){
                 pageSize: page_size
             },
             requestFunction: function() { /*P.config.total = parseInt(Math.random() * 10 + 85);此处模拟总记录变化*/ /*TODO ajax异步请求过程,异步获取到的数据总条数赋值给 P.config.total*/ /*列表渲染自行处理*/
-                console.log(JSON.stringify(P.config));
+                // console.log(JSON.stringify(P.config));
             }
         });
     }
@@ -249,7 +251,6 @@ $this->registerJs($js);
     }
 </style>
 <!--筛选条件-->
-<input id="searchNum" value="<?= $info['total_count']?>" />
 <div class="box01" name="zt">
     <div class="conditionBox" name="zt">
         <div class="box02-content">
@@ -272,6 +273,9 @@ $this->registerJs($js);
                                     <?php if($cates['field'] == 'area' && $cate['checked'] == 1) : ?>
                                         <input type="hidden" id="area-id" value="<?= $cate['value']?>">
                                     <?php endif;?>
+                                    <?php if($cates['field'] == 'year' && $cate['checked'] == 1) : ?>
+                                        <input type="hidden" id="year-id" value="<?= $cate['value']?>">
+                                    <?php endif;?>
                                     <?php if(!($cates['field'] == 'channel_id' && $cate['display']=='全部')):?><!--频道的全部不要-->
                                         <li>
                                             <a href="javascript:;" class="videobtn
@@ -293,6 +297,47 @@ $this->registerJs($js);
                 <?php endforeach;?>
             </div>
         </div>
+    </div>
+</div>
+
+<!--排序-->
+<div class="box03">
+    <ul class="scPX" name="zt">
+        <?php foreach ($info['search_box'] as $cates): ?>
+            <?php if($cates['label'] == "排序") :?>
+                <?php $scJgAct0 = "scJgAct";$scJgAct1 = "";$scJgAct2 = "";
+                foreach ($cates['list'] as $key => $cate) {
+                    if($cates['field'] == 'sort' && $cate['checked'] == 1){
+                        if($key == 0){
+                            $scJgAct0 = "scJgAct";
+                            $scJgAct1 = "";
+                            $scJgAct2 = "";
+                        }else if($key == 1){
+                            $scJgAct0 = "";
+                            $scJgAct1 = "scJgAct";
+                            $scJgAct2 = "";
+                        }else if($key == 2){
+                            $scJgAct0 = "";
+                            $scJgAct1 = "";
+                            $scJgAct2 = "scJgAct";
+                        }
+                    }
+                }
+                //默认人气高低
+                $scJgAct0 = "scJgAct";
+                $scJgAct1 = "";
+                $scJgAct2 = "";
+                ?>
+                <li class="videobtn <?=$scJgAct1?>" data-value="<?= ($cates['list'])[1]['value']?>" data-type="<?= $cates['field']?>"><span>添加时间</span></li>
+                <li class="videobtn <?=$scJgAct0?>" data-value="<?= ($cates['list'])[0]['value']?>" data-type="<?= $cates['field']?>"><span>人气高低</span></li>
+                <li class="videobtn <?=$scJgAct2?>" data-value="<?= ($cates['list'])[2]['value']?>" data-type="<?= $cates['field']?>"><span>评分高低</span></li>
+            <?php endif;?>
+        <?php endforeach;?>
+
+
+    </ul>
+    <div class="scJg" name="zt">
+        共有 <span id="searchNum"><?= $info['total_count']?></span> 个筛选结果
     </div>
 </div>
 <!--筛选结果-->
