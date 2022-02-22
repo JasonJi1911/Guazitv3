@@ -23,6 +23,7 @@ class VideoChannel extends \common\models\video\VideoChannel
             [['description'], 'string', 'max' => 64],
             [['areas'], 'string', 'max' => 256],
             [['display_order'], 'integer', 'min' => DISPLAY_ORDER_MIN, 'max' => DISPLAY_ORDER_MAX],
+            [['icon_gray'], 'safe'],
         ];
     }
 

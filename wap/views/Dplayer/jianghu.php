@@ -238,7 +238,7 @@ $type =initialUrl($url);
         });
 
         if(advert['ad_type']=='img'){
-            $('#load1-img').remove();
+            //console.log('img广告');
             var bb1 = dp.options.bbslist[0];
             var l = bb1.link;
             console.log("image: "+bb1.pic);
@@ -248,6 +248,8 @@ $type =initialUrl($url);
                     pic: bb1.pic,
                 }
             );
+            $('#load1-img').remove();
+
             $("#player1").append('<div id="link" style="height: 100%" class="add-box">' +
                 '<a href="'+ l +'" target="_blank" class="btn-add-detail ad_url_link">' +
                 '点击查看广告详情<i class="ad-arrow-wrapper ad-arrow"></i></a>' +
@@ -263,7 +265,9 @@ $type =initialUrl($url);
             $("#ADMask").click(function() {
                 document.getElementById('link').click();
             });
-
+            dp.on("error", function() {
+                $("#player1 .dplayer-notice").hide();
+            });
             var span = document.getElementById("time_ad");
             var num = span.innerHTML;
             var timer = null;
@@ -287,9 +291,8 @@ $type =initialUrl($url);
                 }, 1000);
             }, 1);
         }else if(advert['ad_type']=='mp4'){
-            $('#load1-img').remove();
             var adslists = dp.options.bbslist;
-            console.log(adslists)
+            console.log(adslists);
             var bb1 = adslists[0];
             var l = bb1.link;
             dp.switchVideo(
@@ -299,6 +302,7 @@ $type =initialUrl($url);
                     type: 'auto'
                 }
             );
+            $('#load1-img').remove();
 
             $("#player1").append('<div id="link" style="height: 100%" class="add-box">' +
                 '<a href="'+ l +'" target="_blank" class="btn-add-detail ad_url_link">' +
