@@ -7,6 +7,7 @@ NewIndexStyleAsset::register($this);
 
 $js = <<<JS
 $(function(){
+    advertByCity('searchresult');
     var tvNum = 7;//电视剧显示集数
     var page_size = "28";//默认一行8个    
     var kTab = false;
@@ -325,14 +326,12 @@ $this->registerJs($js);
             <?php endforeach;?>
             </div>
             <div class="AD-01">
-                <?php if(isset($advert['advert_id'])):?>
-                    <a href="<?=$advert['ad_skip_url']?>" target="_blank"><img src="<?=$advert['ad_image']?>" /></a>
-                <?php else :?>
-                    <a href="javascript:;"><img src="/images/newindex/AD0-1.png" /></a>
-                <?php endif;?>
-                <div class="GGtext">
-                    广告
-                </div>
+<!--                --><?php //if(isset($advert['advert_id'])):?>
+<!--                    <a href="--><?//=$advert['ad_skip_url']?><!--" target="_blank"><img src="--><?//=$advert['ad_image']?><!--" /></a>-->
+<!--                --><?php //else :?>
+<!--                    <a href="javascript:;"><img src="/images/newindex/AD0-1.png" /></a>-->
+<!--                --><?php //endif;?>
+                <div class="GGtext"></div>
             </div>
         </div>
     </div>

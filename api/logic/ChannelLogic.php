@@ -46,13 +46,9 @@ class ChannelLogic
 //        $adposition = Yii::$app->common->product == Common::PRODUCT_PC ? AdvertPosition::POSITION_VIDEO_INDEX_PC : AdvertPosition::POSITION_VIDEO_INDEX;
 //        $advert = $advertLogic->advertByPosition($adposition, $city);
         $advertArray = [];
-        if(Yii::$app->common->product == Common::PRODUCT_PC ){
-            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX_PC1, $city));
-            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX_PC2, $city));
-            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX_PC3, $city));
-            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX_PC4, $city));
-            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX_PC5, $city));
-        }
+//        if(Yii::$app->common->product == Common::PRODUCT_PC ){
+//            $advertArray = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX_PC, $city);
+//        }
         // 广告循环key
         $advertKey = 0;
         foreach ($channelList as $index => $channel) {
@@ -171,18 +167,9 @@ class ChannelLogic
 //            ? AdvertPosition::POSITION_VIDEO_INDEX_PC : AdvertPosition::POSITION_VIDEO_INDEX;
 //        $advert = $advertLogic->advertByPosition($adposition, $city);
         $advertArray = [];
-        if(Yii::$app->common->product == Common::PRODUCT_PC ){
-            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC1, $city));
-            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC2, $city));
-            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC3, $city));
-            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC4, $city));
-            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC5, $city));
-            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC6, $city));
-            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC7, $city));
-            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC8, $city));
-            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC9, $city));
-            array_push($advertArray,$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC10, $city));
-        }
+//        if(Yii::$app->common->product == Common::PRODUCT_PC ){
+//            $advertArray = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC1, $city);
+//        }
         // 广告循环key
         $advertKey = 0;
         $label = [];

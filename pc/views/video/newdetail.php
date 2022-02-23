@@ -299,17 +299,18 @@ else
 <!--黑色区域-->
 <div class="box05">
     <!--播放器上面加广告-->
-    <?php if(!empty($data['advert'])) :?>
-        <?php foreach ($data['advert'] as $key => $advert) : ?>
-            <?php if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_VIDEO_TOP_PC) :?>
-                <div class="play-box video-add-column video-detail-ad">
-                    <a href="<?=$advert['ad_skip_url']?>" target="_blank">
-                        <img src="<?=$advert['ad_image']?>" />
-                    </a>
-                </div>
-            <?php endif;?>
-        <?php endforeach;?>
-    <?php endif;?>
+    <div id="videotop"></div>
+<!--    --><?php //if(!empty($data['advert'])) :?>
+<!--        --><?php //foreach ($data['advert'] as $key => $advert) : ?>
+<!--            --><?php //if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_VIDEO_TOP_PC) :?>
+<!--                <div class="play-box video-add-column video-detail-ad">-->
+<!--                    <a href="--><?//=$advert['ad_skip_url']?><!--" target="_blank">-->
+<!--                        <img src="--><?//=$advert['ad_image']?><!--" />-->
+<!--                    </a>-->
+<!--                </div>-->
+<!--            --><?php //endif;?>
+<!--        --><?php //endforeach;?>
+<!--    --><?php //endif;?>
     <div>
         <div class="play-video-container">
             <div class="play-video-left-container">
@@ -637,29 +638,12 @@ else
                                         break;
                                     }?>
                                 <?php endforeach;?>
-                                <?php if($adtab) :?>
-                                    <div class="video-right-ad-img J_video_right_ad_img">
-                                        <img "<?=$advert['ad_image']?>" onerror="this.src='/images/NewVideo/GG03_2.png'">
-                                    </div>
-                                <?php endif;?>
-                                <div class="AD-02-nd-right">
-                                    <?php if(!empty($data['advert'])) :?>
-                                        <?php foreach ($data['advert'] as $key => $advert): ?>
-                                            <?php $adtab = false;
-                                            if(!empty($advert) && intval($advert['position_id']) == intval(AdvertPosition::POSITION_VIDEO_RIGHT_PC)){
-                                                $adtab = true;
-                                                break;
-                                            }?>
-                                        <?php endforeach;?>
-                                        <?php if($adtab) :?>
-                                            <a href="<?=$advert['ad_skip_url']?>" target="_blank">
-                                                <img src="<?=$advert['ad_image']?>" onerror="this.src='/images/NewVideo/GG03_2.png'"/>
-                                            </a>
-                                        <?php else :?>
-                                            <img src="/images/NewVideo/GG03_2.png"/>
-                                        <?php endif;?>
-                                    <?php endif;?>
-                                </div>
+                                <div id="videoright"></div>
+<!--                                --><?php //if($adtab) :?>
+<!--                                    <div class="video-right-ad-img J_video_right_ad_img">-->
+<!--                                        <img "--><?//=$advert['ad_image']?><!--" onerror="this.src='/images/NewVideo/GG03_2.png'">-->
+<!--                                    </div>-->
+<!--                                --><?php //endif;?>
                             </div>
                             <div class="side-scrollbar">
 
@@ -690,17 +674,18 @@ else
             </div>
         </div>
     </div>
-    <?php if(!empty($data['advert'])) :?>
-        <?php foreach ($data['advert'] as $key => $advert) : ?>
-            <?php if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_VIDEO_BOTTOM_PC) :?>
-                <div class="play-box video-add-column video-detail-ad">
-                    <a href="<?=$advert['ad_skip_url']?>" target="_blank" class="video-bottom-add">
-                        <img src="<?=$advert['ad_image']?>">
-                    </a>
-                </div>
-            <?php endif;?>
-        <?php endforeach;?>
-    <?php endif;?>
+    <div id="videobottom"></div>
+<!--    --><?php //if(!empty($data['advert'])) :?>
+<!--        --><?php //foreach ($data['advert'] as $key => $advert) : ?>
+<!--            --><?php //if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_VIDEO_BOTTOM_PC) :?>
+<!--                <div class="play-box video-add-column video-detail-ad">-->
+<!--                    <a href="--><?//=$advert['ad_skip_url']?><!--" target="_blank" class="video-bottom-add">-->
+<!--                        <img src="--><?//=$advert['ad_image']?><!--">-->
+<!--                    </a>-->
+<!--                </div>-->
+<!--            --><?php //endif;?>
+<!--        --><?php //endforeach;?>
+<!--    --><?php //endif;?>
     <div class="advert_2 J_xini_advert">
         <div class="advert_content">
             <div class="advert_content_title">悉尼交易市场</div>

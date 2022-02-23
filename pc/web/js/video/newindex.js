@@ -1439,3 +1439,59 @@ $(document).ready(function() {
 		}, 1000) //每1000毫秒执行一次
 	}
 });
+
+
+/*广告分城市*/
+function advertByCity(page){
+	var req = new XMLHttpRequest();
+	req.open('GET', document.location, false);
+	req.send(null);
+	var cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
+	var citycode = '';
+	if(cf_ray && cf_ray.length>3){
+		citycode = cf_ray.substring(cf_ray.length-3);
+	}
+	// citycode = 'NRT';
+	// console.log(citycode);
+	var arrIndex = {};
+	arrIndex['citycode'] = citycode;
+	arrIndex['page'] = page;
+	arrIndex['chapterId'] = 0;
+	$.ajax({
+		url: '/video/advert-info',
+		data: arrIndex,
+		type:'get',
+		cache:false,
+		dataType:'json',
+		success:function(res) {
+			if(res.errno==0){
+				var dataar = {};
+				if(page == 'searchresult'){
+					dataar = res.data.advert;
+					if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
+						$('.AD-01').html('<a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" /></a><div class="GGtext"></div>')
+					}else{
+						$('.AD-01').html('<a href="javascript:;"><img src="/images/newindex/AD0-1.png" /></a><div class="GGtext"></div>')
+					}
+				}else if(page == 'newindex'){
+					dataar = res.data.advert;
+					if(dataar.length>0){
+						for(var i=0;i<dataar.length;i++){
+							$(".Movie-box").eq(i).before('<div class="play-ad-box video-add-column"><a href="'+dataar[i].ad_skip_url+'" target="_blank"> <img src="'+dataar[i].ad_image+'" alt=""></a></div>');
+						}
+					}
+				}else if(page == 'channel'){
+					dataar = res.data.advert;
+					if(dataar.length>0){
+						for(var i=0;i<dataar.length;i++){
+							$(".Sports-box").eq(i).before('<div class="play-ad-box video-add-column"><a href="'+dataar[i].ad_skip_url+'" target="_blank"><img src="'+dataar[i].ad_image+'" alt=""></a></div>');
+						}
+					}
+				}
+			}
+		},
+		error : function() {
+			console.log("广告加载失败");
+		}
+	});
+}

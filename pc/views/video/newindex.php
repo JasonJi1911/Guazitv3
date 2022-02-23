@@ -1,6 +1,5 @@
 <?php
 
-use api\models\advert\AdvertPosition;
 use yii\helpers\Url;
 use pc\assets\NewIndexStyleAsset;
 
@@ -965,59 +964,7 @@ $this->registerJs($js);
 
     //按城市加载广告
     $(function () {
-        var req = new XMLHttpRequest();
-        req.open('GET', document.location, false);
-        req.send(null);
-        var cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
-        var citycode = '';
-        if(cf_ray && cf_ray.length>3){
-            citycode = cf_ray.substring(cf_ray.length-3);
-        }
-        // citycode = 'SYD';
-        // console.log(citycode);
-        var arrIndex = {};
-        arrIndex['citycode'] = citycode;
-        arrIndex['page'] = 'newindex';
-        arrIndex['chapterId'] = 0;
-        $.ajax({
-            url: '/video/advert-info',
-            data: arrIndex,
-            type:'get',
-            cache:false,
-            dataType:'json',
-            success:function(res) {
-                if(res.errno==0){
-                    var dataar = {};
-                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC1?>'];
-                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
-                        $(".Movie-box").eq(0).before('<div class="play-ad-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"> <img src="'+dataar.ad_image+'" alt=""></a></div>');
-                    }
-                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC2?>'];
-                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
-                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC2?>'];
-                        $(".Movie-box").eq(1).before('<div class="play-ad-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"> <img src="'+dataar.ad_image+'" alt=""></a></div>');
-                    }
-                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC3?>'];
-                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
-                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC3?>'];
-                        $(".Movie-box").eq(2).before('<div class="play-ad-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"> <img src="'+dataar.ad_image+'" alt=""></a></div>');
-                    }
-                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC4?>'];
-                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
-                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC4?>'];
-                        $(".Movie-box").eq(3).before('<div class="play-ad-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"> <img src="'+dataar.ad_image+'" alt=""></a></div>');
-                    }
-                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC5?>'];
-                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
-                        dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_INDEX_PC5?>'];
-                        $(".Movie-box").eq(4).before('<div class="play-ad-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"> <img src="'+dataar.ad_image+'" alt=""></a></div>');
-                    }
-                }
-            },
-            error : function() {
-                console.log("广告加载失败");
-            }
-        });
+        advertByCity('newindex');
 
         $('#det-nav>ul>.list-item>a.list-link').click(function () {
             var target = $(this).attr('data-id');

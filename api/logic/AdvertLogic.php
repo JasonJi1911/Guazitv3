@@ -46,9 +46,11 @@ class AdvertLogic
             return [];
         }
         // 如果是首页和发现页，获取全部广告，其他位置随机获取一条广告
+        // 首页和类目页广告，获取全部广告
          if ($position == AdvertPosition::POSITION_VIDEO_INDEX
             || $position == AdvertPosition::POSITION_VIDEO_INDEX_PC
-            || $position == AdvertPosition::POSITION_VIDEO_TOPIC) {
+            || $position == AdvertPosition::POSITION_VIDEO_TOPIC
+             || $position == AdvertPosition::POSITION_VIDEO_CHANNEL_PC1) {
             $advert = [];
             foreach ($advertId as $id) {
                 // 添加PV

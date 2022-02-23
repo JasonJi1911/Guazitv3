@@ -1454,9 +1454,11 @@ class VideoController extends BaseController
      */
     public function actionAdvertInfo(){
         $uid = Yii::$app->user->id;
-        $citycode = Yii::$app->request->get('citycode', 0);//城市三字码
+        $citycode = Yii::$app->request->get('citycode', '');//城市三字码
         $page = Yii::$app->request->get('page', '');
         $chapterId = Yii::$app->request->get('chapterId', 0);
+
+//        $citycode = 'SYD';
 
         $data = [];
         //查城市

@@ -193,30 +193,12 @@ class VideoController extends BaseController
             $advert = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_LIST_PC, $city);
             $data['advert'] = $advert;
         }else if($page == "newindex"){
-            $data['advert'] = [
-                AdvertPosition::POSITION_VIDEO_INDEX_PC1 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX_PC1, $city),
-                AdvertPosition::POSITION_VIDEO_INDEX_PC2 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX_PC2, $city),
-                AdvertPosition::POSITION_VIDEO_INDEX_PC3 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX_PC3, $city),
-                AdvertPosition::POSITION_VIDEO_INDEX_PC4 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX_PC4, $city),
-                AdvertPosition::POSITION_VIDEO_INDEX_PC5 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX_PC5, $city),
-            ];
+            $data['advert'] = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX_PC, $city);
         }else if($page == "channel"){
-            $data['advert'] = [
-                AdvertPosition::POSITION_VIDEO_CHANNEL_PC1 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC1, $city),
-                AdvertPosition::POSITION_VIDEO_CHANNEL_PC2 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC2, $city),
-                AdvertPosition::POSITION_VIDEO_CHANNEL_PC3 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC3, $city),
-                AdvertPosition::POSITION_VIDEO_CHANNEL_PC4 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC4, $city),
-                AdvertPosition::POSITION_VIDEO_CHANNEL_PC5 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC5, $city),
-                AdvertPosition::POSITION_VIDEO_CHANNEL_PC6 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC6, $city),
-                AdvertPosition::POSITION_VIDEO_CHANNEL_PC7 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC7, $city),
-                AdvertPosition::POSITION_VIDEO_CHANNEL_PC8 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC8, $city),
-                AdvertPosition::POSITION_VIDEO_CHANNEL_PC9 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC9, $city),
-                AdvertPosition::POSITION_VIDEO_CHANNEL_PC10 => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC10, $city),
-            ];
+            $data['advert'] = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC1, $city);
         }else if($page == "wapindex"){
-            $data['advert'] = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX, $city);;
+            $data['advert'] = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX, $city);
         }
-
         return $data;
     }
 

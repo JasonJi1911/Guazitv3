@@ -1,7 +1,6 @@
 <?php
 use yii\helpers\Url;
 use pc\assets\NewIndexStyleAsset;
-use api\models\advert\AdvertPosition;
 
 //$this->title = '';
 NewIndexStyleAsset::register($this);
@@ -574,74 +573,6 @@ $this->registerJs($js);
 
     //按城市加载广告
     $(function () {
-        var req = new XMLHttpRequest();
-        req.open('GET', document.location, false);
-        req.send(null);
-        var cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
-        var citycode = '';
-        if(cf_ray && cf_ray.length>3){
-            citycode = cf_ray.substring(cf_ray.length-3);
-        }
-        // citycode = 'SYD';
-        // console.log(citycode);
-        var arrIndex = {};
-        arrIndex['citycode'] = citycode;
-        arrIndex['page'] = 'channel';
-        arrIndex['chapterId'] = 0;
-        $.ajax({
-            url: '/video/advert-info',
-            data: arrIndex,
-            type:'get',
-            cache:false,
-            dataType:'json',
-            success:function(res) {
-                if(res.errno==0){
-                    var dataar = {};
-                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC1?>'];
-                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
-                        $(".Sports-box").eq(0).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
-                    }
-                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC2?>'];
-                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
-                        $(".Sports-box").eq(1).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
-                    }
-                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC3?>'];
-                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
-                        $(".Sports-box").eq(2).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
-                    }
-                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC4?>'];
-                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
-                        $(".Sports-box").eq(3).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
-                    }
-                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC5?>'];
-                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
-                        $(".Sports-box").eq(4).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
-                    }
-                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC6?>'];
-                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
-                        $(".Sports-box").eq(5).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
-                    }
-                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC7?>'];
-                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
-                        $(".Sports-box").eq(6).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
-                    }
-                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC8?>'];
-                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
-                        $(".Sports-box").eq(7).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
-                    }
-                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC9?>'];
-                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
-                        $(".Sports-box").eq(8).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
-                    }
-                    dataar = res.data.advert['<?=AdvertPosition::POSITION_VIDEO_CHANNEL_PC10?>'];
-                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
-                        $(".Sports-box").eq(9).before('<div class="play-box video-add-column"><a href="'+dataar.ad_skip_url+'" target="_blank"><img src="'+dataar.ad_image+'" alt=""></a></div>');
-                    }
-                }
-            },
-            error : function() {
-                console.log("广告加载失败");
-            }
-        });
+        advertByCity('channel');
     });
 </script>
