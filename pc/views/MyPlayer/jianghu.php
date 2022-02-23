@@ -997,14 +997,20 @@ function initialUrl($url)
                             advert['ad_type'] = 'img';
                         }
                     }
-                    // var sources = res.data.sources;
-                    // var qualitystr = '';
-                    // for(var i in sources){
-                    //     qualitystr += "{name: '"+sources[i].name+"',url: '"+sources[i].resource_url+"',type: 'auto',limit: '"+sources[i].play_limit+"'},";
-                    // }
-                    // qualitystr = "["+qualitystr+"]";
-                    // advertinfo(advert,qualitystr);
                     defaultAdvertInfo(advert);
+                    var ad = {};
+                    if(res.data.advert.videotop.ad_image){
+                        ad = res.data.advert.videotop;
+                        $("#videotop").html('<div class="play-box video-add-column video-detail-ad"><a href="'+ad.ad_skip_url+'" target="_blank"><img src="'+ad.ad_image+'" /></a></div>')
+                    }
+                    if(res.data.advert.videoright.ad_image){
+                        ad = res.data.advert.videoright;
+                        $("#videoright").html('<div class="video-right-ad-img"><a href="'+ad.ad_skip_url+'" target="_blank"><img src="'+ad.ad_image+'"></a></div>');
+                    }
+                    if(res.data.advert.videobottom.ad_image){
+                        ad = res.data.advert.videobottom;
+                        $("#videobottom").html('<div class="play-box video-add-column video-detail-ad"><a href="'+ad.ad_skip_url+'" target="_blank" class="video-bottom-add"><img src="'+ad.ad_image+'"></a></div>');
+                    }
                 }else{
                     defaultAdvertInfo(advert);
                 }
