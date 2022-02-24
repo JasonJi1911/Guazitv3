@@ -1471,10 +1471,10 @@ class VideoController extends BaseController
 //        }
 
         //查广告
-        $advert = Yii::$app->api->get('/video/advert', ['page' => $page, 'city'=> $city, 'citycode' => $citycode]);
-        if($advert){
-            $data['advert'] = $advert['advert'];
-        }
+        $data = Yii::$app->api->get('/video/advert', ['page' => $page, 'city'=> '', 'citycode' => $citycode]);
+//        if($advert){
+//            $data['advert'] = $advert['advert'];
+//        }
 
         //查线路
 //        if($chapterId!=0){

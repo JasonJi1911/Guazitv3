@@ -29,6 +29,33 @@ $(function(){
             },
         }
     });
+    
+    function countDown(maxtime,fn){
+        var timer = setInterval(function() { 
+            if(!!maxtime ){  
+            fn(Math.floor(maxtime%60)); 
+            --maxtime;  
+        } else {  
+            clearInterval(timer ); 
+            fn(0);
+        }  
+        },1000); 
+    }
+     
+    //9s后关闭封
+    countDown(9,function(msg) { 
+        if(msg == '0'){
+            $("#jBox1-overlay").hide();
+            $("#jBox1").fadeOut();
+        }
+        if(document.getElementById('closeAd'))
+            document.getElementById('closeAd').innerHTML = msg+"秒后自动关闭"; 
+    }) 
+	
+	$(".jBox-closeButton").click(function(){
+	    $("#jBox1-overlay").hide();
+        $("#jBox1").fadeOut();
+	});
 });
 SCRIPT;
 
@@ -37,6 +64,101 @@ $this->registerJs($js);
 <style>
     body{
         background-color: #000000;
+    }
+
+    .jBox-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        /* background-color: rgba(0,0,0,.82); */
+        background-color: rgba(255, 255, 255, 0.6);
+    }
+
+    #jBox1 {
+        /* top: 165px !important; */
+        top: 80px !important;
+    }
+
+    .jBox-wrapper {
+        text-align: left;
+        box-sizing: border-box;
+    }
+
+    /**
+    * 去掉广告白色边框
+    */
+    /* .jBox-Modal .jBox-container, .jBox-Modal.jBox-closeButton-box:before {
+        box-shadow: 0 3px 15px rgb(0 0 0 / 40%), 0 0 5px rgb(0 0 0 / 40%);
+    } */
+
+    /**
+    * 去掉广告白色边框
+    * background: #fff;
+    */
+    .jBox-Modal .jBox-container {
+        border-radius: 4px;
+        /* background: #fff; */
+    }
+
+    .jBox-container, .jBox-content, .jBox-title {
+        position: relative;
+        word-break: break-word;
+        box-sizing: border-box;
+    }
+
+    .jBox-Modal .jBox-content {
+        padding: 15px 20px;
+    }
+
+    .jBox-content {
+        padding: 8px 10px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        transition: opacity .2s;
+    }
+    /**
+    * 移至右下放
+    */
+    .jBox-closeButton-box .jBox-closeButton {
+        /* top: -8px; */
+        bottom: 0px;
+        right: -10px;
+        width: 24px;
+        height: 24px;
+        background: #fff;
+        border-radius: 50%;
+    }
+
+    .jBox-closeButton {
+        z-index: 1;
+    }
+
+    .jBox-closeButton {
+        cursor: pointer;
+        position: absolute;
+    }
+
+    .jBox-closeButton-box .jBox-closeButton svg {
+        width: 10px;
+        height: 10px;
+        margin-top: -5px;
+        margin-right: -5px;
+    }
+
+    .jBox-closeButton svg {
+        position: absolute;
+        top: 50%;
+        right: 50%;
+    }
+
+    .jBox-closeButton path {
+        fill: #aaa;
+    }
+
+    .jBox-closeButton path {
+        transition: fill .2s;
     }
 </style>
 <!--首页大轮播-->
@@ -939,6 +1061,30 @@ $this->registerJs($js);
         </li>
     </ul>
 <?php endif; ?>
+<!-- 弹窗 -->
+<?php //if (!empty($data['flash']) && $tick) : ?>
+    <div id="jBox1" class="jBox-wrapper jBox-Modal jBox-Default jBox-closeButton-box"
+         style="position: fixed; display: none; opacity: 1; z-index: 10000; left:25%; right: 25%">
+        <div class="jBox-container">
+
+            <div class="jBox-content" style="width: auto; height: auto;">
+                <div style="width:auto;font-size:15px;text-align:center"></div>
+                <div id="popup-ads" style="display: block;" data-jbox-content-appended="1">
+                    <a href="" target="_blank">
+                        <img src="" style="border: 0px;width:100%;">
+                    </a>
+                </div>
+            </div>
+            <div class="jBox-closeButton jBox-noDrag">
+                <svg viewBox="0 0 24 24">
+                    <path d="M22.2,4c0,0,0.5,0.6,0,1.1l-6.8,6.8l6.9,6.9c0.5,0.5,0,1.1,0,1.1L20,22.3c0,0-0.6,0.5-1.1,0L12,15.4l-6.9,6.9c-0.5,0.5-1.1,0-1.1,0L1.7,20c0,0-0.5-0.6,0-1.1L8.6,12L1.7,5.1C1.2,4.6,1.7,4,1.7,4L4,1.7c0,0,0.6-0.5,1.1,0L12,8.5l6.8-6.8c0.5-0.5,1.1,0,1.1,0L22.2,4z"></path>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <div id="jBox1-overlay" class="jBox-overlay jBox-overlay-Modal" style="display: none; opacity: 1; z-index: 9999;"></div>
+<?php //endif; ?>
 <script>
     //标签悬浮“图片变动”
     $('.sort_content').hover(function(){
@@ -964,7 +1110,7 @@ $this->registerJs($js);
 
     //按城市加载广告
     $(function () {
-        advertByCity('newindex');
+        advertByCity('home');
 
         $('#det-nav>ul>.list-item>a.list-link').click(function () {
             var target = $(this).attr('data-id');

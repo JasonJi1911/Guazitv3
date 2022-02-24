@@ -16,10 +16,10 @@ header('X-Frame-Options:Deny');
 			window.location = "<?=PC_HOST_PATH?>";
 		}
 		
-		if ($("#jBox1").length > 0) {
-            $(".flashCount").text("关闭")
-            $(".bgcover").fadeIn();
-		}
+		// if ($("#jBox1").length > 0) {
+        //     $(".flashCount").text("关闭")
+        //     $(".bgcover").fadeIn();
+		// }
 		
 		$(".jBox-closeButton").click(function(){
             // $("#jBox1-overlay").hide();
@@ -377,19 +377,19 @@ header('X-Frame-Options:Deny');
 	}
 </script>
 
-<?php if (!empty($data['flash'])) : ?>
+<?php //if (!empty($data['flash'])) : ?>
 <div class="bgcover" style="display: none;">
     <div id="jBox1" class="jBox-wrapper jBox-Modal jBox-Default jBox-closeButton-box">
         <div style="width:auto;font-size:15px;text-align:center"></div>
-        <a href="<?= $data['flash']['ad_skip_url']?>" target="_blank">
-            <img src="<?= $data['flash']['ad_image']?>" style="border: 0px;width:100%;height:100%">
+        <a href="" target="_blank">
+            <img src="" style="border: 0px;width:100%;height:100%">
         </a>
         <div class="jBox-closeButton jBox-noDrag">
             <span class="flashCount"></span>
         </div>
     </div>
 </div>
-<?php endif; ?>
+<?php //endif; ?>
 <script>
     //按城市加载广告
     $(function () {
@@ -405,7 +405,7 @@ header('X-Frame-Options:Deny');
         // console.log(citycode);
         var arrIndex = {};
         arrIndex['citycode'] = citycode;
-        arrIndex['page'] = 'wapindex';
+        arrIndex['page'] = 'home';
         arrIndex['chapterId'] = 0;
         $.ajax({
             url: '/video/advert-info',
@@ -420,6 +420,13 @@ header('X-Frame-Options:Deny');
                         for(var i=0;i<dataar.length;i++){
                             $(".video-index-column").eq(i).before('<div class="video-add-column"><a href="'+dataar[i].ad_skip_url+'"> <img src="'+dataar[i].ad_image+'" alt=""></a></div>');
                         }
+                    }
+                    dataar = res.data.flash;
+                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
+                        $("#jBox1 a").attr("href",dataar.ad_skip_url);
+                        $("#jBox1 a img").attr("src",dataar.ad_image);
+                        $(".flashCount").text("关闭")
+                        $(".bgcover").fadeIn();
                     }
                 }
             },

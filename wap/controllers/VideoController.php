@@ -299,27 +299,28 @@ class VideoController extends BaseController
 
         $data = [];
         //查城市
-        $citylist = Yii::$app->api->get('/video/city-info', ['citycode' => $citycode]);
+//        $citylist = Yii::$app->api->get('/video/city-info', ['citycode' => $citycode]);
+//
+//        if($citylist){
+//            $city = $citylist['city_name'];
+//        }else{
+//            $city = '';
+//        }
 
-        if($citylist){
-            $city = $citylist['city_name'];
-        }else{
-            $city = '';
-        }
-
+//        $citycode = 'SYD';
         //查广告
-        $advert = Yii::$app->api->get('/video/advert', ['page' => $page, 'city'=> $city]);
-        if($advert){
-            $data['advert'] = $advert['advert'];
-        }
+        $data = Yii::$app->api->get('/video/advert', ['page' => $page, 'city'=> '','citycode' => $citycode]);
+//        if($advert){
+//            $data['advert'] = $advert['advert'];
+//        }
 
         //查线路
-        if($chapterId!=0){
-            $sources = Yii::$app->api->get('/video/chapter-sources',['uid'=>$uid,'chapterId'=>$chapterId,]);
-            if($sources){
-                $data['sources'] = $sources;
-            }
-        }
+//        if($chapterId!=0){
+//            $sources = Yii::$app->api->get('/video/chapter-sources',['uid'=>$uid,'chapterId'=>$chapterId,]);
+//            if($sources){
+//                $data['sources'] = $sources;
+//            }
+//        }
         if($data){
             $errno = 0;
         }else{

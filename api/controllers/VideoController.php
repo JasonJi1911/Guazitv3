@@ -192,12 +192,8 @@ class VideoController extends BaseController
         }else if($page == "list"){
             $advert = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_LIST_PC, $city);
             $data['advert'] = $advert;
-        }else if($page == "newindex"){
-            $data['advert'] = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX_PC, $city);
         }else if($page == "channel"){
             $data['advert'] = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC1, $city);
-        }else if($page == "wapindex"){
-            $data['advert'] = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX, $city);
         }
         return $data;
     }

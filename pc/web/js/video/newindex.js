@@ -1473,12 +1473,19 @@ function advertByCity(page){
 					}else{
 						$('.AD-01').html('<a href="javascript:;"><img src="/images/newindex/AD0-1.png" /></a><div class="GGtext"></div>')
 					}
-				}else if(page == 'newindex'){
+				}else if(page == 'home'){
 					dataar = res.data.advert;
 					if(dataar.length>0){
 						for(var i=0;i<dataar.length;i++){
 							$(".Movie-box").eq(i).before('<div class="play-ad-box video-add-column"><a href="'+dataar[i].ad_skip_url+'" target="_blank"> <img src="'+dataar[i].ad_image+'" alt=""></a></div>');
 						}
+					}
+					dataar = res.data.flash;
+					if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
+						$("#popup-ads a").attr("href",dataar.ad_skip_url);
+						$("#popup-ads a img").attr("src",dataar.ad_image);
+						$("#jBox1-overlay").show();
+						$("#jBox1").fadeIn();
 					}
 				}else if(page == 'channel'){
 					dataar = res.data.advert;
