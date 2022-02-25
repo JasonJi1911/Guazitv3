@@ -203,7 +203,7 @@ $this->registerJs($js);
             </div>
         </li>
         <!--详情弹出层,默认隐藏-->
-        <div class="alt" id="alt03<?= $list['video_id']?>">
+        <div class="alt alt03" id="alt03<?= $list['video_id']?>">
                 <div class="alt03-box" name="zt">
                     <div class="alt03-box-t">
                         <div class="alt03-box-R">
@@ -379,7 +379,7 @@ $this->registerJs($js);
                     </li>
 
                         <!--详情弹出层,默认隐藏-->
-                        <div class="alt" id="alt03<?= $list['video_id']?>">
+                        <div class="alt alt03" id="alt03<?= $list['video_id']?>">
                             <div class="alt03-box" name="zt">
                                 <div class="alt03-box-t">
                                     <div class="alt03-box-R">
@@ -534,7 +534,7 @@ $this->registerJs($js);
                 '                   <div>'+list[i]['flag']+'</div>\n'+
                 '                </div>\n' +
                 '            </li>\n';
-            '            <div class="alt" id="alt03'+list[i]['video_id']+'">\n' +
+            '            <div class="alt alt03" id="alt03'+list[i]['video_id']+'">\n' +
             '                <div class="alt03-box" name="zt">\n' +
             '                    <div class="alt03-box-t">\n' +
             '                        <div class="alt03-box-R">\n' +

@@ -215,7 +215,7 @@ header("Access-Control-Allow-Origin:*");
 </script>
 
 <!--登录弹出层-->
-<div class="alt" id="alt01">
+<div class="alt alt01" id="alt01">
     <div class="alt01—box">
         <div class="alt-logon">
             <div class="alt_login_d J_alt_login">

@@ -3156,8 +3156,8 @@ Movie-Ranking-img-num {
 	position: absolute;
 	top: 50%;
 	right: 50%;
-	margin-right: -249px;
-	margin-top: -280px;
+	margin-right: -400px;
+	margin-top: -260px;
 	font-size: 30px;
 	color: rgba(0, 0, 0, 0);
 	background-image: url(../images/Index/cha.png);
@@ -3939,8 +3939,9 @@ Movie-Ranking-img-num {
 }
 
 .alt03-box-L>.GNbox {
-	margin-left: -10px;
+	/*margin-left: -10px; */
 	padding-bottom: 5px;
+	height: 40px;
 }
 
 .XQ-text {
@@ -3989,7 +3990,7 @@ Movie-Ranking-img-num {
 
 .XQ-btn>input:hover {
 	color: #FF556E;
-	background-image: url(../images/newindex/shoucang-o.png);
+	background-image: url(../images/Index/shoucang-4h.png);
 }
 
 .XQ-btn>input.act:hover,
@@ -4649,6 +4650,9 @@ Movie-Ranking-img-num {
 	overflow: hidden;
 	overflow-y: auto;
 }
+.qy-player-side-body .body-inner .side-content{
+	min-height: 494px;
+}
 /* 定义滚动条样式 */
 .qy-player-side-body .body-inner::-webkit-scrollbar {
 	width: 6px;
@@ -5064,7 +5068,7 @@ Movie-Ranking-img-num {
 	padding-left: 25px;
 	background: url('../images/Index/shoucang-4.png') no-repeat left center;
 }
-.qy-flash-func .qy-shoucang.act{
+.qy-flash-func .qy-shoucang.act, .qy-flash-func .func-collect:hover .qy-shoucang{
 	padding-left: 25px;
 	background: url('../images/Index/shoucang-4h.png') no-repeat left center;
 }
@@ -5616,6 +5620,9 @@ Movie-Ranking-img-num {
 	.qy-player-side-body {
 		height: 690px;
 	}
+	.qy-player-side-body .body-inner .side-content{
+		min-height: 371px;
+	}
 	.AD-02-nd-right {
 		width: 392px;
 	}
@@ -5665,6 +5672,9 @@ Movie-Ranking-img-num {
 	}
 	.qy-player-side-body {
 		height: 550px;
+	}
+	.qy-player-side-body .body-inner .side-content{
+		min-height: 231px;
 	}
 	.AD-02-nd-right {
 		width: 320px;
@@ -14335,11 +14345,11 @@ body.ZT-black,
 .video-right-ad-img{
 	width: 100%;
 	height: 275px;
-	position: absolute;
+	/*position: absolute;*/
 	bottom: 16px;
 	overflow: hidden;
 }
-.video-right-ad-img>img{
+.video-right-ad-img>a>img{
 	width:100%;
 }
 .box05>.advert_2{
@@ -14504,4 +14514,11 @@ body.ZT-black,
 	/*.qy-flash-func .func-more .qy-give-piece-tip {*/
 	/*	display: none*/
 	/*}*/
+}
+.alt01 .alt-GB{
+	margin-right: -249px;
+	margin-top: -280px;
+}
+.alt03 .alt-GB{
+	background-image: url(../images/newindex/guanbi.png);
 }
