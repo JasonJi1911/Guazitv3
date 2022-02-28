@@ -2544,7 +2544,7 @@ Movie-Ranking-img-num {
 	.Movie-box>.Movie-Ranking {
 		display: block;
 	}
-	.NewTrailer-box>.Movie-list:last-of-type {
+	.NewTrailer-box>.Movie-list:nth-of-type(7) {
 		display: none;
 	}
 }
@@ -2580,7 +2580,7 @@ Movie-Ranking-img-num {
 	.Movie-Ranking {
 		display: block;
 	}
-	.NewTrailer-box>.Movie-list:last-of-type {
+	.NewTrailer-box>.Movie-list:nth-of-type(7) {
 		display: none;
 	}
 }
@@ -13415,7 +13415,7 @@ Movie-Ranking-img-num {
 	padding-top: 30px;
 	font-size: 16px;
 	color: #011A48;
-
+	cursor: pointer;
 }
 .alt-logon .alt_register .tab-nav {
 	/*line-height: 40px;*/

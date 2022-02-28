@@ -480,7 +480,7 @@ $this->registerJs($js);
             } else {
                 $('.J_update_empty').hide();
                 $('.J_video_update_content').show();
-                html = updateContent(res['data']['video_update']);
+                var html = updateContent(res['data']['video_update']);
                 $('.J_video_update_content').html(html);
             }
         })
@@ -533,7 +533,7 @@ $this->registerJs($js);
                 '                   <div>'+catstr1+'</div>\n'+
                 '                   <div>'+list[i]['flag']+'</div>\n'+
                 '                </div>\n' +
-                '            </li>\n';
+                '            </li>\n'+
             '            <div class="alt alt03" id="alt03'+list[i]['video_id']+'">\n' +
             '                <div class="alt03-box" name="zt">\n' +
             '                    <div class="alt03-box-t">\n' +
@@ -564,7 +564,7 @@ $this->registerJs($js);
             '                    </div>\n' +
             '                    <p class="alt03-box-Z">\n' +
             '                        简介：<span>'+list[i]['intro']+'</span>\n' +
-            '                    <input class="alt-GB" type="button" id="" value="X">\n' +
+            '                    <input class="alt-GB" onclick="closeXQ(this);" type="button" id="" value="X">\n' +
             '                </div>\n' +
             '            </div>';
         }

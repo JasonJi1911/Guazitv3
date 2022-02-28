@@ -986,6 +986,7 @@ if(empty($is_show_background) || $is_show_background != 1){
             }
             $("#alt03"+videoId).show();
         });
+        eventStop();
     }
     //收藏
     function addfavors(videoId){

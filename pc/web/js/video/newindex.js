@@ -1502,3 +1502,19 @@ function advertByCity(page){
 		}
 	});
 }
+
+function closeXQ(that){
+	$(that).parents('.alt').hide();
+}
+
+function eventStop(){
+	var evt = evt || window.event; //获取event对象
+	if (evt.preventDefault) {
+		evt.preventDefault(); //非IE浏览器
+	} else {
+		evt.returnValue = false; //在早期的IE版本中
+	}
+	event.stopPropagation ? event.stopPropagation() : (event.cancelBubble = true); //阻止事件冒泡
+	window.event.cancelBubble = true;
+	return false;
+}
