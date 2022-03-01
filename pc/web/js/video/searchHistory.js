@@ -108,39 +108,16 @@ $(document).ready(function() {
 });
 
 //存用户
-function saveuser(uid,zd){
-    //设置是否自动登录
-    // if(zd==1 || zd=="1"){
-        //是自动
-        // setCookie("zd","1",7);
-        setCookie("uid",uid,1);
-    // }else{
-    //     document.cookie="uid="+uid;
-    // }
-    // if(window.localStorage.hasOwnProperty("user")){
-    //     window.localStorage.removeItem("user");
-    // }
-    // window.localStorage.setItem("user",str);
+function saveuser(uid){
+    setCookie("uid",uid,1);
 }
 
 //读用户
 function finduser(){
-    var uid = getCookie("uid");
-    // if(zd){
-    //     if(window.localStorage.hasOwnProperty("user")){
-    //         str = window.localStorage.getItem("user");
-    //     }
-    //     if(str && str!="underfined" && str!= "undefined"){
-    //         showlogin(JSON.parse(str));
-    //     }
-    // }
-    return uid;
+    return getCookie("uid");
 }
 //删除
 function removeuser(){
-    // if(window.localStorage.hasOwnProperty("user")){
-    //     window.localStorage.removeItem("user");
-    // }
     setCookie("uid","",-1);
 }
 

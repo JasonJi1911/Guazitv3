@@ -252,8 +252,8 @@ header("Access-Control-Allow-Origin:*");
                             <input type="text" class="J_account" name="" placeholder="请输入手机号" id="login_account" value="" />
                         </div>
                         <!--    报错样式 wor-->
-                        <div class="inp-box mb-16 pasbox">
-                            <input type="password" class="inp pas" name="" placeholder="请输入密码" id="login_pwd" value="" onKeyUp="value=value.replace(/[^(\w-*\.*)]/g,'')" />
+                        <div class="inp-box mb-16 pasbox J_codebox">
+                            <input type="password" class="inp pas J_code_input" name="" placeholder="请输入密码" id="login_pwd" value="" onKeyUp="value=value.replace(/[^(\w-*\.*)]/g,'')" />
                             <input type="button" class="eye"  value="" />
                         </div>
                         <ul class="gn-box">
@@ -297,8 +297,8 @@ header("Access-Control-Allow-Origin:*");
                             <input type="text" class="J_account" name="" placeholder="请输入手机号" id="login_sms_account" value="" />
                         </div>
                         <!--    报错样式 wor-->
-                        <div class="inp-box mb-25 smsbox">
-                            <input type="text" class="inp" name="" placeholder="请输入验证码" value="" id="smscode"  onKeyUp="value=value.replace(/[^0-9]/i,'')" />
+                        <div class="inp-box mb-25 smsbox J_codebox">
+                            <input type="text" class="inp J_code_input" name="" placeholder="请输入验证码" value="" id="smscode"  onKeyUp="value=value.replace(/[^0-9]/i,'')" />
                             <input type="button" class="sms_code J_sms_code"  value="获取验证码" source="sms"/>
                         </div>
                         <div class="loginTip J_login_warning1">请输入手机号</div>
@@ -346,8 +346,8 @@ header("Access-Control-Allow-Origin:*");
                                 <input type="text" name="" placeholder="请输入手机号" id="reg_account" value="" class="J_account"/>
                             </div>
                         <!--    报错样式 wor-->
-                        <div class="inp-box mb-25 smsbox">
-                            <input type="text" class="inp" name="" placeholder="请输入验证码" value="" id="reg_smscode"  onKeyUp="value=value.replace(/[^0-9]/i,'')" />
+                        <div class="inp-box mb-25 smsbox J_codebox">
+                            <input type="text" class="inp J_code_input" name="" placeholder="请输入验证码" value="" id="reg_smscode"  onKeyUp="value=value.replace(/[^0-9]/i,'')" />
                             <input type="button" class="sms_code J_sms_code"  value="获取验证码" source="reg"/>
                         </div>
                         <div class="loginTip J_login_warning2">手机号已注册，请勿重复注册</div>
@@ -359,7 +359,7 @@ header("Access-Control-Allow-Origin:*");
             </div>
             <div class="bowbox" name="zt">
                 <input type="radio" name="xy" value="">
-                <label for="xy" id="xy" class="chebox act">同意<a href="/video/help?tab=terms">《用户协议》</a>和<a href="/video/help?tab=terms">《隐私政策》</a></label>
+                <label for="xy" id="xy" class="chebox act">同意<a href="/video/help?tab=terms" target="_blank">《用户协议》</a>和<a href="/video/help?tab=terms" target="_blank">《隐私政策》</a></label>
             </div>
             <!--关闭按钮-->
 <!--            <input class="alt-GB" type="button" style="background-color:black;">-->

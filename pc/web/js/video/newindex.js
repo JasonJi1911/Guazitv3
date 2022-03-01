@@ -143,6 +143,11 @@ $(document).ready(function() {
 $(document).ready(function() {
 	$('.alt-GB').click(function() {
 		$(this).parents('.alt').hide();
+		if($(this).parents('.alt').attr("id")=="alt01"){
+			changeLogin('');
+			$('.J_alt_login').show();
+			$('.J_alt_register').hide();
+		}
 	});
 });
 
@@ -772,6 +777,7 @@ $(document).ready(function() {
 		var tabNum = $(this).index();
 		$(this).addClass("act").siblings().removeClass("act");
 		$(".alt-logon .tab-box>div").eq(tabNum).addClass("act").siblings().removeClass("act");
+		changeLogin('');
 		if(tabNum==1){
 			$("#login_sms_submit").val("登录/注册");
 		}
@@ -813,11 +819,13 @@ $(document).ready(function() {
 	});
 	//点击注册,显示注册页面，关闭登录页面
 	$('.J_c_register').click(function(){
+		changeLogin('');
 		$('.J_alt_login').hide();
 		$('.J_alt_register').show();
 	});
 	//注册页面返回,显示登录页面，注册页面关闭
 	$('.J_alt_reback').click(function(){
+		changeLogin('');
 		$('.J_alt_login').show();
 		$('.J_alt_register').hide();
 	});
@@ -874,12 +882,12 @@ $(document).ready(function() {
 		account = $(this).parents(".J_step_one").find(".J_phone").val();
 		prefix_phone = $(this).parents(".J_step_one").find(".J_select_country").attr("data");
 		if (account == "") {
-			$(".J_warning").text("账号不能为空");
+			$(".J_warning").text("手机号不能为空");
 			$(".J_warning").show();
 			return false;
 		}
 		if (!isMobilePhone(account)) {
-			$(".J_warning").text("账号格式错误");
+			$(".J_warning").text("手机号格式错误");
 			$(".J_warning").show();
 			return false;
 		}
@@ -968,19 +976,19 @@ $(document).ready(function() {
 			var ts_this = $(".J_three_step");
 			new_pass = ts_this.parents('.J_step_two3').find('.J_new_pass').val();
 			sure_pass = ts_this.parents('.J_step_two3').find('.J_sure_pass').val();
-			console.log(new_pass,sure_pass);
-			if(new_pass == ''){
-				$(".J_warning3").text("请输入新密码");
+			// console.log(new_pass,sure_pass);
+			if(new_pass == '' || new_pass.trim().length<6){
+				$(".J_warning3").text("密码长度至少6位");
 				$(".J_inp_box_warning").show();
 				$(".J_warning3").show();
 				return false;
 			}
-			if(sure_pass == ''){
-				$(".J_warning3").text("请输入确认密码");
-				$(".J_inp_box_warning").show();
-				$(".J_warning3").show();
-				return false;
-			}
+			// if(sure_pass == '' || sure_pass.trim().length<6){
+			// 	$(".J_warning3").text("请输入确认密码,长度至少6位");
+			// 	$(".J_inp_box_warning").show();
+			// 	$(".J_warning3").show();
+			// 	return false;
+			// }
 			if(sure_pass != new_pass){
 				$(".J_warning3").text("两次输入密码不一致");
 				$(".J_inp_box_warning").show();
@@ -1351,19 +1359,19 @@ $(document).ready(function() {
 			var ts_this = $(".J_edp_two_step");
 			new_pass = $('.J_edp_new_pass').val();
 			sure_pass = $('.J_edp_sure_pass').val();
-			console.log(new_pass,sure_pass);
-			if(new_pass == ''){
-				$(".J_edp_warning3").text("请输入新密码");
+			// console.log(new_pass,sure_pass);
+			if(new_pass == '' || new_pass.trim().length<6){
+				$(".J_edp_warning3").text("密码长度至少6位");
 				$(".J_edp_inp_box").show();
 				$(".J_edp_warning3").show();
 				return false;
 			}
-			if(sure_pass == ''){
-				$(".J_edp_warning3").text("请输入确认密码");
-				$(".J_edp_inp_box").show();
-				$(".J_edp_warning3").show();
-				return false;
-			}
+			// if(sure_pass == ''){
+			// 	$(".J_edp_warning3").text("请输入确认密码");
+			// 	$(".J_edp_inp_box").show();
+			// 	$(".J_edp_warning3").show();
+			// 	return false;
+			// }
 			if(sure_pass != new_pass){
 				$(".J_edp_warning3").text("两次输入密码不一致");
 				$(".J_edp_inp_box").show();
@@ -1477,7 +1485,9 @@ function advertByCity(page){
 					dataar = res.data.advert;
 					if(dataar.length>0){
 						for(var i=0;i<dataar.length;i++){
-							$(".Movie-box").eq(i).before('<div class="play-ad-box video-add-column"><a href="'+dataar[i].ad_skip_url+'" target="_blank"> <img src="'+dataar[i].ad_image+'" alt=""></a></div>');
+							if(dataar[i].advert_id && dataar[i].advert_id!="underfined" && typeof (dataar[i].advert_id) != "undefined"){
+								$(".Movie-box").eq(i).before('<div class="play-ad-box video-add-column"><a href="'+dataar[i].ad_skip_url+'" target="_blank"> <img src="'+dataar[i].ad_image+'" alt=""></a></div>');
+							}
 						}
 					}
 					dataar = res.data.flash;
@@ -1491,7 +1501,9 @@ function advertByCity(page){
 					dataar = res.data.advert;
 					if(dataar.length>0){
 						for(var i=0;i<dataar.length;i++){
-							$(".Sports-box").eq(i).before('<div class="play-ad-box video-add-column"><a href="'+dataar[i].ad_skip_url+'" target="_blank"><img src="'+dataar[i].ad_image+'" alt=""></a></div>');
+							if(dataar[i].advert_id && dataar[i].advert_id!="underfined" && typeof (dataar[i].advert_id) != "undefined"){
+								$(".Sports-box").eq(i).before('<div class="play-ad-box video-add-column"><a href="'+dataar[i].ad_skip_url+'" target="_blank"><img src="'+dataar[i].ad_image+'" alt=""></a></div>');
+							}
 						}
 					}
 				}
@@ -1517,4 +1529,19 @@ function eventStop(){
 	event.stopPropagation ? event.stopPropagation() : (event.cancelBubble = true); //阻止事件冒泡
 	window.event.cancelBubble = true;
 	return false;
+}
+//隐藏警告
+function changeLogin(type){
+	$(".J_login_warning").hide();
+	$(".J_login_warning1").hide();
+	$(".J_login_warning2").hide();
+	$(".J_tel").removeClass("wor");
+	$(".J_codebox").removeClass("wor");
+	if(type != 'code'){
+		$(".J_account").val("");
+		$(".J_code_input").val("");
+	}
+
+	$(".eye").removeClass("act");
+	$(".eye").siblings(".inp").addClass("pas").attr("type", "password");
 }

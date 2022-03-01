@@ -205,9 +205,9 @@ $(function(){
                 arrIndex['mobile_areacode'] = prefix_phone;
             }
         }
-        if(pwd==""){
+        if(pwd=="" || pwd.trim().length<6){
             $("#login_pwd").parent().addClass("wor");
-            $(".J_login_warning").text("密码不能为空");
+            $(".J_login_warning").text("密码长度至少6位");
             $(".J_login_warning").show();
             tab = false;
             return false;
@@ -226,15 +226,13 @@ $(function(){
             arrIndex['flag'] = 0;//flag: 0-密码；1-短信验证码
             console.log(arrIndex);
             $.get('/site/new-login',arrIndex,function(res){
-                // console.log(res);
                 $(".J_login_warning").text("登录成功");
                 $(".J_login_warning").show();
                 $("#login_submit").removeClass("login-loading");
                 if(res.errno==0 && res.data){
                     //登陆成功,页面刷新
-                    var zd = $("#zd").hasClass("act")? 1:0;
                     if(!isNaN(res.data) && res.data!=""){
-                        saveuser(res.data,zd);
+                        saveuser(res.data);
                     }
                     location.reload();
                 }else{
@@ -248,6 +246,7 @@ $(function(){
     });
     //发送短信验证码
     $('.J_sms_code').click(function(){
+        changeLogin('code');
         sendyzm($(this));
     });
     //用ajax提交到后台的发送短信接口
@@ -259,7 +258,7 @@ $(function(){
         var arrIndex = {};
         if(account==""){
             $(obj).parent().siblings('.J_tel').addClass("wor");
-            $(obj).parent().siblings(".loginTip").text("账号不能为空");
+            $(obj).parent().siblings(".loginTip").text("手机号不能为空");
             $(obj).parent().siblings(".loginTip").show();
             tab = false;
             return false;
@@ -280,11 +279,6 @@ $(function(){
             $.get('/video/send-code', arrIndex, function(res) {
                 console.log('发送短信验证码结果---',res);
                 if(res.errno==0){
-                    //注册成功,页面刷新
-                    var zd = $("#zd").hasClass("act")? 1:0;
-                    if(!isNaN(res.data.uid) && res.data.uid!=""){
-                        saveuser(res.data.uid,zd);
-                    }
                     setTime(obj,send_source);//开始倒计时
                 }else{
                     var mes = "";
@@ -341,7 +335,7 @@ $(function(){
         var arrIndex = {};
         if(account==""){
             $("#login_sms_account").parent().addClass("wor");
-            $(".J_login_warning1").text("账号不能为空");
+            $(".J_login_warning1").text("手机号不能为空");
             $(".J_login_warning1").show();
             tab = false;
             return false;
@@ -386,15 +380,14 @@ $(function(){
                 // $("#login_submit").removeClass("login-loading");
                 if(res.errno==0 && res.data){
                     //登陆成功,页面刷新
-                    var zd = $("#zd").hasClass("act")? 1:0;
                     if(!isNaN(res.data) && res.data!=""){
-                        saveuser(res.data,zd);
+                        saveuser(res.data);
                     }
                     location.reload();
                 }else{
                     $("#login_sms_account").parent().addClass("wor");
                     $("#smscode").parent().addClass("wor");
-                    $(".J_login_warning1").text("账号或验证码错误");
+                    $(".J_login_warning1").text("手机号或验证码错误");
                     $(".J_login_warning1").show();
                 }
             });
@@ -415,7 +408,7 @@ $(function(){
             return false;
         }else{
             var ismobile = isMobilePhone(phone);
-            if(ismobile && !valimobile(account,prefix_phone)){
+            if(ismobile && !valimobile(phone,prefix_phone)){
                 $("#reg_account").parent().addClass("wor");
                 $(".J_login_warning2").text("手机号格式错误");
                 $(".J_login_warning2").show();
@@ -451,9 +444,8 @@ $(function(){
                     //注册成功,页面刷新
                     $(".J_login_warning2").text("注册成功");
                     $(".J_login_warning2").show();
-                    var zd = $("#zd").hasClass("act")? 1:0;
-                    if(!isNaN(res.data.uid) && res.data.uid!=""){
-                        saveuser(res.data.uid,zd);
+                    if(!isNaN(res.data) && res.data!=""){
+                        saveuser(res.data);
                     }
                     location.reload();
                 }else{
