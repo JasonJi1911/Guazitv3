@@ -459,8 +459,8 @@ body {
 
 .navTopSearchBox-r {
 	position: absolute;
-	left: auto;
-	right: 300px;
+	left: 883px;
+	/*right: 300px;*/
 	text-align: center;
 }
 
@@ -644,6 +644,9 @@ body {
 	.navTopMenuBox {
 		left: 320px;
 	}
+	.navTopSearchBox-r{
+		left: 803px;
+	}
 	/*.navTopMenu-text {*/
 	/*	display: none;*/
 	/*}*/
@@ -725,8 +728,10 @@ body {
 	.navTopMenu-text-choice {
 		display: block;
 	}
+	.navTopSearchBox-r{
+		left: 450px;
+	}
 }
-
 
 /*----------头部导航按钮-----------------*/
 .navTopBtnBox {
@@ -14389,8 +14394,8 @@ body.ZT-black,
 	padding-left: 63px;
 	font-size: 16px;
 	font-weight: 400;
-	height: 56px;
-	line-height: 56px;
+	height: 35px;
+	line-height: 35px;
 	background: url("/images/Index/duobianxing.png") no-repeat 32px center;;
 }
 .advert_content_ad>ul>li>a{
@@ -14414,10 +14419,10 @@ body.ZT-black,
 		height: 62px;
 		line-height: 62px;
 	}
-	.advert_content_ad>ul>li{
-		height: 51px;
-		line-height: 51px;
-	}
+	/*.advert_content_ad>ul>li{*/
+	/*	height: 51px;*/
+	/*	line-height: 51px;*/
+	/*}*/
 	.advert_content_title.last>img{
 		float: right;
 		margin-top: 18px;
@@ -14437,10 +14442,10 @@ body.ZT-black,
 		height: 55px;
 		line-height: 55px;
 	}
-	.advert_content_ad>ul>li{
-		height: 45px;
-		line-height: 45px;
-	}
+	/*.advert_content_ad>ul>li{*/
+	/*	height: 45px;*/
+	/*	line-height: 45px;*/
+	/*}*/
 	.advert_content_title.last>img{
 		margin-top: 11px;
 	}
