@@ -181,7 +181,7 @@ $this->registerJs($js);
     <div class="iconList">
         <ul>
             <?php if(!empty($data['banner'])) : ?>
-                <?php foreach ($data['banner'] as $banner): ?>
+                <?php foreach ($data['banner'] as $key => $banner): ?>
                     <li
                         <?php if($key==0) : ?>
                             class="current"
@@ -444,12 +444,7 @@ $this->registerJs($js);
         <!--电影列表-->
         <?php foreach ($data['trailer']['trailer'] as $key=>$list): ?>
             <?php if($key < 7) :?>
-                <? if($key<6){
-                    $trailerstyle = "display:block";
-                }else{
-                    $trailerstyle = "";
-                }?>
-                <li class="Movie-list" style="<?=$trailerstyle?>"  >
+                <li class="Movie-list"  >
                     <div class="Coming-online">
                         <div class="Coming-online-line"></div>
                         <div class="Coming-online-text"><?=date('Y-m-d',$list['online_time'])?></div>

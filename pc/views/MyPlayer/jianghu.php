@@ -1113,6 +1113,7 @@ function initialUrl($url)
                         $('#AD-box').remove();
                         $('#ADxq-box').remove();
                         $('#ADMask').remove();
+                        dp.fullScreen.cancel();
                         dp.destroy();
                         $("#player_ad").hide();
                         $("#player1").show();
@@ -1183,6 +1184,7 @@ function initialUrl($url)
                 dp.destroy();
             });
             dp.on('destroy', function () {
+                dp.fullScreen.cancel();
                 $("#player_ad").hide();
                 $("#player1").show();
                 dp1.play();
