@@ -267,7 +267,7 @@ $this->registerJs($js);
 </div>
 <?php if (!empty($data['label'])) :?>
     <!--今日热点-->
-    <ul class="RD-box" name="zt">
+    <ul class="RD-box" name="zt" style="display: none">
         <li class="Title-00">
             <a class="Title-big" href="javascript:;">今日热点</a>
         </li>
@@ -959,7 +959,7 @@ $this->registerJs($js);
         <?php endif; ?>
     <?php endforeach;?>
     <!--赛事直播-->
-    <ul class="Livemaches-box" name="zt">
+    <ul class="Livemaches-box" name="zt" style="display: none;">
         <li class="Title-01">
             <a class="Title-big" href="javascript:;">赛事直播</a>
         </li>

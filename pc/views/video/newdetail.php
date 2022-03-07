@@ -686,7 +686,7 @@ else
 <!--            --><?php //endif;?>
 <!--        --><?php //endforeach;?>
 <!--    --><?php //endif;?>
-    <div class="advert_2 J_xini_advert">
+    <div class="advert_2 J_xini_advert" style="display: none;">
         <div class="advert_content">
             <div class="advert_content_title">悉尼交易市场</div>
             <div class="advert_content_ad">

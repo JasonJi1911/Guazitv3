@@ -886,7 +886,8 @@ $(document).ready(function() {
 			$(".J_warning").show();
 			return false;
 		}
-		if (!isMobilePhone(account)) {
+		account = valimobile(account,prefix_phone);
+		if (account=="") {
 			$(".J_warning").text("手机号格式错误");
 			$(".J_warning").show();
 			return false;
@@ -1544,4 +1545,21 @@ function changeLogin(type){
 
 	$(".eye").removeClass("act");
 	$(".eye").siblings(".inp").addClass("pas").attr("type", "password");
+}
+//手机判断+澳洲
+function valimobile(mobile,mobile_areacode){
+	var reg = /^[0-9]*$/;
+	if (mobile =='' || !reg.test(mobile)) {
+		mobile = "";
+	} else {
+		if(mobile_areacode == "+61"){
+			if((mobile.length==10 && mobile.indexOf("04")==0)){
+				mobile = mobile.substring(1);
+			}
+			if(!(mobile.length==9 && mobile.indexOf("4")==0)){
+				mobile = "";
+			}
+		}
+	}
+	return mobile;
 }

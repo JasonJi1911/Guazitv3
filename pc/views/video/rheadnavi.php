@@ -193,8 +193,8 @@ $(function(){
             $("#login_submit").removeClass("login-loading");
             return false;
         }else{
-            var ismobile = isMobilePhone(account);
-            if(ismobile && !valimobile(account,prefix_phone)){
+            account = valimobile(account,prefix_phone);
+            if(account==""){
                 $("#login_account").parent().addClass("wor");
                 $(".J_login_warning").text("手机号格式错误");
                 $(".J_login_warning").show();
@@ -263,8 +263,8 @@ $(function(){
             tab = false;
             return false;
         }else{
-            var ismobile = isMobilePhone(account);
-            if(ismobile && !valimobile(account,prefix_phone)){
+            account = valimobile(account,prefix_phone);
+            if(account == ""){
                 $(obj).parent().siblings('.J_tel').addClass("wor");
                 $(obj).parent().siblings(".loginTip").text("手机号格式错误");
                 $(obj).parent().siblings(".loginTip").show();
@@ -340,8 +340,8 @@ $(function(){
             tab = false;
             return false;
         }else{
-            var ismobile = isMobilePhone(account);
-            if(ismobile && !valimobile(account,prefix_phone)){
+            account = valimobile(account,prefix_phone);
+            if(account == ""){
                 $("#login_sms_account").parent().addClass("wor");
                 $(".J_login_warning1").text("手机号格式错误");
                 $(".J_login_warning1").show();
@@ -407,8 +407,8 @@ $(function(){
             tab = false;
             return false;
         }else{
-            var ismobile = isMobilePhone(phone);
-            if(ismobile && !valimobile(phone,prefix_phone)){
+            phone = valimobile(phone,prefix_phone);
+            if(phone==""){
                 $("#reg_account").parent().addClass("wor");
                 $(".J_login_warning2").text("手机号格式错误");
                 $(".J_login_warning2").show();
@@ -533,15 +533,4 @@ function removetab(tab){
     }
 }
 
-function valimobile(mobile,mobile_areacode){
-    var r = true;
-    if(mobile_areacode == "+61"){
-        if((mobile.length==10 && mobile.indexOf("04")==0) || (mobile.length==9 && mobile.indexOf("4")==0)){
-            r = true;
-        }else{
-            r = false;
-        }
-    }
-    return r;
-}
 </script>
