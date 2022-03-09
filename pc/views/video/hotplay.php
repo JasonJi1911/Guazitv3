@@ -107,13 +107,12 @@ $this->registerJs($js);
                             <?php }else if($key < 10){?>
                                 <div class="RAN-b">
                                     <ul>
-<!--                                        <li>--><?//=$key+1?><!--</li>-->
-                                        <li><img class="Movie-Ranking-img-num" src="/images/hotPlay/<?= $key+1?>.png"></li>
+                                        <li><?=$key+1?></li>
+<!--                                        <li><img class="Movie-Ranking-img-num" src="/images/hotPlay/--><?//= $key+1?><!--.png"></li>-->
                                         <li>
                                             <a class="RAN-z-box01-name" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>"><?= $list['video_name']?></a>
                                         </li>
                                         <li></li>
-<!--                                        <li>--><?//= $list['score']?><!--</li>-->
                                     </ul>
                                 </div>
                             <?php } ?>

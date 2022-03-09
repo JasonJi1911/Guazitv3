@@ -6,9 +6,6 @@
 use pc\assets\AppAsset;
 use yii\helpers\Html;
 
-$this->registerMetaTag(['name' => 'keywords', 'content' => LOGONAME.'TV,澳洲'.LOGONAME.'tv,新西兰'.LOGONAME.'tv,澳新'.LOGONAME.'tv,'.LOGONAME.'视频,'.LOGONAME.'影视,电影,电视剧,榜单,综艺,动画,记录片']);
-$this->registerMetaTag(['name' => 'description', 'content' => LOGONAME.'TV是澳大利亚、新西兰华人影视视频分享平台，网站包含最新的电视剧、美剧、日韩剧、华语电影、好莱坞电影、以及各种动漫和重大体育赛事直播。在这里，一定有你想看的一切！']);
-$this->title = LOGONAME. 'TV - 澳新华人在线视频分享平台,海量高清视频在线观看';
 $this->registerMetaTag(['name' => 'robots', 'content' => 'index,follow']);
 $this->registerMetaTag(['name' => 'GOOGLEBOT', 'content' => 'index,follow']);
 $this->registerMetaTag(['name' => 'Author', 'content' => PC_HOST_NAME]);
@@ -37,7 +34,6 @@ AppAsset::register($this);
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="瓜子TV是澳大利亚、新西兰华人影视视频分享平台，网站包含最新的电视剧、美剧、日韩剧、华语电影、好莱坞电影、以及各种动漫和重大体育赛事直播。在这里，一定有你想看的一切！">
     <link rel="shortcut icon" type="image/x-icon" href="http://img.guazitv.tv/LOGO.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <!-- Global site tag (gtag.js) - Google Analytics -->

@@ -250,10 +250,10 @@ $this->registerJs($js);
                                 <a href="<?= Url::to(['video/channel', 'channel_id' => $channel['channel_id']])?>">
                                     <img class="J_sort_img_c" src="<?=$icon_img_c?>" style="display:none;">
                                     <img class="J_sort_img" src="<?=$icon_img?>">
-                                    <div class="sort-text">
-                                        <span><?= $channel['channel_name']?></span>
+                                    <div class="sort-text display-flex">
+                                        <div><?= $channel['channel_name']?></div>
                                         <? if($channel['num'] != 0) : ?>
-                                            <span class="sortSpan"><?=$channel['num']?></span>
+                                            <div class="sortSpan"><?=$channel['num']?></div>
                                         <?php endif; ?>
                                     </div>
                                 </a>
@@ -634,7 +634,7 @@ $this->registerJs($js);
                                                 <div><img class="Movie-Ranking-img" src="/images/Index/paiming<?= $key+1?>.png"></div>
                                                 <div class="Movie-Ranking-right-top">
                                                     <div class="Movie-Ranking-right-top-up">
-                                                        <div>
+                                                        <div style="width:140px;overflow: hidden;">
                                                             <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>" class="font-color"><?= $list['video_name']?></a>
                                                         </div>
                                                         <div class="pink-color"><?= $list['score']?></div>

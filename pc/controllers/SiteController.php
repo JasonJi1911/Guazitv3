@@ -95,12 +95,25 @@ class SiteController extends BaseController
 
         return \Yii::createObject($xml);
     }
-    
+
     public function actionMap()
     {
-        $channel_id = Yii::$app->request->get('channel_id', 0);
-        //请求首页信息
-        $data = Yii::$app->api->get('/video/index', ['channel_id' => $channel_id]);
+        //获取影片系列、剧集、源信息
+        $channel_id = Yii::$app->request->get('channel_id', '');
+        $keyword = Yii::$app->request->get('keyword', '');
+        $sort = Yii::$app->request->get('sort', 'hot');
+        $tag = Yii::$app->request->get('tag', '');
+        $area = Yii::$app->request->get('area', '');
+        $year = Yii::$app->request->get('year', '');
+        $play_limit = Yii::$app->request->get('play_limit', '');
+        $page_num = Yii::$app->request->get('page_num', 100);
+        $page_cycle = Yii::$app->request->get('page_cycle', 1);
+        // $page_start = (($page_cycle - 1) * $page_num) + 1;
+        $page_start = 1;
+        $page_end = $page_num * $page_cycle;
+
+        //请求频道、搜索信息
+        $channels = Yii::$app->api->get('/video/channels');
 
         $xml =  [
             'class' => 'yii\web\Response',
@@ -116,68 +129,72 @@ class SiteController extends BaseController
             ],
         ];
 
-        if (!empty($data['label']))
+        for ($i = $page_start; $i <= $page_end; $i++)
         {
-            foreach ($data['label'] as  $labels)
+            //请求影片筛选信息
+            $data = Yii::$app->api->get('/video/filter', ['channel_id' => $channel_id, 'tag' => $tag, 'sort' => $sort, 'area' => $area,
+                'play_limit' => $play_limit, 'year' => $year, 'page_num' => $i, 'page_size' =>24 ,'type' => 1]);
+
+            if (!empty($data['list']))
             {
-                if (empty($labels['list']))
-                    continue;
-                    
-                foreach ($labels['list'] as $key => $list)
+                foreach ($data['list'] as  $list)
                 {
                     $video = [];
-                    $video['loc'] = PC_HOST_PATH.Url::to(['detail', 'video_id' => $list['video_id']]);
-                    $video['score'] = $list['score'];
-                    $video['title'] = LOGONAME.'TV|'.$list['video_name'];
-                    $video['year'] = $list['year'];
+                    $video['loc'] = PC_HOST_PATH.Url::to(['video/detail', 'video_id' => $list['video_id']]);
+                    // $video['score'] = $list['score'];
+                    // $video['title'] = '瓜子TV|'.$list['video_name'];
+                    // $video['year'] = $list['year'];
+                    $video['priority'] = '0.8';
+                    $video['lastmod'] = date('Y-m-d');
+                    // $video['changefreq'] = 'weekly';
                     array_push($xml['data'], $video);
                 }
             }
+            unset($data);
         }
 
-        $this->XmlFile($data['label'],$channel_id);
+        $this->XmlFile($xml, $channel_id, $channels);
         return \Yii::createObject($xml);
     }
-    public function XmlFile($data,$channel_id=0){
+
+    public function XmlFile($data,$channel_id, $channels){
         //  创建一个XML文档并设置XML版本和编码。。
         $dom=new \DomDocument('1.0', 'utf-8');
         //  创建根节点
         $urlset = $dom->createElement('urlset');
+        $urlset->setAttribute("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
+        $urlset->setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+        $urlset->setAttribute("xsi:schemaLocation", "http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd");
+
         $dom->appendchild($urlset);
-        if (!empty($data)){
-            foreach ($data as  $labels){
-                if (empty($labels['list']))
+        // 首页
+        $this->generateSiteTag($dom, $urlset, PC_HOST_PATH.Url::to(['video/index']), date('Y-m-d'), '0.80');
+
+        //类目页
+        if (!empty($channels))
+        {
+            foreach ($channels['list'] as $channel)
+            {
+                if (empty($channel))
                     continue;
 
-                foreach ($labels['list'] as $key => $list){
-                    $item = $dom->createElement('url');
-                    $urlset->appendchild($item);
-                    //  loc
-                    $node = $dom->createElement('loc');//创建元素
-                    $item->appendchild($node);
-                    $text = $dom->createTextNode(PC_HOST_PATH.Url::to(['detail', 'video_id' => $list['video_id']]));//创建元素值
-                    $node->appendchild($text);
-                    //  score
-                    $node = $dom->createElement('score');
-                    $item->appendchild($node);
-                    $text = $dom->createTextNode($list['score']);
-                    $node->appendchild($text);
-                    //  title
-                    $node = $dom->createElement('title');
-                    $item->appendchild($node);
-                    $text = $dom->createTextNode(LOGONAME.'TV|'.$list['video_name']);
-                    $node->appendchild($text);
-                    //  year
-                    $node = $dom->createElement('year');
-                    $item->appendchild($node);
-                    $text = $dom->createTextNode($list['year']);
-                    $node->appendchild($text);
+                if ($channel['channel_id'] == 0) {
+                    continue;
                 }
+                $this->generateSiteTag($dom, $urlset, PC_HOST_PATH.Url::to(['video/channel', 'channel_id' => $channel['channel_id']]), date('Y-m-d'), '0.80');
+            }
+        }
+
+        //详情页
+        if (!empty($data['data'])){
+            foreach ($data['data'] as $key => $list){
+                $this->generateSiteTag($dom, $urlset, $list['loc'], $list['lastmod'], $list['priority']);
             }
         }
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
         $dom->loadXML($dom->saveXML(),LIBXML_NOERROR);
+
 
         $filename = "sitemap";
         if($channel_id != 0){
@@ -185,7 +202,27 @@ class SiteController extends BaseController
         }
 
         $res = file_put_contents($filename.'.xml',$dom->saveXML());
-//        return $dom->saveXML();
+        return $dom->saveXML();
+    }
+
+    private function generateSiteTag($dom, $urlset, $loc, $lastmod, $priority)
+    {
+        $item = $dom->createElement('url');
+        $urlset->appendchild($item);
+        //  loc
+        $node = $dom->createElement('loc');//创建元素
+        $text = $loc;//创建元素值
+        $node->textContent = $text;
+        $item->appendchild($node);
+        //  lastmod
+        $node = $dom->createElement('lastmod');
+        $text = $lastmod;
+        $node->textContent = $text;
+        $item->appendchild($node);
+        //  priority
+        $node = $dom->createElement('priority');
+        $node->textContent = $priority;
+        $item->appendchild($node);
     }
 
     /**

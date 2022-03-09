@@ -5,10 +5,12 @@ $(window).scroll(function() {
 	if(toTop > 100) {
 		$('#indexTS .navTopBox').removeClass('bkgBlack')
 		$('#indexTS .navTopBox').addClass('ZT-black')
+		$('#indexTS .navTopBox').addClass('index-navi-top100')
 		$('.rigNav-top').show();
 	} else {
 		$('#indexTS .navTopBox').addClass('bkgBlack')
 		$('#indexTS .navTopBox').removeClass('ZT-black')
+		$('#indexTS .navTopBox').removeClass('index-navi-top100')
 		$('.rigNav-top').hide();
 	}
 });

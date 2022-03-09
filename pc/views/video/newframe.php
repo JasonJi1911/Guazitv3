@@ -2,14 +2,16 @@
 use yii\helpers\Url;
 use pc\assets\NewIndexStyleAsset;
 
-//$this->registerMetaTag(['name' => 'keywords', 'content' => LOGONAME.'视频,澳洲'.LOGONAME.'视频,新西兰'.LOGONAME.'视频,澳新'.LOGONAME.'视频,'.LOGONAME.'影视,电影,电视剧,榜单,综艺,动画,记录片']);
-
 switch ($pageTab) {
     case "newdetail" :
-        $this->title = $data['info']['video_name'] . '-' . LOGONAME . '视频';
+        $this->registerMetaTag(['name' => 'keywords', 'content' => $data['info']['video_name'].','.$data['info']['year'].','.$data['info']['area'].','.$data['info']['director'].' - '.LOGONAME.'TV,澳洲'.LOGONAME.'tv,新西兰'.LOGONAME.'tv,澳新'.LOGONAME.'tv,'.LOGONAME.'视频,'.LOGONAME.'影视,电影,电视剧,榜单,综艺,动画,记录片']);
+        $this->registerMetaTag(['name' => 'description', 'content' => $data['info']['video_name'].','.$data['info']['year'].','.$data['info']['area'].','.$data['info']['director'].' - '.LOGONAME.'TV是澳大利亚、新西兰华人影视视频分享平台，网站包含最新的电视剧、美剧、日韩剧、华语电影、好莱坞电影、以及各种动漫和重大体育赛事直播。在这里，一定有你想看的一切！']);
+        $this->title = $data['info']['video_name'].' - '.LOGONAME. 'TV - 澳新华人在线视频分享平台,海量高清视频在线观看';
         break;
     default :
-        $this->title = LOGONAME. '视频';
+        $this->registerMetaTag(['name' => 'keywords', 'content' => LOGONAME.'TV,澳洲'.LOGONAME.'tv,新西兰'.LOGONAME.'tv,澳新'.LOGONAME.'tv,'.LOGONAME.'视频,'.LOGONAME.'影视,电影,电视剧,榜单,综艺,动画,记录片']);
+        $this->registerMetaTag(['name' => 'description', 'content' => LOGONAME.'TV是澳大利亚、新西兰华人影视视频分享平台，网站包含最新的电视剧、美剧、日韩剧、华语电影、好莱坞电影、以及各种动漫和重大体育赛事直播。在这里，一定有你想看的一切！']);
+        $this->title = LOGONAME. 'TV - 澳新华人在线视频分享平台,海量高清视频在线观看';
 }
 NewIndexStyleAsset::register($this);
 
@@ -428,71 +430,62 @@ if(empty($is_show_background) || $is_show_background != 1){
     $footer_color = " font-color-000000";
 }
 ?>
-<div class="navTopBox <?= $headclass?> <?= $class_zt_black?>" name="<?= $name_zt?>">
+<div class="navTopBox <?= $headclass?> <?= $class_zt_black?>" name="<?= $name_zt?> ">
+<!--     --><?php //if($rightnav_type == 1):?><!-- style="" --><?php //endif;?>
     <ul class="navTop">
         <li class="navTopLogo" id="v_navTopLogo">
-            <a href="/video/index">
-<!--                <script>-->
-<!--                    $.get('/video/get-city', [], function(res)      <span id="head-city" class="navTopWZ" style="display: none;"></span>-->
-<!--                <script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>-->
-<!--                <script src="/js/video/country.js"></script>{-->
-<!--                        console.log(JSON.stringify(res));-->
-<!--                        if(res.data.city.trim()!=""){-->
-<!--                            $("#head-city").text(res.data.city);-->
-<!--                        }-->
-<!--                    });-->
-<!--                </script>-->
+            <a class="logo-link" href="/video/index" title="瓜子TV">
+                <img src="/images/NewVideo/logo.png" alt="">
+                瓜子TV
             </a>
         </li>
-        <?php if(empty($is_show_navmenu) || $is_show_navmenu == 1):?>
-            <li class="navTopMenuBox">
-                <div class="navTopMenu">
+        <li class="navTopMenuBox">
+            <div class="navTopMenu">
+                <!--导航菜单--一级-->
+                <span class="navTopMenu-text" name="zt">
+                <a href="<?= Url::to(['/video/index'])?>" >
+                    推荐
+                </a>
+            </span>
+                <?php if(!empty($channels)) :?>
+                    <?php foreach ($channels['channeltags'] as $key=>$channel) :?>
+                        <?php if ($key < 6) :?>
+                            <span class="navTopMenu-text" name="zt">
+                        <?php if($channel['channel_name'] != '首页'): ?>
+                            <a href="<?= Url::to(['/video/channel', 'channel_id' => $channel['channel_id']])?>">
+                                <?= $channel['channel_name']?>
+                            </a>
+                        <?php endif;?>
+                    </span>
+                        <?php endif;?>
+                    <?php endforeach;?>
+                <?php endif;?>
+                <span class="navTopMenu-text-choice" name="zt">
+                    <p class="navTopMenu-text-choice-all">全部</p>
+                    <ul class="navTopMenu-one J_navtop_menu">
                     <!--导航菜单--一级-->
-                    <span class="navTopMenu-text" name="zt">
-                    <a href="<?= Url::to(['/video/index'])?>" >
-                        推荐
-                    </a>
-                </span>
+                    <li class="" name="zt">
+                        <a href="<?= Url::to(['/video/index'])?>" >
+                            推荐
+                        </a>
+                    </li>
                     <?php if(!empty($channels)) :?>
-                        <?php foreach ($channels['channeltags'] as $key=>$channel) :?>
-                            <?php if ($key < 6) :?>
-                                <span class="navTopMenu-text" name="zt">
-                            <?php if($channel['channel_name'] != '首页'): ?>
-                                <a href="<?= Url::to(['/video/channel', 'channel_id' => $channel['channel_id']])?>">
-                                    <?= $channel['channel_name']?>
-                                </a>
-                            <?php endif;?>
-                        </span>
-                            <?php endif;?>
+                        <?php foreach ($channels['channeltags'] as $channel) :?>
+                            <li class="" name="zt">
+                                <?php if($channel['channel_name'] != '首页'): ?>
+                                    <a class="
+                                " href="<?= Url::to(['/video/channel', 'channel_id' => $channel['channel_id']])?>" >
+                                        <?= $channel['channel_name']?>
+                                    </a>
+                                <?php endif;?>
+                            </li>
                         <?php endforeach;?>
                     <?php endif;?>
-                    <span class="navTopMenu-text-choice" name="zt">
-                        <p class="navTopMenu-text-choice-all">全部</p>
-                        <ul class="navTopMenu-one J_navtop_menu">
-                        <!--导航菜单--一级-->
-                        <li class="" name="zt">
-                            <a href="<?= Url::to(['/video/index'])?>" >
-                                推荐
-                            </a>
-                        </li>
-                        <?php if(!empty($channels)) :?>
-                            <?php foreach ($channels['channeltags'] as $channel) :?>
-                                <li class="" name="zt">
-                                    <?php if($channel['channel_name'] != '首页'): ?>
-                                        <a class="
-                                    " href="<?= Url::to(['/video/channel', 'channel_id' => $channel['channel_id']])?>" >
-                                            <?= $channel['channel_name']?>
-                                        </a>
-                                    <?php endif;?>
-                                </li>
-                            <?php endforeach;?>
-                        <?php endif;?>
-                    </ul>
-                    </span>
-                </div>
-            </li>
-        <?php endif;?>
-        <li class="<?php if(empty($is_show_navmenu) || $is_show_navmenu == 1):?>navTopSearchBox-r<?php else :?>navTopSearchBox<?php endif;?>">
+                </ul>
+                </span>
+            </div>
+        </li>
+        <li class="navTopSearchBox-r">
             <div class="navTopSearch <?= $class_zt_black?>" name="<?= $name_zt?>">
                 <input type="text" class="navTopSearchText" id="keywords" placeholder="<?= empty($hotword['tab'][0]['list'][0]['video_name']) ? '': $hotword['tab'][0]['list'][0]['video_name']?>" />
                 <input type="hidden" id="v_keywords0" value="<?= empty($hotword['tab'][0]['list'][0]['video_name']) ? '': $hotword['tab'][0]['list'][0]['video_name']?>"
@@ -530,7 +523,7 @@ if(empty($is_show_background) || $is_show_background != 1){
                 <div class="navTopSearchRight">
                     <a href="<?= Url::to(['/video/hot-play'])?>" class="navTop-search-hot" name="zt">
                         <span class="navTopSearchA"></span>
-                        <span class="hotSearch">热搜榜</span>&nbsp;
+                        <span class="hotSearch">热播榜</span>&nbsp;
                     </a>
                     <div class="navTopSearchB-response" onclick="savewords();"></div>
                     <div class="verticalLine"></div>

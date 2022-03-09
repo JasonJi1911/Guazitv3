@@ -196,7 +196,7 @@ body {
 }
 
 .navTopBox.bkgWhite .navTopLogo {
-	background: url(../images/Index/logo.png) no-repeat left center;
+	/*background: url(../images/Index/logo.png) no-repeat left center;*/
 }
 
 .navTopBox.bkgWhite .navTopWZ {
@@ -239,15 +239,32 @@ body {
 /*---------logo---------------*/
 .navTopLogo {
 	position: absolute;
-	top: 16px;
+	/*top: 10px;*/
 	left: 162px;
-	width: 106px;
-	height: 34px;
-	background: url(../images/Index/logo.png) no-repeat left center;
+	/*width: 106px;*/
+	/*height: 34px;*/
+	/*background: url(../images/Index/logo.png) no-repeat left center;*/
 	overflow: hidden;
 	cursor:pointer;
 	cursor:hand;
 	background-size: 106px 34px;
+}
+.navTopLogo .logo-link{
+	/*width: 150px;*/
+	width: auto;
+	height: 38px;
+	font-size: 22px;
+	color: #FF556E;
+	font-weight: bold;
+	cursor: pointer;
+	display: block;
+	line-height: 62px;
+}
+.navTopLogo .logo-link img{
+	width: 45px;
+	float: left;
+	margin-top: 9px;
+	margin-right: 10px;
 }
 
 .navTopWZ {
@@ -589,7 +606,8 @@ body {
 	left: 0px;
 	padding-top: 30px;
 	padding-bottom: 10px;
-	width: 543px;
+	/*width: 543px;*/
+	width: 100%;
 	background-color: #16161a;
 	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0);
 	font-size: 18px;
@@ -1546,8 +1564,9 @@ body {
 }
 
 .sortSpan {
+	display: inline-block;
 	margin-left: 5px;
-	width: 20px;
+	min-width: 16px;
 	height: 16px;
 	line-height: 16px;
 	text-align: center;
@@ -1555,16 +1574,9 @@ body {
 	background-color: #FF556E;
 	color: #FFFFFF;
 	border-radius: 6px;
-	/*width: 49px;*/
-	/*height: 29px;*/
-	/*background: #FF556E;*/
-	/*border-radius: 15px;*/
-	/*font-size: 20px;*/
 	/*font-weight: 400;*/
-	/*color: #FFFFFF;*/
-	text-align: center;
-	position: absolute;
-	top: 6px;
+	/*position: absolute;*/
+	/*top: 6px;*/
 	/*right: -20px;*/
 }
 
@@ -1648,9 +1660,30 @@ body {
 .sort-text {
 	font-size: 20px;
 	color:#FFFFFF;
-	margin-left:7px;
+	margin-left:5px;
 	display: inline-block;
 	position: relative;
+}
+
+.sort-text.display-flex{
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+}
+.sort-text div{
+	display: inline-block;
+}
+
+
+@media screen and (max-width:1500px) {
+	.sort-text {
+		font-size: 16px;
+	}
+	.sort_content>.sort_img>a>img {
+		display: inline-block;
+		width: 20px;
+		height: 20px;
+	}
 }
 
 .VIPlink {
@@ -6201,7 +6234,7 @@ Movie-Ranking-img-num {
 
 .JJXG {
 	display: grid;
-	grid-template-columns: 222px auto;
+	grid-template-columns: 100px auto;
 	grid-gap: 26px;
 	margin-bottom: 25px;
 }
@@ -6392,7 +6425,7 @@ Movie-Ranking-img-num {
 	grid-gap: 12px;
 	position: relative;
 	/*width: 1830px;*/
-	margin: 0px 166px;
+	margin: 0px auto;
 	overflow: hidden;
 }
 
@@ -6666,13 +6699,12 @@ Movie-Ranking-img-num {
 
 .RAN-b {
 	margin-top: 20px;
-	margin-left: 20px;
-
+	/*margin-left: 20px;*/
 }
 
 .RAN-b>ul {
 	display: grid;
-	grid-template-columns: 11px auto 40px;
+	grid-template-columns: 40px auto 40px;
 	grid-gap: 14px;
 }
 
@@ -12170,9 +12202,9 @@ Movie-Ranking-img-num {
 /*	padding-left: 206px;*/
 /*}*/
 
-.RAN-b>ul {
-	grid-template-columns: 11px auto 40px;
-}
+/*.RAN-b>ul {*/
+/*	grid-template-columns: 11px auto 40px;*/
+/*}*/
 
 /*.RANbox-list-xx {*/
 /*	margin-left: 50px;*/
@@ -14526,4 +14558,8 @@ body.ZT-black,
 }
 .alt03 .alt-GB{
 	background-image: url(../images/newindex/guanbi.png);
+}
+
+.navTopBox.ZT-black.index-navi-top100{
+	background-color: rgba(25,26,32,.8);
 }
