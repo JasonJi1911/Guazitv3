@@ -930,8 +930,10 @@ else
                         <?php foreach ($tab['list'] as $key => $list): ?>
                             <!--排名-->
                             <div class="Ranking-box">
-                                <div class="Ranking-mun">
-                                    <img class="Movie-Ranking-img" src="/images/hotPlay/bangdan<?= $key+1?>.png">
+                                <div class="Ranking-mun index-rank-<?=$key+1?>" style="position: relative;">
+<!--                                    <img class="Movie-Ranking-img" src="/images/hotPlay/bangdan--><?//= $key+1?><!--.png">-->
+                                    <div class="index-rank-NO detail-rank-NO">NO</div>
+                                    <div class="index-rank-num detail-rank-num"><?= $key+1?></div>
                                 </div>
                                 <div class="Ranking-text">
                                     <div class="Ranking-name" name="zt">

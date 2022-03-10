@@ -9,7 +9,7 @@ $js = <<<JS
 $(function(){
     advertByCity('searchresult');
     var tvNum = 7;//电视剧显示集数
-    var page_size = "28";//默认一行8个    
+    var page_size = "32";//默认一行8个    
     var kTab = false;
     var arrIndex = {};
     arrIndex['page_num'] = 1;       
@@ -25,7 +25,7 @@ $(function(){
             page_size = "24";//一行6个
         }else if(_width < 1680){
             page_size = "24";//一行6个
-        }else if(_width < 1900){
+        }else if(_width < 1920){
             page_size = "28";//一行7个
         }   
         
@@ -272,9 +272,9 @@ $this->registerJs($js);
     .hiddenclass{display: none}
 </style>
 <div class="box01">
-    <div class="conditionBox">
+    <div class="conditionBox container">
         <!--搜索条件-->
-        <div class="SScondition haskeyword">
+        <div class="SScondition haskeyword SScondition-new">
             <!--按钮点击关闭 class="SScondition"，并切换成筛选结果-->
             <!-- 搜索关键字 -->
             <div class="SScondition-btn">
@@ -284,7 +284,7 @@ $this->registerJs($js);
                 共有 <span class="totalresult1" id="id_totalresult1"><?= $info['total_count']?></span> 个搜索结果
             </div>
         </div>
-        <div class="box01-content">
+        <div class="box01-content box02-new-content">
             <div class="box01-search">
             <input id="afterinput" type="hidden" />
             <!--类型选择-->
@@ -344,7 +344,7 @@ $this->registerJs($js);
     </h2>
 </div>
 <!--排序-->
-<div class="box03" style="display: none;">
+<div class="box03 container" style="display: none;">
     <ul class="scPX" name="zt">
 <!--        <li><span>更新时间</span></li>-->
         <?php foreach ($info['search_box'] as $cates): ?>
@@ -362,7 +362,7 @@ $this->registerJs($js);
 </div>
 
 <!--筛选结果-->
-<div class="box02" style="display: none;">
+<div class="box02 box02-new" style="display: none;">
     <!--筛选剧集显示列表-->
     <div id="searchVideos" name="zt">
 

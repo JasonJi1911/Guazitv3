@@ -642,22 +642,6 @@ body {
 	background-color: #FF556E;
 }
 
-/*.searchMenuBox>.searchMenu>a>span.clr01:first-of-type {*/
-/*	color: #FF556E;*/
-/*}*/
-
-/*.searchMenuBox>.searchMenu>a>span.clr02:first-of-type {*/
-/*	color: #ff972a;*/
-/*}*/
-
-/*.searchMenuBox>.searchMenu>a>span.clr03:first-of-type {*/
-/*	color: #f55d6c;*/
-/*}*/
-
-
-/*.navTopSearchText:focus+.searchMenuBox {
-	display: block;
-}*/
 @media screen and (max-width:1900px) {
 	.navTopMenuBox {
 		left: 320px;
@@ -1730,7 +1714,7 @@ body {
 
 .sort02 {
 	display: grid;
-	grid-template-columns: 2fr 1fr 1fr;
+	grid-template-columns: 1.8fr 1.2fr 1fr;
 	grid-gap: 80px;
 	padding: 29px 165px;
 	background-color: #F9F9F9;
@@ -4411,6 +4395,7 @@ Movie-Ranking-img-num {
 	box-sizing: border-box;
 	border-radius: 10px;
 	background: #F8F7F9;
+	margin-top: 4px;
 }
 
 .SScondition-btn>input {
@@ -6569,15 +6554,15 @@ Movie-Ranking-img-num {
 }
 
 .RAN-z-box01>.clr01 {
-	color: #FF556E;
+	color: #ff473a;
 }
 
 .RAN-z-box01>.clr02 {
-	color: #FF972A;
+	color: #f73;
 }
 
 .RAN-z-box01>.clr03 {
-	color: #F55D6C;
+	color: #ffa82e;
 }
 .RAN-z-box01>.top3 {
 	display: flex;
@@ -6795,16 +6780,16 @@ Movie-Ranking-img-num {
 	font-weight: bold;
 }
 
-.RANbox-list01>.clr01 {
-	color: #FF556E;
+.RANbox-list01 .clr01 {
+	color: #ff473a;
 }
 
-.RANbox-list01>.clr02 {
-	color: #FF972A;
+.RANbox-list01 .clr02 {
+	color: #f73;
 }
 
-.RANbox-list01>.clr03 {
-	color: #F55D6C;
+.RANbox-list01 .clr03 {
+	color: #ffa82e;
 }
 
 .RANbox-list-xx {
@@ -6820,8 +6805,12 @@ Movie-Ranking-img-num {
 }
 
 .RANbox-list-xx>li:first-of-type{
-	display: flex;
-	align-items: center;
+	/*display: flex;*/
+	/*align-items: center;*/
+	font-size: 28px;
+	font-style: italic;
+	font-weight: bold;
+	color: #999999;
 }
 
 .RANbox-list-xx>li:first-of-type img {
@@ -6894,7 +6883,7 @@ Movie-Ranking-img-num {
 /*------------求片--------------*/
 .seekbox {
 	margin-top: 62px;
-	margin-bottom: -30px;
+	/*margin-bottom: -30px;*/
 	min-height: 950px;
 	background-image: url(../images/Index/qiupian_back.png);
 	background-position: center;
@@ -6909,8 +6898,9 @@ Movie-Ranking-img-num {
 
 .seekbox02 {
 	margin: 0 auto;
-	width: 870px;
-	padding: 86px 122px 85px 118px;
+	width: 800px;
+	/*padding: 86px 122px 85px 118px;*/
+	padding: 40px 80px;
 	box-sizing: border-box;
 	background-color: #FFFFFF;
 	border-radius: 15px;
@@ -6924,7 +6914,7 @@ Movie-Ranking-img-num {
 }
 
 .seekbox-title {
-	width: 37px;
+	width: auto;
 	height: 53px;
 	line-height: 53px;
 	font-size: 20px;
@@ -6951,11 +6941,12 @@ Movie-Ranking-img-num {
 	font-size: 16px;
 	font-weight: 500;
 	color: #949494;
-	padding-left: 227px;
+	/*padding-left: 227px;*/
+	text-align: center;
 }
 
 .seekbox-ipt>input {
-	width: 574px;
+	width: 100%;
 	padding: 0px 12px;
 	box-sizing: border-box;
 	height: 53px;
@@ -7042,7 +7033,7 @@ Movie-Ranking-img-num {
 }
 
 .seekbox-text03 {
-	width: 578px;
+	width: 100%;
 	height: 50px;
 	line-height: 50px;
 	text-align: center;
@@ -14559,7 +14550,159 @@ body.ZT-black,
 .alt03 .alt-GB{
 	background-image: url(../images/newindex/guanbi.png);
 }
-
+/* 首页头部导航 */
 .navTopBox.ZT-black.index-navi-top100{
 	background-color: rgba(25,26,32,.8);
 }
+
+/* 列表页和搜索页，固定影片宽高样式 begin */
+.container {
+	width: 100%;
+	padding-right: 0;
+	padding-left: 0;
+	margin-right: auto;
+	margin-left: auto;
+}
+@media (min-width: 1336px) {
+	.container {
+		max-width: 1270px;
+	}
+}
+@media (min-width: 1440px) {
+	.container {
+		max-width: 1275px;
+	}
+}
+@media (min-width: 1679px) {
+	.container {
+		max-width: 1542px;
+	}
+}
+@media (min-width: 1920px) {
+	.container {
+		max-width: 1770px;
+	}
+}
+.box02-new .Movie{
+	width: 216px;
+	height: 296px;
+}
+.box02-new .Movie .Movie-img{
+	width: 100%;
+	min-height: 100%;
+}
+.box02-new .Sports-box {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+	grid-gap: 10px;
+	/*margin: 0px 165px;*/
+}
+@media screen and (max-width:1920px) {
+	.box02-new .Sports-box {
+		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+	}
+	.box02-new .Sports-box .Title-01 {
+		grid-column-start: 1;
+		grid-column-end: 7;
+	}
+	.box02-new>.Sports-box>.Movie-list:last-of-type {
+		display: block;
+	}
+	.box02-new .Movie{
+		width: 213px;
+		height: 291px;
+	}
+}
+@media screen and (max-width:1680px) {
+	.box02-new .Sports-box {
+		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+	}
+	.box02-new .Sports-box .Title-01 {
+		grid-column-start: 1;
+		grid-column-end: 7;
+	}
+	.box02-new>.Sports-box>.Movie-list:last-of-type {
+		display: block;
+	}
+	.box02-new>.Sports-box>.Movie-list:nth-last-of-type(2) {
+		display: block;
+	}
+	.box02-new .Movie{
+		width: 205px;
+		height: 277px;
+	}
+}
+.box02-new-content {
+	margin: 20px 0;
+}
+.SScondition-new{
+	margin-left: 0px;
+}
+.box02-new .hiddenclass{display: none}
+/* 列表页和搜索页，固定影片宽高样式 end */
+
+/* 排行榜数字 begin */
+.index-rank-NO{
+	display: none;
+	position: absolute;
+	left: 3px;
+	bottom: 11px;
+	font-family: Impact;
+	font-size: 32px;
+	line-height: 1;
+	color: #fff;
+	-webkit-text-fill-color: transparent;
+	-webkit-background-clip: text;
+	background-image: -webkit-linear-gradient(-90deg,#fff 11%,hsla(0,0%,100%,0));
+	opacity: .2;
+	text-align: center;
+	transform: skew(-10deg);
+}
+.index-rank-num{
+	float: left;
+	position: relative;
+	margin-right: 10px;
+	width: 40px;
+	color: hsla(0,0%,100%,.12);
+	font: 600 40px Impact;
+	line-height: 50px;
+	text-align: center;
+	transform: skew(-10deg);
+}
+.detail-rank-NO{
+	color: #eef1f4;
+	background-image: -webkit-linear-gradient(270deg,rgba(24,25,30,.13),rgba(24,25,30,.04));
+	left:0px;
+	bottom: 0px;
+	font-size: 40px;
+	opacity: 1;
+}
+.detail-rank-num{
+	color: rgba(24,25,30,.2);
+}
+.index-rank-1 .index-rank-num,
+.index-rank-2 .index-rank-num,
+.index-rank-3 .index-rank-num{
+	position: relative;
+	-webkit-text-fill-color: transparent;
+	-webkit-background-clip: text;
+}
+.index-rank-1 .index-rank-num{
+	color: #ff473a;
+	background-image: -webkit-linear-gradient(#ff5d52,#ff3e30);
+}
+.index-rank-2 .index-rank-num{
+	color: #f73;
+	background-image: -webkit-linear-gradient(#ff7e3d,#ff6619);
+}
+.index-rank-3 .index-rank-num{
+	color: #ffa82e;
+	background-image: -webkit-linear-gradient(#ffa424,#ff9500);
+}
+
+.index-rank-1 .index-rank-NO,
+.index-rank-2 .index-rank-NO,
+.index-rank-3 .index-rank-NO{
+	display: block;
+}
+/* 排行榜数字 end */

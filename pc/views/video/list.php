@@ -8,7 +8,7 @@ NewIndexStyleAsset::register($this);
 $js = <<<JS
 $(function(){
     //筛选影片
-    var page_size = "28";//默认一行8个
+    var page_size = "32";//默认一行8个
     var arrIndex = {};
     arrIndex['page_num'] = 1;       
     arrIndex['sorttype'] = 'desc';//排序默认倒叙
@@ -23,7 +23,7 @@ $(function(){
         var _width = $(window).width();
         if(_width < 1680){
             page_size = "24";//一行6个
-        }else if(_width < 1900){
+        }else if(_width < 1920){
             page_size = "28";//一行7个
         }        
         arrIndex['page_size'] = page_size;
@@ -252,8 +252,8 @@ $this->registerJs($js);
 </style>
 <!--筛选条件-->
 <div class="box01" name="zt">
-    <div class="conditionBox" name="zt">
-        <div class="box02-content">
+    <div class="conditionBox container" name="zt">
+        <div class="box02-content box02-new-content">
             <div class="box01-search">
                 <!--类型选择-->
                 <?php foreach ($info['search_box'] as $cates): ?>
@@ -301,7 +301,7 @@ $this->registerJs($js);
 </div>
 
 <!--排序-->
-<div class="box03">
+<div class="box03 container">
     <ul class="scPX" name="zt">
         <?php foreach ($info['search_box'] as $cates): ?>
             <?php if($cates['label'] == "排序") :?>
@@ -341,9 +341,9 @@ $this->registerJs($js);
     </div>
 </div>
 <!--筛选结果-->
-<div class="box02">
+<div class="box02 box02-new">
     <!--筛选剧集显示列表-->
-    <ul class="Sports-box" id="searchVideos" name="zt">
+    <ul class="Sports-box container" id="searchVideos" name="zt">
 
     </ul>
     <!--分页-->

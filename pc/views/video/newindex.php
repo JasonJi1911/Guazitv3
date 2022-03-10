@@ -631,7 +631,12 @@ $this->registerJs($js);
                                         <!--排名前10-->
                                         <div class="Movie-Ranking-height <?php if($key > 0) :?>Movie-Ranking-margin-top<?php endif;?>">
                                             <div class="Movie-Ranking-flex-row">
-                                                <div><img class="Movie-Ranking-img" src="/images/Index/paiming<?= $key+1?>.png"></div>
+                                                <div class="index-rank-<?=$key+1?>" style="position: relative;">
+<!--                                                    <img class="Movie-Ranking-img" src="/images/Index/paiming--><?//= $key+1?><!--.png">-->
+
+                                                    <div class="index-rank-NO">NO</div>
+                                                    <div class="index-rank-num"><?= $key+1?></div>
+                                                </div>
                                                 <div class="Movie-Ranking-right-top">
                                                     <div class="Movie-Ranking-right-top-up">
                                                         <div style="width:140px;overflow: hidden;">

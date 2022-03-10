@@ -78,8 +78,8 @@ $this->registerJs($js);
                             <?php if($key < 3){?>
                                 <div class="RAN-z">
                                     <ul class="RAN-z-box01">
-<!--                                        <li class="clr0--><?//=$key+1?><!--">--><?//=$key+1?><!--</li>-->
-                                        <li class="top3"><img class="Movie-Ranking-img" src="/images/hotPlay/<?= $key+1?>.png"></li>
+                                        <li class="clr0<?=$key+1?>"><?=$key+1?></li>
+<!--                                        <li class="top3"><img class="Movie-Ranking-img" src="/images/hotPlay/--><?//= $key+1?><!--.png"></li>-->
                                         <li>
                                             <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
                                                 <img class="i_background_errorimg" src="<?= $list['cover']?>" />
@@ -139,12 +139,13 @@ $this->registerJs($js);
                         <?php if($key < 10) { ?>
                         <div class="RANbox-content">
                             <div class="RANbox-list01">
-<!--                                    <img class="Movie-Ranking-img" src="/images/hotPlay/bangdan--><?//= $key+1?><!--.png">-->
-<!--                                <div class="clr0--><?//= $key+1?><!--">-->
-<!--                                    --><?//= $key+1?>
-<!--                                </div>-->
                                 <ul class="RANbox-list-xx">
-                                    <li><img class="Movie-Ranking-img" src="/images/hotPlay/bangdan<?= $key+1?>.png"></li>
+                                    <li>
+<!--                                        <img class="Movie-Ranking-img" src="/images/hotPlay/bangdan--><?//= $key+1?><!--.png">-->
+                                        <div class="clr0<?= $key+1?>">
+                                            <?= $key+1?>
+                                        </div>
+                                    </li>
                                     <li>
                                         <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
                                             <img class="i_background_errorimg" src="<?= $list['cover']?>" />
@@ -209,45 +210,9 @@ $this->registerJs($js);
                                         <?php endif;?>
                                     </li>
                                 </ul>
-<!--                                <div class="RANbox-list01-sj">-->
-<!--                                    <ul class="SSjgPJ">-->
-<!--                                        <li><span>0</span></li>-->
-<!--                                        <li><span>0</span></li>-->
-<!--                                        <li><span>0</span></li>-->
-<!--                                        <li><span>--><?//= str_replace("播放:","",$list['play_times'])?><!--</span></li>-->
-<!--                                        <li>--><?//=$list['score']?><!--</li>-->
-<!--                                    </ul>-->
-<!--                                </div>-->
                             </div>
                             <span class="RANbox-bottom-line"></span>
                         </div>
-<!--                        --><?php //}elseif($key < 10){?>
-<!--                            <div class="RANbox-content">-->
-<!--                                <div class="RANbox-list02">-->
-<!--                                    <ul>-->
-<!--                                        <li>--><?//= $key+1?><!--</li>-->
-<!--                                        <img class="Movie-Ranking-img" src="/images/hotPlay/bangdan--><?//= $key+1?><!--.png">-->
-<!--                                        <li>-->
-<!--                                            <a class="RAN-z-box01-name" href="--><?//= Url::to(['detail', 'video_id' => $list['video_id']])?><!--">--><?//= $list['video_name']?><!--</a>-->
-<!--                                            <div class="GNbox-type">-->
-<!--                                                --><?php //foreach (explode(' ',$list['category']) as $category): ?>
-<!--                                                    <span>--><?//= $category?><!--</span>-->
-<!--                                                --><?php //endforeach;?>
-<!--                                            </div>-->
-<!--                                        </li>-->
-<!--                                        <li>-->
-<!--                                            <ul class="SSjgPJ">-->
-<!--                                                <li><span>0</span></li>-->
-<!--                                                <li><span>0</span></li>-->
-<!--                                                <li><span>0</span></li>-->
-<!--                                                <li><span>--><?//= str_replace("播放:","",$list['play_times'])?><!--</span></li>-->
-<!--                                                <li>--><?//=$list['score']?><!--</li>-->
-<!--                                            </ul>-->
-<!--                                        </li>-->
-<!--                                    </ul>-->
-<!--                                </div>-->
-<!--                                <span class="RANbox-bottom-line"></span>-->
-<!--                            </div>-->
                         <?php } ?>
                     <?php endforeach;?>
                 </div>

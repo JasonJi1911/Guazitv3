@@ -557,6 +557,14 @@ function initialUrl($url)
         border: solid 1px #FFFFFF;
         border: none;
         z-index:6;
+        background-color: #000;
+        display: flex;
+        align-items: center;
+    }
+    #load1-img img{
+        width: 100%;
+        height: auto;
+        align-items: center;
     }
 
     @media screen and (max-width:1910px) {
@@ -628,7 +636,9 @@ function initialUrl($url)
         top: 43px;
     }
 </style>
-<img id="load1-img" src="/images/video/load.gif" />
+<div id="load1-img">
+    <img src="/images/video/load.gif" />
+</div>
 <div class="Dplayer_box">
     <div class="player_av">
         <div class="box" id="player_ad">

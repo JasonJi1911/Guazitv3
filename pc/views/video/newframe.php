@@ -698,7 +698,7 @@ if(empty($is_show_background) || $is_show_background != 1){
 </div>
 <?php else: ?>
     <div class="rigNav" name="zt">
-        <div class="rigNav-icon01" id="HF">
+        <div class="rigNav-icon01">
             <span onclick="rightUrl('seek')">在线求片</span>
             <a href="<?= Url::to(['/video/seek'])?>" target="_blank">&nbsp;</a>
         </div>

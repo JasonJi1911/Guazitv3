@@ -6,7 +6,7 @@ use yii\helpers\Url;
 <input type="hidden" value="<?= $info['total_count']?>" id="parcount">
 <input type="hidden" value="<?= $info['tvNum']?>" id="tvNum">
 <!--关键字搜索结果列表-->
-<div class="box04 haskeyword">
+<div class="box04 haskeyword container">
     <!--搜索结果-->
     <?php foreach ($info['list'] as $list): ?>
     <?php
@@ -106,7 +106,7 @@ use yii\helpers\Url;
     <?php endforeach;?>
 </div>
 <!--筛选结果列表  搜索条件关闭时显示-->
-<ul class="Sports-box hiddenclass nokeyword" name="zt">
+<ul class="Sports-box hiddenclass nokeyword container" name="zt">
     <?php foreach ($info['list'] as $list): ?>
         <li class="Movie-list">
             <a class="Movie" href="<?= Url::to(['/video/detail', 'video_id' => $list['video_id']])?>">
