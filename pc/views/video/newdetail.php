@@ -348,7 +348,7 @@ else
                         <div class="qy-flash-func qy-flash-func-v1">
                             <div class="func-item func-comment">
                                 <div class="func-inner">
-                                    <span class="func-name qy-comment J_comment"  onclick="window.location.href = '#GNbox-PL'" ><?=$data['commentcount']?></span>
+                                    <span class="func-name qy-comment J_comment"  ><?=$data['commentcount']?></span>
                                 </div>
                             </div>
                             <div class="func-item func-like-v1">
@@ -796,7 +796,7 @@ else
 </div>
 
 <!--白色区域-->
-<div class="box06">
+<div class="box06" id="comment_box">
     <div>
         <!--左侧-->
         <div class="box06-L">
@@ -1748,5 +1748,12 @@ else
         var sourceId = $(this).attr('data-source-id');;
 
         window.location.href = '/video/detail?video_id=' + videoId + '&chapter_id=' + chapterId+"&source_id="+sourceId;
+    });
+
+    $('.J_comment').click(function () {
+        $('html, body').animate({
+            scrollTop: $("#comment_box").offset().top - 62
+        }, 500);
+        return false;
     });
 </script>

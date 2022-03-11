@@ -5,12 +5,12 @@ $(window).scroll(function() {
 	if(toTop > 100) {
 		$('#indexTS .navTopBox').removeClass('bkgBlack')
 		$('#indexTS .navTopBox').addClass('ZT-black')
-		$('#indexTS .navTopBox').addClass('index-navi-top100')
+		$('#J_navTopBox').addClass('index-navi-top100')
 		$('.rigNav-top').show();
 	} else {
 		$('#indexTS .navTopBox').addClass('bkgBlack')
 		$('#indexTS .navTopBox').removeClass('ZT-black')
-		$('#indexTS .navTopBox').removeClass('index-navi-top100')
+		$('#J_navTopBox').removeClass('index-navi-top100')
 		$('.rigNav-top').hide();
 	}
 });
@@ -1505,7 +1505,7 @@ function advertByCity(page){
 					if(dataar.length>0){
 						for(var i=0;i<dataar.length;i++){
 							if(dataar[i].advert_id && dataar[i].advert_id!="underfined" && typeof (dataar[i].advert_id) != "undefined"){
-								$(".Sports-box").eq(i).before('<div class="play-ad-box video-add-column"><a href="'+dataar[i].ad_skip_url+'" target="_blank"><img src="'+dataar[i].ad_image+'" alt=""></a></div>');
+								$(".Sports-box").eq(i).before('<div class="play-ad-box video-add-column channel-add"><a href="'+dataar[i].ad_skip_url+'" target="_blank"><img src="'+dataar[i].ad_image+'" alt=""></a></div>');
 							}
 						}
 					}

@@ -1075,18 +1075,22 @@ class VideoDao extends BaseDao
                     $info['time_diff'] = $info['play_date'];
                 }
 
+                $time3 = new \DateTime($info['watchplay_time'], new \DateTimeZone('UTC')); //UTC表示世界标准时间
+                $time3->setTimezone(new \DateTimeZone('EAT'));
+                $date3 = new \DateTime($info['play_date'], new \DateTimeZone('UTC')); //UTC表示世界标准时间
+                $date3->setTimezone(new \DateTimeZone('EAT'));
                 if ($info['play_date'] == date('Y-m-d')) {
                     $dateKey = '今天';
-                    $info['show_times'] = $info['watchplay_time'];
+                    $info['show_times'] = $time3->format('H:i');
                 } else if ($info['play_date'] == date('Y-m-d', strtotime('-1 day'))) {
                     $dateKey = '昨天';
-                    $info['show_times'] = $info['watchplay_time'];
+                    $info['show_times'] = $time3->format('H:i');
                 } else if ($info['play_date'] >= date('Y-m-d', strtotime('-7 day'))) {
                     $dateKey = '本周';
-                    $info['show_times'] = $info['play_date'];
+                    $info['show_times'] = $date3->format('Y-m-d');
                 } else {
                     $dateKey = '一周前';
-                    $info['show_times'] = $info['play_date'];
+                    $info['show_times'] = $date3->format('Y-m-d');
                 }
                 $list[$info['play_date']]['date']   = $dateKey;
                 $list[$info['play_date']]['list'][] = $info;

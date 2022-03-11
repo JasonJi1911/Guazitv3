@@ -430,8 +430,8 @@ if(empty($is_show_background) || $is_show_background != 1){
     $footer_color = " font-color-000000";
 }
 ?>
-<div class="navTopBox <?= $headclass?> <?= $class_zt_black?>" name="<?= $name_zt?> ">
-<!--     --><?php //if($rightnav_type == 1):?><!-- style="" --><?php //endif;?>
+<div class="navTopBox <?= $headclass?> <?= $class_zt_black?>" name="<?= $name_zt?> "
+     <?php if($rightnav_type == 1):?> id="J_navTopBox" <?php endif;?> >
     <ul class="navTop">
         <li class="navTopLogo" id="v_navTopLogo">
             <a class="logo-link" href="/video/index" title="瓜子TV">

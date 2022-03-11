@@ -18,16 +18,17 @@ use yii\helpers\Url;
         </a>
         <div class="SSjg">
             <div class="SSjgName" name="zt">
-                <span class="SSjgTitle"><?= $list['channel_name']?></span>
+                <div class="SSjgTitle"><?= $list['channel_name']?></div>
                 <a href="<?= Url::to(['detail', 'video_id' => $firstChap['video_id'], 'chapter_id' => $firstChap['chapter_id'], 'source_id' => $firstChap['source_id']])?>">
                     <span><?= $list['video_name']?></span>
                 </a>
             </div>
-            <div class="SSjg-category">类型：
-                <?php foreach (explode(' ',$list['category']) as $category): ?>
-                    <span><?= $category?></span>
-                <?php endforeach;?>
-            </div>
+<!--            <div class="SSjg-category">类型：-->
+<!--                --><?php //foreach (explode(' ',$list['category']) as $category): ?>
+<!--                    <span>--><?//= $category?><!--</span>-->
+<!--                --><?php //endforeach;?>
+<!--            </div>-->
+            <p>类型：<?= $list['category']?></p>
 <!--            <p>添加：--><?//= date("Y年m月d日",$list['created_at'])?><!--</p>-->
 <!--            <p>导演：--><?//= str_replace("导演:","",$list['director']);?><!--</p>-->
 <!--            <p>主演：-->
@@ -106,7 +107,7 @@ use yii\helpers\Url;
     <?php endforeach;?>
 </div>
 <!--筛选结果列表  搜索条件关闭时显示-->
-<ul class="Sports-box hiddenclass nokeyword container" name="zt">
+<ul class="Sports-box hiddenclass nokeyword container" name="zt" style="margin: 0 auto;">
     <?php foreach ($info['list'] as $list): ?>
         <li class="Movie-list">
             <a class="Movie" href="<?= Url::to(['/video/detail', 'video_id' => $list['video_id']])?>">
@@ -169,7 +170,7 @@ use yii\helpers\Url;
                     <?php endforeach;?>
                 </div>
                 <div>
-                    <?= $list['flag']?>
+                    <?= $list['flag']?>&nbsp;&nbsp;&nbsp;
                 </div>
             </div>
         </li>

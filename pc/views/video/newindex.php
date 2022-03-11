@@ -62,8 +62,8 @@ SCRIPT;
 $this->registerJs($js);
 ?>
 <style>
-    body{
-        background-color: #000000;
+    body, body.ZT-black, .Movie-Ranking, .Movie-Ranking.ZT-black{
+        background-color: #191a20;
     }
 
     .jBox-overlay {
@@ -447,7 +447,7 @@ $this->registerJs($js);
                 <li class="Movie-list"  >
                     <div class="Coming-online">
                         <div class="Coming-online-line"></div>
-                        <div class="Coming-online-text"><?=date('Y-m-d',$list['online_time'])?></div>
+                        <span class="Coming-online-text"><?=date('Y-m-d',$list['online_time'])?></span>
                     </div>
                     <a class="Movie" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
                         <img class="Movie-img i_background_errorimg" src="<?= $list['cover']?>" />
@@ -1114,7 +1114,6 @@ $this->registerJs($js);
 
         $('#det-nav>ul>.list-item>a.list-link').click(function () {
             var target = $(this).attr('data-id');
-            console.log(target);
             $('html, body').animate({
                 scrollTop: $(target).offset().top - 62
             }, 500);

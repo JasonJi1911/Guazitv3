@@ -266,15 +266,15 @@ JS;
 $this->registerJs($js);
 ?>
 <style>
-    /*body {*/
-    /*    background-color: #F9F9F9;*/
-    /*}*/
+    body {
+        background-color: #F9F9F9;
+    }
     .hiddenclass{display: none}
 </style>
-<div class="box01">
-    <div class="conditionBox container">
+<div class="box01 container">
+    <div class="conditionBox">
         <!--搜索条件-->
-        <div class="SScondition haskeyword SScondition-new">
+        <div class="SScondition haskeyword">
             <!--按钮点击关闭 class="SScondition"，并切换成筛选结果-->
             <!-- 搜索关键字 -->
             <div class="SScondition-btn">
@@ -284,7 +284,7 @@ $this->registerJs($js);
                 共有 <span class="totalresult1" id="id_totalresult1"><?= $info['total_count']?></span> 个搜索结果
             </div>
         </div>
-        <div class="box01-content box02-new-content">
+        <div class="box01-content">
             <div class="box01-search">
             <input id="afterinput" type="hidden" />
             <!--类型选择-->
@@ -325,15 +325,15 @@ $this->registerJs($js);
                 <?php endif;?>
             <?php endforeach;?>
             </div>
-            <div class="AD-01">
-<!--                --><?php //if(isset($advert['advert_id'])):?>
-<!--                    <a href="--><?//=$advert['ad_skip_url']?><!--" target="_blank"><img src="--><?//=$advert['ad_image']?><!--" /></a>-->
-<!--                --><?php //else :?>
-<!--                    <a href="javascript:;"><img src="/images/newindex/AD0-1.png" /></a>-->
-<!--                --><?php //endif;?>
-                <div class="GGtext"></div>
-            </div>
         </div>
+    </div>
+    <div class="AD-01">
+        <!--                --><?php //if(isset($advert['advert_id'])):?>
+        <!--                    <a href="--><?//=$advert['ad_skip_url']?><!--" target="_blank"><img src="--><?//=$advert['ad_image']?><!--" /></a>-->
+        <!--                --><?php //else :?>
+        <!--                    <a href="javascript:;"><img src="/images/newindex/AD0-1.png" /></a>-->
+        <!--                --><?php //endif;?>
+        <div class="GGtext"></div>
     </div>
 </div>
 
@@ -362,7 +362,7 @@ $this->registerJs($js);
 </div>
 
 <!--筛选结果-->
-<div class="box02 box02-new" style="display: none;">
+<div class="box02 box02-new" style="margin:0 40px;display: none;">
     <!--筛选剧集显示列表-->
     <div id="searchVideos" name="zt">
 

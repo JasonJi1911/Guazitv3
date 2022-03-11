@@ -207,7 +207,7 @@ $(function(){
                             "<a class='Movie-name02' name='zt' href='/video/detail?video_id="+data[i]['video_id']+ "' >"+data[i]['video_name']+"</a>"+
                             "<div class='Movie-type02' name='zt'>"+
                                 "<div>"+categorylist2+"</div>"+      
-                                "<div>"+data[i]['flag']+"</div>"+
+                                "<div>"+data[i]['flag']+"&nbsp;&nbsp;&nbsp;</div>"+
                             "</div>"+
                        "</li>";
         };        
@@ -251,8 +251,8 @@ $this->registerJs($js);
     }
 </style>
 <!--筛选条件-->
-<div class="box01" name="zt">
-    <div class="conditionBox container" name="zt">
+<div class="box01 container" style="display: block;" name="zt">
+    <div class="conditionBox" name="zt">
         <div class="box02-content box02-new-content">
             <div class="box01-search">
                 <!--类型选择-->
@@ -341,9 +341,9 @@ $this->registerJs($js);
     </div>
 </div>
 <!--筛选结果-->
-<div class="box02 box02-new">
+<div class="box02 box02-new" style="margin:0 40px;">
     <!--筛选剧集显示列表-->
-    <ul class="Sports-box container" id="searchVideos" name="zt">
+    <ul class="Sports-box container" id="searchVideos" name="zt" style="margin: 0 auto;">
 
     </ul>
     <!--分页-->

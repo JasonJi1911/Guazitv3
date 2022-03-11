@@ -66,7 +66,8 @@ $this->registerJs($js);
 </div>
 
 <!--分类列表-->
-<div class="sort02" name="zt">
+<div style="background-color: #F9F9F9;">
+<div class="sort02 container" name="zt">
     <?php foreach ($info['search_box'] as $cates): ?>
 <!--        --><?php //if($cates['label'] == '排序') : ?>
 <!--            <div class="sort-box02">-->
@@ -121,9 +122,11 @@ $this->registerJs($js);
         <?php endif;?>
     <?php endforeach;?>
 </div>
+</div>
 <!--视频列表-->
 <?php if($data['video_update']['video_update']):?>
-    <ul class="NewTrailer-box-title movie-update">
+<div class="update-box container">
+    <ul class="NewTrailer-box-title movie-update" style="margin: 0 auto;">
         <li class="Title-01">
             <a href="javascript:;" class="J_movie_update_week" data-value=""><?=$data['video_update']['video_update_title']['title']?></a>
             <div class="movie-update-time">
@@ -137,12 +140,12 @@ $this->registerJs($js);
             </div>
         </li>
     </ul>
-    <div class="ss-no-update J_update_empty" name="zt" style="display: none;">
+    <div class="ss-no-update J_update_empty" name="zt" style="margin: 0 auto;display: none;">
         <h2 class="per-zw-new" name="zt" >
             暂无更新，快去看看精彩视频吧~
         </h2>
     </div>
-    <ul class="NewTrailer-box J_video_update_content">
+    <ul class="NewTrailer-box J_video_update_content" style="margin: 0 auto;">
         <?php foreach ($data['video_update']['video_update'] as $list): ?>
         <li class="Movie-list">
             <a class="Movie" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
@@ -179,16 +182,16 @@ $this->registerJs($js);
                         <li><input class="XQ" type="button" value="详情" onclick="XQ('<?= $list['video_id']?>')"/></li>
                     </ul>
                 </div>
-                <?php if(is_int($key/7)):?>
-                    <div class="Movie-page">
-                        <img src="/images/Index/left.png" />
-                    </div>
-                <?php endif;?>
-                <?php if(is_int(($key+1)/7)):?>
-                    <div class="Movie-page">
-                        <img src="/images/Index/right.png" />
-                    </div>
-                <?php endif;?>
+<!--                --><?php //if(is_int($key/7)):?>
+<!--                    <div class="Movie-page">-->
+<!--                        <img src="/images/Index/left.png" />-->
+<!--                    </div>-->
+<!--                --><?php //endif;?>
+<!--                --><?php //if(is_int(($key+1)/7)):?>
+<!--                    <div class="Movie-page">-->
+<!--                        <img src="/images/Index/right.png" />-->
+<!--                    </div>-->
+<!--                --><?php //endif;?>
             </a>
             <a class="Movie-name02" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
                 <?= $list['video_name']?>
@@ -199,7 +202,7 @@ $this->registerJs($js);
                         <span><?= $category?></span>
                     <?php endforeach;?>
                 </div>
-                <div><?= $list['flag']?></div>
+                <div><?= $list['flag']?>&nbsp;&nbsp;&nbsp;</div>
             </div>
         </li>
         <!--详情弹出层,默认隐藏-->
@@ -273,8 +276,10 @@ $this->registerJs($js);
             </div>
         <?php endforeach;?>
     </ul>
-</ul>
+<!--</ul>-->
+</div>
 <?php endif;?>
+<div class="box02-new channel-new container">
 <?php if (!empty($data['label'])) :?>
     <?php foreach ($data['label'] as  $labels): ?>
         <?php if (!isset($labels['advert_id'])) : ?>
@@ -298,7 +303,7 @@ $this->registerJs($js);
                 }
             }
             ?>
-            <ul class="Sports-box" name="zt">
+            <ul class="Sports-box" name="zt" style="margin: 0 auto;">
                 <li class="Title-01">
 <!--                    <img src="/images/newindex/logo-02.png" />-->
                     <a href="<?= Url::to(['list', 'channel_id' => $channel, 'tag' => $tag, 'area' => $area])?>" class="margin_r5" >
@@ -313,7 +318,7 @@ $this->registerJs($js);
                     <a class="Title-more" href="<?= Url::to(['list', 'channel_id' => $channel, 'tag' => $tag, 'area' => $area])?>">更多></a>
                 </li>
                 <?php foreach ($labels['list'] as $key => $list): ?>
-                    <?php if($key < 7) :?>
+                    <?php if($key < 8) :?>
                     <li class="Movie-list">
                         <a class="Movie" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
                             <img class="Movie-img i_background_errorimg" src="<?= $list['cover']?>" />
@@ -373,7 +378,7 @@ $this->registerJs($js);
                                 <?php endforeach;?>
                             </div>
                             <div>
-                                <?= $list['flag']?>
+                                <?= $list['flag']?>&nbsp;&nbsp;&nbsp;
                             </div>
                         </div>
                     </li>
@@ -459,6 +464,7 @@ $this->registerJs($js);
         <?php endif; ?>
     <?php endforeach;?>
 <?php endif; ?>
+</div>
 <div style="margin-top: 30px;"></div>
 <script>
     //获取更新列表
@@ -531,7 +537,7 @@ $this->registerJs($js);
                 '                <a class="Movie-name02" name="zt" href="/video/detail?video_id='+list[i]['video_id']+'">'+list[i]['video_name']+'</a>\n' +
                 '                <div class="Movie-type02" name="zt">\n' +
                 '                   <div>'+catstr1+'</div>\n'+
-                '                   <div>'+list[i]['flag']+'</div>\n'+
+                '                   <div>'+list[i]['flag']+'&nbsp;&nbsp;&nbsp;</div>\n'+
                 '                </div>\n' +
                 '            </li>\n'+
             '            <div class="alt alt03" id="alt03'+list[i]['video_id']+'">\n' +
