@@ -23,9 +23,9 @@ $(function(){
         if(_width < 1366){
             tvNum = 5;
             page_size = "24";//一行6个
-        }else if(_width < 1680){
+        }else if(_width <= 1680){
             page_size = "24";//一行6个
-        }else if(_width < 1920){
+        }else if(_width <= 1920){
             page_size = "28";//一行7个
         }   
         

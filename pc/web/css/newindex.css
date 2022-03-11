@@ -14587,6 +14587,9 @@ body.ZT-black,
 	width: 216px;
 	height: 296px;
 }
+.box02-new .Movie-name02, .box02-new .Movie-type02{
+	width: 216px;
+}
 .box02-new .Movie .Movie-img{
 	width: 100%;
 	min-height: 100%;
@@ -14612,6 +14615,9 @@ body.ZT-black,
 		width: 213px;
 		height: 291px;
 	}
+	.box02-new .Movie-name02, .box02-new .Movie-type02{
+		width: 213px;
+	}
 }
 @media screen and (max-width:1680px) {
 	.box02-new .Sports-box {
@@ -14630,6 +14636,9 @@ body.ZT-black,
 	.box02-new .Movie{
 		width: 205px;
 		height: 277px;
+	}
+	.box02-new .Movie-name02, .box02-new .Movie-type02{
+		width: 205px;
 	}
 }
 .box02-new-content {
