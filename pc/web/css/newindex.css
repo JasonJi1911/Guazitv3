@@ -14737,11 +14737,11 @@ body.ZT-black,
 	background-image: -webkit-linear-gradient(#ffa424,#ff9500);
 }
 
-.index-rank-1 .index-rank-NO,
-.index-rank-2 .index-rank-NO,
-.index-rank-3 .index-rank-NO{
-	display: block;
-}
+/*.index-rank-1 .index-rank-NO,*/
+/*.index-rank-2 .index-rank-NO,*/
+/*.index-rank-3 .index-rank-NO{*/
+/*	display: block;*/
+/*}*/
 /* 排行榜数字 end */
 .channel-add{
 	margin: 0 auto;

@@ -635,6 +635,12 @@ function initialUrl($url)
     .dplayer .dplayer-controller .dplayer-icons .dplayer-volume .dplayer-volume-bar-wrap .dplayer-volume-bar{
         top: 43px;
     }
+    @media only screen and (min-device-width : 768px) and (max-device-width : 1024px){
+        .dplayer-mobile-play{
+            left: 5% !important;
+            top: 75% !important;
+        }
+    }
 </style>
 <div id="load1-img">
     <img src="/images/video/load.gif" />
@@ -762,7 +768,7 @@ function initialUrl($url)
             preload: 'auto',
             // logo: '/MyPlayer/img/logo.png',
             volume: 0.7,
-            autoplay: true,
+            autoplay: false,
             playbackSpeed: [0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3, 5, 7.5, 10],
             video: e,
         });
@@ -1075,7 +1081,7 @@ function initialUrl($url)
             preload: 'auto',
             // logo: '/MyPlayer/img/logo.png',
             volume: 0.7,
-            autoplay: false,
+            autoplay: true,
             playbackSpeed: [0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3, 5, 7.5, 10],
             video: {
                 url: '',
@@ -1178,6 +1184,7 @@ function initialUrl($url)
                 document.getElementById('time_ad').innerText = Math.floor(dp.video.duration);
                 playflag = true;
                 $('#load1-img').remove();
+                dp.controller.show();
                 dp.play();
             });
             dp.on('timeupdate', function () {
