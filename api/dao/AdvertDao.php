@@ -39,7 +39,7 @@ class AdvertDao extends BaseDao
             array_push($citylist, 0);
             //所有广告
             $advert = Advert::find()->select('id,position_id')
-                ->where(['position_id' => $position, 'status' => Advert::STATUS_OPEN,'platform'=>PLATFORM])
+                ->where(['position_id' => $position, 'status' => Advert::STATUS_OPEN,'city_id' => 0,'platform'=>PLATFORM])
                 ->all();
 
             if ($city)
