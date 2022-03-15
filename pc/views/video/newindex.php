@@ -447,7 +447,7 @@ $this->registerJs($js);
                 <li class="Movie-list"  >
                     <div class="Coming-online">
                         <div class="Coming-online-line"></div>
-                        <span class="Coming-online-text"><?=date('Y-m-d',$list['online_time'])?></span>
+                        <span class="Coming-online-text"><?=$list['title']?></span>
                     </div>
                     <a class="Movie" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
                         <img class="Movie-img i_background_errorimg" src="<?= $list['cover']?>" />

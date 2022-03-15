@@ -27,7 +27,7 @@ class Trailer extends \common\models\video\Trailer
             'id' => 'ID',
             'video_id'=>'影片',
             'trailer_title_id'=>'预告位',
-            'title'=>'标题',
+            'title'=>'上线时间',//此列改为显示上线时间，可编辑文本
             'stitle'=>'副标题',
             'online_time'=>'上线时间',
             'display_order' => '排序',
