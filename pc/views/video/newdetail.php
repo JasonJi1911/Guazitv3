@@ -686,11 +686,11 @@ else
 <!--            --><?php //endif;?>
 <!--        --><?php //endforeach;?>
 <!--    --><?php //endif;?>
-    <div class="advert_2 J_xini_advert" style="display: none;">
+    <div class="advert_2 J_xini_advert" style="display: none;" >
         <div class="advert_content">
-            <div class="advert_content_title">悉尼交易市场</div>
+            <div class="advert_content_title">优质服务</div>
             <div class="advert_content_ad">
-                <ul>
+                <ul id="J_qualityService">
                     <li><a href="javascript:;">冰箱急售</a></li>
                     <li><a href="javascript:;">翡翠耳钉</a></li>
                     <li><a href="javascript:;">两张音乐剧门票</a></li>
@@ -702,9 +702,9 @@ else
             </div>
         </div>
         <div class="advert_content">
-            <div class="advert_content_title">悉尼交易市场</div>
+            <div class="advert_content_title">求职招聘</div>
             <div class="advert_content_ad">
-                <ul>
+                <ul id="J_recruitment">
                     <li><a href="javascript:;">冰箱急售</a></li>
                     <li><a href="javascript:;">翡翠耳钉</a></li>
                     <li><a href="javascript:;">两张音乐剧门票</a></li>
@@ -716,9 +716,9 @@ else
             </div>
         </div>
         <div class="advert_content">
-            <div class="advert_content_title">悉尼交易市场</div>
+            <div class="advert_content_title">房屋租赁</div>
             <div class="advert_content_ad">
-                <ul>
+                <ul id="J_houseRent">
                     <li><a href="javascript:;">冰箱急售</a></li>
                     <li><a href="javascript:;">翡翠耳钉</a></li>
                     <li><a href="javascript:;">两张音乐剧门票</a></li>
@@ -731,11 +731,11 @@ else
         </div>
         <div class="advert_content last">
             <div class="advert_content_title last">
-                悉尼交易市场
+                二手市场
                 <img src="/images/Index/chahao.png" class="J_del_advert">
             </div>
             <div class="advert_content_ad last">
-                <ul>
+                <ul id="J_secondaryMarket">
                     <li><a href="javascript:;">冰箱急售</a></li>
                     <li><a href="javascript:;">翡翠耳钉</a></li>
                     <li><a href="javascript:;">两张音乐剧门票</a></li>
@@ -1087,6 +1087,66 @@ else
         // $('#btn-video-play').trigger("click");
         // countPicAds();
         // refreshAds();
+
+        //广告
+
+        var req = new XMLHttpRequest();
+        req.open('GET', document.location, false);
+        req.send(null);
+        var cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
+        var citycode = '';
+        if(cf_ray && cf_ray.length>3){
+            citycode = cf_ray.substring(cf_ray.length-3);
+        }
+        var arrIndex = {};
+        arrIndex['citycode'] = citycode;
+        $.ajax({
+            url:'/video/adverty',
+            data:arrIndex,
+            type:'get',
+            cache:false,
+            dataType:'json',
+            success:function(res) {
+                var html = "";
+                if(res.errno==0 && res.data.status == 0){
+                    if(res.data.qualityService.length > 0){
+                        var q = res.data.qualityService;
+                        for(var i=0;i<q.length;i++){
+                            html += '<li><a target="_blank" href="'+q[i].url+'">'+q[i].title+'</a></li>'
+                        }
+                        $("#J_qualityService").html(html);
+                    }
+                    html = "";
+                    if(res.data.recruitment.length > 0){
+                        var r = res.data.recruitment;
+                        for(var i=0;i<r.length;i++){
+                            html += '<li><a target="_blank" href="'+r[i].url+'">'+r[i].title+'</a></li>'
+                        }
+                        $("#J_recruitment").html(html);
+                    }
+                    html = "";
+                    if(res.data.houseRent.length > 0){
+                        var h = res.data.houseRent;
+                        for(var i=0;i<h.length;i++){
+                            html += '<li><a target="_blank" href="'+h[i].url+'">'+h[i].title+'</a></li>'
+                        }
+                        $("#J_houseRent").html(html);
+                    }
+                    html = "";
+                    if(res.data.secondaryMarket.length > 0){
+                        var s = res.data.secondaryMarket;
+                        for(var i=0;i<s.length;i++){
+                            html += '<li><a target="_blank" href="'+s[i].url+'">'+s[i].title+'</a></li>'
+                        }
+                        $("#J_secondaryMarket").html(html);
+                    }
+                    $(".J_xini_advert").show();
+                }
+            },
+            error : function() {
+                console.log("接口广告加载失败");
+            }
+        });
     });
 
     function refreshAds()

@@ -869,7 +869,7 @@ function removewatchlog(logid){
             }
         });
         if(logid!=''){
-            logid = logid.logid(0,logid.length-1);
+            logid = logid.substring(0,logid.length-1);
             arrindex['logid'] = logid;
         }
     }

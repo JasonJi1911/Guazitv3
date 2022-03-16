@@ -14415,15 +14415,20 @@ body.ZT-black,
 	border-right: 0;
 }
 .advert_content_ad>ul>li{
-	padding-left: 63px;
+	padding-left: 50px;
+	padding-right: 20px;
 	font-size: 16px;
 	font-weight: 400;
 	height: 35px;
 	line-height: 35px;
-	background: url("/images/Index/duobianxing.png") no-repeat 32px center;;
+	background: url(/images/Index/duobianxing.png) no-repeat 20px center;
 }
 .advert_content_ad>ul>li>a{
 	color: #FFFFFF;
+	display: block;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
 }
 .advert_content_title.last{
 	border-right: 0;

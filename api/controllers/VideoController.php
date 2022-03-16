@@ -822,4 +822,13 @@ class VideoController extends BaseController
         $data = $videologic->getVideoUpdateInfo($channelId,$week);
         return $data;
     }
+    /*
+     * 瓜子tv展示亿忆分类信息帖子广告接口
+     */
+    public function actionAdverty(){
+        $citycode = $this->getParam('citycode', 0);
+        $advertlogic = new AdvertLogic();
+        $data = $advertlogic->getThreadAdInfo($citycode);
+        return $data;
+    }
 }

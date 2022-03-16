@@ -1526,4 +1526,16 @@ class VideoController extends BaseController
         }
         return Tool::responseJson($errno,$msg,$msg);
     }
+    /*
+     * 瓜子tv展示亿忆分类信息帖子广告接口
+     */
+    public function actionAdverty(){
+        $uid = Yii::$app->user->id;
+        $citycode = Yii::$app->request->get('citycode', '');//城市三字码
+
+        $data = Yii::$app->api->get('/video/adverty', ['citycode' => $citycode]);
+
+        return Tool::responseJson($data['errno'],'操作成功',$data['data']);
+    }
+
 }

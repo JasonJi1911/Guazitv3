@@ -2,11 +2,13 @@
 namespace api\logic;
 
 use api\dao\AdvertDao;
+use api\dao\VideoDao;
 use api\exceptions\ApiException;
 use api\helpers\ErrorCode;
 use api\models\advert\AdvertPosition;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
+use common\helpers\Tool;
 use common\models\IpAddress;
 use common\models\pay\Expend;
 use common\models\traits\PositionInterface;
@@ -143,5 +145,55 @@ class AdvertLogic
 
         $redis->releaseLock($lockKey);
         return true;
+    }
+
+    /*
+     * 瓜子tv展示亿忆分类信息帖子广告接口
+     */
+    public function getThreadAdInfo($citycode){
+        $videodao = new VideoDao();
+        $citys = $videodao->findcity($citycode);
+        $city = $citys['city_name'];
+        $url = "http://apwep.zhayieye.com/interface.php?app=guazitv&act=getThreadAdInfo";//post
+        $data = [];
+        $data['cityId'] = $this->getCityId($city);
+
+        $result = Tool::httpPost($url,$data);
+        $result['data'] = json_decode($result['data'],true);
+        return $result;
+    }
+    public function getCityId($city){
+        $cityId = 0;
+        switch ($city) {
+            case "墨尔本":
+                $cityId = 1;break;
+            case "悉尼":
+                $cityId = 2;break;
+            case "黄金海岸":
+                $cityId = 3;break;
+            case "布里斯班":
+                $cityId = 4;break;
+            case "阿德莱德":
+                $cityId = 5;break;
+            case "堪培拉":
+                $cityId = 6;break;
+            case "珀斯":
+                $cityId = 7;break;
+            case "达尔文":
+                $cityId = 8;break;
+            case "霍巴特":
+                $cityId = 10;break;
+            case "卧龙岗":
+                $cityId = 12;break;
+            case "中央海岸":
+                $cityId = 13;break;
+            case "吉朗":
+                $cityId = 14;break;
+            case "巴拉瑞特":
+                $cityId = 15;break;
+            default :   // 其他
+                $cityId = 11;
+        }
+        return $cityId;
     }
 }
