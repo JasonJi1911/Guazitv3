@@ -1036,13 +1036,14 @@ class VideoDao extends BaseDao
         $data = $dataProvider->setPagination(['page_num' => $page_num])->toArray(['log_id', 'video_id', 'chapter_id', 'play_time', 'time', 'play_date', 'created_at','watchplay_time','total_time','updated_at']);
         if ($data['list']) {
             $videoId = array_column($data['list'], 'video_id');
-            $videoInfo = $this->batchGetVideo($videoId, ['video_id', 'video_name', 'cover','category','flag','channel_id'], true);
+            $videoInfo = $this->batchGetVideo($videoId, ['video_id', 'video_name', 'cover','category','flag','channel_id','year'], true);
             $list = [];
             foreach ($data['list'] as $k => $info) {
                 $info['title']    = $videoInfo[$info['video_id']]['video_name'];
                 $info['cover']    = $videoInfo[$info['video_id']]['cover'];
                 $info['category'] = $videoInfo[$info['video_id']]['category'];
                 $info['flag']     = $videoInfo[$info['video_id']]['flag'];
+                $info['year']     = $videoInfo[$info['video_id']]['year'];
                 $info['watch_time'] = '观看至 ' . $info['play_time'];
                 //计算 时长占百分比
                 if($info['total_time']){
@@ -1180,7 +1181,7 @@ class VideoDao extends BaseDao
         if ($data['list']) {
             $videoId = array_column($data['list'], 'video_id');
             $videoInfo = $this->batchGetVideo($videoId, ['video_id', 'video_name', 'cover', 'horizontal_cover',
-                'flag', 'tag','category','is_finished','created_at','total_views','type'], true);
+                'flag', 'tag','category','is_finished','created_at','total_views','type','year'], true);
             foreach ($data['list'] as $k => $info) {
                 //总评论数
                 $commentcount = VideoChapter::find()->andWhere(['video_id'=>$info['video_id']])
@@ -1192,11 +1193,12 @@ class VideoDao extends BaseDao
                 $info['horizontal_cover'] = $videoInfo[$info['video_id']]['horizontal_cover'];
                 $info['flag']             = $videoInfo[$info['video_id']]['flag'];
                 $info['tag']              = $videoInfo[$info['video_id']]['tag'];
-                $info['type']              = $videoInfo[$info['video_id']]['type'];
+                $info['type']             = $videoInfo[$info['video_id']]['type'];
                 $info['category']         = $videoInfo[$info['video_id']]['category'];
                 $info['is_finished']      = $videoInfo[$info['video_id']]['is_finished'];
                 $info['created_at']       = $videoInfo[$info['video_id']]['created_at'];
                 $info['total_views']      = $videoInfo[$info['video_id']]['total_views'];
+                $info['year']             = $videoInfo[$info['video_id']]['year'];
                 $data['list'][$k] = $info;
             }
             $data['list'][0]['total_page'] = $data['total_page'];//总页数
@@ -1228,7 +1230,7 @@ class VideoDao extends BaseDao
             $vlist = $data['list'];
             $videoId = array_column($vlist, 'video_id');
             $videoInfo = $this->batchGetVideo($videoId, ['video_id', 'video_name', 'cover', 'horizontal_cover',
-                'flag', 'tag','category','is_finished','created_at','total_views'], true);
+                'flag', 'tag','category','is_finished','created_at','total_views','year','type'], true);
             foreach ($vlist as $k => $info) {
                 //总评论数
                 $commentcount = VideoChapter::find()->andWhere(['video_id'=>$info['video_id']])
@@ -1245,6 +1247,8 @@ class VideoDao extends BaseDao
                 $info['is_finished']      = $videoInfo[$info['video_id']]['is_finished'];
                 $info['created_at']       = $videoInfo[$info['video_id']]['created_at'];
                 $info['total_views']      = $videoInfo[$info['video_id']]['total_views'];
+                $info['year']             = $videoInfo[$info['video_id']]['year'];
+                $info['type']             = $videoInfo[$info['video_id']]['type'];
                 $info['created_data']     = date("Y年m月d日",$videoInfo[$info['video_id']]['created_at']);
                 $vlist[$k] = $info;
             }
@@ -1277,8 +1281,11 @@ class VideoDao extends BaseDao
                 if ($videoFav['status'] == VideoFavorite::STATUS_YES){
                     // $objVideoFav->status = VideoFavorite::STATUS_NO;
                     $param['status'] = VideoFavorite::STATUS_NO;
-                    Video::updateAllCounters(['total_favors' => -1],
-                        ['id' => $vid]);//$objVideoFav->video_id
+                    $v = Video::findOne(['id' => $vid]);
+                    if($v['total_favors']>0){
+                        Video::updateAllCounters(['total_favors' => -1],
+                            ['id' => $vid]);//$objVideoFav->video_id
+                    }
                     $status = 0;
                 }else{
                     // $objVideoFav->status = VideoFavorite::STATUS_YES;

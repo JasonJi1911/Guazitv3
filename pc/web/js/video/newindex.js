@@ -501,6 +501,9 @@ $(document).ready(function() {
 		var tabNum = $(this).index();
 		$(this).addClass("act").siblings().removeClass("act");
 		$(".per-tab-w-new>div").eq(tabNum).addClass("act").siblings().removeClass("act");
+		//取消批量删除样式
+		$(".per-tab-w02-new.act .RANbox-list-xx-new>li:last-of-type>.RANbox-choose>.J_choose_check").removeClass("act").removeClass("act1");
+		$('.J_cancel').parents(".per-sc-new").find(".per-sc-pl").addClass("act").siblings().removeClass("act");
 	});
 });
 

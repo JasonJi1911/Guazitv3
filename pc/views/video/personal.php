@@ -160,7 +160,7 @@ $(document).ready(function() {
                                         </li>
                                         <li>
                                             <div class="RANbox-choose">
-                                                <div class="RANbox-choose-img J_choose_check"  data-value="<?=$video['video_id']?>" onclick="favchoose(this);" ></div>
+                                                <div class="RANbox-choose-img J_choose_check"  data-value="<?=$video['video_id']?>" onclick="favchoose(this,'c_favorite');" ></div>
                                             </div>
                                             <input type="button" value="删除" onclick="removefavorite(<?=$video['video_id']?>)">
                                         </li>
@@ -281,7 +281,7 @@ $(document).ready(function() {
                                             </li>
                                             <li>
                                                 <div class="RANbox-choose">
-                                                    <div class="RANbox-choose-img J_choose_check" data-value="<?=$video['log_id']?>" onclick="favchoose(this);"></div>
+                                                    <div class="RANbox-choose-img J_choose_check" data-value="<?=$video['log_id']?>" onclick="favchoose(this,'c_watchlog');"></div>
                                                 </div>
                                                 <input type="button" value="删除"  onclick="removewatchlog(<?=$video['log_id']?>);">
                                             </li>
@@ -617,12 +617,12 @@ $(document).ready(function() {
                     <div class="help-pass-box J_edp_step_two act">
                         <div class="inp-box pasbox">
                             <span class="inp-title">新密码</span>
-                            <input type="password" class="inp pas J_edp_new_pass" name="" placeholder="请输入密码" value="" onkeyup="value=value.replace(/[^(\w-*\.*)]/g,'')" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;" autocomplete="off">
+                            <input type="password" class="inp pas J_edp_new_pass" name="" placeholder="请输入密码" value="" onkeyup="value=value.replace(/[^(\w-*\.*)]/g,'')" autocomplete="off">
                             <input type="button" class="eye" value="">
                         </div>
                         <div class="inp-box pasbox">
                             <span class="inp-title">确认密码</span>
-                            <input type="password" class="inp pas J_edp_sure_pass" name="" placeholder="请再次输入密码" value="" onkeyup="value=value.replace(/[^(\w-*\.*)]/g,'')" style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAAAXNSR0IArs4c6QAAAPhJREFUOBHlU70KgzAQPlMhEvoQTg6OPoOjT+JWOnRqkUKHgqWP4OQbOPokTk6OTkVULNSLVc62oJmbIdzd95NcuGjX2/3YVI/Ts+t0WLE2ut5xsQ0O+90F6UxFjAI8qNcEGONia08e6MNONYwCS7EQAizLmtGUDEzTBNd1fxsYhjEBnHPQNG3KKTYV34F8ec/zwHEciOMYyrIE3/ehKAqIoggo9inGXKmFXwbyBkmSQJqmUNe15IRhCG3byphitm1/eUzDM4qR0TTNjEixGdAnSi3keS5vSk2UDKqqgizLqB4YzvassiKhGtZ/jDMtLOnHz7TE+yf8BaDZXA509yeBAAAAAElFTkSuQmCC&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%; cursor: auto;" autocomplete="off">
+                            <input type="password" class="inp pas J_edp_sure_pass" name="" placeholder="请再次输入密码" value="" onkeyup="value=value.replace(/[^(\w-*\.*)]/g,'')" autocomplete="off">
                             <input type="button" class="eye" value="">
                         </div>
                         <div class="inp-box pasbox J_edp_inp_box" style="display: none;">
@@ -690,14 +690,14 @@ $(".per-sc-pl>li").click(function() {
     $(this).parents('.per-sc-new').find(".J_del_num span").text(num);
 });
 //批量删除-单选
-function favchoose(obj) {
+function favchoose(obj,cid) {
     if($(obj).hasClass('act')){
         $(obj).removeClass('act').addClass('act1');
     }else{
         $(obj).removeClass('act1').addClass('act');
     }
     //同时更新删除数量
-    var num = $(".per-tab-w02-new.act .RANbox-list-xx-new .J_choose_check.act").length;
+    var num = $("."+cid+" .per-tab-w02-new.act .RANbox-list-xx-new .J_choose_check.act").length;
     $(".J_del_num span").text(num);
 }
 //取消全选
@@ -707,11 +707,14 @@ $('.J_cancel_all').click(function(){
 })
 //取消
 $('.J_cancel').click(function(){
+    cancelCSS();
+})
+function cancelCSS(){
     //1.显示选中删除样式
     $(".per-tab-w02-new.act .RANbox-list-xx-new>li:last-of-type>.RANbox-choose>.J_choose_check").removeClass("act").removeClass("act1");
     //2.删除按钮样式变动
-    $(this).parents(".per-sc-new").find(".per-sc-pl").addClass("act").siblings().removeClass("act");
-})
+    $('.J_cancel').parents(".per-sc-new").find(".per-sc-pl").addClass("act").siblings().removeClass("act");
+}
 //收藏条件切换
 var no_video_str = '<div class="no-video">'
     +'<h2 class="per-zw-new" name="zt" >'
@@ -776,7 +779,7 @@ function findfavoritelist(list,flag){
             '</li>' +
             '<li>' +
             '<div class="RANbox-choose">' +
-            '<div class="RANbox-choose-img J_choose_check" onclick="favchoose(this);"></div>' +
+            '<div class="RANbox-choose-img J_choose_check" onclick="favchoose(this,\'c_favorite\');"></div>' +
             '</div>' +
             '<input type="button" value="删除" onclick="removefavorite(' + list[i]['video_id'] + ')">' +
             '</li>' +
@@ -812,13 +815,13 @@ function removefavorite(videoid){
                 }
                 var videoar = videoids.split(",");
                 for(var i=0;i<videoar.length;i++){
-                    console.log(videoar[i]);
                     $(".id_fav"+videoar[i]).remove();
                 }
             }else{
                 $(".id_fav"+videoid).remove();
             }
             unselectAll();
+            cancelCSS();
             $("#pop-tip").text("删除成功");
             $("#pop-tip").show().delay(1500).fadeOut();
         }
@@ -843,10 +846,8 @@ function channelswatchlog(channel_id,obj){
     if(str){
         arr['searchword'] = str;
     }
-    console.log(arr);
     $.get('/video/search-watchlog',arr,function(res){
         arrall['watchlog-page'] = 1;
-        console.log(res);
         if(res.errno==0){
             var html = findwatchloglist(res.data);
             $(".per-tab-box-new.act").find(".per-tab-w02-new.act").html(html);
@@ -860,7 +861,6 @@ function channelswatchlog(channel_id,obj){
 function removewatchlog(logid){
     var arrindex = {};
     arrindex['logid'] = logid;
-    console.log(logid);
     if(logid=='all'){
         var logid = '';
         $(".J_choose_check").each(function(){
@@ -889,6 +889,7 @@ function removewatchlog(logid){
             }else{
                 $(".id_watchlog_"+logid).remove();
             }
+            cancelCSS();
             $("#pop-tip").text("删除成功");
             $("#pop-tip").show().delay(1500).fadeOut();
         }
@@ -898,12 +899,10 @@ function removewatchlog(logid){
 $(function(){
     $("#watchlog_search").click(function(){
         var str = $("#watchlog_stext").val();
-        console.log(str);
         var arr = {};
         arr['searchword'] = str;
         $.get('/video/search-watchlog', arr,function(res){
             arrall['watchlog-page'] = 1;
-            console.log(res);
             if(res.errno==0){
                 var html = findwatchloglist(res.data);
                 $(".per-tab-box-new.act").find(".per-tab-w02-new.act").html(html);
@@ -945,7 +944,7 @@ function findwatchloglist(list){
                 '</li>' +
                 '<li>' +
                 '<div class="RANbox-choose">' +
-                '<div class="RANbox-choose-img J_choose_check" data-value="' + video[j]['log_id'] + '" onclick="favchoose(this);"></div>' +
+                '<div class="RANbox-choose-img J_choose_check" data-value="' + video[j]['log_id'] + '" onclick="favchoose(this,\'c_watchlog\');"></div>' +
                 '</div>' +
                 '<input type="button" value="删除" onclick="removewatchlog(' + video[j]['log_id'] + ');">' +
                 '</li>' +
@@ -1002,9 +1001,7 @@ $(window).scroll(function () {
                     params['ctype'] = (type!=""?type:"comment");
                     arrall[c+'-page'] = page;
                 }
-                //console.log(params);
                 $.get('/video/load-more', params, function(res) {
-                    // console.log(res);
                     // $(".more-load").hide();
                     if(res.errno==0){
                         var html = "";
