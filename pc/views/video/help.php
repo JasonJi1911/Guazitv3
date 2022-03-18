@@ -1075,8 +1075,9 @@ $logo = LOGONAME;
                 $('.c_pwd .J_per_tab_img_c').show().siblings().hide();
                 $('.c_pwd').siblings().find('.J_per_tab_img_c').hide().siblings().show();
             } else if (helptab == 'appdownload') {
-                showwarning();
-                // $('.c_appdownload').addClass('act');
+                $('.c_appdownload').addClass('act');
+                $('.c_appdownload .J_per_tab_img_c').show().siblings().hide();
+                $('.c_appdownload').siblings().find('.J_per_tab_img_c').hide().siblings().show();
             } else {//c_question
                 $('.c_question').addClass('act');
                 $('.c_question .J_per_tab_img_c').show().siblings().hide();

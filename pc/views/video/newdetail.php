@@ -663,9 +663,9 @@ else
                 <img src="/images/newindex/ryewm_wap.png" />
                 <div class="Altsjk-02-a">
                     <!--                    --><?//= Url::to(['/site/share-down'])?>
-                    <a href="javascript:void(0);" onclick="showwarning();"><img src="/images/NewVideo/ipad.png" />iPhone客户端</a>
-                    <a href="javascript:void(0);" onclick="showwarning();"><img src="/images/NewVideo/ipad.png" />电视TV版</a>
-                    <a href="javascript:void(0);" onclick="showwarning();"><img src="/images/NewVideo/anzhuo.png" />安卓客户端</a>
+                    <a href="<?= Url::to(['/video/help', 'tab' => 'appdownload'])?>"><img src="/images/NewVideo/ipad.png" />iPhone客户端</a>
+                    <a href="<?= Url::to(['/video/help', 'tab' => 'appdownload'])?>"><img src="/images/NewVideo/ipad.png" />电视TV版</a>
+                    <a href="<?= Url::to(['/video/help', 'tab' => 'appdownload'])?>"><img src="/images/NewVideo/anzhuo.png" />安卓客户端</a>
                 </div>
             </div>
             <div class="Altsjk-03">
