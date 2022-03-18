@@ -160,6 +160,12 @@ $this->registerJs($js);
     .jBox-closeButton path {
         transition: fill .2s;
     }
+    .Movie-btm {
+        display: none;
+    }
+    .Movie-type {
+        display: none;
+    }
 </style>
 <!--首页大轮播-->
 <div id="playBox" class="play-box">
@@ -505,7 +511,7 @@ $this->registerJs($js);
                                                 </div>
                                                 <div class="Movie-Ranking-right-top">
                                                     <div class="Movie-Ranking-right-top-up">
-                                                        <div style="width:140px;overflow: hidden;">
+                                                        <div style="width:127px;overflow: hidden;">
                                                             <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>" class="font-color"><?= $list['video_name']?></a>
                                                         </div>
                                                         <div class="pink-color"><?= $list['score']?></div>
