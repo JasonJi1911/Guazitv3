@@ -635,11 +635,26 @@ function initialUrl($url)
     .dplayer .dplayer-controller .dplayer-icons .dplayer-volume .dplayer-volume-bar-wrap .dplayer-volume-bar{
         top: 43px;
     }
-    @media only screen and (min-device-width : 768px) and (max-device-width : 1024px){
-        .dplayer-mobile-play{
-            left: 5% !important;
-            top: 75% !important;
-        }
+    /*@media only screen and (min-device-width : 768px) and (max-device-width : 1024px){*/
+    /*    .dplayer-mobile-play{*/
+    /*        left: 5% !important;*/
+    /*        top: 75% !important;*/
+    /*    }*/
+    /*}*/
+    .dplayer-fulled-icon{
+        display: none !important;
+    }
+
+    .dplayer-fullfilled .dplayer-unfull-icon{
+        display: none !important;
+    }
+
+    .dplayer-fullfilled .dplayer-fulled-icon{
+        display: inline-block !important;
+    }
+
+    .dplayer-full-in-icon{
+        display: none !important;
     }
 </style>
 <div id="load1-img">
@@ -771,6 +786,18 @@ function initialUrl($url)
             autoplay: false,
             playbackSpeed: [0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3, 5, 7.5, 10],
             video: e,
+        });
+
+        dp1.on('fullscreen', function () {
+            $('#player1').addClass('dplayer-fullfilled');
+        });
+
+        dp1.on('fullscreen_cancel', function () {
+            $('#player1').removeClass('dplayer-fullfilled');
+        });
+
+        $('#player1 .dplayer-fulled-icon').click(function(){
+            dp1.fullScreen.cancel();
         });
 
         $("#player1 .dplayer-icons-left").append(txt1);
@@ -1096,6 +1123,18 @@ function initialUrl($url)
             ],
         });
 
+        dp.on('fullscreen', function () {
+            $('#player_ad').addClass('dplayer-fullfilled');
+        });
+
+        dp.on('fullscreen_cancel', function () {
+            $('#player_ad').removeClass('dplayer-fullfilled');
+        });
+
+        $('#player_ad .dplayer-fulled-icon').click(function(){
+            dp.fullScreen.cancel();
+        });
+
         if(advert['ad_type']=='img'){
             var bb1 = dp.options.bbslist[0];
             var l = bb1.link;
@@ -1184,6 +1223,7 @@ function initialUrl($url)
                 document.getElementById('time_ad').innerText = Math.floor(dp.video.duration);
                 playflag = true;
                 $('#load1-img').remove();
+                $('#ADMask').hide()
                 dp.controller.show();
                 dp.play();
             });

@@ -664,7 +664,7 @@ else
                 <div class="Altsjk-02-a">
                     <!--                    --><?//= Url::to(['/site/share-down'])?>
                     <a href="javascript:void(0);" onclick="showwarning();"><img src="/images/NewVideo/ipad.png" />iPhone客户端</a>
-                    <a href="javascript:void(0);" onclick="showwarning();"><img src="/images/NewVideo/ipad.png" />iPad客户端</a>
+                    <a href="javascript:void(0);" onclick="showwarning();"><img src="/images/NewVideo/ipad.png" />电视TV版</a>
                     <a href="javascript:void(0);" onclick="showwarning();"><img src="/images/NewVideo/anzhuo.png" />安卓客户端</a>
                 </div>
             </div>
@@ -1481,8 +1481,8 @@ else
                             commentNum();//本剧集评论数
                             commentstr(res.data.data);
                             ztBlack();
-                            $(".alt-title").text(res.data.message);
-                            $("#alt05").show();
+                            // $(".alt-title").text(res.data.message);
+                            // $("#alt05").show();
                             $(that).parent().siblings('textarea').val("");
                         }else{
                             $(".alt-title").text(res.data.message);

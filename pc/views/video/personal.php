@@ -281,7 +281,7 @@ $(document).ready(function() {
                                             </li>
                                             <li>
                                                 <div class="RANbox-choose">
-                                                    <div class="RANbox-choose-img J_choose_check" data-value="1" onclick="favchoose(this);"></div>
+                                                    <div class="RANbox-choose-img J_choose_check" data-value="<?=$video['log_id']?>" onclick="favchoose(this);"></div>
                                                 </div>
                                                 <input type="button" value="删除"  onclick="removewatchlog(<?=$video['log_id']?>);">
                                             </li>
@@ -945,7 +945,7 @@ function findwatchloglist(list){
                 '</li>' +
                 '<li>' +
                 '<div class="RANbox-choose">' +
-                '<div class="RANbox-choose-img J_choose_check" data-value="1" onclick="favchoose(this);"></div>' +
+                '<div class="RANbox-choose-img J_choose_check" data-value="' + video[j]['log_id'] + '" onclick="favchoose(this);"></div>' +
                 '</div>' +
                 '<input type="button" value="删除" onclick="removewatchlog(' + video[j]['log_id'] + ');">' +
                 '</li>' +

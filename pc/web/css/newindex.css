@@ -3141,7 +3141,6 @@ Movie-Ranking-img-num {
 	display: block;
 	font-size: 14px;
 	color: #FFFFFF;
-	background-color: #FF556E;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
@@ -3156,6 +3155,7 @@ Movie-Ranking-img-num {
 .rigNav>div:hover>span {
 	width: 110px;
 	padding: 0px 10px;
+	background-color: #FF556E;
 }
 
 .rigNav-top {
@@ -6339,11 +6339,12 @@ Movie-Ranking-img-num {
 	/*height: 300px;*/
 	overflow: hidden;
 	background-color: #16161a;
-	margin-top: 62px;
+	margin-top: 61px;
 	/*background-image: url(../images/newindex/bj-01.jpg);*/
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
+	border:none;
 }
 
 .RANbox-title-icon {
