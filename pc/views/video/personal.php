@@ -72,14 +72,14 @@ $(document).ready(function() {
             </div>
         </div>
         <ul class="box-per-tab J_per_tab">
-            <li class="c_favorite act J_collect">
+            <li class="c_favorite act J_collect" data-value="favorite">
                 <div class="per-img-icon">
                     <img class="J_per_tab_img" src="/images/Index/icon_collect.png" style="display: none;">
                     <img class="J_per_tab_img_c" src="/images/Index/icon_collect_c.png">
                 </div>
                 我的收藏
             </li>
-            <li class="c_watchlog J_watch">
+            <li class="c_watchlog J_watch" data-value="watchlog">
                 <div class="per-img-icon">
                     <img class="J_per_tab_img" src="/images/Index/bofangjilu_line.png">
                     <img class="J_per_tab_img_c" src="/images/Index/bofangjilu_line_c.png" style="display: none;">
@@ -915,9 +915,15 @@ $(function(){
 });
 function findwatchloglist(list){
     var html = "";
+    var timetitle = $(".per-bf-lst-btn:last").text();
+    var timetitlestr = "";
     for(var i=0;i<list.length;i++){
-        html += '<div class="per-bf-lst">'+
-                '<div class="per-bf-lst-btn">'+list[i]['date']+'</div>';
+        if(list[i]['date']!=timetitle && (i==0 || list[i]['date']!=list[i-1]['date'])){
+            timetitlestr = '<div class="per-bf-lst-btn">'+list[i]['date']+'</div>';
+        }else {
+            timetitlestr = '';
+        }
+        html += '<div class="per-bf-lst">'+ timetitlestr;
         var video = list[i]['list'];
         for(var j=0;j<video.length;j++) {
             var cat = video[j]['category'].split(' ');
@@ -963,7 +969,7 @@ var isFlag = true;
 $(window).scroll(function () {
     if (($(window).scrollTop()+488) >= $(document).height() - $(window).height()) {
         if(isFlag) {
-            var tab = $(".per-tab>li.act").attr("data-value");
+            var tab = $(".J_per_tab>li.act").attr("data-value");
             var total = 0;
             var page  = 0;
             var r = "";
