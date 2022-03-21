@@ -640,9 +640,9 @@ class VideoController extends BaseController
      * 搜索播放记录
      */
     public function actionSearchWatchlog(){
-        $uid = $this->getParam('uid', "");
+        $uid = $this->getParam('uid', 0);
         $searchword = $this->getParam('searchword', "");
-        $channel_id = $this->getParam('channel_id', "");
+        $channel_id = $this->getParam('channel_id', 0);
         $page_num = $this->getParam('page_num', 1);
         $videodao = new VideoDao();
         $result = $videodao->finduserwatchLog($uid, $searchword,$page_num,$channel_id);
@@ -663,10 +663,10 @@ class VideoController extends BaseController
      * 收藏条件查询
      */
     public function actionSearchFavorite(){
-        $uid = $this->getParam('uid', "");
+        $uid = $this->getParam('uid', 0);
         $searchword  = $this->getParam('searchword', "");
         $order       = $this->getParam('order', "");
-        $channel     = $this->getParam('channel', "");
+        $channel     = $this->getParam('channel', 0);
         $is_finished = $this->getParam('is_finished', 0);
         $page_num = $this->getParam('page_num', 1);
 

@@ -739,7 +739,7 @@ body {
 .navTopBtnBox {
 	position: absolute;
 	top: 0;
-	right: 140px;
+	right: 160px;
 	height: 62px;
 	font-size: 12px;
 }
@@ -7588,7 +7588,7 @@ Movie-Ranking-img-num {
 	border-radius: 10px;
 	float: left;
 	margin-right: 8px;
-	margin-top: 11px;
+	margin-top: 20px;
 }
 .hlp-app-code {
 	margin-top: 178px;
@@ -7721,7 +7721,7 @@ Movie-Ranking-img-num {
 	width: 130px;
 }
 
-.hlp-app-alt>a {
+.hlp-app-alt>a, .hlp-app-alt:hover>a, .hlp-app-alt>a:focus {
 	display: inline-block;
 	/*padding: 0px 10px;*/
 	width: 150px;

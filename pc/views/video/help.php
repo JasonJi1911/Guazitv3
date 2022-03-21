@@ -966,6 +966,10 @@ $logo = LOGONAME;
                                 <a href="<?=$appversion["iosdata"]["file_path"]?>" class="button1">IOS下载</a>
                             <?php else :?>
                                 <a href="###" class="button1">无IOS应用</a>
+                                <div></div>
+                                <div class="hlp-app-alt">
+                                    <a href="javascript:;">开发中</a>
+                                </div>
                             <?php endif; ?>
                            <!-- <div>
                                 <img src="/images/newindex/triangle-up.png"/>
@@ -987,6 +991,10 @@ $logo = LOGONAME;
                                 <a href="<?=$appversion["androiddata"]["file_path"]?>" class="button2">Android下载</a>
                             <?php else :?>
                                 <a href="<?=$appversion["iosdata"]["file_path"]?>" class="button2">无安卓应用</a>
+                                <div></div>
+                                <div class="hlp-app-alt">
+                                    <a href="javascript:;">开发中</a>
+                                </div>
                             <?php endif; ?>
                            <!-- <div>
                                 <img src="/images/newindex/triangle-up.png"/>
@@ -1014,6 +1022,10 @@ $logo = LOGONAME;
                                 <a href="<?=$appversion["tvdata"]["file_path"]?>" class="button2">电视盒子下载</a>
                             <?php else :?>
                                 <a href="<?=$appversion["iosdata"]["file_path"]?>" class="button2">无电视应用</a>
+                                <div></div>
+                                <div class="hlp-app-alt">
+                                    <a href="javascript:;">开发中</a>
+                                </div>
                             <?php endif; ?>
                         </div>
                         <!--下载按钮-->

@@ -670,11 +670,11 @@ if(empty($is_show_background) || $is_show_background != 1){
         <a class="browser <?= $footer_color?>" href="<?=PC_HOST_PATH?>">电脑端</a>
         <span class="<?= $footer_color?>">|</span>
         <a class="browser1" href="###"></a>
-        <a class="browser <?= $footer_color?>" href="<?= Url::to(['site/share-down'])?>">APP下载</a>
+        <a class="browser <?= $footer_color?>" href="<?= Url::to(['/video/help', 'tab' => 'appdownload'])?>">APP下载</a>
         <span class="<?= $footer_color?>">|</span>
         <a class="browser1" href="###"></a>
         <!--<a class="browser" href="http://app.guazitv6.com/guazi-tv-1.0.1-debug.apk">电视TV版下载</a>-->
-        <a class="browser <?= $footer_color?>" href="<?= !empty($tvpath["file_path"])?$tvpath["file_path"]:"###" ?>">电视TV版下载</a>
+        <a class="browser <?= $footer_color?>" href="<?= Url::to(['/video/help', 'tab' => 'appdownload'])?>">电视TV版下载</a>
     </div>
     <div class="wp">
         <p>本网站为非赢利性站点，所有内容均由机器人采集于互联网，或者网友上传，本站只提供WEB页面服务，本站不存储、不制作任何视频，不承担任何由于内容的合法性及健康性所引起的争议和法律责任。<br />若本站收录内容侵犯了您的权益，请附说明联系邮箱，本站将第一时间处理。站长邮箱：guazitv@163.com</p>

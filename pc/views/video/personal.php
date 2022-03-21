@@ -84,7 +84,7 @@ $(document).ready(function() {
                     <img class="J_per_tab_img" src="/images/Index/bofangjilu_line.png">
                     <img class="J_per_tab_img_c" src="/images/Index/bofangjilu_line_c.png" style="display: none;">
                 </div>
-                播放记录
+                观看记录
             </li>
             <li class="c_safe J_safe">
                 <div class="per-img-icon">
@@ -97,7 +97,7 @@ $(document).ready(function() {
                 <a target="_blank" href="<?= Url::to(['/video/seek'])?>">
                     <div class="per-img-icon">
                         <img class="J_per_tab_img" src="/images/Index/dianying-4.png">
-                        <img class="J_per_tab_img_c" src="/images/Index/dianying-4.png" style="display: none;">
+                        <img class="J_per_tab_img_c" src="/images/Index/dianying_c.png" style="display: none;">
                     </div>求片
                 </a>
             </li>

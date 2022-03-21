@@ -512,7 +512,7 @@ $this->registerJs($js);
                                                 <div class="Movie-Ranking-right-top">
                                                     <div class="Movie-Ranking-right-top-up">
                                                         <div style="width:127px;overflow: hidden;">
-                                                            <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>" class="font-color"><?= $list['video_name']?></a>
+                                                            <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>" class="font-color"><?= mb_substr($list['video_name'],0,7,'utf-8')?></a>
                                                         </div>
                                                         <div class="pink-color"><?= $list['score']?></div>
                                                     </div>
