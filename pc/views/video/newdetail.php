@@ -358,7 +358,7 @@ else
                             </div>
                             <div class="func-item func-collect">
                                 <div class="func-inner">
-                                    <span class="func-name qy-shoucang" id="id_favors"><?= $data['info']['total_favors']?></span>
+                                    <span class="func-name qy-shoucang <?=$data['info']['fav_status']==1? 'act' : ''?>" id="id_favors"><?= $data['info']['total_favors']?></span>
                                 </div>
                             </div>
                             <!--                                    <div class="func-item func-like-v1">-->
@@ -1440,7 +1440,9 @@ else
                     if(res.errno==0){
                         $(".qy-shoucang").toggleClass("act");
                         if(res.data.status==0){
-                            $(that).text(--total_favors);
+                            if(total_favors>0){
+                                $(that).text(--total_favors);
+                            }
                         }else{
                             $(that).text(++total_favors);
                         }
