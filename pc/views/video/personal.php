@@ -793,7 +793,7 @@ function removefavorite(videoid){
     var arrindex = {};
     if(videoid=='all'){
         var videoids = '';
-        $(".J_choose_check").each(function(){
+        $(".c_favorite .J_choose_check").each(function(){
             if($(this).hasClass('act')){
                 videoids += $(this).attr('data-value')+",";
             }
@@ -863,7 +863,7 @@ function removewatchlog(logid){
     arrindex['logid'] = logid;
     if(logid=='all'){
         var logid = '';
-        $(".J_choose_check").each(function(){
+        $(".c_watchlog .J_choose_check").each(function(){
             if($(this).hasClass('act')){
                 logid += $(this).attr('data-value')+",";
             }
