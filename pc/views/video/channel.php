@@ -35,7 +35,7 @@ $this->registerJs($js);
 <!--首页大轮播-->
 <div id="playBox" class="play-box">
     <!--图片列表-->
-    <div id="imgList" style="background-color:#000;">
+    <div id="imgList" style="background-color:#000;margin-top: 61px;">
         <?php if(!empty($data['banner'])) : ?>
             <?php foreach ($data['banner'] as $key => $banner): ?>
                 <a href="<?= str_replace("/detail","/detail",$banner['content'])?>" target="_blank"
@@ -52,7 +52,7 @@ $this->registerJs($js);
     <div class="iconList">
         <ul>
             <?php if(!empty($data['banner'])) : ?>
-                <?php foreach ($data['banner'] as $banner): ?>
+                <?php foreach ($data['banner'] as $key => $banner): ?>
                     <li
                         <?php if($key==0) : ?>
                             class="current"
@@ -149,7 +149,7 @@ $this->registerJs($js);
         <?php foreach ($data['video_update']['video_update'] as $list): ?>
         <li class="Movie-list">
             <a class="Movie" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
-                <img class="Movie-img i_background_errorimg" src="<?= $list['cover']?>" />
+                <img class="Movie-img i_background_errorimg" originalSrc="<?= $list['cover']?>" src="/images/newindex/default-cover.png" />
                 <div class="palyBtn">
                     <img src="/images/newindex/bofang.png" />
                 </div>
@@ -210,7 +210,7 @@ $this->registerJs($js);
                 <div class="alt03-box" name="zt">
                     <div class="alt03-box-t">
                         <div class="alt03-box-R">
-                            <img class="i_background_errorimg" src="<?= $list['cover']?>"  />
+                            <img class="i_background_errorimg" originalSrc="<?= $list['cover']?>"  src="/images/newindex/default-cover.png" />
                         </div>
                         <div class="alt03-box-L">
                             <a class="XQ-name" name="zt" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>"><?= $list['video_name']?></a>
@@ -321,7 +321,7 @@ $this->registerJs($js);
                     <?php if($key < 8) :?>
                     <li class="Movie-list">
                         <a class="Movie" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
-                            <img class="Movie-img i_background_errorimg" src="<?= $list['cover']?>" />
+                            <img class="Movie-img i_background_errorimg" originalSrc="<?= $list['cover']?>" src="/images/newindex/default-cover.png" />
 <!--                            <div class="oth-time">-->
                                 <!--评分-->
 <!--                                --><?//= $list['score']?>
@@ -388,7 +388,7 @@ $this->registerJs($js);
                             <div class="alt03-box" name="zt">
                                 <div class="alt03-box-t">
                                     <div class="alt03-box-R">
-                                        <img class="i_background_errorimg" src="<?= $list['cover']?>" />
+                                        <img class="i_background_errorimg" originalSrc="<?= $list['cover']?>" src="/images/newindex/default-cover.png" />
                                     </div>
                                     <div class="alt03-box-L">
                                         <a class="XQ-name" name="zt" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>"><?= $list['video_name']?></a>
@@ -488,6 +488,7 @@ $this->registerJs($js);
                 $('.J_video_update_content').show();
                 var html = updateContent(res['data']['video_update']);
                 $('.J_video_update_content').html(html);
+                imgdelayLoading();
             }
         })
     });
@@ -512,7 +513,7 @@ $this->registerJs($js);
             }
             html += '<li class="Movie-list">\n' +
                 '                <a class="Movie" href="/video/detail?video_id='+list[i]['video_id']+'">\n' +
-                '                    <img class="Movie-img i_background_errorimg" src="'+list[i]['cover']+'">\n' +
+                '                    <img class="Movie-img i_background_errorimg" originalSrc="'+list[i]['cover']+'" src="/images/newindex/default-cover.png">\n' +
                 '                    <div class="palyBtn">\n' +
                 '                        <img src="/images/newindex/bofang.png">\n' +
                 '                    </div>\n' +
@@ -544,7 +545,7 @@ $this->registerJs($js);
             '                <div class="alt03-box" name="zt">\n' +
             '                    <div class="alt03-box-t">\n' +
             '                        <div class="alt03-box-R">\n' +
-            '                            <img class="i_background_errorimg" src="'+list[i]['cover']+'">\n' +
+            '                            <img class="i_background_errorimg" originalSrc="'+list[i]['cover']+'" src="/images/newindex/default-cover.png">\n' +
             '                        </div>\n' +
             '                        <div class="alt03-box-L">\n' +
             '                            <a class="XQ-name" name="zt" href="/video/detail?video_id='+list[i]['video_id']+'">'+list[i]['video_name']+'</a>\n' +

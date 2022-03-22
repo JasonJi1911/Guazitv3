@@ -958,7 +958,7 @@ $logo = LOGONAME;
                 <div class="hlp-app-box-help">
                     <p class="hlp-app-box-title"">便源全 更新块</p>
                     <p class="hlp-app-box-detail">无论是国内最火的电视剧、综艺还是日剧、韩剧、英剧、美剧、 各种电影、纪录动漫等等</p>
-                    <p class="hlp-app-box-detail">瓜子tv（www.guzitv.tv）都应有尽有</p>
+                    <p class="hlp-app-box-detail">瓜子tv（<?=PC_HOST_NAME?>）都应有尽有</p>
                     <div class="hlp-app-btn-box">
                         <!--下载按钮-->
                         <div class="hlp-app-btn01 hlp-app-box-btn">

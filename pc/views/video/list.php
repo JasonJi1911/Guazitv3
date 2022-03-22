@@ -36,6 +36,7 @@ $(function(){
             var data = s.data.list;
             var content = refreshVideo(data);//加载影片数据
             $('#searchVideos').html(content); // 更新内容
+            imgdelayLoading();
             $('#searchNum').text(s.data.total_count); //刷新影片数  
             //背景色处理
             var bodycolor = $("body").attr("class");
@@ -102,6 +103,7 @@ $(function(){
                         that.addClass("conditionAct").parents(".conditionType").find(".condition>li>a").removeClass("conditionAct");
                     }
                     $('#searchVideos').html(content); // 更新内容
+                    imgdelayLoading();
                     $('#searchNum').text(s.data.total_count); //刷新影片数
                     //背景色处理
                     var bodycolor = $("body").attr("class");
@@ -193,7 +195,7 @@ $(function(){
             }
             content += "<li class='Movie-list'>"+
                             "<a class='Movie' href='/video/detail?video_id="+data[i]['video_id']+ "' >"+
-                                "<img class='Movie-img i_background_errorimg' src='"+data[i]['cover']+"' />" +
+                                "<img class='Movie-img i_background_errorimg' originalSrc='"+data[i]['cover']+"' src='/images/newindex/default-cover.png' />" +
                                 // "<div class='oth-time'>"+data[i]['score']+"</div>"+
                                 "<div class='palyBtn'><img src='/images/newindex/bofang.png' /></div>" +
                                 "<div class='Movie-details' name='zt'>" +

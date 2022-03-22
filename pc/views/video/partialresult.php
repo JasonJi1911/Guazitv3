@@ -14,7 +14,7 @@ use yii\helpers\Url;
     ?>
     <div class="SSbox" name="zt">
         <a class="SSjgImg" href="<?= Url::to(['detail', 'video_id' => $firstChap['video_id'], 'chapter_id' => $firstChap['chapter_id'], 'source_id' => $firstChap['source_id']])?>">
-            <img class="i_background_errorimg" src="<?= $list['cover']?>" />
+            <img class="i_background_errorimg" originalSrc="<?= $list['cover']?>" src="/images/newindex/default-cover.png" />
         </a>
         <div class="SSjg">
             <div class="SSjgName" name="zt">
@@ -111,7 +111,7 @@ use yii\helpers\Url;
     <?php foreach ($info['list'] as $list): ?>
         <li class="Movie-list">
             <a class="Movie" href="<?= Url::to(['/video/detail', 'video_id' => $list['video_id']])?>">
-                <img class="Movie-img i_background_errorimg" src="<?= $list['cover']?>" />
+                <img class="Movie-img i_background_errorimg" originalSrc="<?= $list['cover']?>" src="/images/newindex/default-cover.png" />
                 <div class="oth-time">
                     <!--评分-->
                     <?= $list['score']?>

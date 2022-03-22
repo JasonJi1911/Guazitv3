@@ -538,7 +538,7 @@ $this->registerJs($js);
                         <?php if($key < 12) :?>
                             <li class="Movie-list">
                                 <a class="Movie" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
-                                    <img class="Movie-img i_background_errorimg" src="<?= $list['cover']?>" />
+                                    <img class="Movie-img i_background_errorimg" originalSrc="<?= $list['cover']?>" src="/images/newindex/default-cover.png" />
                                     <div class="palyBtn">
                                         <img src="/images/newindex/bofang.png" />
                                     </div>
@@ -598,7 +598,7 @@ $this->registerJs($js);
                                 <div class="alt03-box" name="zt">
                                     <div class="alt03-box-t">
                                         <div class="alt03-box-R">
-                                            <img class="i_background_errorimg" src="<?= $list['cover']?>"  />
+                                            <img class="i_background_errorimg" originalSrc="<?= $list['cover']?>"  src="/images/newindex/default-cover.png" />
                                         </div>
                                         <div class="alt03-box-L">
                                             <a class="XQ-name" name="zt" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>"><?= $list['video_name']?></a>
@@ -695,7 +695,7 @@ $this->registerJs($js);
                         <?php if($key < 7) :?>
                             <li class="Movie-list">
                                 <a class="Movie" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
-                                    <img class="Movie-img i_background_errorimg" src="<?= $list['cover']?>" />
+                                    <img class="Movie-img i_background_errorimg" originalSrc="<?= $list['cover']?>" src="/images/newindex/default-cover.png" />
                                     <!--                                    <div class="oth-time">-->
                                                                             <!--评分-->
                                     <!--                                        --><?//= $list['score']?>
@@ -760,7 +760,7 @@ $this->registerJs($js);
                                 <div class="alt03-box" name="zt">
                                     <div class="alt03-box-t">
                                         <div class="alt03-box-R">
-                                            <img class="i_background_errorimg" src="<?= $list['cover']?>" />
+                                            <img class="i_background_errorimg" originalSrc="<?= $list['cover']?>" src="/images/newindex/default-cover.png" />
                                         </div>
                                         <div class="alt03-box-L">
                                             <a class="XQ-name" name="zt" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>"><?= $list['video_name']?></a>
@@ -851,7 +851,7 @@ $this->registerJs($js);
                             <span class="Coming-online-text"><?=$list['title']?></span>
                         </div>
                         <a class="Movie" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
-                            <img class="Movie-img i_background_errorimg" src="<?= $list['cover']?>" />
+                            <img class="Movie-img i_background_errorimg" originalSrc="<?= $list['cover']?>" src="/images/newindex/default-cover.png" />
                             <div class="palyBtn">
                                 <img src="/images/newindex/bofang.png" />
                             </div>
@@ -902,7 +902,7 @@ $this->registerJs($js);
                         <div class="alt03-box" name="zt">
                             <div class="alt03-box-t">
                                 <div class="alt03-box-R">
-                                    <img class="i_background_errorimg" src="<?= $list['cover']?>"  />
+                                    <img class="i_background_errorimg" originalSrc="<?= $list['cover']?>" src="/images/newindex/default-cover.png" />
                                 </div>
                                 <div class="alt03-box-L">
                                     <a class="XQ-name" name="zt" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>"><?= $list['video_name']?></a>
@@ -977,7 +977,7 @@ $this->registerJs($js);
         </li>
         <li class="Livemaches-Movie-list J_Livemaches-Movie-list">
             <a class="Livemaches-Movie" href="https://www.baidu.com">
-                <img class="Livemaches-img i_background_errorimg" src="<?= $list['cover']?>" />
+                <img class="Livemaches-img i_background_errorimg" originalSrc="<?= $list['cover']?>" src="/images/newindex/default-cover.png" />
             </a>
             <div class="Livemaches-title">
                 <div class="Livemaches-name">
@@ -990,7 +990,7 @@ $this->registerJs($js);
         </li>
         <li class="Livemaches-Movie-list J_Livemaches-Movie-list">
             <a class="Livemaches-Movie" href="https://www.baidu.com">
-                <img class="Livemaches-img i_background_errorimg" src="<?= $list['cover']?>" />
+                <img class="Livemaches-img i_background_errorimg" originalSrc="<?= $list['cover']?>" src="/images/newindex/default-cover.png" />
             </a>
             <div class="Livemaches-title">
                 <div class="Livemaches-name">
@@ -1003,7 +1003,7 @@ $this->registerJs($js);
         </li>
         <li class="Livemaches-Movie-list J_Livemaches-Movie-list">
             <a class="Livemaches-Movie" href="https://www.baidu.com">
-                <img class="Livemaches-img i_background_errorimg" src="<?= $list['cover']?>" />
+                <img class="Livemaches-img i_background_errorimg" originalSrc="<?= $list['cover']?>" src="/images/newindex/default-cover.png" />
             </a>
             <div class="Livemaches-title">
                 <div class="Livemaches-name">
@@ -1016,7 +1016,7 @@ $this->registerJs($js);
         </li>
         <li class="Livemaches-Movie-list J_Livemaches-Movie-list">
             <a class="Livemaches-Movie" href="https://www.baidu.com">
-                <img class="Livemaches-img i_background_errorimg" src="<?= $list['cover']?>" />
+                <img class="Livemaches-img i_background_errorimg" originalSrc="<?= $list['cover']?>" src="/images/newindex/default-cover.png" />
             </a>
             <div class="Livemaches-title">
                 <div class="Livemaches-name">
@@ -1029,7 +1029,7 @@ $this->registerJs($js);
         </li>
         <li class="Livemaches-Movie-list J_Livemaches-Movie-list">
             <a class="Livemaches-Movie" href="https://www.baidu.com">
-                <img class="Livemaches-img i_background_errorimg" src="<?= $list['cover']?>" />
+                <img class="Livemaches-img i_background_errorimg" originalSrc="<?= $list['cover']?>" src="/images/newindex/default-cover.png" />
             </a>
             <div class="Livemaches-title">
                 <div class="Livemaches-name">
@@ -1042,7 +1042,7 @@ $this->registerJs($js);
         </li>
         <li class="Livemaches-Movie-list J_Livemaches-Movie-list">
             <a class="Livemaches-Movie" href="https://www.baidu.com">
-                <img class="Livemaches-img i_background_errorimg" src="<?= $list['cover']?>" />
+                <img class="Livemaches-img i_background_errorimg" originalSrc="<?= $list['cover']?>" src="/images/newindex/default-cover.png" />
             </a>
             <div class="Livemaches-title">
                 <div class="Livemaches-name">
@@ -1055,7 +1055,7 @@ $this->registerJs($js);
         </li>
         <li class="Livemaches-Movie-list J_Livemaches-Movie-list">
             <a class="Livemaches-Movie" href="https://www.baidu.com">
-                <img class="Livemaches-img i_background_errorimg" src="<?= $list['cover']?>" />
+                <img class="Livemaches-img i_background_errorimg" originalSrc="<?= $list['cover']?>" src="/images/newindex/default-cover.png" />
             </a>
             <div class="Livemaches-title">
                 <div class="Livemaches-name">

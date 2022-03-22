@@ -82,7 +82,7 @@ $this->registerJs($js);
 <!--                                        <li class="top3"><img class="Movie-Ranking-img" src="/images/hotPlay/--><?//= $key+1?><!--.png"></li>-->
                                         <li>
                                             <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
-                                                <img class="i_background_errorimg" src="<?= $list['cover']?>" />
+                                                <img class="i_background_errorimg" originalSrc="<?= $list['cover']?>" src="/images/newindex/default-cover.png" />
                                             </a>
                                         </li>
                                         <li>
@@ -148,7 +148,7 @@ $this->registerJs($js);
                                     </li>
                                     <li>
                                         <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
-                                            <img class="i_background_errorimg" src="<?= $list['cover']?>" />
+                                            <img class="i_background_errorimg" originalSrc="<?= $list['cover']?>" src="/images/newindex/default-cover.png" />
                                         </a>
                                     </li>
                                     <li>

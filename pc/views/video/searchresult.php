@@ -44,6 +44,7 @@ $(function(){
         //发送请求，获取数据
         $.get('/video/refresh-video', arrIndex, function(s) {
             $('#searchVideos').html(s); // 更新内容 
+            imgdelayLoading();
             $('.totalresult1').text(totalnum); //刷新影片数
             dataloading(kTab);      
             page(1,page_size,totalnum);             
@@ -111,6 +112,7 @@ $(function(){
                 cache:false,
                 success:function(s) {
                     $('#searchVideos').html(s); // 更新内容
+                    imgdelayLoading();
                     var totalnum = $("#parcount").val();
                     zeroSearch(totalnum);
                     $('.totalresult1').text(totalnum); //刷新影片数
@@ -142,6 +144,7 @@ $(function(){
         //发送请求，获取数据
         $.get('/video/refresh-video', arrIndex, function(s) {
             $('#searchVideos').html(s); // 更新内容
+            imgdelayLoading();
             var totalnum = $("#parcount").val();            
             zeroSearch(totalnum);
             $('.totalresult1').text(totalnum); //刷新影片数 

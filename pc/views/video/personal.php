@@ -144,7 +144,7 @@ $(document).ready(function() {
                                 <div class="RANbox-list01-new id_fav<?=$video['video_id']?>" name="zt">
                                     <ul class="RANbox-list-xx-new">
                                         <li>
-                                            <a href="<?= Url::to(['detail', 'video_id' => $video['video_id']])?>"><img src="<?=$video['cover']?>"></a>
+                                            <a href="<?= Url::to(['detail', 'video_id' => $video['video_id']])?>"><img originalSrc="<?=$video['cover']?>" src="/images/newindex/default-cover.png"></a>
                                         </li>
                                         <li>
                                             <a class="RAN-z-box01-name-new" href="<?= Url::to(['detail', 'video_id' => $video['video_id']])?>" name="zt"><?=$video['video_name']?></a>
@@ -265,7 +265,7 @@ $(document).ready(function() {
                                     <div class="RANbox-list01" name="zt">
                                         <ul class="RANbox-list-xx RANbox-list-xx-new">
                                             <li>
-                                                <a href="<?= Url::to(['detail', 'video_id' => $video['video_id']])?>"><img src="<?=$video['cover']?>"></a>
+                                                <a href="<?= Url::to(['detail', 'video_id' => $video['video_id']])?>"><img originalSrc="<?=$video['cover']?>" src="/images/newindex/default-cover.png"></a>
                                             </li>
                                             <li>
                                                 <a class="RAN-z-box01-name-new" href="<?= Url::to(['detail', 'video_id' => $video['video_id']])?>" name="zt"><?=$video['title']?></a>
@@ -738,6 +738,7 @@ $(".per-slt-list-favorite>input").click(function() {
         }else{
             $(".per-tab-w02-new.act .per-tab-video-list").html(no_video_str);
         }
+        imgdelayLoading();
         ztBlack();
     });
 });
@@ -752,6 +753,7 @@ $("#fav_searchbtn").click(function (){
         }else{
             $(".per-tab-w02-new.act .per-tab-video-list").html(no_video_str);
         }
+        imgdelayLoading();
         ztBlack();
     });
 });
@@ -766,7 +768,7 @@ function findfavoritelist(list,flag){
         html += '<div class="RANbox-list01-new id_fav' + list[i]['video_id'] + '" name="zt">' +
             '<ul class="RANbox-list-xx-new">' +
             '<li>' +
-            '<a href="/video/detail?video_id=' + list[i]['video_id'] + '"><img src="' + list[i]['cover'] + '"></a>' +
+            '<a href="/video/detail?video_id=' + list[i]['video_id'] + '"><img originalSrc="' + list[i]['cover'] + '" src="/images/newindex/default-cover.png" ></a>' +
             '</li>' +
             '<li>' +
             '<a class="RAN-z-box01-name-new" href="<?= Url::to(['detail', 'video_id' => $video['video_id']])?>" name="zt"><?=$video['video_name']?></a>' +
@@ -854,6 +856,7 @@ function channelswatchlog(channel_id,obj){
         }else{
             $(".per-tab-box-new.act").find(".per-tab-w02-new.act").html(no_video_str);
         }
+        imgdelayLoading();
         ztBlack();
     });
 }
@@ -909,6 +912,7 @@ $(function(){
             }else{
                 $(".per-tab-box-new.act").find(".per-tab-w02-new.act").html(no_video_str);
             }
+            imgdelayLoading();
             ztBlack();
         });
     });
@@ -937,7 +941,7 @@ function findwatchloglist(list){
                 '<div class="RANbox-list01" name="zt">' +
                 '<ul class="RANbox-list-xx RANbox-list-xx-new">' +
                 '<li>' +
-                '<a href="/video/detail?video_id=' + video[j]['video_id'] + '"><img src="' + video[j]['cover'] + '"></a>' +
+                '<a href="/video/detail?video_id=' + video[j]['video_id'] + '"><img originalSrc="' + video[j]['cover'] + '" src="/images/newindex/default-cover.png" ></a>' +
                 '</li>' +
                 '<li>' +
                 '<a class="RAN-z-box01-name-new" href="/video/detail?video_id=' + video[j]['video_id'] + '" name="zt">' + video[j]['title'] + '</a>' +
@@ -1026,6 +1030,7 @@ $(window).scroll(function () {
                             html = findcommentlist(res.data,type);
                             $(".per-tab-box04.act").append(html);
                         }
+                        imgdelayLoading();
                         ztBlack();
                     }
                     progress = false;

@@ -295,6 +295,89 @@ else
         background-repeat: no-repeat;
         background-size: 16px 16px;
     }
+    /*顶部导航特殊处理*/
+    /*1910px至更大*/
+    .navTop {
+        padding: 0;
+        width: 1600px;
+        margin: 0 auto;
+    }
+    .navTopLogo {
+        left:0;
+    }
+    .navTopMenuBox {
+        left: 160px;
+    }
+    .navTopSearchBox-r {
+        left: 723px;
+    }
+    .navTopBtnBox{
+        right: 0;
+    }
+    /*1525-1910px*/
+    @media screen and (max-width:1910px) {
+        .navTop {
+            padding: 0;
+            width: 1445px;
+            margin: 0 auto;
+        }
+        .navTopLogo {
+            left:0;
+        }
+        .navTopMenuBox {
+            left: 160px;
+        }
+        .navTopSearchBox-r {
+            left: 643px;
+        }
+        .navTopBtnBox{
+            right: 0;
+        }
+    }
+    /*1207-1525px*/
+    @media screen and (max-width:1525px) {
+        .navTop {
+            padding: 0;
+            width: 1207px;
+            margin: 0 auto;
+        }
+        .navTopLogo {
+            left:0;
+        }
+        .navTopMenuBox {
+            left: 160px;
+        }
+        .navTopSearchBox-r {
+            left: 643px;
+        }
+        .navTopBtnBox{
+            right: 0;
+        }
+    }
+    @media screen and (max-width: 1400px){
+        .navTopSearchBox-r {
+            left: 450px;
+        }
+    }
+    /*更小默认样式*/
+    @media screen and (max-width:1336px){
+        .navTop {
+            padding: 0 40px;
+            width: auto;
+        }
+        .navTopLogo {
+            left:160px;
+        }
+        .navTopMenuBox {
+            left: 320px;
+        }
+        .navTopSearchBox-r {
+            left: 450px;
+        }
+        .navTopBtnBox{
+            right: 160px;
+        }
+    }
 </style>
 <!--黑色区域-->
 <div class="box05">
@@ -529,7 +612,7 @@ else
                                                         id='chap-<?=$source['resId']?>-<?=$value['chapter_id']?>'>
                                                         <div class="mod-left">
                                                             <div class="mod-img-link">
-                                                                <img src="<?= $value['cover']?>" class="mod-img">
+                                                                <img originalSrc="<?= $value['cover']?>" class="mod-img" src="/images/newindex/default-cover.png">
                                                                 <i class="img-border"></i>
                                                             </div>
                                                         </div>
@@ -688,7 +771,7 @@ else
 <!--    --><?php //endif;?>
     <div class="advert_2 J_xini_advert" style="display: none;" >
         <div class="advert_content">
-            <div class="advert_content_title">优质服务</div>
+            <div class="advert_content_title" id="J_qualityService_title">优质服务</div>
             <div class="advert_content_ad">
                 <ul id="J_qualityService">
                     <li><a href="javascript:;">冰箱急售</a></li>
@@ -702,7 +785,7 @@ else
             </div>
         </div>
         <div class="advert_content">
-            <div class="advert_content_title">求职招聘</div>
+            <div class="advert_content_title" id="J_recruitment_title">求职招聘</div>
             <div class="advert_content_ad">
                 <ul id="J_recruitment">
                     <li><a href="javascript:;">冰箱急售</a></li>
@@ -716,7 +799,7 @@ else
             </div>
         </div>
         <div class="advert_content">
-            <div class="advert_content_title">房屋租赁</div>
+            <div class="advert_content_title" id="J_houseRent_title">房屋租赁</div>
             <div class="advert_content_ad">
                 <ul id="J_houseRent">
                     <li><a href="javascript:;">冰箱急售</a></li>
@@ -731,7 +814,7 @@ else
         </div>
         <div class="advert_content last">
             <div class="advert_content_title last">
-                二手市场
+                <span id="J_secondaryMarket_title">二手市场</span>
                 <img src="/images/Index/chahao.png" class="J_del_advert">
             </div>
             <div class="advert_content_ad last">
@@ -774,7 +857,7 @@ else
     <div class="GNbox-xq-K">
         <div>
             <div class="GNbox-xq-img">
-                <img src="<?= $data['info']['cover']?>" onerror="this.src='/images/newindex/default-cover.png'"/>
+                <img originalSrc="<?= $data['info']['cover']?>" src="/images/newindex/default-cover.png" onerror="this.src='/images/newindex/default-cover.png'"/>
             </div>
             <div class="GNbox-xq-text" name="zt">
                 <div>
@@ -967,7 +1050,7 @@ else
                     <div class="JJXG">
                         <div class="JJXG-L">
                             <a href="<?= Url::to(['/video/detail', 'video_id' => $list['video_id']])?>">
-                                <img src="<?= $list['cover']?>"/>
+                                <img originalSrc="<?= $list['cover']?>" src="/images/newindex/default-cover.png"/>
                             </a>
                         </div>
                         <div class="JJXG-R" name="zt">
@@ -1109,6 +1192,12 @@ else
             success:function(res) {
                 var html = "";
                 if(res.errno==0 && res.data.status == 0){
+                    if(res.data.titleList){
+                        $("#J_qualityService_title").text(res.data.titleList.qualityService);
+                        $("#J_recruitment_title").text(res.data.titleList.recruitment);
+                        $("#J_houseRent_title").text(res.data.titleList.houseRent);
+                        $("#J_secondaryMarket_title").text(res.data.titleList.secondaryMarket);
+                    }
                     if(res.data.qualityService.length > 0){
                         var q = res.data.qualityService;
                         for(var i=0;i<q.length;i++){
