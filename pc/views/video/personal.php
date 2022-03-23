@@ -771,7 +771,7 @@ function findfavoritelist(list,flag){
             '<a href="/video/detail?video_id=' + list[i]['video_id'] + '"><img originalSrc="' + list[i]['cover'] + '" src="/images/newindex/default-cover.png" ></a>' +
             '</li>' +
             '<li>' +
-            '<a class="RAN-z-box01-name-new" href="<?= Url::to(['detail', 'video_id' => $video['video_id']])?>" name="zt"><?=$video['video_name']?></a>' +
+            '<a class="RAN-z-box01-name-new" href="/video/detail?video_id=' + list[i]['video_id'] + '" name="zt">' + list[i]['video_name'] + '</a>' +
             '<div class="GNbox-type-new" name="zt">' + catstr +
             '</div>' +
             '<div class="RANbox-list01-b-new">' +
