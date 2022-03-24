@@ -1401,4 +1401,17 @@ class UserLogic
 
         return $result->getId();
     }
+
+    /*
+     * 修改性别、昵称、手机号
+     */
+    public function modifyUserinfo($data){
+        $row = 0;
+        if(!empty($data['uid'])){
+            $user = User::findOne(['uid'=>$data['uid']]);
+            $user->oldAttributes = $user;
+            $row = $user->updateAttributes($data);
+        }
+        return $row;
+    }
 }

@@ -15,6 +15,7 @@ NewIndexStyleAsset::register($this);
         text-align:center;
         font-size:14px;
     }
+    .watch-time{margin-top: 12px;}
 </style>
 <script>
 //首次加载
@@ -265,10 +266,13 @@ $(document).ready(function() {
                                     <div class="RANbox-list01" name="zt">
                                         <ul class="RANbox-list-xx RANbox-list-xx-new">
                                             <li>
-                                                <a href="<?= Url::to(['detail', 'video_id' => $video['video_id']])?>"><img originalSrc="<?=$video['cover']?>" src="/images/newindex/default-cover.png"></a>
+                                                <a href="<?= Url::to(['detail', 'video_id' => $video['video_id'], 'chapter_id' => $video['chapter_id']])?>"><img originalSrc="<?=$video['cover']?>" src="/images/newindex/default-cover.png"></a>
                                             </li>
                                             <li>
-                                                <a class="RAN-z-box01-name-new" href="<?= Url::to(['detail', 'video_id' => $video['video_id']])?>" name="zt"><?=$video['title']?></a>
+                                                <a class="RAN-z-box01-name-new" href="<?= Url::to(['detail', 'video_id' => $video['video_id'], 'chapter_id' => $video['chapter_id']])?>" name="zt">
+                                                    <?=$video['title']?>&nbsp;
+                                                    <?= is_numeric($video['chapter_title']) ? ('第'.$video['chapter_title'].'集') : $video['chapter_title']?>
+                                                </a>
                                                 <div class="GNbox-type-new" name="zt">
                                                     <?php foreach (explode(' ',$video['category']) as $category): ?>
                                                         <span><?= $category?></span>
@@ -277,6 +281,9 @@ $(document).ready(function() {
                                                 <div class="RANbox-list01-b-new">
                                                     <span><?=$video['is_finished']==1? '完结' : '更新中' ?></span>
                                                     <span> <?=$video['flag']?></span>
+                                                </div>
+                                                <div class="GNbox-type-new watch-time">
+                                                    <span><?= $video['watch_time']?></span>
                                                 </div>
                                             </li>
                                             <li>
@@ -935,21 +942,36 @@ function findwatchloglist(list){
             for (var k = 0; k < cat.length; k++) {
                 catstr += '<span>' + cat[k] + '</span>';
             }
+            var chaptertitle = '';
+            if(video[j]['chapter_title'] != ''){
+                if(isNaN(video[j]['chapter_title'])){
+                    chaptertitle = video[j]['chapter_title'];
+                }else{
+                    chaptertitle = '第'+video[j]['chapter_title']+'集';
+                }
+            }
+            var flag = '';
+            if(video[j]['type']==2){
+                flag = video[j]['flag'];
+            }
             html += '<ul class="per-bof-box id_watchlog_' + video[j]['log_id'] + '" name="zt">' +
                 '<li class="per-bof-box-01">' + video[j]['show_times'] + '</li>' +
                 '<li class="per-bof-box-02" name="zt">' +
                 '<div class="RANbox-list01" name="zt">' +
                 '<ul class="RANbox-list-xx RANbox-list-xx-new">' +
                 '<li>' +
-                '<a href="/video/detail?video_id=' + video[j]['video_id'] + '"><img originalSrc="' + video[j]['cover'] + '" src="/images/newindex/default-cover.png" ></a>' +
+                '<a href="/video/detail?video_id=' + video[j]['video_id'] + '&chapter_id=' + video[j]['chapter_id'] + '"><img originalSrc="' + video[j]['cover'] + '" src="/images/newindex/default-cover.png" ></a>' +
                 '</li>' +
                 '<li>' +
-                '<a class="RAN-z-box01-name-new" href="/video/detail?video_id=' + video[j]['video_id'] + '" name="zt">' + video[j]['title'] + '</a>' +
+                '<a class="RAN-z-box01-name-new" href="/video/detail?video_id=' + video[j]['video_id'] + '&chapter_id=' + video[j]['chapter_id'] + '" name="zt">' + video[j]['title'] + ' ' + chaptertitle + '</a>' +
                 '<div class="GNbox-type-new" name="zt">' + catstr +
                 '</div>' +
                 '<div class="RANbox-list01-b-new">' +
-                '<span>' + (list[i]['is_finished'] == 1 ? '完结' : '更新中') + '</span>' +
-                '<span>' + video[j]['flag'] + '</span>' +
+                '<span>' + (list[i]['is_finished'] == 1 ? '完结' : '更新中') + '</span> ' +
+                '<span>' + flag + '</span>' +
+                '</div>' +
+                '<div class="GNbox-type-new watch-time">'+
+                '<span>' + video[j]['watch_time'] + '</span>' +
                 '</div>' +
                 '</li>' +
                 '<li>' +

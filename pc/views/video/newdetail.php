@@ -422,7 +422,8 @@ else
                         'source_id'         => $data['info']['source_id'],
                         'source'            => $data['info']['source'],
                         'last_chapter'      => $data['info']['last_chapter'],
-                        'next_chapter'      => $data['info']['next_chapter']
+                        'next_chapter'      => $data['info']['next_chapter'],
+                        'last_play_time'    => $data['info']['last_play_time']
                     ]);?>
                 </div>
                 <!--评论，点赞，差评等按钮-->

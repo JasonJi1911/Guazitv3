@@ -169,6 +169,8 @@ class VideoController extends BaseController
             ? AdvertPosition::POSITION_VIDEO_BOTTOM_PC : AdvertPosition::POSITION_VIDEO_BOTTOM_PC;
 
         $data = [];
+        $data['page'] = $page;
+        $data['city'] = $city;
 
         if ($page == "home") {
             $advert = $advertLogic->advertByPosition($adposition, $city);
@@ -650,7 +652,7 @@ class VideoController extends BaseController
     }
 
     /*
-     * 我的收藏
+     * 我的收藏(PC)
      */
     public function actionFavoritePc(){
         $uid = $this->getParam('uid', "");
@@ -660,7 +662,7 @@ class VideoController extends BaseController
         return $result;
     }
     /*
-     * 收藏条件查询
+     * 收藏条件查询(PC)
      */
     public function actionSearchFavorite(){
         $uid = $this->getParam('uid', 0);
@@ -672,6 +674,17 @@ class VideoController extends BaseController
 
         $videodao = new VideoDao();
         $result = $videodao->findVideoFavoriteBycondition($uid,$searchword,$order,$channel,$is_finished,$page_num);
+        return $result;
+    }
+    /*
+     * 收藏(wap)
+     */
+    public function actionFavoriteWap(){
+        $uid = $this->getParam('uid', 0);
+        $page_num = $this->getParam('page_num', 1);
+
+        $videodao = new VideoDao();
+        $result = $videodao->findVideoFavoriteWap($uid,$page_num);
         return $result;
     }
     /*

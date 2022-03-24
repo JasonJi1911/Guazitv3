@@ -702,7 +702,8 @@ class VideoLogic
         }
 
         // 获取上次播放记录,如果传入的id为空，则获取上次播放历史续播
-        $lastPlayLInfo = $this->lastPlayInfo($videoId, $chapterId);
+        // 新加参数用户uid
+        $lastPlayLInfo = $this->lastPlayInfo($videoId, $chapterId,$uid);
         // 根据章节id获取章节内容,没有此id默认获取第一章
         $chapterInfo = ArrayHelper::getValue($videos, $lastPlayLInfo['chapter_id'], reset($videos));
         if (empty($chapterInfo['resource_url'])) {
@@ -1392,15 +1393,16 @@ class VideoLogic
      * @param $chapterId
      * @return array|int
      */
-    public function lastPlayInfo($videoId, $chapterId = '')
+    public function lastPlayInfo($videoId, $chapterId = '',$uid='')
     {
         // 初始数据
         $data = [
             'chapter_id' => $chapterId,
             'lastPlayTime' => 0
         ];
-
-        $uid = Yii::$app->user->id;
+        if(empty($uid)){
+            $uid = Yii::$app->user->id;
+        }
         if (!$uid) {
             return $data;
         }

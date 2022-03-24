@@ -9,7 +9,8 @@ class VideoFavorite extends \common\models\video\VideoFavorite
             'uid',
             'video_id',
             'chapter_id',
-            'status'
+            'status',
+            'created_at'
         ];
     }
 

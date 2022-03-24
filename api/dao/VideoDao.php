@@ -1036,7 +1036,7 @@ class VideoDao extends BaseDao
         $data = $dataProvider->setPagination(['page_num' => $page_num])->toArray(['log_id', 'video_id', 'chapter_id', 'play_time', 'time', 'play_date', 'created_at','watchplay_time','total_time','updated_at']);
         if ($data['list']) {
             $videoId = array_column($data['list'], 'video_id');
-            $videoInfo = $this->batchGetVideo($videoId, ['video_id', 'video_name', 'cover','category','flag','channel_id','year'], true);
+            $videoInfo = $this->batchGetVideo($videoId, ['video_id', 'video_name', 'cover','category','flag','channel_id','year','type','is_finished'], true);
             $list = [];
             foreach ($data['list'] as $k => $info) {
                 $info['title']    = $videoInfo[$info['video_id']]['video_name'];
@@ -1044,6 +1044,8 @@ class VideoDao extends BaseDao
                 $info['category'] = $videoInfo[$info['video_id']]['category'];
                 $info['flag']     = $videoInfo[$info['video_id']]['flag'];
                 $info['year']     = $videoInfo[$info['video_id']]['year'];
+                $info['type']     = $videoInfo[$info['video_id']]['type'];
+                $info['is_finished'] = $videoInfo[$info['video_id']]['is_finished'];
                 $info['watch_time'] = '观看至 ' . $info['play_time'];
                 //计算 时长占百分比
                 if($info['total_time']){
@@ -1053,7 +1055,7 @@ class VideoDao extends BaseDao
                 }
                 $info['chapter_title'] = '';
                 //判断是否为连续剧，加观看集数
-                if($videoInfo[$info['video_id']]['channel_id']==2){
+                if($videoInfo[$info['video_id']]['type']==2){
                     $chapter_one = VideoChapter::findOne(['id'=>$info['chapter_id']])->toArray();
                     $info['chapter_title'] = isset($chapter_one)? $chapter_one['title'] : '';
                 }
@@ -1145,6 +1147,7 @@ class VideoDao extends BaseDao
             $param['time'] = $watchTime ? $watchTime : $videoLog->time;
             $param['total_time'] = $totalTime ? $totalTime : $videoLog->total_time;
             $param['chapter_id'] = $chapterId;
+            $param['updated_at'] = time();
             $videoLog->updateAttributes($param);
         }
 
@@ -1167,7 +1170,7 @@ class VideoDao extends BaseDao
     }
 
     /*
-     * 查询收藏
+     * 查询收藏(PC)
      */
     public function findVideoFavorite($uid){
         $videofavorite = VideoFavorite::find()->where(['uid' => $uid, 'status' => VideoFavorite::STATUS_YES])->asArray()->all();
@@ -1207,7 +1210,7 @@ class VideoDao extends BaseDao
     }
 
     /*
-     * 一定条件查询收藏
+     * 一定条件查询收藏(PC)
      */
     public function findVideoFavoriteBycondition($uid,$searchword,$order,$channel,$is_finished,$page_num=1){
         $videofavorite = VideoFavorite::find()->where(['uid' => $uid, 'status' => VideoFavorite::STATUS_YES])->asArray()->all();
@@ -1257,6 +1260,58 @@ class VideoDao extends BaseDao
     }
 
     /*
+     * 查询收藏(wap)
+     */
+    public function findVideoFavoriteWap($uid,$page_num=1){
+        $dataProvider = new ActiveDataProvider([
+            'query' => VideoFavorite::find()->andWhere(['uid' => $uid])
+                ->andWhere(['status' => VideoFavorite::STATUS_YES])
+                ->orderBy("created_at desc")
+        ]);
+        $data = $dataProvider->setPagination(['page_num' => $page_num])->toArray(['uid','video_id','status','created_at']);
+        if ($data['list']) {
+            $videoId = array_column($data['list'], 'video_id');
+            $videoInfo = $this->batchGetVideo($videoId, ['video_id', 'video_name', 'cover', 'horizontal_cover',
+                'flag', 'tag','category','is_finished','created_at','total_views','type','year'], true);
+            foreach ($data['list'] as $k => $info) {
+                //总评论数
+                $commentcount = VideoChapter::find()->andWhere(['video_id'=>$info['video_id']])
+                    ->sum('total_comment');
+                $info['commentcount'] = $commentcount;
+
+                $info['video_name']       = $videoInfo[$info['video_id']]['video_name'];
+                $info['cover']            = $videoInfo[$info['video_id']]['cover'];
+                $info['horizontal_cover'] = $videoInfo[$info['video_id']]['horizontal_cover'];
+                $info['flag']             = $videoInfo[$info['video_id']]['flag'];
+                $info['tag']              = $videoInfo[$info['video_id']]['tag'];
+                $info['type']             = $videoInfo[$info['video_id']]['type'];
+                $info['category']         = $videoInfo[$info['video_id']]['category'];
+                $info['is_finished']      = $videoInfo[$info['video_id']]['is_finished'];
+                $info['favorite_time']    = $info['created_at'];//收藏时间
+                $info['created_at']       = $videoInfo[$info['video_id']]['created_at'];//video添加时间
+                $info['total_views']      = $videoInfo[$info['video_id']]['total_views'];
+                $info['year']             = $videoInfo[$info['video_id']]['year'];
+
+                $date3 = new \DateTime(date('Y-m-d H:i:s', $info['favorite_time']), new \DateTimeZone('UTC')); //UTC表示世界标准时间
+                $date3->setTimezone(new \DateTimeZone('EAT'));
+                if (date('Y-m-d', $info['favorite_time']) == date('Y-m-d')) {
+                    $dateKey = '今天';
+                } else if (date('Y-m-d', $info['favorite_time']) == date('Y-m-d', strtotime('-1 day'))) {
+                    $dateKey = '昨天';
+                } else if (date('Y-m-d', $info['favorite_time']) >= date('Y-m-d', strtotime('-7 day'))) {
+                    $dateKey = '本周';
+                } else {
+                    $dateKey = '一周前';
+                }
+                $info['favorite_date'] = $dateKey;
+                $data['list'][$k] = $info;
+            }
+            $data['list'][0]['total_page'] = $data['total_page'];//总页数
+        }
+        return $data['list'];
+    }
+
+    /*
      * 视频收藏 / 取消收藏
      */
     public function favVideoPC($uid,$videoId)
@@ -1290,6 +1345,7 @@ class VideoDao extends BaseDao
                 }else{
                     // $objVideoFav->status = VideoFavorite::STATUS_YES;
                     $param['status'] = VideoFavorite::STATUS_YES;
+                    $param['created_at'] = time();
                     Video::updateAllCounters(['total_favors' => +1],
                         ['id' => $vid]);//$objVideoFav->video_id
                     $status = 1;

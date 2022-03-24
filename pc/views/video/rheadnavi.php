@@ -152,8 +152,7 @@ use yii\helpers\Url;
         <img id="user_headimg" src="<?=$avatar?>" onerror="javascript:this.src='/images/Index/user_c.png';" />
     </div>
     <div class="navTopLogonName " name="zt">
-<!--        --><?//=$data['user']['nickname'];?>
-        瓜子用户
+        <?=$data['user']['nickname'];?>
     </div>
     <div class="navTopLogon-GRXX " name="zt">
         <ul class="navTopLogon-box03">

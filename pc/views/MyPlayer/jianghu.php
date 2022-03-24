@@ -787,6 +787,10 @@ function initialUrl($url)
             playbackSpeed: [0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3, 5, 7.5, 10],
             video: e,
         });
+        var last_play_time = <?=$last_play_time?>;
+        if(last_play_time > 0) { //如果记录时间大于0，则设置视频播放后跳转至上次记录时间
+            dp1.seek(last_play_time);
+        }
 
         dp1.on('fullscreen', function () {
             $('#player1').addClass('dplayer-fullfilled');

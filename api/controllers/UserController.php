@@ -10,6 +10,7 @@ use api\models\user\UserAssets;
 use api\models\user\UserAuthApp;
 use api\models\user\UserRelations;
 use api\models\user\UserVip;
+use common\helpers\RedisStore;
 use Yii;
 use api\exceptions\ApiException;
 use api\logic\UserLogic;
@@ -523,6 +524,17 @@ class UserController extends BaseController
     }
 
     /*
+     * 我的评论(wap)
+     */
+    public function actionCommentWap(){
+        $uid = $this->getParam('uid', 0);
+        $page_num = $this->getParam('page_num', 1);
+        $userdao = new UserDao();
+        $data = $userdao->commentListPC($uid,$page_num);
+        return $data;
+    }
+
+    /*
      * 我的关注
      */
     public function actionRelationsPc(){
@@ -610,6 +622,63 @@ class UserController extends BaseController
         $mobile = $this->getParam('mobile', "");//手机
         $userlogic = new UserLogic();
         $result = $userlogic->createSMScode($mobile_areacode.$mobile);
+        return $result;
+    }
+
+    /*
+     * 修改性别、昵称、手机号
+     */
+    public function actionModifyUserinfo(){
+        $uid = $this->getParam('uid', "");
+        $nickname = $this->getParam('nickname', "");
+        $gender   = $this->getParam('gender', "");
+        $mobile_areacode = $this->getParam('mobile_areacode', "");
+        $mobile   = $this->getParam('mobile', "");//手机
+        $flag     = $this->getParam('flag',"");//修改项
+        $code     = $this->getParam('code', "");
+
+        $param = [];
+        $userlogic = new UserLogic();
+        $row = 0;
+        $result = [];
+        $result['uid'] = $uid;
+        //短信验证码登录
+        if(!empty($flag)){
+            if($flag == 'mobile'){//修改手机
+                $redis = new RedisStore();
+                $key = 'SMScode'.$mobile_areacode.$mobile;
+                if($redis->get($key) && $redis->get($key)==$code){
+                    $param['uid'] = $uid;
+                    $param['mobile'] = $mobile;
+                    $param['mobile_areacode'] = $mobile_areacode;
+                    $row = $userlogic->modifyUserinfo($param);
+                }else{
+                    $row = -2;
+                }
+            }else if($flag == 'nickname'){//修改昵称或性别
+                $param['uid'] = $uid;
+                $param['nickname'] = $nickname;
+                $row = $userlogic->modifyUserinfo($param);
+            }else if($flag == 'gender'){//修改昵称或性别
+                $param['uid'] = $uid;
+                $param['gender'] = $gender;
+                $row = $userlogic->modifyUserinfo($param);
+            }
+            $result['aaa'] = $row;
+            if($row > 0){
+                $result['errno'] = 0;
+                $result['msg'] = '修改成功';
+            }else if($row == -2){
+                $result['errno'] = -1;
+                $result['msg'] = '短信验证码输入错误';
+            }else{
+                $result['errno'] = -1;
+                $result['msg'] = '修改失败';
+            }
+        }else{
+            $result['errno'] = -1;
+            $result['msg'] = '修改失败!';
+        }
         return $result;
     }
 }
