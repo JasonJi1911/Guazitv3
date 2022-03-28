@@ -7,19 +7,19 @@ use yii\helpers\Url;
 <input type="hidden" value="<?= $info['tvNum']?>" id="tvNum">
 <!--关键字搜索结果列表-->
 <div class="box04 haskeyword container">
-    <!--搜索结果-->
+    <!--搜索结果 , 'chapter_id' => $firstChap['chapter_id'], 'source_id' => $firstChap['source_id']-->
     <?php foreach ($info['list'] as $list): ?>
     <?php
     $firstChap = $list['chapters'][0];
     ?>
     <div class="SSbox" name="zt">
-        <a class="SSjgImg" href="<?= Url::to(['detail', 'video_id' => $firstChap['video_id'], 'chapter_id' => $firstChap['chapter_id'], 'source_id' => $firstChap['source_id']])?>">
+        <a class="SSjgImg" href="<?= Url::to(['detail', 'video_id' => $firstChap['video_id']])?>">
             <img class="i_background_errorimg" originalSrc="<?= $list['cover']?>" src="/images/newindex/default-cover.png" />
         </a>
         <div class="SSjg">
             <div class="SSjgName" name="zt">
                 <div class="SSjgTitle"><?= $list['channel_name']?></div>
-                <a href="<?= Url::to(['detail', 'video_id' => $firstChap['video_id'], 'chapter_id' => $firstChap['chapter_id'], 'source_id' => $firstChap['source_id']])?>">
+                <a href="<?= Url::to(['detail', 'video_id' => $firstChap['video_id']])?>">
                     <span><?= $list['video_name']?></span>
                 </a>
             </div>

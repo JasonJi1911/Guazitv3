@@ -850,8 +850,9 @@ class VideoController extends BaseController
     public function actionLastPlayinfo(){
         $uid = $this->getParam('uid', 0);
         $video_id = $this->getParam('video_id', 0);
+        $chapter_id = $this->getParam('chapter_id', '');
         $videologic = new VideoLogic();
-        $data = $videologic->lastPlayInfo($video_id,'',$uid);
+        $data = $videologic->lastPlayInfo($video_id,$chapter_id,$uid);
         if($data['lastPlayTime']){
             $hour = floor($data['lastPlayTime']/3600);
             $second = $data['lastPlayTime']%3600;//除去整小时之后剩余的时间

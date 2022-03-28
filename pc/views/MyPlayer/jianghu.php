@@ -886,6 +886,19 @@ function initialUrl($url)
             dp1.play();
         });
 
+        //添加播放记录
+        var seconds_flag = true;//执行添加播放记录标志
+        dp1.on('timeupdate',function(){//视频播放事件
+            if(seconds_flag){
+                seconds_flag = false;
+                //每隔10秒执行1次
+                setTimeout( function timer() {
+                    addwatchlog();//添加播放记录
+                    seconds_flag = true;
+                }, 10000 );
+            }
+        });
+
         //加载播放时间
         var watchflag = true;
         dp1.on('playing',function(){
@@ -893,7 +906,8 @@ function initialUrl($url)
                 watchflag = false;
                 var arrIndex = {};
                 arrIndex['video_id'] = '<?=$videos[0]['video_id']?>';
-                console.log("播放arrIndex"+arrIndex);
+                arrIndex['chapter_id'] = '<?=$play_chapter_id?>';
+                // console.log(arrIndex);
                 $.ajax({
                     url:'/video/last-playinfo',
                     data:arrIndex,
@@ -901,14 +915,16 @@ function initialUrl($url)
                     cache:false,
                     dataType:'json',
                     success:function(res) {
+                        // console.log(res)
                         if(res.errno==0){
                             var time = res.data.lastPlayTime;
-                            console.log("播放时长"+time);
-                            // dp1.notice('您上次播放到 '+res.data.playtime+' <a style="display: inline-block;color:  #03c8d4 ;cursor: pointer;text-decoration: none;z-index:111111;">继续观看</a>', 500000);
-                            var strtext = '<div id="last-play-time">您上次播放到 '+res.data.playtime+' <span onclick="keepwatch('+time+');">继续观看</span></div>';
-                            $("#last-play-time").remove();
-                            $("#player1").prepend(strtext);
-                            $('#last-play-time').show().delay(5000).fadeOut();
+                            if(time > 0){
+                                // dp1.notice('您上次播放到 '+res.data.playtime+' <a style="display: inline-block;color:  #03c8d4 ;cursor: pointer;text-decoration: none;z-index:111111;">继续观看</a>', 500000);
+                                var strtext = '<div id="last-play-time">您上次播放到 '+res.data.playtime+' <span onclick="keepwatch('+time+');">继续观看</span></div>';
+                                $("#last-play-time").remove();
+                                $("#player1").prepend(strtext);
+                                $('#last-play-time').show().delay(5000).fadeOut();
+                            }
                         }
                     },
                     error : function() {

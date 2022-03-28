@@ -1544,7 +1544,8 @@ class VideoController extends BaseController
     public function actionLastPlayinfo(){
         $uid = Yii::$app->user->id;
         $video_id = Yii::$app->request->get('video_id', '');
-        $result = Yii::$app->api->get('/video/last-playinfo',['uid'=>$uid,'video_id'=>$video_id]);
+        $chapter_id = Yii::$app->request->get('chapter_id', '');
+        $result = Yii::$app->api->get('/video/last-playinfo',['uid'=>$uid,'video_id'=>$video_id,'chapter_id'=>$chapter_id]);
         if($result){
             $errno = 0;
         }else{
