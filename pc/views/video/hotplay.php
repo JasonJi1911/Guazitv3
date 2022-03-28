@@ -40,7 +40,7 @@ $this->registerJs($js);
         <li id="v_navi0" class="act">全站榜</li>
         <?php if(!empty($channels)) :?>
             <?php foreach ($channels['list'] as $channel) :?>
-                <?php if($channel['channel_id'] != 0 && $channel['channel_id'] != '32' && $channel['channel_id'] != '39') :?>
+                <?php if($channel['channel_id'] != 0 && $channel['channel_id'] != '32' && $channel['channel_id'] != '33') :?>
                     <li  id="v_navi<?=$channel['channel_id']?>" >
                         <?= $channel['channel_name']?>
                     </li>
@@ -62,7 +62,7 @@ $this->registerJs($js);
                             $channel = $s_v['value'];
                         }
                     } ?>
-                    <? if($channel != '32' && $channel != '39') :?>
+                    <? if($channel != '32' && $channel != '33') :?>
                     <div class="RAN">
                         <div class="RAN-t">
                             <div class="RAN-name">

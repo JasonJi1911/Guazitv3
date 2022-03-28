@@ -231,7 +231,7 @@ $this->registerJs($js);
                                 $icon_img = "../images/Index/jilupian_2.png";
                                 $icon_img_c = "../images/Index/jilupian_2c.png";
                                 break;
-                            case 39:
+                            case 33:
                                 $icon_img = "../images/Index/tiyu.png";
                                 $icon_img_c = "../images/Index/tiyu_c.png";
                                 break;
@@ -475,7 +475,7 @@ $this->registerJs($js);
                                         <?php endif;?>
                                     <?php endforeach ?>
                                 <?php endif;?>
-                                <li style="margin-left:30px;"><a href="/video/channel?channel_id=2" class="font-color">更多 &gt;</a></li>
+                                <li style="margin-left:30px;"><a href="<?= Url::to(['list', 'channel_id' => $channel])?>" class="font-color">更多 &gt;</a></li>
                             </ul>
                         </div>
                     </li>
@@ -688,7 +688,7 @@ $this->registerJs($js);
                                         <?php endif;?>
                                     <?php endforeach ?>
                                 <?php endif;?>
-                                <li style="margin-left:30px;"><a href="/video/channel?channel_id=2" class="font-color">更多 &gt;</a></li>
+                                <li style="margin-left:30px;"><a href="<?= Url::to(['list', 'channel_id' => $channel])?>" class="font-color">更多 &gt;</a></li>
                             </ul>
                     </li>
                     <?php foreach ($labels['list'] as $key => $list): ?>

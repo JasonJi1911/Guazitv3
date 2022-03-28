@@ -844,4 +844,32 @@ class VideoController extends BaseController
         $data = $advertlogic->getThreadAdInfo($citycode);
         return $data;
     }
+    /*
+     * 加载上次播放时间
+     */
+    public function actionLastPlayinfo(){
+        $uid = $this->getParam('uid', 0);
+        $video_id = $this->getParam('video_id', 0);
+        $videologic = new VideoLogic();
+        $data = $videologic->lastPlayInfo($video_id,'',$uid);
+        if($data['lastPlayTime']){
+            $hour = floor($data['lastPlayTime']/3600);
+            $second = $data['lastPlayTime']%3600;//除去整小时之后剩余的时间
+            $minute = floor($second/60);
+            $second = $second%60;//除去整分钟之后剩余的时间
+            if($hour<10){
+                $data['playtime'] .= '0';
+            }
+            $data['playtime'] .= $hour.':';
+            if($minute<10){
+                $data['playtime'] .= '0';
+            }
+            $data['playtime'] .= $minute.':';
+            if($second<10){
+                $data['playtime'] .= '0';
+            }
+            $data['playtime'] .= $second;
+        }
+        return $data;
+    }
 }

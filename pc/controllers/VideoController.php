@@ -1538,4 +1538,35 @@ class VideoController extends BaseController
         return Tool::responseJson($data['errno'],'操作成功',$data['data']);
     }
 
+    /*
+     * 加载上次播放时间
+     */
+    public function actionLastPlayinfo(){
+        $uid = Yii::$app->user->id;
+        $video_id = Yii::$app->request->get('video_id', '');
+        $result = Yii::$app->api->get('/video/last-playinfo',['uid'=>$uid,'video_id'=>$video_id]);
+        if($result){
+            $errno = 0;
+        }else{
+            $errno = -1;
+        }
+        return Tool::responseJson($errno,'操作成功',$result);
+    }
+    /*
+     * 修改个人资料
+     */
+    public function actionModifyUserinfo(){
+        $uid = Yii::$app->user->id;
+
+        $mobile_areacode = Yii::$app->request->get('mobile_areacode', "");
+        $mobile   = Yii::$app->request->get('mobile', "");//手机
+        $flag     = Yii::$app->request->get('flag',"");//修改项
+        $flag_value = Yii::$app->request->get('flag_value',"");//修改值
+        $code     = Yii::$app->request->get('code', "");
+
+        $result = Yii::$app->api->get('/user/modify-userinfo',['uid'=>$uid,'flag'=>$flag,'flag_value'=>$flag_value,
+            'mobile_areacode'=>$mobile_areacode,'mobile'=>$mobile,'code'=>$code,]);
+
+        return TOOL::responseJson($result['errno'],'操作成功',$result);
+    }
 }

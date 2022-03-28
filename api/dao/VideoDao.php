@@ -1039,6 +1039,10 @@ class VideoDao extends BaseDao
             $videoInfo = $this->batchGetVideo($videoId, ['video_id', 'video_name', 'cover','category','flag','channel_id','year','type','is_finished'], true);
             $list = [];
             foreach ($data['list'] as $k => $info) {
+                if(!$videoInfo[$info['video_id']]){
+                    unset($info);
+                    continue;
+                }
                 $info['title']    = $videoInfo[$info['video_id']]['video_name'];
                 $info['cover']    = $videoInfo[$info['video_id']]['cover'];
                 $info['category'] = $videoInfo[$info['video_id']]['category'];
@@ -1056,7 +1060,7 @@ class VideoDao extends BaseDao
                 $info['chapter_title'] = '';
                 //判断是否为连续剧，加观看集数
                 if($videoInfo[$info['video_id']]['type']==2){
-                    $chapter_one = VideoChapter::findOne(['id'=>$info['chapter_id']])->toArray();
+                    $chapter_one = VideoChapter::find()->andWhere(['id'=>$info['chapter_id']])->asArray()->one();
                     $info['chapter_title'] = isset($chapter_one)? $chapter_one['title'] : '';
                 }
 
@@ -1186,6 +1190,10 @@ class VideoDao extends BaseDao
             $videoInfo = $this->batchGetVideo($videoId, ['video_id', 'video_name', 'cover', 'horizontal_cover',
                 'flag', 'tag','category','is_finished','created_at','total_views','type','year'], true);
             foreach ($data['list'] as $k => $info) {
+                if(!$videoInfo[$info['video_id']]){
+                    unset($info);
+                    continue;
+                }
                 //总评论数
                 $commentcount = VideoChapter::find()->andWhere(['video_id'=>$info['video_id']])
                     ->sum('total_comment');
@@ -1235,6 +1243,10 @@ class VideoDao extends BaseDao
             $videoInfo = $this->batchGetVideo($videoId, ['video_id', 'video_name', 'cover', 'horizontal_cover',
                 'flag', 'tag','category','is_finished','created_at','total_views','year','type'], true);
             foreach ($vlist as $k => $info) {
+                if(!$videoInfo[$info['video_id']]){
+                    unset($info);
+                    continue;
+                }
                 //总评论数
                 $commentcount = VideoChapter::find()->andWhere(['video_id'=>$info['video_id']])
                     ->sum('total_comment');
@@ -1274,6 +1286,10 @@ class VideoDao extends BaseDao
             $videoInfo = $this->batchGetVideo($videoId, ['video_id', 'video_name', 'cover', 'horizontal_cover',
                 'flag', 'tag','category','is_finished','created_at','total_views','type','year'], true);
             foreach ($data['list'] as $k => $info) {
+                if(!$videoInfo[$info['video_id']]){
+                    unset($info);
+                    continue;
+                }
                 //总评论数
                 $commentcount = VideoChapter::find()->andWhere(['video_id'=>$info['video_id']])
                     ->sum('total_comment');

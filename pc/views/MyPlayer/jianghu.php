@@ -591,6 +591,24 @@ function initialUrl($url)
     #player-load1-warn span{
         color:#FF556E
     }
+    #last-play-time{
+        color: #fff;
+        font-size: 14px;
+        border-radius: 2px;
+        padding: 7px 20px;
+        background: rgba(28, 28, 28, .9);
+        opacity: 0.8;
+        position: absolute;
+        z-index: 5;
+        bottom: 90px;
+        left: 20px;
+    }
+    #last-play-time span{
+        display: inline-block;
+        color:  #FF556E ;
+        cursor: pointer;
+        text-decoration: none;
+    }
 
     .icon-forward:hover svg path,.icon-rewind:hover svg path {
         fill: #FF556E;
@@ -787,10 +805,6 @@ function initialUrl($url)
             playbackSpeed: [0.5, 0.75, 1, 1.25, 1.5, 2, 2.5, 3, 5, 7.5, 10],
             video: e,
         });
-        var last_play_time = <?=$last_play_time?>;
-        if(last_play_time > 0) { //如果记录时间大于0，则设置视频播放后跳转至上次记录时间
-            dp1.seek(last_play_time);
-        }
 
         dp1.on('fullscreen', function () {
             $('#player1').addClass('dplayer-fullfilled');
@@ -871,6 +885,45 @@ function initialUrl($url)
         dp1.on('quality_end',function(){
             dp1.play();
         });
+
+        //加载播放时间
+        var watchflag = true;
+        dp1.on('playing',function(){
+            if(watchflag){
+                watchflag = false;
+                var arrIndex = {};
+                arrIndex['video_id'] = '<?=$videos[0]['video_id']?>';
+                console.log("播放arrIndex"+arrIndex);
+                $.ajax({
+                    url:'/video/last-playinfo',
+                    data:arrIndex,
+                    type:'get',
+                    cache:false,
+                    dataType:'json',
+                    success:function(res) {
+                        if(res.errno==0){
+                            var time = res.data.lastPlayTime;
+                            console.log("播放时长"+time);
+                            // dp1.notice('您上次播放到 '+res.data.playtime+' <a style="display: inline-block;color:  #03c8d4 ;cursor: pointer;text-decoration: none;z-index:111111;">继续观看</a>', 500000);
+                            var strtext = '<div id="last-play-time">您上次播放到 '+res.data.playtime+' <span onclick="keepwatch('+time+');">继续观看</span></div>';
+                            $("#last-play-time").remove();
+                            $("#player1").prepend(strtext);
+                            $('#last-play-time').show().delay(5000).fadeOut();
+                        }
+                    },
+                    error : function() {
+                        console.log("播放记忆时间加载失败");
+                    }
+                });
+            }
+        });
+    }
+    //继续观看
+    function keepwatch(last_play_time){
+        if(last_play_time > 0){
+            dp1.seek(last_play_time);
+            $('#last-play-time').hide();
+        }
     }
     //验证视频播放权限
     function sourceLimit(index,limit){

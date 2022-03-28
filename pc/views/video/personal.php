@@ -16,6 +16,46 @@ NewIndexStyleAsset::register($this);
         font-size:14px;
     }
     .watch-time{margin-top: 12px;}
+    .span-avatar{position: relative;}
+    .img-avatar{
+        width: 60px;
+        position: absolute;
+        top: -38px;
+    }
+    .hidd{display: none;}
+    .user-input{
+        height:50px;
+        width:100%;
+        border: 1px solid #DDDDDD;
+        padding-left: 10px;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+    input.user-input::-webkit-input-placeholder{color: #949494;font-weight: 500;}
+    input[type='radio'] {
+        position: relative;
+        cursor: pointer;
+        width: 15px;
+        height: 15px;
+        margin: 0 5px;
+        vertical-align: middle;
+        background: url(/images/Index/radio_no.png) no-repeat;
+        background-size: 15px;
+    }
+    input[type='radio']:checked::after {
+        position: absolute;
+        width: 15px;
+        height: 15px;
+        vertical-align: middle;
+        content: '';
+        color: #fff;
+        background: url(/images/Index/radio.png) no-repeat;
+        background-size: 15px;
+        border-radius: 2px;
+    }
+    .edit-width{
+        width: calc(100% - 320px);
+    }
 </style>
 <script>
 //首次加载
@@ -56,6 +96,11 @@ $(document).ready(function() {
         $('.c_safe').siblings().removeClass('act');
         $('.c_safe .J_per_tab_img_c').show().siblings().hide();
         $('.c_safe').siblings().find('.J_per_tab_img_c').hide().siblings().show();
+    }else if(tab=='user'){
+        $('.c_user').addClass('act');
+        $('.c_user').siblings().removeClass('act');
+        $('.c_user .J_per_tab_img_c').show().siblings().hide();
+        $('.c_user').siblings().find('.J_per_tab_img_c').hide().siblings().show();
     }else{//c_question
         $('.c_upload').addClass('act');
         $('.c_upload').siblings().removeClass('act');
@@ -68,7 +113,7 @@ $(document).ready(function() {
         <div class="per-title">
             <div class="per-title-name">
                 <img src="/images/Index/user_c.png"/>
-                <p>瓜子TV用户</p>
+                <p><?=$data['user']['nickname']?></p>
                 <p><a href="<?= Url::to(['/video/personal'])?>">个人主页></a></p>
             </div>
         </div>
@@ -86,6 +131,13 @@ $(document).ready(function() {
                     <img class="J_per_tab_img_c" src="/images/Index/bofangjilu_line_c.png" style="display: none;">
                 </div>
                 观看记录
+            </li>
+            <li class="c_user J_user">
+                <div class="per-img-icon">
+                    <img class="J_per_tab_img" src="/images/Index/jibenxinxi.png">
+                    <img class="J_per_tab_img_c" src="/images/Index/jibenxinxi_c.png" style="display: none;">
+                </div>
+                基本信息
             </li>
             <li class="c_safe J_safe">
                 <div class="per-img-icon">
@@ -371,6 +423,68 @@ $(document).ready(function() {
                     </div>-->
                 </div>
             </div>
+        </div>
+        <!--tab 基本信息-->
+        <div class="per-tab-box-new c_user J_user_auth" name="zt">
+            <!-- 基本信息列表页-->
+            <ul class="per-safe-box J_user_list act">
+                <li>
+                    <span class="per-safe-title-c">头像</span>
+                    <span class="per-safe-content span-avatar">
+                        <img class="img-avatar" src="<?=$data['user']['avatar']?>" onerror="this.src='/images/Index/user_c.png'" />
+                    </span>
+<!--                    <span class="per-safe-action J_per_edit_adavar">修改</span>-->
+                </li>
+                <li>
+                    <span class="per-safe-title-c">昵称</span>
+                    <span class="per-safe-content J_edit_hide J_is_text_user"><?=$data['user']['nickname']?></span>
+                    <span class="per-safe-action  J_edit_hide J_per_edit_user">修改</span>
+                    <span class="per-safe-content edit-width J_edit_show hidd">
+                        <input class="user-input" type="text" name="nickname" placeholder="请输入昵称" value="<?=$data['user']['nickname']?>" />
+                    </span>
+                    <span class="per-safe-action J_edit_show J_per_save_user hidd" data-value="nickname">保存</span>
+                    <span class="per-safe-action J_edit_show J_per_cancel_user hidd">取消</span>
+                </li>
+                <li>
+                    <?php
+                    if($data['user']['gender']=='1'){
+                        $gender = '女';
+                        $checked1 = 'checked';
+                    }else if($data['user']['gender']=='2'){
+                        $gender = '男';
+                        $checked2 = 'checked';
+                    }else if($data['user']['gender']=='3'){
+                        $gender = '保密';
+                        $checked3 = 'checked';
+                    }else{
+                        $gender = '未设置';
+                        $checked1 = '';
+                        $checked2 = '';
+                        $checked3 = '';
+                    }
+                    ?>
+                    <span class="per-safe-title-c">性别</span>
+                    <span class="per-safe-content J_edit_hide J_is_text_user"><?=$gender?></span>
+                    <span class="per-safe-action  J_edit_hide J_per_edit_user">修改</span>
+                    <span class="per-safe-content edit-width J_edit_show hidd">
+                        <label><input class="input-radio" type="radio" name="gender" value="2" <?=$checked2?> />男</label>
+                        <label><input class="input-radio" type="radio" name="gender" value="1" <?=$checked1?> />女</label>
+                        <label><input class="input-radio" type="radio" name="gender" value="3" <?=$checked3?> />保密</label>
+                    </span>
+                    <span class="per-safe-action J_edit_show J_per_save_user hidd" data-value="gender">保存</span>
+                    <span class="per-safe-action J_edit_show J_per_cancel_user hidd">取消</span>
+                </li>
+                <li>
+                    <span class="per-safe-title-c">介绍</span>
+                    <span class="per-safe-content J_edit_hide J_is_text_user"><?=(empty($data['user']['intro'])? '未设置':$data['user']['intro'])?></span>
+                    <span class="per-safe-action  J_edit_hide J_per_edit_user">修改</span>
+                    <span class="per-safe-content edit-width J_edit_show hidd">
+                        <input class="user-input" type="text" name="intro" placeholder="请输入个人简介" value="<?=$data['user']['intro']?>" />
+                    </span>
+                    <span class="per-safe-action J_edit_show J_per_save_user hidd" data-value="intro">保存</span>
+                    <span class="per-safe-action J_edit_show J_per_cancel_user hidd">取消</span>
+                </li>
+            </ul>
         </div>
         <!--tab 安全中心-->
         <div class="per-tab-box-new c_safe J_safe_auth" name="zt">
@@ -672,6 +786,9 @@ $(".J_per_tab>li").click(function() {
     $(".per-tab-w02-new .RANbox-list-xx-new>li:last-of-type>.RANbox-choose>.J_choose_check").removeClass("act").removeClass("act1");
     if($(this).hasClass("J_safe")){
         $('.c_safe>.J_safe_list').addClass('act').siblings().removeClass('act');
+    }
+    if($(this).hasClass("J_user")){
+        $('.c_user>.J_user_list').addClass('act').siblings().removeClass('act');
     }
 });
 /*-----------收藏（新）------------*/
@@ -1145,4 +1262,50 @@ function expendObject(o,n){
     }
     return o;
 }
+//修改个人信息
+$(".J_per_edit_user").click(function (){
+    $(this).parent().find(".J_edit_hide").hide();
+    $(this).parent().find(".J_edit_show").removeClass("hidd").attr("display","inline-block");
+});
+//取消
+$(".J_per_cancel_user").click(function (){
+    $(this).parent().find(".J_edit_hide").show();
+    $(this).parent().find(".J_edit_show").addClass("hidd");
+});
+//保存
+$(".J_per_save_user").click(function (){
+    var that = this;
+    var data = $(this).attr("data-value");
+    var str = '';
+    var arrIndex = {};
+    if(data == "gender"){
+        var gender = $("input[name='"+data+"']:checked").val();
+        arrIndex['flag_value'] = gender
+        if(gender == 1){
+            str = '女';
+        }else if(gender == 2){
+            str = '男';
+        }else if(gender == 3){
+            str = '保密';
+        }else{
+            str = '未设置';
+        }
+    }else{
+        str = $("input[name='"+data+"']").val();
+        arrIndex['flag_value'] = str;
+    }
+    arrIndex['flag'] = data;
+    $.get('/video/modify-userinfo',arrIndex,function(res){
+        if(res.errno==0){
+            // $("#pop-tip").text("修改成功");
+            // $("#pop-tip").show().delay(1500).fadeOut();
+            $(that).siblings('.J_is_text_user').text(str);
+        }else{
+            $("#pop-tip").text("修改失败");
+            $("#pop-tip").show().delay(1500).fadeOut();
+        }
+        $(that).parent().find(".J_edit_hide").show();
+        $(that).parent().find(".J_edit_show").addClass("hidd");
+    });
+});
 </script>

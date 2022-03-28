@@ -630,11 +630,10 @@ class UserController extends BaseController
      */
     public function actionModifyUserinfo(){
         $uid = $this->getParam('uid', "");
-        $nickname = $this->getParam('nickname', "");
-        $gender   = $this->getParam('gender', "");
         $mobile_areacode = $this->getParam('mobile_areacode', "");
         $mobile   = $this->getParam('mobile', "");//手机
         $flag     = $this->getParam('flag',"");//修改项
+        $flag_value     = $this->getParam('flag_value',"");//修改值
         $code     = $this->getParam('code', "");
 
         $param = [];
@@ -655,16 +654,11 @@ class UserController extends BaseController
                 }else{
                     $row = -2;
                 }
-            }else if($flag == 'nickname'){//修改昵称或性别
+            }else{//修改其他基本信息
                 $param['uid'] = $uid;
-                $param['nickname'] = $nickname;
-                $row = $userlogic->modifyUserinfo($param);
-            }else if($flag == 'gender'){//修改昵称或性别
-                $param['uid'] = $uid;
-                $param['gender'] = $gender;
+                $param[$flag] = $flag_value;
                 $row = $userlogic->modifyUserinfo($param);
             }
-            $result['aaa'] = $row;
             if($row > 0){
                 $result['errno'] = 0;
                 $result['msg'] = '修改成功';

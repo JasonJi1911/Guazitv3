@@ -556,7 +556,6 @@ class VideoLogic
                 'query' => Video::find()
 //                    ->joinWith('video_year')
                     ->select('id')
-//                    ->andWhere(['like', 'title', $keyword])
                     ->andWhere(['or',
                         ['like', 'title', $keyword],
                         ['like', 'summary', $keyword]])
@@ -644,6 +643,13 @@ class VideoLogic
         if (!$videoInfo) { //视频不存在
             throw new ApiException(ErrorCode::EC_VIDEO_NOT_EXIST);
         }
+        // 获取上次播放记录,如果传入的id为空，则获取上次播放历史续播
+        // 新加参数用户uid
+        $lastPlayLInfo = $this->lastPlayInfo($videoId, $chapterId,$uid);
+
+        if(!$chapterId){
+            $chapterId = $lastPlayLInfo['chapter_id'];
+        }
 
         // 获取影片剧集信息
         $order = 'asc';
@@ -701,9 +707,6 @@ class VideoLogic
             }
         }
 
-        // 获取上次播放记录,如果传入的id为空，则获取上次播放历史续播
-        // 新加参数用户uid
-        $lastPlayLInfo = $this->lastPlayInfo($videoId, $chapterId,$uid);
         // 根据章节id获取章节内容,没有此id默认获取第一章
         $chapterInfo = ArrayHelper::getValue($videos, $lastPlayLInfo['chapter_id'], reset($videos));
         if (empty($chapterInfo['resource_url'])) {
