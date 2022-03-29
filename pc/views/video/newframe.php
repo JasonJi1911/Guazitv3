@@ -449,6 +449,9 @@ if(empty($is_show_background) || $is_show_background != 1){
             <a class="logo-link" href="/video/index" title="瓜子TV">
                 <img src="/images/NewVideo/logo.png" alt="">
                 瓜子TV
+                <span id="head-city" class="navTopWZ" style="display: none;"></span>
+<!--                <script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>-->
+                <script src="/js/video/country.js"></script>
             </a>
         </li>
         <li class="navTopMenuBox">

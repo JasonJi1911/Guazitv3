@@ -1457,16 +1457,19 @@ $(document).ready(function() {
 
 /*广告分城市*/
 function advertByCity(page){
-	var req = new XMLHttpRequest();
-	req.open('GET', document.location, false);
-	req.send(null);
-	var cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
 	var citycode = '';
-	if(cf_ray && cf_ray.length>3){
-		citycode = cf_ray.substring(cf_ray.length-3);
+	if(COUNTRYINFO['city_code'] && COUNTRYINFO['city_code'] != "" && COUNTRYINFO['city_code']!="undefined"){
+		var citycode = COUNTRYINFO['city_code'];
+	}else{
+		var req = new XMLHttpRequest();
+		req.open('GET', document.location, false);
+		req.send(null);
+		var cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
+		if(cf_ray && cf_ray.length>3){
+			citycode = cf_ray.substring(cf_ray.length-3);
+		}
 	}
-	// citycode = 'NRT';
-	// console.log(citycode);
+	// console.log(COUNTRYINFO);
 	var arrIndex = {};
 	arrIndex['citycode'] = citycode;
 	arrIndex['page'] = page;
@@ -1492,7 +1495,7 @@ function advertByCity(page){
 					if(dataar.length>0){
 						for(var i=0;i<dataar.length;i++){
 							if(dataar[i].advert_id && dataar[i].advert_id!="underfined" && typeof (dataar[i].advert_id) != "undefined"){
-								$(".Movie-box").eq(i).before('<div class="play-ad-box video-add-column"><a href="'+dataar[i].ad_skip_url+'" target="_blank"> <img src="'+dataar[i].ad_image+'" alt=""></a></div>');
+								$(".J-ad-box").eq(i).before('<div class="play-ad-box video-add-column"><a href="'+dataar[i].ad_skip_url+'" target="_blank"> <img src="'+dataar[i].ad_image+'" alt=""></a></div>');
 							}
 						}
 					}

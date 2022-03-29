@@ -491,26 +491,25 @@ function removetab(tab){
                 $("#LSmenuBox_div").find("div.LSmenu-No").remove();
                 $("#LSmenuBox_div").prepend("<div class='LSmenu-No'>暂无历史</div>");
                 $("#LSmenuBox_div .LSmenuBottom").hide();
-                $(".alt-title").text("播放记录删除成功");
-                $("#alt05").show();
+                $("#pop-tip").text("观看记录删除成功");
+                $("#pop-tip").show().delay(1500).fadeOut();
             }else{
-                $(".alt-title").text("播放记录删除失败");
-                $("#alt05").show();
+                $("#pop-tip").text("观看记录删除失败");
+                $("#pop-tip").show().delay(1500).fadeOut();
             }
         });
     }else if(tab=='favorite'){//删除所有收藏/关注消息
-        arr ['type'] = 'all';
-        $.get('/video/remove-fmes', arr,function(res){
-            if(res.errno==0 && res.data>0){
-                $("#XX-tabBox-favorite").find("a.XX-a").remove();
-                $("#XX-tabBox-favorite").find("div.LSmenu-No").remove();
+        arr ['videoid'] = 'all';
+        $.get('/video/change-favorite', arr,function(res){
+            if(res.errno==0 && res.data.status==0){
+                $("#XX-tabBox-favorite").find("ul").remove();
                 $("#XX-tabBox-favorite").prepend("<div class='LSmenu-No'>暂无历史</div>");
                 $("#XX-tabBox-favorite .LSmenuBottom").hide();
-                $(".alt-title").text("关注&收藏删除成功");
-                $("#alt05").show();
+                $("#pop-tip").text("收藏删除成功");
+                $("#pop-tip").show().delay(1500).fadeOut();
             }else{
-                $(".alt-title").text("关注&收藏删除失败");
-                $("#alt05").show();
+                $("#pop-tip").text("收藏删除失败");
+                $("#pop-tip").show().delay(1500).fadeOut();
             }
         });
     }else if(tab=='message'){//删除消息

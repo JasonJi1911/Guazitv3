@@ -31,6 +31,9 @@ NewIndexStyleAsset::register($this);
         border-radius: 5px;
         font-size: 16px;
     }
+    .user-input.wor{
+        border: 1px solid #FF556E;
+    }
     input.user-input::-webkit-input-placeholder{color: #949494;font-weight: 500;}
     input[type='radio'] {
         position: relative;
@@ -1265,6 +1268,7 @@ function expendObject(o,n){
 //修改个人信息
 $(".J_per_edit_user").click(function (){
     $(this).parent().find(".J_edit_hide").hide();
+    $(this).parent().find('.user-input').removeClass('wor');
     $(this).parent().find(".J_edit_show").removeClass("hidd").attr("display","inline-block");
 });
 //取消
@@ -1292,14 +1296,27 @@ $(".J_per_save_user").click(function (){
         }
     }else{
         str = $("input[name='"+data+"']").val();
-        arrIndex['flag_value'] = str;
+        if(data=='nickname' && str.length > 8){
+            $(that).parent().find('.user-input').addClass('wor');
+            $("#pop-tip").text("昵称最多8个字");
+            $("#pop-tip").show().delay(1500).fadeOut();
+            return false;
+        }else if(data=='intro' && str.length > 50){
+            $(that).parent().find('.user-input').addClass('wor');
+            $("#pop-tip").text("介绍最多50字");
+            $("#pop-tip").show().delay(1500).fadeOut();
+            return false;
+        }else{
+            arrIndex['flag_value'] = str;
+        }
     }
     arrIndex['flag'] = data;
     $.get('/video/modify-userinfo',arrIndex,function(res){
         if(res.errno==0){
-            // $("#pop-tip").text("修改成功");
-            // $("#pop-tip").show().delay(1500).fadeOut();
             $(that).siblings('.J_is_text_user').text(str);
+            if(data=='nickname'){
+                $("#loggedin").find('.navTopLogonName').text(str);
+            }
         }else{
             $("#pop-tip").text("修改失败");
             $("#pop-tip").show().delay(1500).fadeOut();

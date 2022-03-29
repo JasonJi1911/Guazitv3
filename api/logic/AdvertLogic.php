@@ -158,8 +158,13 @@ class AdvertLogic
         $data = [];
         $data['cityId'] = $this->getCityId($city);
 
-        $result = Tool::httpPost($url,$data);
-        $result['data'] = json_decode($result['data'],true);
+        //需求城市id固定=2-悉尼
+        if($data['cityId']==2){
+            $result = Tool::httpPost($url,$data);
+            $result['data'] = json_decode($result['data'],true);
+        }else{
+            $result['data'] = [];
+        }
         return $result;
     }
     public function getCityId($city){

@@ -10,12 +10,23 @@ $(document).ready(function() {
     //缓存为空
     if (!countrylist || typeof (countrylist) == "undefined" || countrylist == 0 || countrylist == "undefined") {
         // console.log("returnCitySN="+JSON.stringify(returnCitySN));
-        if(returnCitySN.cid!=""){
+        var req = new XMLHttpRequest();
+        req.open('GET', document.location, false);
+        req.send(null);
+        var cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
+        var citycode = '';
+        if(cf_ray && cf_ray.length>3){
+            citycode = cf_ray.substring(cf_ray.length-3);
+        }
+        // if(returnCitySN.cid!=""){
             //获取国家
             var ar = {};
-            ar['country_code'] = returnCitySN.cid;
-            ar['country_name'] = returnCitySN.cname;
+            // ar['country_code'] = returnCitySN.cid;
+            // ar['country_name'] = returnCitySN.cname;
+            ar['citycode'] = citycode;
+            // console.log(ar);
             $.get('/video/get-country', ar, function (res) {
+                // console.log(res);
                 if (res.errno == 0 && res.data) {
                     COUNTRYINFO = res.data;
                     countrylist = JSON.stringify(res.data);
@@ -24,9 +35,9 @@ $(document).ready(function() {
                 }
                 showcountry();
             });
-        }else{
-            showcountry();
-        }
+        // }else{
+        //     showcountry();
+        // }
     } else {//直接从缓存读取
         COUNTRYINFO = JSON.parse(countrylist)
         showcountry();
@@ -34,21 +45,13 @@ $(document).ready(function() {
 });
 
 function showcountry(){
-    // console.log(JSON.stringify(COUNTRYINFO));
-    if(COUNTRYINFO['country_name'] != "" && COUNTRYINFO['country_name']!=0 && COUNTRYINFO['country_name']!="undefined"){
-        $("#head-city").text(COUNTRYINFO['country_name']);
-        $("#v_countryname").html(COUNTRYINFO['country_name']);
-        $("#v_countryimg").attr("src","/images/newindex/"+COUNTRYINFO['imgname']);
-    }else{
-        COUNTRYINFO['country_name'] = "全球";
-        COUNTRYINFO['imgname'] = "GLgq.png";
-        COUNTRYINFO['country_code'] = "GL";
-        $("#head-city").text("全球");
-        $("#v_countryname").html("全球");
-        $("#v_countryimg").attr("src","/images/newindex/GLgq.png");
+    if(COUNTRYINFO['city_name'] && COUNTRYINFO['city_name'] != "" && COUNTRYINFO['city_name']!="undefined"){
+        $("#head-city").text(COUNTRYINFO['city_name']);
+        $("#head-city").show();
+    }else if(COUNTRYINFO['city_code'] && COUNTRYINFO['city_code'] != "" && COUNTRYINFO['city_code']!="undefined"){
+        $("#head-city").text(COUNTRYINFO['city_code']);
+        $("#head-city").show();
     }
-    $("#head-city").show();
-    $("#v_countryname").parent().show();
 }
 
 //设置有效期的cookie,exdays为负数时即为删除cookie

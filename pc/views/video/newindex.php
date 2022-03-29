@@ -453,7 +453,7 @@ $this->registerJs($js);
             }
             ?><!-- 频道 + 排行榜 -->
             <?php if($channel <= 4 && $channel>=1) :?>
-                <ul class="Movie-box" name="zt"  id="section<?= $channel?>">
+                <ul class="Movie-box J-ad-box" name="zt"  id="section<?= $channel?>">
                     <li class="Title-02" style="display: flex;height:37px;">
                         <a class="Title-02-a" href="<?= Url::to(['list', 'channel_id' => $channel, 'tag' => $tag])?>"><?= $labels['title']?></a>
                         <div class="qy-mod-nav-link" style="display: flex;align-items: center;">
@@ -666,7 +666,7 @@ $this->registerJs($js);
                     <?php endforeach;?>
                 </ul>
             <?php else : ?><!-- 只有频道 -->
-                <ul class="Sports-box" name="zt"  id="section<?= $channel?>">
+                <ul class="Sports-box J-ad-box" name="zt"  id="section<?= $channel?>">
                     <li class="Title-01" style="display: flex;height:37px;">
                         <a class="Title-02-a" href="<?= Url::to(['list', 'channel_id' => $channel, 'tag' => $tag])?>"><?= $labels['title']?></a>
                         <div class="qy-mod-nav-link" style="display: flex;align-items: center;">

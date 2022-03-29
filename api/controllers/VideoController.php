@@ -571,8 +571,16 @@ class VideoController extends BaseController
     public function actionGetCountry(){
         $country_code = $this->getParam('country_code',"");
         $country_name = $this->getParam('country_name',"");
+        $citycode     = $this->getParam('citycode', "");
         $videoDao = new VideoDao();
-        $data = $videoDao->findCountryInfo($country_code);
+        $data = [];
+        //查城市
+        if(!empty($citycode)){
+            $data = $videoDao->findcity($citycode);
+        }else{
+            $data = $videoDao->findCountryInfo($country_code);
+        }
+
         if(!$data){
             if($country_name){
                 $data['country_name'] = $country_name;

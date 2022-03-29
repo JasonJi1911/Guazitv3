@@ -674,6 +674,9 @@ function initialUrl($url)
     .dplayer-full-in-icon{
         display: none !important;
     }
+    .dplayer .dplayer-controller .dplayer-icons .dplayer-setting .dplayer-setting-item.dplayer-setting-speed{
+        display: none;
+    }
 </style>
 <div id="load1-img">
     <img src="/images/video/load.gif" />
@@ -1075,16 +1078,7 @@ function initialUrl($url)
 </script>
 <script>
     $(document).ready(function () {
-        var req = new XMLHttpRequest();
-        req.open('GET', document.location, false);
-        req.send(null);
-        var cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
-        var citycode = '';
-        if(cf_ray && cf_ray.length>3){
-            citycode = cf_ray.substring(cf_ray.length-3);
-        }
-        // citycode = 'MEL';
-        // console.log(citycode);
+        var citycode = COUNTRYINFO['city_code'];
         var arrIndex = {};
         arrIndex['citycode'] = citycode;
         arrIndex['page'] = 'detail';

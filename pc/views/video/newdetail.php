@@ -306,10 +306,10 @@ else
         left:0;
     }
     .navTopMenuBox {
-        left: 160px;
+        left: 230px;
     }
     .navTopSearchBox-r {
-        left: 723px;
+        left: 773px;
     }
     .navTopBtnBox{
         right: 0;
@@ -325,10 +325,10 @@ else
             left:0;
         }
         .navTopMenuBox {
-            left: 160px;
+            left: 230px;
         }
         .navTopSearchBox-r {
-            left: 643px;
+            left: 693px;
         }
         .navTopBtnBox{
             right: 0;
@@ -345,10 +345,10 @@ else
             left:0;
         }
         .navTopMenuBox {
-            left: 160px;
+            left: 230px;
         }
         .navTopSearchBox-r {
-            left: 643px;
+            left: 693px;
         }
         .navTopBtnBox{
             right: 0;
@@ -356,7 +356,7 @@ else
     }
     @media screen and (max-width: 1400px){
         .navTopSearchBox-r {
-            left: 450px;
+            left: 550px;
         }
     }
     /*更小默认样式*/
@@ -369,10 +369,10 @@ else
             left:160px;
         }
         .navTopMenuBox {
-            left: 320px;
+            left: 400px;
         }
         .navTopSearchBox-r {
-            left: 450px;
+            left: 550px;
         }
         .navTopBtnBox{
             right: 160px;
@@ -1173,15 +1173,7 @@ else
         // refreshAds();
 
         //广告
-
-        var req = new XMLHttpRequest();
-        req.open('GET', document.location, false);
-        req.send(null);
-        var cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
-        var citycode = '';
-        if(cf_ray && cf_ray.length>3){
-            citycode = cf_ray.substring(cf_ray.length-3);
-        }
+        var citycode = COUNTRYINFO['city_code'];
         var arrIndex = {};
         arrIndex['citycode'] = citycode;
         $.ajax({

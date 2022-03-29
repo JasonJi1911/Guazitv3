@@ -902,7 +902,9 @@ class VideoController extends BaseController
     public function actionGetCountry(){
         $country_code = Yii::$app->request->get('country_code', "");
         $country_name = Yii::$app->request->get('country_name', "");
-        $result = Yii::$app->api->get('/video/get-country',['country_code' => $country_code, 'country_name' => $country_name]);
+        $citycode = Yii::$app->request->get('citycode', "");
+        $result = Yii::$app->api->get('/video/get-country',['country_code' => $country_code, 'country_name' => $country_name, 'citycode' => $citycode]);
+        $result['city_code'] = $citycode;
         return Tool::responseJson(0, '操作成功', $result);
     }
     /*
