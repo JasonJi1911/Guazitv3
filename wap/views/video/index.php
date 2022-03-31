@@ -226,6 +226,69 @@ header('X-Frame-Options:Deny');
         <?php endif;?>
     </ul>
 </div>
+<style>
+</style>
+<!--今日热点-->
+<div class="video-index-column mt15 today-hot-div">
+    <h3 class="video-index-title">今日热点</h3>
+    <dl class="video-list-box clearfix more-change-10">
+        <div class="row-div">
+            <a class="a-big" href="#">
+                <img class="img-big" src="/images/video/hot1.jpg">
+                <h5 class="video-item-name text-left" >nba90%阳性病例是奥克荣</h5>
+            </a>
+        </div>
+        <div class="row-div">
+            <a class="a-small" href="#" >
+                <img src="/images/video/hot-2.jpg" class="img-small">
+                <h5 class="video-item-name text-left" >攀登：可复制的领导力</h5>
+            </a>
+            <a class="a-small" href="#" >
+                <img src="/images/video/hot-2.jpg" class="img-small">
+                <h5 class="video-item-name text-left" >攀登：可复制的领导力</h5>
+            </a>
+        </div>
+        <div class="row-div">
+            <a class="a-small" href="#" >
+                <img src="/images/video/hot-2.jpg" class="img-small">
+                <h5 class="video-item-name text-left" >攀登：可复制的领导力</h5>
+            </a>
+            <a class="a-small" href="#" >
+                <img src="/images/video/hot-2.jpg" class="img-small">
+                <h5 class="video-item-name text-left" >攀登：可复制的领导力</h5>
+            </a>
+        </div>
+    </dl>
+</div>
+<!--新片预告-->
+<?php if($data['trailer']['trailer']):?>
+<div class="video-index-column mt15 trailer-div">
+    <h3 class="video-index-title">新片预告</h3>
+    <div class="trailer-swiper">
+        <img class="trailer-arrow trailer-left" src="/images/video/xleft.png" />
+        <img class="trailer-arrow trailer-right" src="/images/video/xright.png" />
+
+        <dl class="video-list-box clearfix more-change-10 mobile">
+            <?php foreach ($data['trailer']['trailer'] as $key=>$list): ?>
+                <?php if($key < 15) :?>
+                <dd>
+                    <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
+                        <div class="video-item-top">
+                            <img originalSrc="<?= $list['cover']?>" src="/images/default-cover.jpg">
+                            <div class="mark-box">
+                                <p class="mark"><?= $list['flag']?></p>
+                            </div>
+                        </div>
+                        <h5 class="video-item-name"><?= $list['video_name']?></h5>
+<!--                        <p class="video-item-play">--><?//= $list['play_times']?><!--</p>-->
+                    </a>
+                </dd>
+                <?php endif;?>
+            <?php endforeach ?>
+        </dl>
+    </div>
+</div>
+<?php endif;?>
 
 <?php if (!empty($data['label'])) :?>
     <?php foreach ($data['label'] as  $labels): ?>
@@ -238,7 +301,7 @@ header('X-Frame-Options:Deny');
                             <dd>
                                 <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
                                     <div class="video-item-top">
-                                        <img src="<?= $list['cover']?>" alt="">
+                                        <img originalSrc="<?= $list['cover']?>" src="/images/default-cover.jpg">
                                         <div class="mark-box">
                                             <p class="mark"><?= $list['flag']?></p>
                                         </div>
@@ -281,7 +344,7 @@ header('X-Frame-Options:Deny');
         <?php endif; ?>
     <?php endforeach;?>
 <?php endif; ?>
-<div class="addtohomescreen" style="position: fixed;bottom: 1px;left: 50%;transform: translateX(-50%);width: 75%;max-width: 75%;display: block;">
+<div class="addtohomescreen" style="position: fixed;bottom: 1rem;left: 50%;transform: translateX(-50%);width: 75%;max-width: 75%;display: block;">
     <img src="/images/video/addtohomescreen.png" alt="" style="width: 100%;">
   </div>
 <div class="video-index-notice">
@@ -304,7 +367,12 @@ header('X-Frame-Options:Deny');
     </ul>
     <p class="footer-bottom">Copyright&copy;优酷 youku.com 版权所有</p>
 </div>-->
-
+<!--底部导航-->
+<div class="bottom-navi">
+    <?php echo $this->render('/video/bottom',[
+        'tab' =>    'home'
+    ]);?>
+</div>
 <script src="/js/video/jquery.min.1.11.1.js"></script>
 <script src="/js/video/swiper.min.js"></script>
 <!--<script src="/js/video/video.js?v=1.2"></script>-->
@@ -312,6 +380,26 @@ header('X-Frame-Options:Deny');
 <script>
     //导航选中项处于中间位置
     $(function () {
+        var _trailer=0;
+        // var ddwidth = $(".trailer-div dl.mobile dd").width();
+        var ddwidth = ($(window).width()-60)/3;
+        var movelength = (ddwidth+16);
+        $(".trailer-left").click(function(){
+            if(_trailer != 0){
+                _trailer=_trailer-1;
+                $(".trailer-div dl.mobile").stop().animate({left:-_trailer*movelength},1000);
+            }
+        });
+
+        $(".trailer-right").click(function(){
+            var len=$(".trailer-div dl.mobile dd").length;
+            if(_trailer+3 < len){
+                _trailer=_trailer+1;
+                console.log("movelength="+movelength);
+                $(".trailer-div dl.mobile").stop().animate({left:-_trailer*(movelength)},1000);
+            }
+        });
+
         var index = $('#nav-channel').val();
 
         $(".video-top-nav li").eq(index).addClass("on").siblings().removeClass("on");

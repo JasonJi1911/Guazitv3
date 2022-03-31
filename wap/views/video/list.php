@@ -28,6 +28,7 @@ $(function(){
                 var data = s.data.list;
                 var content = refreshVideo(data);
                 $('.video-list-box').html(content); // 更新内容
+                imgdelayLoading();
                 // $('.refresh-video-num-all').html(s.data.total_count); //刷新影片数
                 $('.video-list-box').attr('data-pages', s.data.total_page);
                 $('.video-list-box').attr('data-page', 1);
@@ -57,6 +58,7 @@ $(function(){
                                 var data = res.data.list;
                                 var content = refreshVideo(data);
                                 $('.video-list-box').append(content); // 更新内容
+                                imgdelayLoading();
                                 $('.video-list-box').attr('data-pages',res.data.total_page);
                                 $('.video-list-box').attr('data-page',res.data.current_page);
                                 
@@ -79,7 +81,7 @@ $(function(){
                 content += "<dd>"+
                                 "<a href='detail?video_id="+data[i]['video_id']+"'>"+
                                     "<div class='video-item-top'>"+
-                                        "<img src='"+data[i]['cover']+"' alt=''>"+
+                                        "<img originalSrc='"+data[i]['cover']+"' src='/images/default-cover.jpg'>"+
                                         "<div class='mark-box'>"+
                                             "<p class='mark'>"+data[i]['flag']+"</p>"+
                                         "</div>"+
@@ -160,7 +162,7 @@ $this->registerJs($js);
             <dd>
                 <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
                     <div class="video-item-top">
-                        <img src="<?= $list['cover']?>" alt="">
+                        <img originalSrc="<?= $list['cover']?>" src="/images/default-cover.jpg">
                         <div class="mark-box">
                             <p class="mark"><?= $list['flag']?></p>
                         </div>

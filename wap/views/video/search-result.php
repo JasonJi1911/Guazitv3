@@ -49,7 +49,7 @@ $(function(){
                      content += "<dd>"+
                                      "<a href='detail?video_id="+data[i]['video_id']+"' class='clearfix'>"+
                                          "<div class='sresult-item-left fl'>"+
-                                             "<img src='"+data[i]['cover']+"' alt=''>"+
+                                             "<img originalSrc='"+data[i]['cover']+"' src='/images/default-cover.jpg'>"+
                                              "<div class='mark-box'>"+
                                                  "<p class='mark'>"+data[i]['flag']+"'</p>"+
                                              "</div>"+
@@ -67,6 +67,7 @@ $(function(){
                  }
                 
                  $('.video-search-result-list').html(content); // 更新内容
+                 imgdelayLoading();
                  $('.video-search-result-list').attr('data-pages',s.data.total_page);
                  $('.video-search-result-list').attr('data-page',1);
                  is_click = false;
@@ -143,7 +144,7 @@ $this->registerJs($js);
             <dd>
                 <a href="<?= Url::to(['/video/detail', 'video_id' => $list['video_id']])?>" class="clearfix">
                     <div class="sresult-item-left fl">
-                        <img src="<?= $list['cover']?>" alt="">
+                        <img originalSrc="<?= $list['cover']?>" src="/images/default-cover.jpg">
                         <div class="mark-box">
                             <p class="mark"><?= $list['flag']?></p>
                         </div>

@@ -42,6 +42,11 @@ class VideoController extends BaseController
         //请求频道、搜索信息
         $channels = Yii::$app->api->get('/video/channels');
 
+        //新片预告
+        $trailer = Yii::$app->api->get('/video/trailer', ['channel_id' => $channel_id]);
+        if($trailer){
+            $data['trailer'] = $trailer;
+        }
         if(!$data) {
             return $this->redirect('/site/error');
         }
@@ -159,6 +164,7 @@ class VideoController extends BaseController
      */
     public function actionDetail()
     {
+        $uid = Yii::$app->user->id;
         //获取影片系列、剧集、源信息
         $video_id = Yii::$app->request->get('video_id', 0);
         $chapter_id = Yii::$app->request->get('chapter_id', '');
@@ -178,7 +184,7 @@ class VideoController extends BaseController
         }
         //请求视频信息
         $info = Yii::$app->api->get('/video/info', ['video_id' => $video_id
-            , 'chapter_id' => $chapter_id, 'source_id' => $source_id, 'city'=> $city]);
+            , 'chapter_id' => $chapter_id, 'source_id' => $source_id, 'city'=> $city, 'uid'=> $uid]);
 
         if(!$info) {
             return $this->redirect('/site/error');
@@ -327,5 +333,319 @@ class VideoController extends BaseController
             $errno = -1;
         }
         return TOOL::responseJson($errno,"操作成功",$data);
+    }
+    /*
+     * 加载评论列表
+     */
+    public function actionCommentMore(){
+        $video_id = Yii::$app->request->get('video_id', 0);
+        $chapter_id = Yii::$app->request->get('chapter_id', 0);
+        $page_num = Yii::$app->request->get('page_num', 1);
+        $order = 'time';
+
+        $data = Yii::$app->api->get('/video/comment-more', ['video_id' => $video_id, 'chapter_id' => $chapter_id, 'page_num' => $page_num, 'order' => $order]);
+
+        return $this->renderPartial('commentmore', ['data' => $data]);
+    }
+    /*
+     * 提交评论 / 回复
+     */
+    public function actionSendComment(){
+        $uid = Yii::$app->user->id;
+        $video_id = Yii::$app->request->get('video_id', 0);
+        $chapter_id = Yii::$app->request->get('chapter_id', 0);
+        $content  = Yii::$app->request->get('content', "");
+        $pid  = Yii::$app->request->get('pid', 0);
+        $result = Yii::$app->api->get('/video/send-comment',['uid'=>$uid,'video_id'=>$video_id,'chapter_id'=>$chapter_id,
+            'content'=>$content,'pid'=>$pid]);
+        if($result){
+            $errno = 0;
+        }else{
+            $errno = -1;
+        }
+        return TOOL::responseJson($errno,"操作成功",$result);
+    }
+
+    /*
+     * 我的
+     */
+    public function actionPersonal(){
+        $pageTab = "personal";
+
+        $uid = Yii::$app->user->id;
+        //用户信息
+        $user = Yii::$app->api->get('/user/userinfo',['uid'=>$uid]);
+        $data = [];
+        $data['main_uid'] = $uid;
+        if($uid){
+//            $errno = 0;
+            $data['login_show'] = '';
+            $data['notlogin_show'] = 'display:none';
+            $data['user'] = $user['user'];
+            $data['vip'] = $user['vip'];
+            $data['isvip'] = $user['isvip'];
+        }else{
+//            $errno = -1;
+            $data['login_show'] = 'display:none';
+            $data['notlogin_show'] = '';
+            $data['user'] = [];
+            $data['vip'] = [];
+            $data['isvip'] = 0;
+        }
+        return $this->render('personal',[
+            'pageTab'       => $pageTab,
+            'data'      => $data,
+        ]);
+    }
+
+    /*
+     * 登录页
+     */
+    public function actionLogin(){
+        $pageTab = "login";
+        //国家
+        $feedback = Yii::$app->api->get('/video/feedbackinfo');
+        $countrys = [];
+        if(isset($feedback['country'])){
+            $countrys = $feedback['country'];
+        }
+        return $this->render('login',[
+            'pageTab'       => $pageTab,
+//            'data'      => $data,
+            'countrys'      => $countrys,
+        ]);
+    }
+
+    /*
+     * 发送验证码
+     */
+    public function actionSendCode(){
+        $mobile_areacode = Yii::$app->request->get('mobile_areacode', "");
+        $mobile = Yii::$app->request->get('mobile', "");
+        $result = Yii::$app->api->get('/user/send-code',['mobile'=>$mobile,'mobile_areacode'=>$mobile_areacode]);
+        if($result){
+            $errno = $result['errno'];
+            $msg = $result['msg'];
+        }else{
+            $errno = -1;
+            $msg = '发送失败';
+        }
+        return TOOL::responseJson($errno,$msg,$result);
+    }
+    /*
+     * 个人资料页
+     */
+    public function actionUser(){
+        $pageTab = "user";
+        $uid = Yii::$app->user->id;
+        //用户信息
+        $data = Yii::$app->api->get('/user/userinfo',['uid'=>$uid]);
+
+        return $this->render('user',[
+            'pageTab'       => $pageTab,
+            'data'      => $data,
+        ]);
+    }
+    /*
+     * 绑定手机页
+     */
+    public function actionBindMobile(){
+        $pageTab = "bindmobile";
+        $mtab = Yii::$app->request->get('mtab', "bind");
+
+        $data = [];
+        if($mtab=="modify"){
+            $data['title'] = "修改手机号";
+        }else{
+            $data['title'] = "绑定手机号";
+        }
+        //国家
+        $feedback = Yii::$app->api->get('/video/feedbackinfo');
+        if(isset($feedback['country'])){
+            $data['country'] = $feedback['country'];
+        }
+        return $this->render('bindmobile',[
+            'pageTab' => $pageTab,
+            'data'    => $data,
+        ]);
+    }
+    /*
+     * 修改个人资料
+     */
+    public function actionModifyUserinfo(){
+        $uid = Yii::$app->user->id;
+
+//        $nickname = Yii::$app->request->get('nickname', "");
+//        $gender   = Yii::$app->request->get('gender', "");
+        $mobile_areacode = Yii::$app->request->get('mobile_areacode', "");
+        $mobile   = Yii::$app->request->get('mobile', "");//手机
+        $flag     = Yii::$app->request->get('flag',"");//修改项
+        $flag_value = Yii::$app->request->get('flag_value',"");//修改值
+        $code     = Yii::$app->request->get('code', "");
+
+        $result = Yii::$app->api->get('/user/modify-userinfo',['uid'=>$uid,'flag'=>$flag,'flag_value'=>$flag_value,
+            'mobile_areacode'=>$mobile_areacode,'mobile'=>$mobile,'code'=>$code,]);
+
+        return TOOL::responseJson($result['errno'],'操作成功',$result);
+    }
+    /*
+     * 浏览记录页（播放记录）
+     */
+    public function actionWatchLog(){
+        $pageTab = "watchlog";
+        $uid = Yii::$app->user->id;
+
+        $data = Yii::$app->api->get('/video/watchlog-pc',['uid'=>$uid]);
+        return $this->render('watchlog',[
+            'pageTab' => $pageTab,
+            'data'    => $data,
+        ]);
+    }
+    /*
+     * 删除播放记录
+     */
+    public function actionRemoveWatchlog(){
+        $uid = Yii::$app->user->id;
+        $logId = Yii::$app->request->get('logid', "");//多个id,以逗号(,)拼接
+        $result = Yii::$app->api->get('/video/remove-watchlog',['uid'=>$uid,'logid'=>$logId]);
+        return TOOL::responseJson(0,"操作成功",$result);
+    }
+    /*
+     * 下拉翻页播放记录
+     */
+    public function actionWatchlogMore(){
+        $uid = Yii::$app->user->id;
+        $page_num = Yii::$app->request->get('page_num', 1);
+        $timetitle = Yii::$app->request->get('timetitle', "");
+        $tab = Yii::$app->request->get('tab', "");
+
+        $data = Yii::$app->api->get('/video/search-watchlog',['uid'=>$uid,'page_num'=>$page_num]);
+        return $this->renderPartial('watchlogmore', ['data' => $data,'timetitle'=>$timetitle,'tab'=>$tab]);
+    }
+    /*
+     * 我的评论页
+     */
+    public function actionMyComment(){
+        $pageTab = "mycomment";
+        $uid = Yii::$app->user->id;
+
+        $data = Yii::$app->api->get('/user/comment-wap',['uid'=>$uid,'page_num'=>1]);
+        return $this->render('mycomment',[
+            'pageTab' => $pageTab,
+            'data'    => $data,
+        ]);
+    }
+    /*
+     * 下拉翻页我的评论
+     */
+    public function actionMycommentMore(){
+        $uid = Yii::$app->user->id;
+        $page_num = Yii::$app->request->get('page_num', 1);
+        $data = Yii::$app->api->get('/user/comment-wap',['uid'=>$uid,'page_num'=>$page_num]);
+        return $this->renderPartial('mycommentmore', ['data' => $data]);
+    }
+    /*
+     * 我的收藏页
+     */
+    public function actionFavorite(){
+        $pageTab = "favorite";
+        $uid = Yii::$app->user->id;
+        $data = [];
+        $data = Yii::$app->api->get('/video/favorite-wap',['uid'=>$uid,'page_num'=>1]);
+        return $this->render('favorite',[
+            'pageTab' => $pageTab,
+            'data'    => $data,
+        ]);
+    }
+    /*
+     * 收藏 / 取消收藏
+     */
+    public function actionChangeFavorite(){
+        $uid = Yii::$app->user->id;
+        $videoid  = Yii::$app->request->get('videoid', "");
+        $result = Yii::$app->api->get('/video/change-favorite',['uid'=>$uid,'videoid'=>$videoid]);
+        if($result){
+            $errno = 0;
+        }else{
+            $errno = -1;
+        }
+        return TOOL::responseJson($errno,"操作成功",$result);
+    }
+    /*
+     * 下拉翻页我的收藏
+     */
+    public function actionFavoriteMore(){
+        $uid = Yii::$app->user->id;
+        $page_num = Yii::$app->request->get('page_num', 1);
+        $timetitle = Yii::$app->request->get('timetitle', "");
+        $tab = Yii::$app->request->get('tab', "");
+        //收藏
+        $data = Yii::$app->api->get('/video/favorite-wap',['uid'=>$uid,'page_num'=>$page_num]);
+        return $this->renderPartial('favoritemore', ['data' => $data,'timetitle'=>$timetitle,'tab'=>$tab]);
+    }
+    /*
+     * 商务合作页
+     */
+    public function actionCooperation(){
+        $pageTab = "cooperation";
+
+        $data = Yii::$app->api->get('/service/about');
+        return $this->render('cooperation',[
+            'pageTab' => $pageTab,
+            'data'    => $data,
+        ]);
+    }
+    /*
+     * 设置页
+     */
+    public function actionSet(){
+        $pageTab = "set";
+        $uid = Yii::$app->user->id;
+
+        $data = [];
+        //用户信息
+        if($uid){
+            $data['login_show'] = '';
+        }else {
+            $data['login_show'] = 'display:none';
+        }
+        return $this->render('set',[
+            'pageTab' => $pageTab,
+            'data'    => $data,
+        ]);
+    }
+    /*
+     * 关于我们
+     */
+    public function actionAboutus(){
+        $pageTab = "aboutus";
+
+        $data = Yii::$app->api->get('/service/about');
+        return $this->render('aboutus',[
+            'pageTab' => $pageTab,
+            'data'    => $data,
+        ]);
+    }
+    /*
+     * 软件许可及服务协议
+     */
+    public function actionAgreement(){
+        $pageTab = "agreement";
+        $data = Yii::$app->api->get('/service/about');
+        return $this->render('agreement',[
+            'pageTab' => $pageTab,
+            'data'    => $data,
+        ]);
+    }
+    /*
+     * 隐私政策
+     */
+    public function actionPrivacy(){
+        $pageTab = "privacy";
+        $data = Yii::$app->api->get('/service/about');
+        return $this->render('privacy',[
+            'pageTab' => $pageTab,
+            'data'    => $data,
+        ]);
     }
 }

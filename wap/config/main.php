@@ -34,9 +34,15 @@ return [
             'csrfParam' => '_csrf-mp',
             'cookieValidationKey' => 'IO_en1cN-nkqsobLLf6lm-j43dFxGdIa',
         ],
+//        'user' => [
+//            'identityClass' => 'common\models\User',
+//            'enableAutoLogin' => true,
+//            'identityCookie' => ['name' => '_identity-wap', 'httpOnly' => true],
+//        ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'wap\models\User',
             'enableAutoLogin' => true,
+            'authTimeout' => 3600*24,
             'identityCookie' => ['name' => '_identity-wap', 'httpOnly' => true],
         ],
         'session' => [

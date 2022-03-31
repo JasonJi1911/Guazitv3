@@ -214,3 +214,113 @@ input[type=search]::-webkit-search-cancel-button{ -webkit-appearance: none; }
 .video-title {text-align:center;line-height:0.9rem;color:#ffffff;font-size:0.35rem;width: 100%;height: 0.9rem;background-color: #FF556E;padding: 0px 50px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;position: relative;font-weight: 500}
 .video-box {width: 100%;height: 4.7rem;position: fixed;top: 0;left: 0;z-index: 99;}
 .video-detail-intro {margin-top: 4.9rem;}
+
+/*底部导航*/
+.bottom-navi{position: fixed;bottom: -0.05rem;z-index: 5;width:100%;height: 1rem;background-color: #FFFFFF;}
+.bottom-navi ul{display: grid;grid-template-columns: 1fr 1fr 1fr 1fr 1fr;grid-gap: 0.2rem;height: 1rem;text-align: center;}
+.bottom-navi ul li .bottom-imgdiv{height: 0.5rem;background-position: center;background-repeat: no-repeat;background-size:0.5rem 0.5rem;margin-top: 0.1rem;}
+.bottom-navi ul li .bottom-textdiv{font-size: 11px;font-weight: 400;color: #A9A9A9;margin-top: 0.1rem;}
+.bottom-navi ul li .bottom-img-index{background-image:url(/images/video/index.png) ;}
+.bottom-navi ul li .bottom-img-category{background-image:url(/images/video/category.png) ;}
+.bottom-navi ul li .bottom-img-news{position:absolute;top:-0.4rem;left:50%;margin-left: -0.5rem;width:1rem;height: 1rem;background-image:url(/images/video/news.png);background-position: center;background-repeat: no-repeat;background-size:0.9rem 0.9rem;}
+.bottom-navi ul li .bottom-img-service{background-image:url(/images/video/service.png) ;}
+.bottom-navi ul li .bottom-img-user{background-image:url(/images/video/user.png) ;}
+.bottom-navi ul li.act .bottom-textdiv{color:#FF556E;}
+.bottom-navi ul li.act .bottom-img-index{background-image:url(/images/video/index_r.png) ;}
+.bottom-navi ul li.act .bottom-img-category{background-image:url(/images/video/category_r.png) ;}
+.bottom-navi ul li.act .bottom-img-service{background-image:url(/images/video/service_r.png) ;}
+.bottom-navi ul li.act .bottom-img-user{background-image:url(/images/video/user_r.png) ;}
+
+/*新片预告*/
+.trailer-div dd{width: calc(((100% + 15px)/5 - 60px)/3);display: inline-block;float: none;border:none;margin: 20px 5px 0 7.5px;}
+.trailer-swiper{width: 100%;height: auto;margin: 0 auto;overflow: hidden;position: relative;}
+.trailer-arrow{display: block;width:auto;height:0.7rem;position: absolute;top:1.4rem;z-index: 1;}
+.trailer-left{left: 14px;}
+.trailer-right{right: 14px;}
+dl.mobile{position: relative;width: 500%;height: calc(2.8rem + 54px);}
+
+/*今日热点*/
+.today-hot-div dl .row-div{margin: 20px 7.5px 0;}
+.today-hot-div dl .row-div .a-big{display: block;}
+.today-hot-div dl .row-div .img-big{width: 100%;height:3.36rem;}
+.today-hot-div dl .row-div .a-small{display: inline-block;width:calc((100% - 15px)/2);}
+.today-hot-div dl .row-div .a-small:nth-of-type(2){margin-left: 11px;}
+.today-hot-div dl .row-div .img-small{width: 100%;height:1.82rem;}
+
+.text-left{text-align: left;}
+.text-center{text-align: center;}
+.text-right{text-align: right;}
+.h05{height:0.5rem;line-height: 0.5rem;}
+.h04{height:0.4rem;line-height: 0.4rem;}
+.h08{height:0.8rem;line-height: 0.8rem;}
+.h20{height: 20px;line-height: 20px;}
+.plr15{padding: 0 15px;}
+.mt5{margin-top:5px;}
+.ml5{margin-left:5px;}
+.ml10{margin-left:10px;}
+.color70{color: #707070;}
+.colorB2{color: #B2B2B2;}
+.color00{color: #000000;}
+.color91{color: #919191;}
+.fontW4{font-weight: 400;}
+.fontW7{font-weight: bold;}
+.font12{font-size: 12px;}
+.font14{font-size: 14px;}
+.font16{font-size: 16px;}
+.pop-tip{display: none;position: fixed;top: 50%;left: 50%;overflow: hidden;z-index: 9999;width: 150px;height: 40px;line-height: 40px;margin-top: -20px;margin-left: -75px;text-align: center;background: #FF556E;border-radius: 5px;font-size: 16px;font-weight: 500;color: #FFFFFF;}
+.display-flex{display: flex;align-items: center;flex-direction: row;}
+img.user-arrow{width: 6px;height:10px;}
+.div-box{width: 1rem;height: 1rem;}
+.position-r{position: relative;}
+.line{height: 1px;background: #EFEFEF;}
+/*播放页评论*/
+.comment-part{width: 100%;font-size: 14px;padding: 20px 15px 0 15px;}
+.comment-title{padding:10px 0;font-weight: bold;color: #1F1F23;}
+.comment-list ul{position: relative;margin-top: 10px;}
+.comment-list ul li.comment-avatar{position: absolute;left: 0;top: 0;}
+.comment-list ul li.comment-avatar img{display:block;width: 0.5rem;height: 0.5rem;z-index: 1;}
+.comment-detail{margin-top: 10px;margin-left: 0.6rem;text-align: left;border-bottom: 1px solid #F2F2F2;}
+.comment-detail .comment-reply{height:auto;background-color: #F3F4F8;border-radius: 7px;padding: 10px;}
+.comment-detail .reply-other{display: none;}
+.comment-other{display: none;}
+.comment-more{height:0.8rem;line-height:0.8rem;text-align: center;}
+
+.comment-bottom{position: fixed;bottom: -0.01rem;z-index: 5;width:100%;height: 1rem;line-height: 1rem;background-color: #FFFFFF;border-top: 1px solid #F2F2F2;}
+.comment-bottom .bottom-text{width: auto;font-size: 14px;margin-left: 18px;}
+.comment-bottom .bottom-img{display: inline-block;position: absolute;width: 14px;height:14px;top:50%;left: 0;margin-top: -7px;background-position: center;background-repeat: no-repeat;background-size: 14px;}
+.comment-bottom .bottom-left{float:left;width: 50%;position: relative;left:15px;}
+.comment-bottom .bottom-left .left-img{background-image: url(/images/video/comment.png);}
+.comment-bottom .bottom-left.act .left-img{background-image: url(/images/video/comment_r.png);}
+
+.comment-bottom .bottom-right{width:auto;float: right;position: relative;right: 15px;}
+.comment-bottom .bottom-right .right-img{background-image: url(/images/video/favorite.png);}
+.comment-bottom .bottom-right.act .right-img{background-image: url(/images/video/favorite_r.png);}
+.comment-bottom .bottom-right.act .bottom-text{color:#FF556E;}
+
+.comment-edit{display:none;}
+.comment-shadow{position: fixed;top: 0;left: 0;right: 0;bottom: 0;z-index: 999;background-color: #000000;opacity: 0.5;}
+.comment-description{position: fixed;z-index: 1000;background-color: #FFFFFF;opacity: 1;width: 100%;height:130px;left: 50%;top: 50%;-webkit-transform: translate(-50%,-50%);transform: translate(-50%,-50%);}
+.comment-description textarea{width: calc(100% - 20px);height: 80px;line-height: 20px;text-align: left;padding: 10px;box-sizing: border-box;background-color: #F3F4F8;margin: 10px;outline: none;resize: none;appearance: none;border: none;border-radius: 5px;-webkit-border-radius: 5px;-webkit-border: none;-webkit-appearance: none;}
+.comment-description input[type='button']{background-color: #FF556E;color:#FFFFFF;width:60px;height:20px;float:right;margin-right: 10px;font-size: 14px;border-radius: 5px;}
+
+.outer-div{width: 100%;height:1rem;line-height: 1rem;background-color: #FFFFFF;padding:0 15px;font-size: 16px;}
+.sms-title a.div-box img{position: absolute;width:10px;height:16px;top: 50%;left: 0;margin-top: -8px;}
+
+.outer-div.pink{background-color: #FF556E;color: #FFFFFF;}
+.sms-title a.white-arrow img{width: 30px;height: 30px;left: -10px;margin-top: -15px;}
+
+.title-width{width: calc(100% - 2rem);}
+
+.w-title{position: fixed;z-index: 10;top: 0;}
+.category span{display: inline-block;min-width:0.8rem;height:0.5rem;line-height: 0.5rem;font-size: 12px;border: 1px solid #F3F3F3;text-align: center;margin-bottom:5px;padding:0 5px;}
+.w-time{width:100%;margin-top: 5px;}
+.w-video{display: grid;grid-template-columns: 2rem auto;grid-gap: 10px;padding: 5px 0; }
+.w-video img{width:100%;}
+.w-video-detail{min-height: 2rem;}
+.w-bottom-time{position: absolute;bottom:0px;}
+.w-video-edit{margin-left: 25px; }
+.w-checkbox{display:none;position: absolute;width:20px;height:20px;left: -25px;top: 50%;margin-top:-10px;}
+.w-checkbox-bottom{margin-top:-5px;}
+input[type='checkbox'] {position: relative;cursor: pointer;width: 15px;height: 15px;background: url(/images/video/no_choice.png) no-repeat;background-size: 15px;}
+input[type='checkbox']:checked::after {position: absolute;display: inline-flex;justify-content: center;align-items: center;width: 15px;height: 15px;content: '';color: #fff;background: url(/images/video/choice.png) no-repeat;background-size: 15px;border-radius: 2px;}
+.no-video{position: absolute;top:50%;-moz-transform:translate(0, -50%);-webkit-transform:translate(0, -50%);transform:translate(0, -50%);}

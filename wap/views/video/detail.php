@@ -410,7 +410,7 @@ $this->registerJs($js);
                 <dd>
                     <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
                         <div class="video-item-top">
-                            <img src="<?= $list['cover']?>" alt="">
+                            <img originalSrc="<?= $list['cover']?>" src="/images/default-cover.jpg">
                             <div class="mark-box">
                                 <p class="mark"><?= $list['flag']?></p>
                             </div>
@@ -432,19 +432,97 @@ $this->registerJs($js);
 <!--        <span class="change">换一换</span>-->
 <!--    </a>-->
 <!--</div>-->
+<!-- 评论 -->
+<?php if(!$info['comments']['list']){
+    $comment_style = "display:none";
+}else{
+    $comment_style = "";
+}?>
+<div class="comment-part" id="comment-part">
+    <div class="comment-title">
+        <div style="<?=$comment_style?>">评论（<span><?= $info['info']['total_favors']?></span>）</div>
+    </div>
+    <?php if($info['comments']['list']):?>
+        <?php foreach ($info['comments']['list'] as $comment):?>
+            <div class="comment-list">
+                <ul>
+                    <li class="comment-avatar" >
+                        <?php if($comment['avatar']):?>
+                            <img src="<?=$comment['avatar']?>" />
+                        <?php else :?>
+                            <img src="/images/video/touxiang.png" />
+                        <?php endif;?>
+                    </li>
+                    <li class="comment-detail">
+                        <div class="h05 color70 fontW4 mt5" ><?=$comment['nickname']?></div>
+                        <div class="h05 color00 fontW4 mt5" ><?=$comment['content']?></div>
+                        <?php if($comment['reply_info']['list']):?>
+                            <div class="h05 color70 fontW4 comment-reply mt5" >
+                                <?php foreach ($comment['reply_info']['list'] as $key=>$reply):?>
+                                    <?php if($key==0):?>
+                                        <div class="h04"><?=$reply['nickname']?>：<?=$reply['content']?></div>
+                                        <?php if($comment['reply_info']['total_count']>1):?>
+                                            <div class="h04 reply-more">共<?=$comment['reply_info']['total_count']?>条评论></div>
+                                        <?php endif;?>
+                                    <?php else :?>
+                                        <div class="h04 reply-other"><?=$reply['nickname']?>：<?=$reply['content']?></div>
+                                    <?php endif;?>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php endif; ?>
+                        <div class="h05 color70 fontW4 mt5"><?=date("Y-m-d",$comment['created_at'])?></div>
+                    </li>
+                </ul>
+            </div>
+        <?php endforeach;?>
 
-<div class="video-index-notice">
-     <p style="padding-bottom: 5px;text-align: center;">
-        <a class="browser browser1" href="<?= Url::to(['map'])?>">网站地图</a>
-        <a class="browser browser1" href="<?=WAP_HOST_PATH?>">手机端</a>
-        <a class="browser " href="<?=PC_HOST_PATH?>">电脑端</a>
-         <!--        <a class="browser" href="--><?//= Url::to(['site/share-down'])?><!--">APP下载</a>-->
-     </p>
-    <p>版权声明：如果来函说明本网站提供内容本人或法人版权所有。本网站在核实后，有权先行撤除，以保护版权拥有者的权益。
-        &nbsp; 邮箱地址： <?=EMAIL_NAME?>
-    </p>
-    <p style="text-align:center;">Copyright 2020-2021 <?=PC_HOST_NAME?> Allrights Reserved.</p>
+        <?php $current_page = 0; $total_page = 0;
+        if($info['comments']['total_page']){
+            $current_page = $info['comments']['current_page'];
+            $total_page = $info['comments']['total_page'];
+        }?>
+        <div class="comment-more color70 fontW4" id="comment-more"
+            <?php if($total_page==0 || $current_page==$total_page):?>
+                style="display: none;"
+            <?php endif;?>  >
+            <input type="hidden" id="comment-current" value="<?=$current_page?>" />
+            <input type="hidden" id="comment-total" value="<?=$total_page?>" />
+            查看更多评论
+        </div>
+    <?php endif;?>
+    <div style="width:100%;height:1rem;"></div>
 </div>
+<div class="comment-bottom" >
+    <div class="bottom-left">
+        <span class="bottom-img left-img"></span>
+        <span class="bottom-text">参与评论</span>
+    </div>
+    <div class="bottom-right <?=$info['info']['fav_status']==1? 'act' : ''?>" id="id_favors" >
+        <span class="bottom-img right-img"></span>
+        <span class="bottom-text">收藏</span>
+    </div>
+</div>
+<div class="comment-shadow comment-edit"></div>
+<div class="comment-description comment-edit" style="">
+    <textarea placeholder="优质友善的评论会被更多人认同哦" style=""></textarea>
+    <input type="button" id="send_comment" value="发布" />
+</div>
+
+
+<!--<div class="video-index-notice">-->
+<!--     <p style="padding-bottom: 5px;text-align: center;">-->
+<!--        <a class="browser browser1" href="--><?//= Url::to(['map'])?><!--">网站地图</a>-->
+<!--        <a class="browser browser1" href="--><?//=WAP_HOST_PATH?><!--">手机端</a>-->
+<!--        <a class="browser " href="--><?//=PC_HOST_PATH?><!--">电脑端</a>-->
+
+         <!--        <a class="browser" href="--><?//= Url::to(['site/share-down'])?><!--">APP下载</a>-->
+
+<!--     </p>-->
+<!--    <p>版权声明：如果来函说明本网站提供内容本人或法人版权所有。本网站在核实后，有权先行撤除，以保护版权拥有者的权益。-->
+<!--        &nbsp; 邮箱地址： --><?//=EMAIL_NAME?>
+<!--    </p>-->
+<!--    <p style="text-align:center;">Copyright 2020-2021 --><?//=PC_HOST_NAME?><!-- Allrights Reserved.</p>-->
+<!--</div>-->
 <!--<div class="video-footer">
     <ul class="clearfix footer-top">
         <li><a href="#">关于我们</a></li>
@@ -542,11 +620,10 @@ $this->registerJs($js);
 <script src="/js/video/jquery.min.1.11.1.js"></script>
 <script src="/js/video/swiper.min.js"></script>
 <script src="/js/video/video.js?v=1.0"></script>
+<script src="/js/video/searchHistory.js"></script>
 <script>
-
     let timer = null;
     $(document).ready(function(){
-        
         refreshAds();
         // $('#btn-video-play').trigger("click");
     });
@@ -633,5 +710,123 @@ $this->registerJs($js);
                 document.getElementById('timer1').innerHTML = msg; 
             });
         }
+    }
+
+    //收藏
+    var favor_tab = true;
+    $("#id_favors").click(function(){
+        var uid = finduser();
+        if(!isNaN(uid) && uid!=""){
+            if(favor_tab){
+                favor_tab = false;
+                var that = this;
+                var arrindex = {};
+                arrindex['videoid'] = '<?=$info['info']['play_video_id']?>';
+                $.get('/video/change-favorite',arrindex,function(res){
+                    favor_tab = true;
+                    if(res.errno==0){
+                        $(that).toggleClass("act");
+                    }
+                });
+            }
+        }else{//登录
+            window.location.href = "/video/login";
+        }
+    });
+    //更多回复
+    $(".reply-more").click(function (){
+        $(this).hide();
+        $(this).siblings("div.reply-other").show();
+    });
+    //显示评论
+    $(".comment-bottom .bottom-left").click(function (){
+        var uid = finduser();
+        if(!isNaN(uid) && uid!=""){
+            $(".comment-edit").show();
+        }else{//登录
+            window.location.href = "/video/login";
+        }
+    });
+    //关闭评论
+    $(".comment-shadow").click(function (){
+        $(".comment-description textarea").val("");
+        $(".comment-edit").hide();
+    });
+    //查看更多评论
+    $("#comment-more").click(function(){
+        var page_num = ($("#comment-current").val()!="")?parseInt($("#comment-current").val()):0;
+        var total = ($("#comment-total").val()!="")?parseInt($("#comment-total").val()):0;
+        var ar = {};
+        ar['video_id'] = '<?=$info['info']['play_video_id']?>';
+        ar['chapter_id'] = '<?=$info['info']['play_chapter_id']?>';
+        ar['page_num'] = page_num;
+        $.get('/video/comment-more',ar,function(res){
+            $("#comment-more").before(res);//添加评论列表
+            if(total==0 || total == page_num+1){
+                $("#comment-more").hide();
+            }else{
+                $("#comment-more").show();
+                $("#comment-current").val(++page_num);
+            }
+        });
+    });
+    //发送
+    $("#send_comment").click(function(){
+        var ar = {};
+        ar['video_id'] = '<?=$info['info']['play_video_id']?>';
+        ar['chapter_id'] = '<?=$info['info']['play_chapter_id']?>';
+        ar['pid'] = 0;
+        var that = this;
+        var content = $(this).siblings('textarea').val();
+        ar['content'] = content;
+        if(content==""){
+            $("#pop-tip").text("请填写评论");
+            $("#pop-tip").show().delay(1500).fadeOut();
+            return false;
+        }else{
+            $.get('/video/send-comment',ar,function(res){
+                $(".comment-description textarea").val("");
+                $(".comment-edit").hide();
+                if(res.errno==0){
+                    if(res.data.display==1){
+                        commentNum();//本剧集评论数
+                        commentstr(res.data.data);
+                        $("#pop-tip").text("评论成功");
+                        $("#pop-tip").show().delay(1500).fadeOut();
+                        $(that).siblings('textarea').val("");
+                    }else{
+                        $("#pop-tip").text(res.data.message);
+                        $("#pop-tip").show().delay(1500).fadeOut();
+                    }
+                }
+            });
+        }
+    });
+    //评论数
+    function commentNum(){
+        var value = $(".comment-title").find('span').html();
+        var num = parseInt(value!='' ? value : 0 )+1;
+        $(".comment-title").find('span').html(num);
+    }
+    function commentstr(data){
+        var html = "";
+        var avatarstr = "";
+        if(data['avatar']!=""){
+            avatarstr = '<img src="'+data['avatar']+'" />';
+        }else{
+            avatarstr = '<img src="/images/video/touxiang.png" />';
+        }
+        html = '<div class="comment-list">'+
+                    '<ul>'+
+                        '<li class="comment-avatar" >'+avatarstr+'</li>'+
+                        '<li class="comment-detail">'+
+                            '<div class="h05 color70 fontW4 mt5" >'+data['nickname']+'</div>'+
+                            '<div class="h05 color00 fontW4 mt5" >'+data['content']+'</div>'+
+                            '<div class="h05 color70 fontW4 mt5">'+data['created_time']+'</div>'+
+                        '</li>'+
+                    '</ul>'+
+                '</div>';
+        $("#comment-part .comment-title").after(html);
+        $("#comment-part .comment-title div").show();
     }
 </script>
