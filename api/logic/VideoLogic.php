@@ -1401,7 +1401,8 @@ class VideoLogic
         // 初始数据
         $data = [
             'chapter_id' => $chapterId,
-            'lastPlayTime' => 0
+            'lastPlayTime' => 0,
+            'totaltime'
         ];
         if(empty($uid)){
             $uid = Yii::$app->user->id;
@@ -1415,7 +1416,7 @@ class VideoLogic
             ->one();
 
         if ($watchLog) {
-            $data = ['chapter_id' => $watchLog->chapter_id, 'lastPlayTime' => $watchLog->time];
+            $data = ['chapter_id' => $watchLog->chapter_id, 'lastPlayTime' => $watchLog->time, 'totaltime' => $watchLog->total_time];
         }
 
         return $data;

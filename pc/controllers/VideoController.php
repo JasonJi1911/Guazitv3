@@ -3,7 +3,7 @@ namespace pc\controllers;
 
 use api\helpers\ErrorCode;
 use common\models\BookChapter;
-use common\models\AdvertPosition;
+use common\models\advert\AdvertPosition;
 use common\models\UserAuth;
 use common\helpers\Tool;
 use common\models\WxSetting;
@@ -414,6 +414,84 @@ class VideoController extends BaseController
             'channel_id'    => $channel_id,
             'city'=> $city,
             'feedbackinfo'  => $feedbackinfo
+        ]);
+    }
+
+    public function actionDetailPart()
+    {
+        //获取影片系列、剧集、源信息
+        $video_id = Yii::$app->request->get('video_id', 0);
+        $chapter_id = Yii::$app->request->get('chapter_id', '');
+        $source_id = Yii::$app->request->get('source_id', '');
+        $citycode = Yii::$app->request->get('citycode', '');
+        $last_chapter_id = Yii::$app->request->get('last_chapter_id', '');//上一次播放chapter_id
+
+        $uid = Yii::$app->user->id;
+
+        //请求视频信息
+        $data = Yii::$app->api->get('/video/info-part', ['video_id' => $video_id, 'chapter_id' => $chapter_id, 'source_id' => $source_id,
+            'city'=> $citycode, 'uid'=>$uid, 'last_chapter_id'=>$last_chapter_id]);
+
+        if(!$data
+            || !isset($data['info'])
+            || !isset($data['info']['source'])) {
+            return $this->redirect('/site/error');
+        }
+
+        //请求热门搜索信息
+        $source_id = $data['info']['source_id'];
+        $sourceFilter = $data['info']['filter'];
+        $souceVideos = ArrayHelper::index($sourceFilter, 'resId')[$source_id]['data'];
+        if ($souceVideos) {
+            $data['info']['next_chapter'] = ArrayHelper::index($souceVideos, 'chapter_id')[$data['info']['play_chapter_id']]['next_chapter'];
+            $data['info']['last_chapter'] = ArrayHelper::index($souceVideos, 'chapter_id')[$data['info']['play_chapter_id']]['last_chapter'];
+        }
+
+        foreach ($data['advert'] as $key => $advert) {
+            if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_PLAY_BEFORE_PC) {
+                if(strpos($advert['ad_image'], '.mp4') !== false) {
+                    $ad_type = 'mp4';
+                    $ad_url = $advert['ad_image'];
+                    $ad_link = $advert['ad_skip_url'];
+                }else if(strpos($advert['ad_image'], '.m3u8') !== false) {
+                    $ad_type = 'mp4';
+                    $ad_url = $advert['ad_image'];
+                    $ad_link = $advert['ad_skip_url'];
+                }else{
+                    $ad_type = 'img';
+                    $ad_url = $advert['ad_image'];
+                    $ad_link = $advert['ad_skip_url'];
+                }
+            }
+        }
+        //计算播放时长百分比
+        $percent = '';
+        if($data['watchlog']){
+            $totalTime = $data['watchlog']['totaltime'];
+            $watchTime = $data['watchlog']['lastPlayTime'];
+            if($totalTime == 0 || $watchTime == 0){
+                $percent = '0%';
+            }else{
+                $percent = intval(intval($watchTime) / intval($totalTime)*100).'%';
+            }
+        }
+
+        return $this->renderPartial('/MyPlayer/jianghu2', [
+            'url'   => explode('v=',$data['info']['resource_url'])[1],
+            'ad_url' =>    $ad_url,
+            'ad_link'  =>   $ad_link,
+            'ad_type'  =>   $ad_type,
+            'videos'   =>  $data['info']['videos'],
+            'play_chapter_id' => $data['info']['play_chapter_id'],
+            'source_id'       => $data['info']['source_id'],
+            'source'          => $data['info']['source'],
+            'last_chapter'    => $data['info']['last_chapter'],
+            'next_chapter'    => $data['info']['next_chapter'],
+            'last_play_time'  => $data['info']['last_play_time'],
+            'last_chapter_id' => $last_chapter_id,
+            'percent' => $percent,
+            'video_name'=>$data['info']['video_name'],
+            'lastplayinfo'   => $data['watchlog']
         ]);
     }
 
@@ -1460,17 +1538,7 @@ class VideoController extends BaseController
         $page = Yii::$app->request->get('page', '');
         $chapterId = Yii::$app->request->get('chapterId', 0);
 
-//        $citycode = 'SYD';
-
         $data = [];
-        //查城市
-//        $citylist = Yii::$app->api->get('/video/city-info', ['citycode' => $citycode]);
-//
-//        if($citylist){
-//            $city = $citylist['city_name'];
-//        }else{
-//            $city = '';
-//        }
 
         //查广告
         $data = Yii::$app->api->get('/video/advert', ['page' => $page, 'city'=> '', 'citycode' => $citycode]);
@@ -1478,13 +1546,6 @@ class VideoController extends BaseController
 //            $data['advert'] = $advert['advert'];
 //        }
 
-        //查线路
-//        if($chapterId!=0){
-//            $sources = Yii::$app->api->get('/video/chapter-sources',['uid'=>$uid,'chapterId'=>$chapterId,]);
-//            if($sources){
-//                $data['sources'] = $sources;
-//            }
-//        }
         if($data){
             $errno = 0;
         }else{
@@ -1534,10 +1595,13 @@ class VideoController extends BaseController
     public function actionAdverty(){
         $uid = Yii::$app->user->id;
         $citycode = Yii::$app->request->get('citycode', '');//城市三字码
-
         $data = Yii::$app->api->get('/video/adverty', ['citycode' => $citycode]);
-
-        return Tool::responseJson($data['errno'],'操作成功',$data['data']);
+        if($data){
+            $errno = 0;
+        }else{
+            $errno = -1;
+        }
+        return Tool::responseJson($errno,'操作成功',$data);
     }
 
     /*

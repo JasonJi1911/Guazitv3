@@ -308,7 +308,7 @@ class SiteController extends BaseController
                     if(!$uid1){
                         $cookie = new \yii\web\Cookie();
                         $cookie -> name = 'uid';        //cookie的名称
-                        $cookie -> expire = time() + 3600*24;	   //存活的时间
+                        $cookie -> expire = time() + 3600*24*30;	   //存活的时间
                         $cookie -> httpOnly = false;		   //无法通过js读取cookie
                         $cookie -> value = $uid;   //cookie的值
                         $cookie -> secure = false; //不加密
@@ -337,7 +337,7 @@ class SiteController extends BaseController
         if(!$uid1){
             $cookie = new \yii\web\Cookie();
             $cookie -> name = 'uid';        //cookie的名称
-            $cookie -> expire = time() + 3600*24;	   //存活的时间
+            $cookie -> expire = time() + 3600*24*30;	   //存活的时间
             $cookie -> httpOnly = false;		   //无法通过js读取cookie
             $cookie -> value = $uid;   //cookie的值
             $cookie -> secure = false; //不加密

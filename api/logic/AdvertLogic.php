@@ -6,6 +6,8 @@ use api\dao\VideoDao;
 use api\exceptions\ApiException;
 use api\helpers\ErrorCode;
 use api\models\advert\AdvertPosition;
+use api\models\advert\AdvertYY;
+use api\models\advert\AdvertYYTitle;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
 use common\helpers\Tool;
@@ -145,6 +147,35 @@ class AdvertLogic
 
         $redis->releaseLock($lockKey);
         return true;
+    }
+
+    /*
+     * 数据库读取亿忆广告
+     */
+    public function getAdYY($citycode){
+        if(!$citycode){
+            return [];
+        }
+
+        $key = 'advert_yeeyi_'.$citycode;
+        $redis = new RedisStore();
+        if($data = $redis->get($key)){
+            $advert = json_decode($data, true);
+            return $advert;
+        }
+        $advert = [];
+        $videodao = new VideoDao();
+        $city = $videodao->findcity($citycode);
+        if($city){
+            $advert = AdvertYYTitle::find()->andWhere(['city_id'=>$city['id']])->asArray()->all();
+            if($advert){
+                foreach ($advert as &$t){
+                    $t['advert'] = AdvertYY::find()->andWhere(['yy_id'=>$t['id']])->asArray()->all();
+                }
+            }
+        }
+        $redis->setEx($key, json_encode($advert));
+        return $advert;
     }
 
     /*

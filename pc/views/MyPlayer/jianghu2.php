@@ -1080,72 +1080,18 @@ function initialUrl($url)
 </script>
 <script>
     $(document).ready(function () {
-        var citycode = COUNTRYINFO['city_code'];
-        var arrIndex = {};
-        arrIndex['citycode'] = citycode;
-        arrIndex['page'] = 'detail';
-        arrIndex['chapterId'] = '<?=$play_chapter_id?>';
-
-        var advert = {};
-        advert['ad_type'] = '';
-        advert['ad_url'] = '';
-        advert['ad_link'] = '';
-        $.ajax({
-            url:'/video/advert-info',
-            data:arrIndex,
-            type:'get',
-            cache:false,
-            dataType:'json',
-            timeout: 2000,
-            success:function(res) {
-                if(res.errno == 0){
-                    if(res.data.advert.playbefore.ad_image){
-                        advert['ad_url'] = res.data.advert.playbefore.ad_image;
-                        advert['ad_link'] = res.data.advert.playbefore.ad_skip_url;
-                        if(res.data.advert.playbefore.ad_image.indexOf('.mp4')>=0){
-                            advert['ad_type'] = 'mp4';
-                        }else if(res.data.advert.playbefore.ad_image.indexOf('.m3u8')>=0){
-                            advert['ad_type'] = 'mp4';
-                        }else{
-                            advert['ad_type'] = 'img';
-                        }
-                    }
-                    defaultAdvertInfo(advert);
-                    var ad = {};
-                    if(res.data.advert.videotop.ad_image){
-                        ad = res.data.advert.videotop;
-                        $("#videotop").html('<div class="play-box video-add-column video-detail-ad"><a href="'+ad.ad_skip_url+'" target="_blank"><img src="'+ad.ad_image+'" /></a></div>')
-                    }
-                    if(res.data.advert.videoright.ad_image){
-                        ad = res.data.advert.videoright;
-                        $("#videoright").html('<div class="video-right-ad-img"><a href="'+ad.ad_skip_url+'" target="_blank"><img src="'+ad.ad_image+'"></a></div>');
-                    }
-                    if(res.data.advert.videobottom.ad_image){
-                        ad = res.data.advert.videobottom;
-                        $("#videobottom").html('<div class="play-box video-add-column video-detail-ad"><a href="'+ad.ad_skip_url+'" target="_blank" class="video-bottom-add"><img src="'+ad.ad_image+'"></a></div>');
-                    }
-                }else{
-                    defaultAdvertInfo(advert);
-                }
-            },
-            error : function() {
-                defaultAdvertInfo(advert);
-            },
-            complete:function(XHR,TextStatus){
-                if(TextStatus=='timeout'){ //超时执行的程序
-                    console.log("请求超时！");
-                }
-            }
-        });
-    });
-    function defaultAdvertInfo(advert){
+        //加载视频线路
         var qualitystr = '';
         <?php
         $qstr = '';
+        $last_chapter_title = '';
         foreach ($videos as $k => $val){
             if($val['chapter_id'] == $play_chapter_id){
                 $chapter = $val;
                 $src_array = $val['resource_url'];
+            }
+            if($val['chapter_id'] == $last_chapter_id){
+                $last_chapter_title = is_numeric($val['title']) ? ('第'.$val['title'].'集') : $val['title'];
             }
         }
         foreach ($source as $key => $src) {
@@ -1158,10 +1104,17 @@ function initialUrl($url)
         }
         ?>
         qualitystr = "["+"<?=$qstr?>"+"]";
-        advertinfo(advert,qualitystr);
-    }
-    function advertinfo(advert,qualitystr){
-
+        advertinfo(qualitystr);
+        //加载播放记录
+        var watchstr = '<li data-video-id="<?=$videos[0]['video_id']?>"><a href="/video/detail?video_id=<?=$videos[0]['video_id']?>">'+
+                        '<div><?=$video_name?>&nbsp;&nbsp;<?=$last_chapter_title?></div>'+
+                        '<div>观看至<?=$percent?></div>'+
+                        '<div><span>0秒前</span></div>'+
+                        '</a></li>';
+        $('#LSmenuBox_div ul.LSmenu li[data-video-id=<?=$videos[0]['video_id']?>]').remove();
+        $('#LSmenuBox_div ul.LSmenu').prepend(watchstr);
+    });
+    function advertinfo(qualitystr){
         //视频 player1
         <?php $default_qua = 0;?>
         var ini_video = {
@@ -1171,7 +1124,7 @@ function initialUrl($url)
             defaultPlayLimit:'<?php echo $source[$default_qua]['play_limit'];?>'
         };
         initialPlayer(ini_video);
-        dp1.pause();
+        // dp1.pause();
 
         //广告 player_ad
         var dp = new DPlayer({
@@ -1191,9 +1144,9 @@ function initialUrl($url)
             },
             bbslist: [
                 {
-                    "link": advert['ad_link'],
-                    "pic": (advert['ad_type'] == 'img' ? advert['ad_url'] : ''),
-                    "video": (advert['ad_type'] == 'mp4' ? advert['ad_url'] : '')
+                    "link": '<?=$ad_link?>',
+                    "pic": '<?=$ad_type == 'img' ? $ad_url : ''?>',
+                    "video": '<?=$ad_type == 'mp4' ? $ad_url : ''?>'
                 },
             ],
         });
@@ -1210,7 +1163,8 @@ function initialUrl($url)
             dp.fullScreen.cancel();
         });
 
-        if(advert['ad_type']=='img'){
+        var ad_type = '<?=$ad_type?>';
+        if(ad_type=='img'){
             var bb1 = dp.options.bbslist[0];
             var l = bb1.link;
             console.log("image: "+bb1.pic);
@@ -1247,6 +1201,7 @@ function initialUrl($url)
                         dp.destroy();
                         $("#player_ad").hide();
                         $("#player1").show();
+                        IsShow(self);
                         dp1.play();
 <!--                        --><?php //$default_qua = 0;?>
 //                        $('#load1-img').remove();
@@ -1260,7 +1215,7 @@ function initialUrl($url)
                     }
                 }, 1000);
             }, 1);
-        }else if(advert['ad_type']=='mp4'){
+        }else if(ad_type=='mp4'){
             var adslists = dp.options.bbslist;
             console.log(adslists)
             var bb1 = adslists[0];
@@ -1281,6 +1236,7 @@ function initialUrl($url)
                     $("#player_ad").hide();
                     dp.destroy();
                     $("#player1").show();
+                    // IsShow(self)
                     dp1.play();
                 }
             },3000);
@@ -1303,8 +1259,7 @@ function initialUrl($url)
                 dp.play();
             });
             dp.on('timeupdate', function () {
-                if(document.getElementById('time_ad'))
-                    document.getElementById('time_ad').innerText = Math.floor(dp.video.duration - dp.video.currentTime);
+                document.getElementById('time_ad').innerText = Math.floor(dp.video.duration - dp.video.currentTime);
             });
             // dp.play();
             $('.dplayer-video-wrap').trigger('click');
@@ -1320,6 +1275,7 @@ function initialUrl($url)
                 dp.fullScreen.cancel();
                 $("#player_ad").hide();
                 $("#player1").show();
+                IsShow(self);
                 dp1.play();
 <!--                --><?php //$default_qua = 0;?>
 //                $('#load1-img').remove();
@@ -1331,11 +1287,12 @@ function initialUrl($url)
 //                };
 //                initialPlayer(ini_video);
             });
-        }else if(advert['ad_type']==''){
+        }else if(ad_type==''){
             dp.destroy();
             $('#load1-img').remove();
             $("#player_ad").hide();
             $("#player1").show();
+            IsShow(self);
             dp1.play();
 <!--            --><?php //$default_qua = 0;?>
 //            $('#load1-img').remove();
@@ -1347,6 +1304,15 @@ function initialUrl($url)
 //            };
 //            initialPlayer(ini_video);
         }
+    }
+    function IsShow(_self){
+        var int=_self.setInterval(function(){
+            if($("#player1").is(":visible"))
+            {
+                $("#player1 .dplayer-play-icon").trigger("click");
+                clearInterval(int);
+            }
+        },100);
     }
 </script>
 <script>

@@ -1459,14 +1459,25 @@ $(document).ready(function() {
 function advertByCity(page){
 	var citycode = '';
 	if(COUNTRYINFO['city_code'] && COUNTRYINFO['city_code'] != "" && COUNTRYINFO['city_code']!="undefined"){
-		var citycode = COUNTRYINFO['city_code'];
+		citycode = COUNTRYINFO['city_code'];
 	}else{
 		var req = new XMLHttpRequest();
-		req.open('GET', document.location, false);
+		req.open('GET', '../../images/NewVideo/logo.png', false);
 		req.send(null);
 		var cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
-		if(cf_ray && cf_ray.length>3){
+		var cf_cache_status = req.getResponseHeader('cf-cache-status');//指定cf-cache-status的值
+		if(cf_cache_status == 'HIT'){
 			citycode = cf_ray.substring(cf_ray.length-3);
+		}else{
+			req.open('GET', '../../images/Index/fenlei.png', false);
+			req.send(null);
+			cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
+			cf_cache_status = req.getResponseHeader('cf-cache-status');//指定cf-cache-status的值
+			if(cf_cache_status == 'HIT'){
+				citycode = cf_ray.substring(cf_ray.length-3);
+			}else{
+				citycode = 'MEL'//墨尔本
+			}
 		}
 	}
 	// console.log(COUNTRYINFO);

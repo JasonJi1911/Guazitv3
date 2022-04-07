@@ -1148,7 +1148,7 @@ class VideoDao extends BaseDao
         } else {
             //看过修改
             $videoLog->oldAttributes = $videoLog;
-            $param['time'] = $watchTime ? $watchTime : $videoLog->time;
+            $param['time'] = ($watchTime>=0) ? $watchTime : $videoLog->time;
             $param['total_time'] = $totalTime ? $totalTime : $videoLog->total_time;
             $param['chapter_id'] = $chapterId;
             $param['updated_at'] = time();
@@ -1469,6 +1469,13 @@ class VideoDao extends BaseDao
         if(!$citycode){
             return [];
         }
+
+        $key = 'city_bycode3'.$citycode;
+        $redis = new RedisStore();
+        if($data = $redis->get($key)){
+            $city = json_decode($data, true);
+            return $city;
+        }
         $city = City::find()->andWhere(['city_code'=>$citycode])->asArray()->one();
         if($city){
             $country = VideoFeedcountry::findOne(['id'=>$city['country_id']]);
@@ -1477,6 +1484,7 @@ class VideoDao extends BaseDao
                 $city['country_name'] = $country['country_name'];
             }
         }
+        $redis->setEx($key, json_encode($city));
         return $city;
     }
 

@@ -151,8 +151,12 @@ class VideoController extends BaseController
 
         $citycode = $this->getParam('citycode', "");
         $videodao = new VideoDao();
-        $citys = $videodao->findcity($citycode);
-        $city = $citys['city_name'];
+        $citylist = $videodao->findcity($citycode);
+        if($citylist){
+            $city = $citylist['city_name'];
+        }else{
+            $city = '';
+        }
         // 获取广告
         $advertLogic = new AdvertLogic();
         //        $advert = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX);
@@ -348,6 +352,37 @@ class VideoController extends BaseController
         $videoLogic = new VideoLogic();
         // return $videoLogic->playInfo($videoId, $chapterId, $sourceId);
         return $videoLogic->playInfo($videoId, $chapterId, $sourceId, $city, $uid);
+    }
+
+
+    public function actionInfoPart()
+    {
+        $videoId   = $this->getParamOrFail('video_id');
+        $chapterId = $this->getParam('chapter_id');
+        $sourceId  = $this->getParam('source_id');
+
+        $city = $this->getParam('city');//城市三字码
+        $uid = $this->getParam('uid');
+        $last_chapter_id = $this->getParam('last_chapter_id');
+
+        // 不传入id则设置为空
+        $chapterId = $chapterId ? $chapterId : '';
+        //加载城市
+        $videodao = new VideoDao();
+        if(!empty($city)){
+            $citylist = $videodao->findcity($city);
+            if($citylist){
+                $city = $citylist['city_name'];
+            }else{
+                $city = '';
+            }
+        }
+        //jianghu2信息
+        $videoLogic = new VideoLogic();
+        $data = $videoLogic->playInfo($videoId, $chapterId, $sourceId, $city, $uid);
+        //播放记录
+        $data['watchlog'] = $videoLogic->lastPlayInfo($videoId,$last_chapter_id,$uid);
+        return $data;
     }
 
     /**
@@ -849,7 +884,7 @@ class VideoController extends BaseController
     public function actionAdverty(){
         $citycode = $this->getParam('citycode', 0);
         $advertlogic = new AdvertLogic();
-        $data = $advertlogic->getThreadAdInfo($citycode);
+        $data = $advertlogic->getAdYY($citycode);
         return $data;
     }
     /*

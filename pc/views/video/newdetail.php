@@ -397,8 +397,13 @@ else
     <div>
         <div class="play-video-container">
             <div class="play-video-left-container">
+                <link rel="stylesheet" href="/MyPlayer/css/base.css">
+                <link rel="stylesheet" href="/MyPlayer/css/DPlayer.min.css?v=3">
+                <script src="/MyPlayer/js/DPlayer.min-1.7.js?v=7" type="text/javascript" charset="utf-8"></script>
+                <script src="/MyPlayer/js/jquery-1.11.0.js" type="text/javascript" charset="utf-8"></script>
+                <script src="/MyPlayer/js/hls.min.js?v=2" type="text/javascript" charset="utf-8"></script>
                 <!--播放器位置-->
-                <div class="play">
+                <div class="play" id="jianghu2">
                     <?php foreach ($data['advert'] as $key => $advert) : ?>
                         <?php if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_PLAY_BEFORE_PC) :?>
                             <?php if(strpos($advert['ad_image'], '.mp4') !== false) {
@@ -565,7 +570,7 @@ else
                                                         <ul class="qy-episode-num tabShow<?=$key?> <?= (($i+1) == $ontab)? 'dn': 'nn'?>">
                                                             <?php foreach ($source['data'] as $index => $value) : ?>
                                                                 <?php if($index>=$i*30 && $index < ($i*30+30)){?>
-                                                                    <li class="select-item switch-next-li switch-next <?= $data['info']['play_chapter_id'] == $value['chapter_id']
+                                                                    <li class="select-item switch-next-li switch-next J_switch_next <?= $data['info']['play_chapter_id'] == $value['chapter_id']
                                                                     && ((empty($source_id) && $key == 0) || ($source['resId'] == $source_id))? 'selected' : ''?>"
                                                                         data-video-id="<?= $value['video_id']?>"
                                                                         data-chapter-id="<?= $value['chapter_id']?>"
@@ -605,7 +610,7 @@ else
                                                     <?= (empty($source_id) && $key == 0) || ($source['resId'] == $source_id) ? 'dn' : 'nn'?>"
                                                  id='srctab-<?=$source['resId']?>'>
                                                 <?php foreach ($source['data'] as $value) : ?>
-                                                    <li class="play-list-item switch-next-li switch-next <?= $data['info']['play_chapter_id'] == $value['chapter_id']
+                                                    <li class="play-list-item switch-next-li switch-next J_switch_next <?= $data['info']['play_chapter_id'] == $value['chapter_id']
                                                     && ((empty($source_id) && $key == 0) || ($source['resId'] == $source_id))? 'selected' : ''?>"
                                                         data-video-id="<?= $value['video_id']?>"
                                                         data-chapter-id="<?= $value['chapter_id']?>"
@@ -657,10 +662,13 @@ else
                                                                         <?= (empty($source_id) && $key == 0) || ($source['resId'] == $source_id) ? 'dn' : 'nn'?>"
                                                                      id='srctab-<?=$source['resId']?>'>
                                                                     <?php foreach ($source['data'] as $value) : ?>
-                                                                        <a href="<?= Url::to(['video/detail', 'video_id'=>$value['video_id'], 'chapter_id'=>$value['chapter_id']])?>">
-                                                                            <li class="play-list-item-new <?= $data['info']['play_chapter_id'] == $value['chapter_id']
-                                                                            && ((empty($source_id) && $key == 0) || ($source['resId'] == $source_id))? 'selected' : ''?>"><?= $value['title']?></li>
-                                                                        </a>
+<!--                                                                        <a href="--><?//= Url::to(['video/detail', 'video_id'=>$value['video_id'], 'chapter_id'=>$value['chapter_id']])?><!--">-->
+                                                                            <li class="play-list-item-new J_switch_next <?= $data['info']['play_chapter_id'] == $value['chapter_id']
+                                                                            && ((empty($source_id) && $key == 0) || ($source['resId'] == $source_id))? 'selected' : ''?>"
+                                                                                data-video-id="<?= $value['video_id']?>"
+                                                                                data-chapter-id="<?= $value['chapter_id']?>"
+                                                                                id="chap-<?=$source['resId']?>-<?=$value['chapter_id']?>"><?= $value['title']?></li>
+<!--                                                                        </a>-->
                                                                     <?php endforeach;?>
                                                                 </ul>
                                                             <?php endforeach;?>
@@ -696,7 +704,7 @@ else
                                                     <?= (empty($source_id) && $key == 0) || ($source['resId'] == $source_id) ? 'dn' : 'nn'?>"
                                                  id='srctab-<?=$source['resId']?>'>
                                                 <?php foreach ($source['data'] as $key1 =>$value) : ?>
-                                                    <li class="select-item switch-next-li switch-next <?= $data['info']['play_chapter_id'] == $value['chapter_id']
+                                                    <li class="select-item switch-next-li switch-next J_switch_next <?= $data['info']['play_chapter_id'] == $value['chapter_id']
                                                     && ((empty($source_id) && $key == 0) || ($source['resId'] == $source_id))? 'selected' : ''?>"
                                                         data-video-id="<?= $value['video_id']?>"
                                                         data-chapter-id="<?= $value['chapter_id']?>"
@@ -772,9 +780,9 @@ else
 <!--    --><?php //endif;?>
     <div class="advert_2 J_xini_advert" style="display: none;" >
         <div class="advert_content">
-            <div class="advert_content_title" id="J_qualityService_title">优质服务</div>
+            <div class="advert_content_title J_advertyy_title" id="J_qualityService_title">优质服务</div>
             <div class="advert_content_ad">
-                <ul id="J_qualityService">
+                <ul id="J_qualityService" class="J_advertyy">
                     <li><a href="javascript:;">冰箱急售</a></li>
                     <li><a href="javascript:;">翡翠耳钉</a></li>
                     <li><a href="javascript:;">两张音乐剧门票</a></li>
@@ -786,9 +794,9 @@ else
             </div>
         </div>
         <div class="advert_content">
-            <div class="advert_content_title" id="J_recruitment_title">求职招聘</div>
+            <div class="advert_content_title J_advertyy_title" id="J_recruitment_title">求职招聘</div>
             <div class="advert_content_ad">
-                <ul id="J_recruitment">
+                <ul id="J_recruitment" class="J_advertyy">
                     <li><a href="javascript:;">冰箱急售</a></li>
                     <li><a href="javascript:;">翡翠耳钉</a></li>
                     <li><a href="javascript:;">两张音乐剧门票</a></li>
@@ -800,9 +808,9 @@ else
             </div>
         </div>
         <div class="advert_content">
-            <div class="advert_content_title" id="J_houseRent_title">房屋租赁</div>
+            <div class="advert_content_title J_advertyy_title" id="J_houseRent_title">房屋租赁</div>
             <div class="advert_content_ad">
-                <ul id="J_houseRent">
+                <ul id="J_houseRent" class="J_advertyy">
                     <li><a href="javascript:;">冰箱急售</a></li>
                     <li><a href="javascript:;">翡翠耳钉</a></li>
                     <li><a href="javascript:;">两张音乐剧门票</a></li>
@@ -815,11 +823,11 @@ else
         </div>
         <div class="advert_content last">
             <div class="advert_content_title last">
-                <span id="J_secondaryMarket_title">二手市场</span>
+                <span id="J_secondaryMarket_title" class="J_advertyy_title">二手市场</span>
                 <img src="/images/Index/chahao.png" class="J_del_advert">
             </div>
             <div class="advert_content_ad last">
-                <ul id="J_secondaryMarket">
+                <ul id="J_secondaryMarket" class="J_advertyy">
                     <li><a href="javascript:;">冰箱急售</a></li>
                     <li><a href="javascript:;">翡翠耳钉</a></li>
                     <li><a href="javascript:;">两张音乐剧门票</a></li>
@@ -1184,43 +1192,17 @@ else
             dataType:'json',
             success:function(res) {
                 var html = "";
-                if(res.errno==0 && res.data.status == 0){
-                    if(res.data.titleList){
-                        $("#J_qualityService_title").text(res.data.titleList.qualityService);
-                        $("#J_recruitment_title").text(res.data.titleList.recruitment);
-                        $("#J_houseRent_title").text(res.data.titleList.houseRent);
-                        $("#J_secondaryMarket_title").text(res.data.titleList.secondaryMarket);
-                    }
-                    if(res.data.qualityService.length > 0){
-                        var q = res.data.qualityService;
-                        for(var i=0;i<q.length;i++){
-                            html += '<li><a target="_blank" href="'+q[i].url+'">'+q[i].title+'</a></li>'
+                if(res.errno==0 && res.data.length>0){
+                    for(var i=0;i<res.data.length;i++){
+                        if(res.data[i].advert && res.data[i].advert.length>0){
+                            $(".J_advertyy_title").eq(i).text(res.data[i].title);
+                            var advert = res.data[i].advert;
+                            html = "";
+                            for(var j=0;j<advert.length;j++){
+                                html += '<li><a target="_blank" href="'+advert[j].url+'">'+advert[j].title+'</a></li>'
+                            }
+                            $(".J_advertyy").eq(i).html(html);
                         }
-                        $("#J_qualityService").html(html);
-                    }
-                    html = "";
-                    if(res.data.recruitment.length > 0){
-                        var r = res.data.recruitment;
-                        for(var i=0;i<r.length;i++){
-                            html += '<li><a target="_blank" href="'+r[i].url+'">'+r[i].title+'</a></li>'
-                        }
-                        $("#J_recruitment").html(html);
-                    }
-                    html = "";
-                    if(res.data.houseRent.length > 0){
-                        var h = res.data.houseRent;
-                        for(var i=0;i<h.length;i++){
-                            html += '<li><a target="_blank" href="'+h[i].url+'">'+h[i].title+'</a></li>'
-                        }
-                        $("#J_houseRent").html(html);
-                    }
-                    html = "";
-                    if(res.data.secondaryMarket.length > 0){
-                        var s = res.data.secondaryMarket;
-                        for(var i=0;i<s.length;i++){
-                            html += '<li><a target="_blank" href="'+s[i].url+'">'+s[i].title+'</a></li>'
-                        }
-                        $("#J_secondaryMarket").html(html);
                     }
                     $(".J_xini_advert").show();
                 }
@@ -1492,18 +1474,27 @@ else
     $(document).ready(function () {
         //网页关闭时执行的方法
         $(window).bind("beforeunload", function () {
-            addwatchlog();
+            var watchTime = dp1.video.currentTime;
+            var totalTime = dp1.video.duration;
+            addwatchlog(watchTime,totalTime);
         });
     });
-    function addwatchlog(){
-        var arrindex = {};
-        arrindex['video_id'] = '<?=$data['info']['play_video_id']?>';
-        arrindex['chapter_id'] = '<?=$data['info']['play_chapter_id']?>';
-        arrindex['watchTime'] = parseInt(dp1.video.currentTime);
-        arrindex['totalTime'] = parseInt(dp1.video.duration);
-        $.get('/video/add-watchlog',arrindex,function(res){
-            console.log(res.data);
-        });
+    function addwatchlog(watchTime,totalTime){
+        var uid = finduser();
+        if(!isNaN(uid) && uid!=""){
+            var arrindex = {};
+            arrindex['video_id'] = '<?=$data['info']['play_video_id']?>';
+            arrindex['chapter_id'] = $('li.J_switch_next.selected').attr('data-chapter-id');
+            arrindex['watchTime'] = parseInt(watchTime);
+            arrindex['totalTime'] = parseInt(totalTime);
+            console.log(dp1.video.currentTime,dp1.video.duration);
+            console.log(arrindex);
+            if(arrindex['totalTime']>0){
+                $.get('/video/add-watchlog',arrindex,function(res){
+                    console.log(res.data);
+                });
+            }
+        }
     }
 
     //收藏
@@ -1866,33 +1857,63 @@ else
         $('.J_xini_advert').hide();
     });
     //用户点击，切换剧集
-    $('.switch-next').click(function() {
-        $('.switch-next-li').removeClass('on');
-        $(this).addClass('on');
+    $('.J_switch_next').click(function() {
+        var that = this;
         var videoId = $(this).attr('data-video-id');
         var chapterId = $(this).attr('data-chapter-id');
         var sourceId = $('.sourceTab .hover a').attr('data-source-id');
         var type = $(this).attr('data-type');
-
-        window.location.href = '/video/detail?video_id=' + videoId + '&chapter_id=' + chapterId+"&source_id="+sourceId;
+        loadvideo(videoId,chapterId,sourceId);
+        // window.location.href = '/video/detail?video_id=' + videoId + '&chapter_id=' + chapterId+"&source_id="+sourceId;
         // window.location.href = '/video/detail?video_id=' + videoId + '&chapter_id=' + chapterId;
     });
+    //切换剧集且添加播放记录
+    function loadvideo(videoId,chapterId,sourceId){
+        var citycode = COUNTRYINFO['city_code'];
+        var arrIndex = {};
+        arrIndex['citycode'] = citycode;
+        arrIndex['video_id'] = videoId;
+        arrIndex['chapter_id'] = chapterId;
+        arrIndex['last_chapter_id'] = $('li.J_switch_next.selected').attr('data-chapter-id');
+        arrIndex['source_id'] = sourceId;
+        // arrIndex['watchTime'] = parseInt(dp1.video.currentTime);
+        // arrIndex['totalTime'] = parseInt(dp1.video.duration);
+        console.log(arrIndex);
+        $.ajax({
+            url:'/video/detail-part',
+            data:arrIndex,
+            type:'get',
+            cache:false,
+            // dataType:'json',
+            success:function(s) {
+                dp1.destroy();
+                $("#jianghu2").empty();
+                $("#jianghu2").html(s);
+
+                $('.J_switch_next').removeClass('selected');
+                $('#chap-'+sourceId +'-'+chapterId).addClass('selected');
+            },
+            error : function(){
+                console.log("视频切换失败");
+            }
+        });
+    }
 
     //切换视频源
-    $('.next-source').click(function() {
-        var videoId = $(this).attr('data-video-id');
-        var chapterId = $(this).attr('data-video-chapter-id');
-        var sourceId = $(this).attr('data-source-id');
-        window.location.href = "/video/detail?video_id="+videoId+"&chapter_id="+chapterId+"&source_id="+sourceId;
-    });
-    $('.func-swicthCap').click(function(){
-        var videoId = $(this).attr('data-video-id');
-        var chapterId = $(this).attr('data-chapter-id');
-        // var sourceId = $('.sourceTab .hover a').attr('data-source-id');
-        var sourceId = $(this).attr('data-source-id');;
-
-        window.location.href = '/video/detail?video_id=' + videoId + '&chapter_id=' + chapterId+"&source_id="+sourceId;
-    });
+    // $('.next-source').click(function() {
+    //     var videoId = $(this).attr('data-video-id');
+    //     var chapterId = $(this).attr('data-video-chapter-id');
+    //     var sourceId = $(this).attr('data-source-id');
+    //     window.location.href = "/video/detail?video_id="+videoId+"&chapter_id="+chapterId+"&source_id="+sourceId;
+    // });
+    // $('.func-swicthCap').click(function(){
+    //     var videoId = $(this).attr('data-video-id');
+    //     var chapterId = $(this).attr('data-chapter-id');
+    //     // var sourceId = $('.sourceTab .hover a').attr('data-source-id');
+    //     var sourceId = $(this).attr('data-source-id');;
+    //
+    //     window.location.href = '/video/detail?video_id=' + videoId + '&chapter_id=' + chapterId+"&source_id="+sourceId;
+    // });
 
     $('.J_comment').click(function () {
         $('html, body').animate({

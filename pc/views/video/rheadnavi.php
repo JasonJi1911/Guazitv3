@@ -59,7 +59,7 @@ use yii\helpers\Url;
                             <?php foreach ($watchlist['list'] as $watchlog):?>
                                 <?php $i++;?>
                                 <?php if($i<6):?>
-                                <li>
+                                <li data-video-id="<?=$watchlog['video_id']?>">
                                     <a href="<?= Url::to(['detail', 'video_id' => $watchlog['video_id']])?>">
                                         <div><?=$watchlog['title']?>&nbsp;&nbsp;<?= is_numeric($watchlog['chapter_title']) ? ('第'.$watchlog['chapter_title'].'集') : $watchlog['chapter_title']?></div>
                                         <div>观看至<?=$watchlog['watch_percent']?>%</div>
