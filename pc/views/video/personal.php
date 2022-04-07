@@ -7,6 +7,7 @@ NewIndexStyleAsset::register($this);
 <style>
     body {
         background-color: #F9F9F9;
+        min-width: 1459px;
     }
     .more-load{
         color:#888;

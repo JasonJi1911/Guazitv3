@@ -1487,8 +1487,6 @@ else
             arrindex['chapter_id'] = $('li.J_switch_next.selected').attr('data-chapter-id');
             arrindex['watchTime'] = parseInt(watchTime);
             arrindex['totalTime'] = parseInt(totalTime);
-            console.log(dp1.video.currentTime,dp1.video.duration);
-            console.log(arrindex);
             if(arrindex['totalTime']>0){
                 $.get('/video/add-watchlog',arrindex,function(res){
                     console.log(res.data);
@@ -1886,6 +1884,7 @@ else
             cache:false,
             // dataType:'json',
             success:function(s) {
+                dp.destroy();
                 dp1.destroy();
                 $("#jianghu2").empty();
                 $("#jianghu2").html(s);

@@ -1079,6 +1079,7 @@ function initialUrl($url)
     });
 </script>
 <script>
+    var dp;
     $(document).ready(function () {
         var citycode = COUNTRYINFO['city_code'];
         var arrIndex = {};
@@ -1174,7 +1175,7 @@ function initialUrl($url)
         dp1.pause();
 
         //广告 player_ad
-        var dp = new DPlayer({
+        dp = new DPlayer({
             element: document.getElementById('player_ad'),
             theme: '#FF556E',
             loop: false,

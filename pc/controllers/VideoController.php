@@ -467,6 +467,7 @@ class VideoController extends BaseController
         //计算播放时长百分比
         $percent = '';
         if($data['watchlog']){
+            $last_chapter_id = $data['watchlog']['chapter_id'];
             $totalTime = $data['watchlog']['totaltime'];
             $watchTime = $data['watchlog']['lastPlayTime'];
             if($totalTime == 0 || $watchTime == 0){

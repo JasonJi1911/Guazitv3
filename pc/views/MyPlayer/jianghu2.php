@@ -1079,6 +1079,7 @@ function initialUrl($url)
     });
 </script>
 <script>
+    var dp;
     $(document).ready(function () {
         //加载视频线路
         var qualitystr = '';
@@ -1127,7 +1128,7 @@ function initialUrl($url)
         // dp1.pause();
 
         //广告 player_ad
-        var dp = new DPlayer({
+        dp = new DPlayer({
             element: document.getElementById('player_ad'),
             theme: '#FF556E',
             loop: false,
