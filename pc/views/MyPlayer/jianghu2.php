@@ -933,6 +933,10 @@ function initialUrl($url)
                 });
             }
         });
+
+        dp1.on("pause", function(){
+            dp1.controller.show();
+        });
     }
     //继续观看
     function keepwatch(last_play_time){
