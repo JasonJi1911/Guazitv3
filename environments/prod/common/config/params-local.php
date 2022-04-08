@@ -7,7 +7,7 @@ define('API_HOST_NAME', 'api.guazitv.tv');
 define('API_HOST_PATH', 'http://' . API_HOST_NAME);
 
 //PC
-define('PC_HOST_NAME', 'guazitv.tv');
+define('PC_HOST_NAME', 'www.guazitv.tv');
 define('PC_HOST_PATH', 'http://' . PC_HOST_NAME);
 
 //WAP
