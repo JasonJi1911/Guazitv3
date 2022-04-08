@@ -144,7 +144,7 @@ class RecommendDao extends BaseDao
                 }
             }
 
-            $limitCnt = Yii::$app->common->product == Common::PRODUCT_APP ? 9 : 20;
+            $limitCnt = Yii::$app->common->product == Common::PRODUCT_APP ? 9 : 20;//15:15
             // 根据样式返回数据个数
             $videoDataProvider = new ActiveDataProvider([
                 'query' => $objVideo->orderBy('total_views desc')->limit($limitCnt),
