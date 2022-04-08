@@ -141,7 +141,7 @@ function initialUrl($url)
         z-index: 2;
         top: 0px;
         left: 0px;
-        cursor: pointer;;
+        cursor: pointer;
     }
 
     .AD-box {
@@ -651,10 +651,9 @@ function initialUrl($url)
         top: 43px;
     }
     /*@media only screen and (min-device-width : 768px) and (max-device-width : 1024px){*/
-    /*    .dplayer-mobile-play{*/
-    /*        left: 5% !important;*/
-    /*        top: 75% !important;*/
-    /*    }*/
+        .dplayer-mobile-play{
+            z-index: 100;
+        }
     /*}*/
     .dplayer-fulled-icon{
         display: none !important;
@@ -1299,7 +1298,7 @@ function initialUrl($url)
                 document.getElementById('time_ad').innerText = Math.floor(dp.video.duration);
                 playflag = true;
                 $('#load1-img').remove();
-                $('#ADMask').hide()
+                // $('#ADMask').hide()
                 dp.controller.show();
                 dp.play();
             });
