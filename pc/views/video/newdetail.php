@@ -378,6 +378,9 @@ else
             right: 160px;
         }
     }
+    .pop-tip {
+        left:40%;
+    }
 </style>
 <!--黑色区域-->
 <div class="box05">
@@ -1886,11 +1889,13 @@ else
         // window.location.href = '/video/detail?video_id=' + videoId + '&chapter_id=' + chapterId;
     });
     var canSwitch = true; // 2022-04-12 Jason修改
-    //切换剧集且添加播放记录
+    //切换剧集
     function loadvideo(videoId,chapterId,sourceId){
         // 2022-04-12 Jason修改
         if (!canSwitch) {
-            alert("集数切换中，不要点击太快");
+            // alert("剧集正在加载中，请稍后...");
+            $("#pop-tip").text("剧集正在加载中，请稍后...");
+            $("#pop-tip").show().delay(2000).fadeOut();
             return false;
         }
         var citycode = COUNTRYINFO['city_code'];
