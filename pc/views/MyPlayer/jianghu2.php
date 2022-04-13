@@ -650,11 +650,11 @@ function initialUrl($url)
     .dplayer .dplayer-controller .dplayer-icons .dplayer-volume .dplayer-volume-bar-wrap .dplayer-volume-bar{
         top: 43px;
     }
-    @media only screen and (min-device-width : 768px) and (max-device-width : 1024px){
+    /*@media only screen and (min-device-width : 768px) and (max-device-width : 1024px){*/
         .dplayer-mobile-play{
             z-index: 100;
         }
-    }
+    /*}*/
     .dplayer-fulled-icon{
         display: none !important;
     }
@@ -767,17 +767,18 @@ function initialUrl($url)
 
     //  倍速
     var BSbox = "<div class='BSbox'><div class='BSbth'>倍速</div><div class='BSlist'><input type='button' value='0.5' /><input type='button' value='0.75' /><input type='button' value='正常' /><input type='button' value='1.25' /><input type='button' value='1.5' /></div></div>";
-    let dp1;
+    var dp1;
+    // 2022-04-12 Jason修改
     //空格键切换播放暂停状态
-    $(document).keyup(function(e){
-        switch(e.keyCode) {
-            case 32:
-                e.preventDefault();
-                // dp.toggle();
-                dp1.toggle();
-                break;
-        }
-    });
+    // $(document).keyup(function(e){
+    //     switch(e.keyCode) {
+    //         case 32:
+    //             e.preventDefault();
+    //             // dp.toggle();
+    //             dp1.toggle();
+    //             break;
+    //     }
+    // });
 
     //点击隐藏倍速框
     $(document).click(function(e) {
@@ -1185,6 +1186,8 @@ function initialUrl($url)
                 '<div class="ADxq-box" id="ADxq-box"><a id="link" target="_blank" href="' + l + '">查看详情<svg t="1628136750461" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M572.197 505.905a19.707 19.707 0 0 1-5.976 13.397L300.215 785.31c-3.438 3.438-8.558 5.705-13.129 5.705s-9.728-2.304-13.129-5.705l-28.562-28.562c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129L469.98 505.905 245.395 281.32c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l28.562-28.562c3.438-3.438 8.558-5.705 13.129-5.705s9.728 2.304 13.129 5.705l266.277 266.277a19.534 19.534 0 0 1 5.714 13.465z m219.428 0a19.707 19.707 0 0 1-5.976 13.397L519.643 785.31c-3.438 3.438-8.558 5.705-13.129 5.705s-9.728-2.304-13.129-5.705l-28.562-28.562c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l224.585-224.585L464.823 281.32c-3.438-3.438-5.705-8.558-5.705-13.129s2.304-9.728 5.705-13.129l28.562-28.562c3.438-3.438 8.558-5.705 13.129-5.705s9.728 2.304 13.129 5.705L785.92 492.777a19.534 19.534 0 0 1 5.714 13.465z"></path></svg></a></div>' +
                 '<div class="ADMask" id="ADMask"></div>');
 
+            // 2022-04-12 Jason修改
+            canSwitch = true;
             $("#ADMask").click(function() {
                 document.getElementById('link').click();
             });
@@ -1255,6 +1258,8 @@ function initialUrl($url)
             });
 
             dp.on('loadedmetadata', function () {
+                // 2022-04-12 Jason修改
+                canSwitch = true;
                 document.getElementById('time_ad').innerText = Math.floor(dp.video.duration);
                 playflag = true;
                 $('#load1-img').remove();
@@ -1263,7 +1268,8 @@ function initialUrl($url)
                 dp.play();
             });
             dp.on('timeupdate', function () {
-                document.getElementById('time_ad').innerText = Math.floor(dp.video.duration - dp.video.currentTime);
+                if(document.getElementById('time_ad'))
+                    document.getElementById('time_ad').innerText = Math.floor(dp.video.duration - dp.video.currentTime);
             });
             // dp.play();
             $('.dplayer-video-wrap').trigger('click');
@@ -1313,7 +1319,12 @@ function initialUrl($url)
         var int=_self.setInterval(function(){
             if($("#player1").is(":visible"))
             {
+                // 2022-04-12 Jason修改
+                canSwitch = true;
                 $("#player1 .dplayer-play-icon").trigger("click");
+                if(dp1.paused){
+                    dp1.play();
+                }
                 clearInterval(int);
             }
         },100);

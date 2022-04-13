@@ -1854,6 +1854,26 @@ else
     $('.J_del_advert').click(function(){
         $('.J_xini_advert').hide();
     });
+    // 2022-04-12 Jason修改
+    //空格键切换播放暂停状态
+    $(document).keydown(function(e){
+        switch(e.keyCode) {
+            case 32:
+                if(e.preventDefault){
+                    e.preventDefault();
+                }else{
+                    window.event.returnValue = false;
+                }
+                if($("#player1").is(":visible")){
+                    $("#player1 .dplayer-play-icon").trigger("click");
+                }
+                else{
+                    $("#player_ad .dplayer-play-icon").trigger("click");
+                }
+
+                break;
+        }
+    });
     //用户点击，切换剧集
     $('.J_switch_next').click(function() {
         var that = this;
@@ -1865,8 +1885,14 @@ else
         // window.location.href = '/video/detail?video_id=' + videoId + '&chapter_id=' + chapterId+"&source_id="+sourceId;
         // window.location.href = '/video/detail?video_id=' + videoId + '&chapter_id=' + chapterId;
     });
+    var canSwitch = true; // 2022-04-12 Jason修改
     //切换剧集且添加播放记录
     function loadvideo(videoId,chapterId,sourceId){
+        // 2022-04-12 Jason修改
+        if (!canSwitch) {
+            alert("集数切换中，不要点击太快");
+            return false;
+        }
         var citycode = COUNTRYINFO['city_code'];
         var arrIndex = {};
         arrIndex['citycode'] = citycode;
@@ -1876,7 +1902,8 @@ else
         arrIndex['source_id'] = sourceId;
         // arrIndex['watchTime'] = parseInt(dp1.video.currentTime);
         // arrIndex['totalTime'] = parseInt(dp1.video.duration);
-        console.log(arrIndex);
+        // console.log(arrIndex);
+        canSwitch = false;  // 2022-04-12 Jason修改
         $.ajax({
             url:'/video/detail-part',
             data:arrIndex,
@@ -1894,6 +1921,7 @@ else
             },
             error : function(){
                 console.log("视频切换失败");
+                canSwitch = true; // 2022-04-12 Jason修改
             }
         });
     }

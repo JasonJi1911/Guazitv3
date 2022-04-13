@@ -767,17 +767,18 @@ function initialUrl($url)
 
     //  倍速
     var BSbox = "<div class='BSbox'><div class='BSbth'>倍速</div><div class='BSlist'><input type='button' value='0.5' /><input type='button' value='0.75' /><input type='button' value='正常' /><input type='button' value='1.25' /><input type='button' value='1.5' /></div></div>";
-    let dp1;
+    var dp1;
+    // 2022-04-12 Jason修改
     //空格键切换播放暂停状态
-    $(document).keyup(function(e){
-        switch(e.keyCode) {
-            case 32:
-                e.preventDefault();
-                // dp.toggle();
-                dp1.toggle();
-                break;
-        }
-    });
+    // $(document).keyup(function(e){
+    //     switch(e.keyCode) {
+    //         case 32:
+    //             e.preventDefault();
+    //             // dp.toggle();
+    //             dp1.toggle();
+    //             break;
+    //     }
+    // });
 
     //点击隐藏倍速框
     $(document).click(function(e) {
