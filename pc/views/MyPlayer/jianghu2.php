@@ -869,7 +869,7 @@ function initialUrl($url)
         // $('.dplayer-video-wrap').trigger('click');
         // dp1.play();
 
-        var strtext = "<div id='player-load1-warn'>如果卡顿，可以通过<span>播放路线</span>切换到其他线路</div>";
+        var strtext = "<div id='player-load1-warn'>如果卡顿，请在<span>播放窗口右侧</span>更换<span>1080P</span>线路</div>";
         $("#player1").prepend(strtext);
         setTimeout(function(){
             $("#player-load1-warn").hide();
@@ -877,7 +877,7 @@ function initialUrl($url)
         dp1.on('loadedmetadata', function () {
             var totaltime = parseInt(dp1.video.duration);
             if(totaltime>0){
-                $("#player-load1-warn").hide();
+                // $("#player-load1-warn").hide();
             }
         });
 
@@ -1101,6 +1101,9 @@ function initialUrl($url)
         }
         foreach ($source as $key => $src) {
             if (empty($src_array[$src['source_id']])) { // source_id不在视频里面或者没有视频播放连接
+                continue;
+            }
+            if ($src['source_id'] != $source_id) {
                 continue;
             }
             $src_url = $src['resource_url'];
