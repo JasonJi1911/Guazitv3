@@ -560,18 +560,18 @@ class VideoDao extends BaseDao
     public function filterVideoList2($channelId, $sort, $sorttype, $tag, $area, $year, $type, $playLimit, $page, $pageSize, $status)
     {
         // 不传channel_id时，默认获取第一个
-        if (empty($channelId)) {
-            $commonDao = new CommonDao();
-            $videoChannel = $commonDao->videoChannel(['channel_id', 'channel_name'], true); //获取频道并建立索引
-            $channelId = reset($videoChannel)['channel_id'];
-        }
-        $this->checkFilterParams($channelId, $tag, $area);
+        //2022-04-19尹，搜索页新增全部频道，去掉默认获取频道
+//        if (empty($channelId)) {
+//            $commonDao = new CommonDao();
+//            $videoChannel = $commonDao->videoChannel(['channel_id', 'channel_name'], true); //获取频道并建立索引
+//            $channelId = reset($videoChannel)['channel_id'];
+//        }
 
-        //year==''或0（全部），取最新年份
-        if($year=='' || $year==0){
-            $maxorder = VideoYear::find()->max('display_order');
-            $maxyear = VideoYear::findOne(['display_order'=>$maxorder])->toArray();
-            $year = $maxyear['year_id'];
+        //2022-04-19尹，新增全部频道，地区不置空;指定频道判断tag，area是否存在当前频道下，不存在则重置为空
+        $param_area = $area;
+        $this->checkFilterParams($channelId, $tag, $area);
+        if (empty($channelId)) {//全部频道
+            $area = $param_area;
         }
 
         $key = RedisKey::videoFilterList([$channelId, $sort, $tag, $area, $year, $type, $page, $pageSize, $playLimit,$sorttype, $status]);
@@ -583,31 +583,25 @@ class VideoDao extends BaseDao
 
         $order = $sort == 'new' ? 'created_at' : ($sort == 'score' ? 'score' : 'total_views');
 
-        // 根据条件查询
+        $y = VideoYear::tableName();
+        $v = Video::tableName();
+        $orderstr = $y.'.display_order desc, '.$v.'.'.$order.' '.$sorttype;
+        $query = Video::find()
+            ->select($v.'.id')->leftJoin($y,$y.'.id='.$v.'.year')
+            ->andFilterWhere([$v.'.channel_id' => $channelId])
+            ->andFilterWhere(['like', $v.'.category_ids' , $tag])
+            ->andFilterWhere([$v.'.area' => $area])
+            ->andFilterWhere([$v.'.year' => $year])
+            ->andFilterWhere([$v.'.play_limit' => $playLimit]);
+
+        // 根据状态：完结/更新中
         if($status == 1 || $status == 2){
-            $dataProvider = new ActiveDataProvider([
-                'query' => Video::find()
-                    ->select('id')
-                    ->andFilterWhere(['channel_id' => $channelId])
-                    ->andFilterWhere(['like', 'category_ids' , $tag])
-                    ->andFilterWhere(['area' => $area])
-                    ->andFilterWhere(['year' => $year])
-                    ->andFilterWhere(['play_limit' => $playLimit])
-                    ->andFilterWhere(['is_finished' => $status])
-                    ->orderBy("{$order} {$sorttype}")
-            ]);
-        }else{
-            $dataProvider = new ActiveDataProvider([
-                'query' => Video::find()
-                    ->select('id')
-                    ->andFilterWhere(['channel_id' => $channelId])
-                    ->andFilterWhere(['like', 'category_ids' , $tag])
-                    ->andFilterWhere(['area' => $area])
-                    ->andFilterWhere(['year' => $year])
-                    ->andFilterWhere(['play_limit' => $playLimit])
-                    ->orderBy("{$order} {$sorttype}")
-            ]);
+            $query = $query->andWhere([$v.'.is_finished' => $status]);
         }
+        $query = $query->orderBy($orderstr);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query
+        ]);
 
         //根据条件查询 视频id
         $data = $dataProvider->setPagination(['page_num' => $page, 'page_size' => $pageSize])->toArray([
@@ -847,7 +841,7 @@ class VideoDao extends BaseDao
     /*
      * 提交求片信息
      */
-    public function saveSeekInfo($video_name,$channel_id,$area_id,$year,$director_name,$actor_name){
+    public function saveSeekInfo($video_name,$channel_id,$area_id,$year,$director_name,$actor_name,$uid){
         if(!$video_name){
             return [];
         }
@@ -858,6 +852,7 @@ class VideoDao extends BaseDao
         $seek->year = $year;
         $seek->director_name = $director_name;
         $seek->actor_name = $actor_name;
+        $seek->uid = $uid;
         $result = $seek->insert();
         return $result;
     }

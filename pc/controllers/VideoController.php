@@ -272,7 +272,9 @@ class VideoController extends BaseController
         $channels = Yii::$app->api->get('/video/channels');
 
         //获取热搜
-        $hotword = Yii::$app->api->get('/search/hot-word');
+//        $hotword = Yii::$app->api->get('/search/hot-word');
+        //2022-4-19尹 类目页热搜根据channel_id获取
+        $hotword = Yii::$app->api->get('/search/channel-hotword',['channel_id' => $channel_id]);
 
         //请求影片筛选信息
         $info = Yii::$app->api->get('/video/filter', ['channel_id' => $channel_id, 'type' => 1, 'page_size' => 12]);
@@ -447,6 +449,7 @@ class VideoController extends BaseController
             $data['info']['last_chapter'] = ArrayHelper::index($souceVideos, 'chapter_id')[$data['info']['play_chapter_id']]['last_chapter'];
         }
 
+        $advert_top_pc = [];
         foreach ($data['advert'] as $key => $advert) {
             if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_PLAY_BEFORE_PC) {
                 if(strpos($advert['ad_image'], '.mp4') !== false) {
@@ -463,6 +466,10 @@ class VideoController extends BaseController
                     $ad_link = $advert['ad_skip_url'];
                 }
             }
+            //2022-4-19尹 PC播放页-播放窗口上方广告局部刷新
+            if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_VIDEO_TOP_PC) {
+                $advert_top_pc = $advert;
+            }
         }
         //计算播放时长百分比
         $percent = '';
@@ -478,11 +485,11 @@ class VideoController extends BaseController
         }
 
         return $this->renderPartial('/MyPlayer/jianghu2', [
-            'url'   => explode('v=',$data['info']['resource_url'])[1],
-            'ad_url' =>    $ad_url,
-            'ad_link'  =>   $ad_link,
-            'ad_type'  =>   $ad_type,
-            'videos'   =>  $data['info']['videos'],
+            'url'      => explode('v=',$data['info']['resource_url'])[1],
+            'ad_url'   => $ad_url,
+            'ad_link'  => $ad_link,
+            'ad_type'  => $ad_type,
+            'videos'   => $data['info']['videos'],
             'play_chapter_id' => $data['info']['play_chapter_id'],
             'source_id'       => $data['info']['source_id'],
             'source'          => $data['info']['source'],
@@ -490,9 +497,10 @@ class VideoController extends BaseController
             'next_chapter'    => $data['info']['next_chapter'],
             'last_play_time'  => $data['info']['last_play_time'],
             'last_chapter_id' => $last_chapter_id,
-            'percent' => $percent,
-            'video_name'=>$data['info']['video_name'],
-            'lastplayinfo'   => $data['watchlog']
+            'percent'   => $percent,
+            'video_name'=> $data['info']['video_name'],
+            'lastplayinfo'   => $data['watchlog'],
+            'advert_top_pc'  => $advert_top_pc
         ]);
     }
 
@@ -592,9 +600,9 @@ class VideoController extends BaseController
             $data = Yii::$app->api->get('/search/new-result', ['keyword' => $keyword, 'channel_id' => $channel_id, 'tag' => $tag, 'sort' => $sort,'sorttype' => $sorttype,
                 'area' => $area, 'play_limit' => $play_limit, 'year' => $year, 'page_num' => $page_num, 'page_size' =>$page_size ,'type' => 1, 'status' => $status]);
         }else{
-            if($channel_id==0){
-                $channel_id = 2;
-            }
+//            if($channel_id==0){
+//                $channel_id = 2;
+//            }
             $data = Yii::$app->api->get('/video/filters', ['channel_id' => $channel_id, 'tag' => $tag, 'sort' => $sort, 'sorttype' => $sorttype, 'area' => $area,
                 'play_limit' => $play_limit, 'year' => $year, 'page_num' => $page_num, 'page_size' =>$page_size ,'type' => 1, 'status' => $status]);
         }
@@ -926,7 +934,9 @@ class VideoController extends BaseController
         $year          = Yii::$app->request->get('year', "");
         $director_name = Yii::$app->request->get('director_name', "");
         $actor_name    = Yii::$app->request->get('actor_name', "");
-        $result = Yii::$app->api->get('/video/save-seek',['video_name' => $video_name,'channel_id' => $channel_id,'area_id' => $area_id, 'year'=>$year, 'director_name'=>$director_name, 'actor_name'=>$actor_name]);
+        $uid = Yii::$app->request->get('uid', 0);
+        $result = Yii::$app->api->get('/video/save-seek',['video_name' => $video_name,'channel_id' => $channel_id,'area_id' => $area_id,
+            'year'=>$year, 'director_name'=>$director_name, 'actor_name'=>$actor_name, 'uid'=>$uid]);
 
         return $result;
     }

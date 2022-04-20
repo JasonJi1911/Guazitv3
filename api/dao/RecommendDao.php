@@ -207,6 +207,8 @@ class RecommendDao extends BaseDao
                 }else{
                     $it['video_newest'] = '0';
                 }
+                //查询24小时内更新的集数
+                $it['chapter_new_num'] = VideoChapter::find()->andWhere(['video_id' => $it['video_id']])->andWhere(['>=', 'created_at', $time24])->count();
                 /* 首页video检查created_at在24小时内为最新 end */
             }
 

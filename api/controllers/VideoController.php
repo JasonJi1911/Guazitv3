@@ -269,7 +269,7 @@ class VideoController extends BaseController
 
         $videoDao = new VideoDao();
         //year==''或0（全部），默认显示最新年份
-        $year = $videoDao->findMaxYear($year);
+//        $year = $videoDao->findMaxYear($year);
         // 筛选项
         $data = [];
         // 当请求为第一页时，返回筛选页头部信息
@@ -567,8 +567,9 @@ class VideoController extends BaseController
         $year          = $this->getParam('year',"");
         $director_name = $this->getParam('director_name',"");
         $actor_name    = $this->getParam('actor_name',"");
+        $uid = $this->getParam('uid',0);
         $videoDao = new VideoDao();
-        $result = $videoDao->saveSeekInfo($video_name,$channel_id,$area_id,$year,$director_name,$actor_name);
+        $result = $videoDao->saveSeekInfo($video_name,$channel_id,$area_id,$year,$director_name,$actor_name,$uid);
         return $result;
     }
 

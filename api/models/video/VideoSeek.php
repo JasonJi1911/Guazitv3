@@ -12,7 +12,8 @@ class VideoSeek extends \common\models\video\VideoSeek
             'area_id',
             'year',
             'director_name',
-            'actor_name'
+            'actor_name',
+            'uid'
         ];
     }
 

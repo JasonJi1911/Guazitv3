@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "{{%video_seek}}".
  *
  * @property int $id 序号id
+ * @property int $uid 用户uid
  * @property string $video_name 片名
  * @property int $channel_id 频道id
  * @property int $area_id 地区id

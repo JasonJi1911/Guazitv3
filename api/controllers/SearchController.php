@@ -32,6 +32,18 @@ class SearchController extends BaseController
         return $hotwordList;
     }
 
+    /*
+     * 2022-4-19尹 频道页热搜词组
+     */
+    public function actionChannelHotword()
+    {
+        $channelId = $this->getParam('channel_id', 0);  //频道id
+
+        $videoLogic = new VideoLogic();
+        $hotwordList = $videoLogic->hotWordByChannelId($channelId);
+        return $hotwordList;
+    }
+
     /**
      * 搜索结果页
      */

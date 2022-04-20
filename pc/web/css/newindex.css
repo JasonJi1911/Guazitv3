@@ -328,9 +328,9 @@ body {
 	color: #FFFFFF;
 }
 
-/*.navTopMenuBox>.navTopMenu>.navTopMenu-text:hover>a {*/
-/*	color: #FF556E;*/
-/*}*/
+.navTopMenuBox>.navTopMenu>.navTopMenu-text.act>a {
+	color: #FF556E;
+}
 
 .navTopMenu-choice {
 	width: 17px;
@@ -2496,6 +2496,8 @@ Movie-Ranking-img-num {
 	border-radius: 3px;
 	color: #FFFFFF;
 	background-color: #FF556E;
+	min-width: 12px;
+	text-align: center;
 }
 
 .Movie-name02 {
@@ -2517,6 +2519,7 @@ Movie-Ranking-img-num {
 .Movie-type02 {
 	display: grid;
 	grid-template-columns: auto auto;
+	grid-gap: 5px;
 	font-size: 12px;
 	color: #666668;
 	padding-top: 5px;

@@ -103,9 +103,10 @@ class VideoLogic
         $channelId_check = $channelId;
 
         // 不传channel_id时，默认获取第一个
-        if (empty($channelId)) {
-            $channelId = reset($videoChannel)['channel_id'];
-        }
+        //2022-04-19尹，搜索页新增全部频道，去掉默认获取频道
+//        if (empty($channelId)) {
+//            $channelId = reset($videoChannel)['channel_id'];
+//        }
         // 标题头
         $data['title'] = $videoChannel[$channelId]['channel_name'];
 
@@ -121,7 +122,7 @@ class VideoLogic
             }
 
             if (isset($searchChannel)) {
-                array_unshift($searchChannel, ['display' => '全部', 'value' => '', 'checked' => empty($channelId_check) ? 1 : 0]);
+                array_unshift($searchChannel, ['display' => '全部', 'value' => 0, 'checked' => empty($channelId_check) ? 1 : 0]);
             }
 
             $data['search_box'][] = [
@@ -196,7 +197,26 @@ class VideoLogic
         $data[] = $tagItem;
 
         // 地区
-        $videoArea = $channelLogic->channelArea($channelId, ['area_id', 'area']);
+        $videoArea = [];
+        if(empty($channelId)){
+            //2022-04-19尹 搜索页新增全部频道，获取所有频道对应地区
+            $commonDao = new CommonDao();
+            $videoChannel = $commonDao->videoChannel(['channel_id', 'channel_name'], true); //获取频道并建立索引
+            if($videoChannel){
+                foreach ($videoChannel as $channel) {
+                    $va = ArrayHelper::index($channelLogic->channelArea($channel['channel_id'], ['area_id', 'area']),'area_id');
+                    if($va){
+                        foreach ($va as $k=>$a){
+                            $videoArea[$k] = $a;
+                        }
+                    }
+                }
+                $videoArea = array_values($videoArea);
+            }
+        }else{
+            //2022-04-19尹 指定频道对应的地区
+            $videoArea = $channelLogic->channelArea($channelId, ['area_id', 'area']);
+        }
         $areaItem['label'] = '地区';
         $areaItem['field'] = 'area';
         $areaChecked = 0;
@@ -352,6 +372,34 @@ class VideoLogic
                 , false, ['actors_id', 'actors', 'director', 'artist']);
         }
         $data['tab'] = $searchTab;
+        return $data;
+    }
+    /**
+     * @return array
+     */
+    public function hotWordByChannelId($channelId)
+    {
+        $commonDao = new CommonDao();
+        $videoChannel = $commonDao->videoChannel(['channel_id', 'channel_name'], true); //获取频道并建立索引
+
+        $videoDao   = new VideoDao();
+        $searchTab  = $videoDao->searchHotWord();
+
+        $channeltab = [];
+        foreach ($searchTab as &$tab) {
+            //所有需要查询的视频信息
+            $tab['list'] = $videoDao->batchGetVideo($tab['list']
+                , ['video_id', 'video_name', 'score', 'tag', 'play_times', 'cover', 'summary', 'category', 'year', 'area']
+                , false, ['actors_id', 'actors', 'director', 'artist']);
+            if($tab['title'] == $videoChannel[$channelId]['channel_name']){
+                $channeltab[0] = $tab ;//频道对应有热搜，则取值
+            }
+        }
+        if(!$channeltab){//频道对应没有热搜，则默认取第一个
+            $channeltab = $searchTab;
+        }
+
+        $data['tab'] = array_values($channeltab);
         return $data;
     }
 

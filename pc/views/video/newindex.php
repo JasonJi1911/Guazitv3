@@ -573,8 +573,8 @@ $this->registerJs($js);
                                     <div class="Movie-J">
                                         <img src="/images/newindex/tuijian.png" />
                                     </div>
-                                    <?php if($list['video_newest']=='1'):?>
-                                        <div class="Movie-X">新</div>
+                                    <?php if($list['chapter_new_num']>0):?>
+                                        <div class="Movie-X"><?=($channel==1 ? '新' : $list['chapter_new_num'])?></div>
                                     <?php endif;?>
                                 </a>
                                 <a class="Movie-name02 font-color-FFFFFF" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
@@ -582,9 +582,13 @@ $this->registerJs($js);
                                 </a>
                                 <div class="Movie-type02" name="zt">
                                     <div>
-                                        <?php foreach (explode(' ',$list['category']) as $category): ?>
-                                            <span><?= $category?></span>
-                                        <?php endforeach;?>
+                                        <?php if($channel==2):?>
+                                            <span><?= $list['summary']?></span>
+                                        <?php else:?>
+                                            <?php foreach (explode(' ',$list['category']) as $category): ?>
+                                                <span><?= $category?></span>
+                                            <?php endforeach;?>
+                                        <?php endif;?>
                                     </div>
                                     <div>
                                         <?= $list['flag']?>
@@ -734,8 +738,8 @@ $this->registerJs($js);
                                     <div class="Movie-J">
                                         <img src="/images/newindex/tuijian.png" />
                                     </div>
-                                    <?php if($list['video_newest']=='1'):?>
-                                        <div class="Movie-X">新</div>
+                                    <?php if($list['chapter_new_num']>0):?>
+                                        <div class="Movie-X"><?=$list['chapter_new_num']?></div>
                                     <?php endif;?>
                                 </a>
                                 <a class="Movie-name02 font-color-FFFFFF" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
@@ -838,7 +842,7 @@ $this->registerJs($js);
 
     <!--新片预告-->
     <?php if($data['trailer']['trailer']):?>
-        <ul class="NewTrailer-box" name="zt">
+        <ul id="section-new" class="NewTrailer-box" name="zt">
             <li class="Title-01">
                 <a class="Title-big" href="javaScript:;"><?=$data['trailer']['trailer_title']['title']?></a>
             </li>

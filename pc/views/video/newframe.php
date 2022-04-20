@@ -457,15 +457,15 @@ if(empty($is_show_background) || $is_show_background != 1){
         <li class="navTopMenuBox">
             <div class="navTopMenu">
                 <!--导航菜单--一级-->
-                <span class="navTopMenu-text" name="zt">
-                <a href="<?= Url::to(['/video/index'])?>" >
-                    推荐
-                </a>
-            </span>
+                <span class="navTopMenu-text <?php if($channel_id==0) echo 'act'?>" name="zt">
+                    <a href="<?= Url::to(['/video/index'])?>" >
+                        推荐
+                    </a>
+                </span>
                 <?php if(!empty($channels)) :?>
                     <?php foreach ($channels['channeltags'] as $key=>$channel) :?>
                         <?php if ($key < 6) :?>
-                            <span class="navTopMenu-text" name="zt">
+                            <span class="navTopMenu-text <?php if($channel_id==$channel['channel_id']) echo 'act'?>" name="zt">
                         <?php if($channel['channel_name'] != '首页'): ?>
                             <a href="<?= Url::to(['/video/channel', 'channel_id' => $channel['channel_id']])?>">
                                 <?= $channel['channel_name']?>
@@ -706,7 +706,10 @@ if(empty($is_show_background) || $is_show_background != 1){
                 <?php endif;?>
             <?php endforeach ?>
         <?php endif;?>
-<!--        <li class="list-item"><a href="--><?//= Url::to(['collaboration'])?><!--" class="list-link">为您推荐</a></li>-->
+
+        <?php if($data['trailer']['trailer']):?>
+            <li class="list-item"><a data-id="#section-new" class="list-link">新片预告</a></li>
+        <?php endif;?>
         <li class="list-item"><a href="<?= Url::to(['help', 'tab' => 'contact'])?>" class="list-link">联系客服</a></li>
         <li class="list-item"><a href="javascript:scroll(0,0)" class="list-link backToTop"><svg class="back-top-svg" viewBox="0 0 20 12" xmlns="https://www.w3.org/2000/svg"><path d="M10.784 2.305l6.91 6.911a1.045 1.045 0 1 1-1.477 1.478L10 4.477l-6.217 6.217a1.045 1.045 0 0 1-1.478-1.478l6.911-6.91c.189-.189.43-.29.677-.305h.214c.246.014.488.116.677.304z"></path></svg>顶部</a></li>
     </ul>

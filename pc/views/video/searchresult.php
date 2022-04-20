@@ -182,7 +182,7 @@ $(function(){
     function refreshCate(list){
         var content = '';
         for(var i=0;i<list.length; i++) {
-            if(list[i]['label']!='排序'){
+            if(list[i]['label']!='排序' && list[i]['label']!='类型'){
                 content += '<div class="conditionType afterhidden">' +
                             '<div class="conditionType-all" name="zt"><a href="javascript:;" >'+list[i]['label']+'</a></div>'+
                             '<ul class="condition" name="zt">';
@@ -292,7 +292,7 @@ $this->registerJs($js);
             <input id="afterinput" type="hidden" />
             <!--类型选择-->
             <?php foreach ($info['search_box'] as $cates): ?>
-                <?php if($cates['label'] != "排序") :?>
+                <?php if($cates['label'] != "排序" && $cates['label'] != "类型") :?>
                     <div class="conditionType afterhidden">
                         <div class="conditionType-all" name="zt">
                             <a href="javascript:;"><?= $cates['label']?>:</a>

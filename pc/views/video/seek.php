@@ -10,55 +10,63 @@ $(function(){
     var arrIndex = {};
     var seekflag = true;
     $("#v_submit").click(function(){
-        if(seekflag){
-            seekflag = false;
-            var tab = true;
-            var str = '提交成功';
-            if($("#v_videoname").val().trim() == ''){
-                tab = false;
-                str = '请填写影片名';
-                seekflag = true;
-            }else if($("#v_year").val().trim() == ''){
-                tab = false;
-                str = '请正确输入年代';
-                seekflag = true;
-            }else if($("#v_director").val().length>32){
-                tab = false;
-                str = '导演名称长度超出范围';
-                seekflag = true;
-            }else if($("#v_actors").val().length>50){
-                tab = false;
-                str = '演员名称长度超出范围';
-                seekflag = true;
-            }
-            if(tab){
-                arrIndex['video_name'] = $("#v_videoname").val();         
-                arrIndex['channel_id'] = $("#v_channelid").val();    
-                arrIndex['area_id'] = $("#v_areaid").val();    
-                arrIndex['year'] = $("#v_year").val();    
-                arrIndex['director_name'] = $("#v_director").val();    
-                arrIndex['actor_name'] = $("#v_actors").val();   
-                //发送请求，获取数据     
-                $.get('/video/save-seek', arrIndex, function(s) {
-                    // console.log(arrIndex);
-                    if(s>0){
-                        //插入成功，所有值置空
-                        $("#v_videoname").val(''); 
-                        $("#v_channelid").find("option").eq(0).prop("selected",true);
-                        $("#v_areaid").find("option").eq(0).prop("selected",true);  
-                        $("#v_year").find("option").eq(0).prop("selected",true);  
-                        $("#v_director").val(''); 
-                        $("#v_actors").val('');  
-                        str = "提交成功";
-                    }else{
-                        str = "提交失败";
-                    }                
+        var uid = finduser();
+        if(isNaN(uid) || uid==""){
+            showloggedin();//弹登录框
+        }else{
+            if(seekflag){
+                seekflag = false;
+                var tab = true;
+                var str = '提交成功';
+                if($("#v_videoname").val().trim() == ''){
+                    tab = false;
+                    str = '请填写影片名';
                     seekflag = true;
-                });
-            }
-            $(".alt-title").text(str);        
-            $("#alt05").show(); 
-        }               
+                }else if($("#v_year").val().trim() == ''){
+                    tab = false;
+                    str = '请正确输入年代';
+                    seekflag = true;
+                }else if($("#v_director").val().length>32){
+                    tab = false;
+                    str = '导演名称长度超出范围';
+                    seekflag = true;
+                }else if($("#v_actors").val().length>50){
+                    tab = false;
+                    str = '演员名称长度超出范围';
+                    seekflag = true;
+                }
+                if(tab){
+                    arrIndex['video_name'] = $("#v_videoname").val();         
+                    arrIndex['channel_id'] = $("#v_channelid").val();    
+                    arrIndex['area_id'] = $("#v_areaid").val();    
+                    arrIndex['year'] = $("#v_year").val();    
+                    arrIndex['director_name'] = $("#v_director").val();    
+                    arrIndex['actor_name'] = $("#v_actors").val();  
+                    arrIndex['uid'] = uid;
+                    //发送请求，获取数据     
+                    $.get('/video/save-seek', arrIndex, function(s) {
+                        // console.log(arrIndex);
+                        if(s>0){
+                            //插入成功，所有值置空
+                            $("#v_videoname").val(''); 
+                            $("#v_channelid").find("option").eq(0).prop("selected",true);
+                            $("#v_areaid").find("option").eq(0).prop("selected",true);  
+                            $("#v_year").find("option").eq(0).prop("selected",true);  
+                            $("#v_director").val(''); 
+                            $("#v_actors").val('');  
+                            str = "提交成功";
+                        }else{
+                            str = "提交失败";
+                        }                
+                       seekflag = true;
+                   });
+                }
+                // $(".alt-title").text(str);        
+                // $("#alt05").show(); 
+                $("#pop-tip").text(str);
+                $("#pop-tip").show().delay(2000).fadeOut();
+            }    
+        }
     });
 });
 JS;
@@ -68,6 +76,10 @@ $this->registerJs($js);
 <style>
     body {
         background-color: #F9F9F9;
+    }
+    .seek-btn {
+        width: 100%;
+        height: 100%;
     }
 </style>
 <!--求片-->
@@ -134,7 +146,7 @@ $this->registerJs($js);
         </div>
         <div class="seekbox-tip">人名之间用逗号隔开</div>
         <div class="seekbox-text03" name="zt">
-            <span class="seekbox-title"> </span><input class="seek-btn" type="button" name="" id="v_submit" value="提交">
+            <input class="seek-btn" type="button" name="" id="v_submit" value="提交">
         </div>
         <div class="seekbox-tips">完善影片信息，求片成功率会更高</div>
     </div>

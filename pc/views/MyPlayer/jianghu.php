@@ -1101,7 +1101,7 @@ function initialUrl($url)
             type:'get',
             cache:false,
             dataType:'json',
-            timeout: 2000,
+            timeout: 4000,
             success:function(res) {
                 if(res.errno == 0){
                     if(res.data.advert.playbefore.ad_image){

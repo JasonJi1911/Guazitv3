@@ -1121,6 +1121,13 @@ function initialUrl($url)
                         '</a></li>';
         $('#LSmenuBox_div ul.LSmenu li[data-video-id=<?=$videos[0]['video_id']?>]').remove();
         $('#LSmenuBox_div ul.LSmenu').prepend(watchstr);
+
+        //2022-4-19尹 PC播放页-播放窗口上方广告局部刷新
+        <?php $advert_top = '';
+        if(isset($advert_top_pc)){
+            $advert_top = '<div class="play-box video-add-column video-detail-ad"><a href="'.$advert_top_pc['ad_skip_url'].'" target="_blank"><img src="'.$advert_top_pc['ad_image'].'" /></a></div>';
+        }?>
+        $("#videotop").html('<?=$advert_top?>');
     });
     function advertinfo(qualitystr){
         //视频 player1
