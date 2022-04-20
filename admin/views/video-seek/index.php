@@ -57,6 +57,36 @@ $this->params['breadcrumbs'][] = $this->title;
                 'director_name',
                 'actor_name',
                 [
+                    'label' => '昵称',
+                    'format' => 'raw',
+                    'value' =>  function ($model) {
+                        if (!$model->user) {
+                            return '--';
+                        }
+                        return $model->user->nickname;
+                    }
+                ],
+                [
+                    'label' => '电话',
+                    'format' => 'raw',
+                    'value' =>  function ($model) {
+                        if (!$model->user) {
+                            return '--';
+                        }
+                        return $model->user->mobile;
+                    }
+                ],
+                [
+                    'label' => '邮箱',
+                    'format' => 'raw',
+                    'value' =>  function ($model) {
+                        if (!$model->user) {
+                            return '--';
+                        }
+                        return $model->user->email;
+                    }
+                ],
+                [
                     'label' => '求片时间',
                     'format' => 'raw',
                     'value' =>  function ($model) {

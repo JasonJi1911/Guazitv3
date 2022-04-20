@@ -1,6 +1,8 @@
 <?php
 namespace admin\models\video;
 
+use admin\models\user\User;
+
 class VideoSeek extends \common\models\video\VideoSeek
 {
     /**
@@ -9,7 +11,7 @@ class VideoSeek extends \common\models\video\VideoSeek
     public function rules()
     {
         return [
-            [['id', 'channel_id', 'area_id', 'created_at', 'updated_at', 'deleted_at'], 'integer'],
+            [['id','uid', 'channel_id', 'area_id', 'created_at', 'updated_at', 'deleted_at'], 'integer'],
             [['video_name'], 'required'],
             [['year', 'director_name'], 'string', 'max' => 32],
             [['actor_name'], 'string', 'max' => 50],
@@ -23,6 +25,7 @@ class VideoSeek extends \common\models\video\VideoSeek
     {
         return [
             'id' => '自增ID',
+            'uid' => '用户id',
             'video_name' => '影片名称',
             'channel_id' => '频道id',
             'area_id' => '地区id',
@@ -51,4 +54,11 @@ class VideoSeek extends \common\models\video\VideoSeek
         return $this->hasOne(VideoArea::className(), ['id' => 'area_id']);
     }
 
+    /*
+     * 用户
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['uid' => 'uid']);
+    }
 }
