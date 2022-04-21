@@ -790,6 +790,7 @@ function initialUrl($url)
         }
     });
 
+    var warnTimeout;
     function initialPlayer(e) {
         dp1 = new DPlayer({
             element: document.getElementById('player1'),
@@ -871,9 +872,9 @@ function initialUrl($url)
 
         var strtext = "<div id='player-load1-warn'>如果卡顿，请在<span>播放窗口右侧</span>更换<span>1080P</span>线路</div>";
         $("#player1").prepend(strtext);
-        setTimeout(function(){
+        warnTimeout = setTimeout(function(){
             $("#player-load1-warn").hide();
-        },10000);
+        },20000);
         dp1.on('loadedmetadata', function () {
             var totaltime = parseInt(dp1.video.duration);
             if(totaltime>0){

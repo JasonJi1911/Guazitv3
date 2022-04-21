@@ -1919,6 +1919,11 @@ else
                 dp.destroy();
                 dp1.destroy();
                 $("#jianghu2").empty();
+                if(warnTimeout != undefined)
+                {
+                    clearTimeout(warnTimeout);
+                }
+
                 $("#jianghu2").html(s);
 
                 $('.J_switch_next').removeClass('selected');

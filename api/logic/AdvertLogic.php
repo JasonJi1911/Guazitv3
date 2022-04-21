@@ -151,13 +151,17 @@ class AdvertLogic
 
     /*
      * 数据库读取亿忆广告
+     * 20220421-新增渠道$product 1App 2wap 3PC
      */
     public function getAdYY($citycode){
         if(!$citycode){
             return [];
         }
-
-        $key = 'advert_yeeyi_'.$citycode;
+        $product = Yii::$app->common->product;
+        if(!$product){
+            return [];
+        }
+        $key = 'advert_yeeyi_'.$citycode.$product;
         $redis = new RedisStore();
         if($data = $redis->get($key)){
             $advert = json_decode($data, true);
@@ -167,7 +171,7 @@ class AdvertLogic
         $videodao = new VideoDao();
         $city = $videodao->findcity($citycode);
         if($city){
-            $advert = AdvertYYTitle::find()->andWhere(['city_id'=>$city['id']])->asArray()->all();
+            $advert = AdvertYYTitle::find()->andWhere(['city_id'=>$city['id']])->andWhere(['product'=>$product])->asArray()->all();
             if($advert){
                 foreach ($advert as &$t){
                     $t['advert'] = AdvertYY::find()->andWhere(['yy_id'=>$t['id']])->asArray()->all();
