@@ -457,7 +457,7 @@ if(empty($is_show_background) || $is_show_background != 1){
         <li class="navTopMenuBox">
             <div class="navTopMenu">
                 <!--导航菜单--一级-->
-                <span class="navTopMenu-text <?php if($channel_id==0) echo 'act'?>" name="zt">
+                <span class="navTopMenu-text <?php if($channel_id==0 && $pageTab=='newindex') echo 'act'?>" name="zt">
                     <a href="<?= Url::to(['/video/index'])?>" >
                         推荐
                     </a>
@@ -465,7 +465,7 @@ if(empty($is_show_background) || $is_show_background != 1){
                 <?php if(!empty($channels)) :?>
                     <?php foreach ($channels['channeltags'] as $key=>$channel) :?>
                         <?php if ($key < 6) :?>
-                            <span class="navTopMenu-text <?php if($channel_id==$channel['channel_id']) echo 'act'?>" name="zt">
+                            <span class="navTopMenu-text <?php if($channel_id==$channel['channel_id'] && $pageTab=='channel') echo 'act'?>" name="zt">
                         <?php if($channel['channel_name'] != '首页'): ?>
                             <a href="<?= Url::to(['/video/channel', 'channel_id' => $channel['channel_id']])?>">
                                 <?= $channel['channel_name']?>
