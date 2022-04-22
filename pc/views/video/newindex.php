@@ -841,101 +841,102 @@ $this->registerJs($js);
     <?php endforeach;?>
 
     <!--新片预告-->
-    <?php if($data['trailer']['trailer']):?>
-        <ul id="section-new" class="NewTrailer-box" name="zt">
-            <li class="Title-01">
-                <a class="Title-big" href="javaScript:;"><?=$data['trailer']['trailer_title']['title']?></a>
-            </li>
-            <!--电影列表-->
-            <?php foreach ($data['trailer']['trailer'] as $key=>$list): ?>
-                <?php if($key < 7) :?>
-                    <li class="Movie-list"  >
-                        <div class="Coming-online">
-                            <div class="Coming-online-line"></div>
-                            <span class="Coming-online-text"><?=$list['title']?></span>
-                        </div>
-                        <a class="Movie" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
-                            <img class="Movie-img i_background_errorimg" originalSrc="<?= $list['cover']?>" src="/images/newindex/default-cover.png" />
-                            <div class="palyBtn">
-                                <img src="/images/newindex/bofang.png" />
+    <?php if($data['trailer']):?>
+        <?php foreach ($data['trailer'] as $trailer):?>
+            <ul id="section-trailer<?=$trailer['trailer_title']['id']?>" class="NewTrailer-box" name="zt">
+                <li class="Title-01">
+                    <a class="Title-big" href="javaScript:;"><?=$trailer['trailer_title']['title']?></a>
+                </li>
+                <!--电影列表-->
+                <?php foreach ($trailer['trailer'] as $key=>$list): ?>
+                    <?php if($key < 7) :?>
+                        <li class="Movie-list"  >
+                            <div class="Coming-online">
+                                <div class="Coming-online-line"></div>
+                                <span class="Coming-online-text"><?=$list['title']?></span>
                             </div>
+                            <a class="Movie" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
+                                <img class="Movie-img i_background_errorimg" originalSrc="<?= $list['cover']?>" src="/images/newindex/default-cover.png" />
+                                <div class="palyBtn">
+                                    <img src="/images/newindex/bofang.png" />
+                                </div>
 
-                            <div class="Movie-details" name="zt">
-                                <div class="Movie-name01" name="zt">
-                                    <?= $list['video_name']?>
-                                </div>
-                                <ul class="Movie-type" name="zt">
-                                    <?php foreach (explode(' ',$list['category']) as $category): ?>
-                                        <li>
-                                            <?= $category?>
-                                        </li>
-                                    <?php endforeach;?>
-                                </ul>
-                                <div class="Movie-star" name="zt">
-                                    主演：
-                                    <?php if (!empty($list['actors'])) :?>
-                                        <?php foreach ($list['actors'] as $key => $actor): ?>
-                                            <span><?= $actor['actor_name']?></span>
+                                <div class="Movie-details" name="zt">
+                                    <div class="Movie-name01" name="zt">
+                                        <?= $list['video_name']?>
+                                    </div>
+                                    <ul class="Movie-type" name="zt">
+                                        <?php foreach (explode(' ',$list['category']) as $category): ?>
+                                            <li>
+                                                <?= $category?>
+                                            </li>
                                         <?php endforeach;?>
-                                    <?php endif;?>
+                                    </ul>
+                                    <div class="Movie-star" name="zt">
+                                        主演：
+                                        <?php if (!empty($list['actors'])) :?>
+                                            <?php foreach ($list['actors'] as $key => $actor): ?>
+                                                <span><?= $actor['actor_name']?></span>
+                                            <?php endforeach;?>
+                                        <?php endif;?>
+                                    </div>
+                                    <div class="Movie-content" name="zt">
+                                        简介：
+                                        <span><?= $list['intro']?></span>
+                                    </div>
+                                    <ul class="Movie-btm" name="zt">
+                                        <li><?= $list['play_times']?></li>
+                                        <li><input class="XQ" type="button" value="详情" onclick="XQ('<?= $list['video_id']?>')"/></li>
+                                    </ul>
                                 </div>
-                                <div class="Movie-content" name="zt">
-                                    简介：
-                                    <span><?= $list['intro']?></span>
+                            </a>
+                            <a class="Movie-name02 font-color-FFFFFF" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
+                                <?= $list['video_name']?>
+                            </a>
+                            <div class="Movie-type02" name="zt">
+                                <div>
+                                    <?php foreach (explode(' ',$list['category']) as $category): ?>
+                                        <span><?= $category?></span>
+                                    <?php endforeach;?>
                                 </div>
-                                <ul class="Movie-btm" name="zt">
-                                    <li><?= $list['play_times']?></li>
-                                    <li><input class="XQ" type="button" value="详情" onclick="XQ('<?= $list['video_id']?>')"/></li>
-                                </ul>
+                                <div></div>
                             </div>
-                        </a>
-                        <a class="Movie-name02 font-color-FFFFFF" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
-                            <?= $list['video_name']?>
-                        </a>
-                        <div class="Movie-type02" name="zt">
-                            <div>
-                                <?php foreach (explode(' ',$list['category']) as $category): ?>
-                                    <span><?= $category?></span>
-                                <?php endforeach;?>
-                            </div>
-                            <div></div>
-                        </div>
-                    </li>
-                    <!--详情弹出层,默认隐藏-->
-                    <div class="alt" id="alt03<?= $list['video_id']?>">
-                        <div class="alt03-box" name="zt">
-                            <div class="alt03-box-t">
-                                <div class="alt03-box-R">
-                                    <img class="i_background_errorimg" originalSrc="<?= $list['cover']?>" src="/images/newindex/default-cover.png" />
-                                </div>
-                                <div class="alt03-box-L">
-                                    <a class="XQ-name" name="zt" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>"><?= $list['video_name']?></a>
-                                    <div class="GNbox">
-                                        <div class="GNbox-type" name="zt">
-                                            <?php foreach (explode(' ',$list['category']) as $category): ?>
-                                                <span>
+                        </li>
+                        <!--详情弹出层,默认隐藏-->
+                        <div class="alt" id="alt03<?= $list['video_id']?>">
+                            <div class="alt03-box" name="zt">
+                                <div class="alt03-box-t">
+                                    <div class="alt03-box-R">
+                                        <img class="i_background_errorimg" originalSrc="<?= $list['cover']?>" src="/images/newindex/default-cover.png" />
+                                    </div>
+                                    <div class="alt03-box-L">
+                                        <a class="XQ-name" name="zt" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>"><?= $list['video_name']?></a>
+                                        <div class="GNbox">
+                                            <div class="GNbox-type" name="zt">
+                                                <?php foreach (explode(' ',$list['category']) as $category): ?>
+                                                    <span>
                                                 <?= $category?>
                                             </span>
-                                            <?php endforeach;?>
+                                                <?php endforeach;?>
+                                            </div>
+                                            <div class="GNbox-RD" name="zt">
+                                                <?= $list['play_times']?>
+                                            </div>
+                                            <div class="GNbox-PF">
+                                                <span><?= $list['score']?></span>分
+                                            </div>
                                         </div>
-                                        <div class="GNbox-RD" name="zt">
-                                            <?= $list['play_times']?>
-                                        </div>
-                                        <div class="GNbox-PF">
-                                            <span><?= $list['score']?></span>分
-                                        </div>
-                                    </div>
-                                    <ul class="XQ-text">
-                                        <li>年代:<span><?= $list['year']?></span></li>
-                                        <li>导演:<span>
+                                        <ul class="XQ-text">
+                                            <li>年代:<span><?= $list['year']?></span></li>
+                                            <li>导演:<span>
                                                 <?php if (!empty($list['director'])) :?>
                                                     <?php foreach ($list['director'] as $key => $director): ?>
                                                         <?= $director['actor_name']?>
                                                     <?php endforeach;?>
                                                 <?php endif;?>
-                                        </li>
-                                        <li>主演:
-                                            <span>
+                                            </li>
+                                            <li>主演:
+                                                <span>
                                             <?php if (!empty($list['actors'])) :?>
                                                 <?php foreach ($list['actors'] as $key => $actor): ?>
                                                     <?php if ($actor['actor_name'] !='') :?>
@@ -948,31 +949,26 @@ $this->registerJs($js);
                                                 <?php endforeach;?>
                                             <?php endif;?>
                                         </span>
-                                        </li>
-                                    </ul>
-                                    <div class="XQ-btn" name="zt">
-                                        <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">播放</a>
-                                        <input type="button" value="收藏" onclick="addfavors(<?=$list['video_id']?>)" />
+                                            </li>
+                                        </ul>
+                                        <div class="XQ-btn" name="zt">
+                                            <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">播放</a>
+                                            <input type="button" value="收藏" onclick="addfavors(<?=$list['video_id']?>)" />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <p class="alt03-box-Z">
-                                简介：<span><?= $list['intro']?></span>
-                            </p>
-                            <!--                                <div class="alt03-box-B">-->
-                            <!--                                    <div><span>173</span>评论</div>-->
-                            <!--                                    <div><span>173</span>赞</div>-->
-                            <!--                                    <div><span>50</span>踩</div>-->
-                            <!--                                    <div><span>12</span>分享 </div>-->
-                            <!--                                </div>-->
-                            <!--关闭按钮-->
-                            <input class="alt-GB" type="button" value="X" />
+                                <p class="alt03-box-Z">
+                                    简介：<span><?= $list['intro']?></span>
+                                </p>
+                                <!--关闭按钮-->
+                                <input class="alt-GB" type="button" value="X" />
+                            </div>
                         </div>
-                    </div>
-                <?php endif;?>
-            <?php endforeach ?>
-        </ul>
+                    <?php endif;?>
+                <?php endforeach ?>
+            </ul>
+        <?php endforeach; ?>
     <?php endif;?>
     <!--赛事直播-->
     <ul class="Livemaches-box" name="zt" style="display: none;">
@@ -1114,8 +1110,8 @@ $this->registerJs($js);
     //获取今日预告总条数
     <?php
     $trailercount = 0;
-    if($data['trailer']['trailer']){
-        $trailercount = count($data['trailer']['trailer']);
+    if($data['trailer']){
+        $trailercount = count($data['trailer']);
     }?>
     var trailer_length = <?=$trailercount?>;
 

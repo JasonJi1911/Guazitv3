@@ -1850,47 +1850,50 @@ class VideoLogic
             return $data;
         }
 
-        $trailerTitle = TrailerTitle::findOne(['channel_id'=>$channelId]);
+        $trailerTitle = TrailerTitle::find()->andWhere(['channel_id'=>$channelId])->asArray()->all();
         $data = [];
         if($trailerTitle){
-            $data['trailer_title'] = $trailerTitle->toArray();
             $fields = ['video_id', 'video_name', 'score', 'cover', 'horizontal_cover', 'flag', 'tag', 'play_times', 'intro', 'category', 'actors_id', 'summary', 'year','created_at'];
             $videodao = new VideoDao();
-            $trailerdata = $videodao->findTrailer($trailerTitle['id']);
-            if($trailerdata){
-                foreach ($trailerdata as $k=>$trailer){
-                    $videoInfo = $videodao->videoInfo($trailer['video_id'], $fields);
-                    $trailer['video_name']       = $videoInfo['video_name'];
-                    $trailer['score']            = $videoInfo['score'];
-                    $trailer['cover']            = $videoInfo['cover'];
-                    $trailer['horizontal_cover'] = $videoInfo['horizontal_cover'];
-                    $trailer['flag']             = $videoInfo['flag'];
-                    $trailer['tag']              = $videoInfo['tag'];
-                    $trailer['play_times']       = $videoInfo['play_times'];
-                    $trailer['intro']            = $videoInfo['intro'];
-                    $trailer['category']         = $videoInfo['category'];
-    //                $trailer['actors_id']        = $videoInfo[$trailer['video_id']]['actors_id'];
-                    $trailer['summary']          = $videoInfo['summary'];
-                    $trailer['year']             = $videoInfo['year'];
-                    $trailer['created_at']       = $videoInfo['created_at'];
+            foreach ($trailerTitle as $i=>$tt) {
+                $trailerdata = $videodao->findTrailer($tt['id']);
+                if($trailerdata){
+                    foreach ($trailerdata as $k=>$trailer){
+                        $videoInfo = $videodao->videoInfo($trailer['video_id'], $fields);
+                        $trailer['video_name']       = $videoInfo['video_name'];
+                        $trailer['score']            = $videoInfo['score'];
+                        $trailer['cover']            = $videoInfo['cover'];
+                        $trailer['horizontal_cover'] = $videoInfo['horizontal_cover'];
+                        $trailer['flag']             = $videoInfo['flag'];
+                        $trailer['tag']              = $videoInfo['tag'];
+                        $trailer['play_times']       = $videoInfo['play_times'];
+                        $trailer['intro']            = $videoInfo['intro'];
+                        $trailer['category']         = $videoInfo['category'];
+                        //$trailer['actors_id']        = $videoInfo[$trailer['video_id']]['actors_id'];
+                        $trailer['summary']          = $videoInfo['summary'];
+                        $trailer['year']             = $videoInfo['year'];
+                        $trailer['created_at']       = $videoInfo['created_at'];
 
-                    $actorsId = $videoInfo['actors_id'] ? explode(',', $videoInfo['actors_id']) : [];
-                    //演员信息，根据type区分演员和导演
-                    $actorlist = $videodao->actorsInfo($actorsId);
-                    $director = $actors = [];
-                    foreach ($actorlist as &$actor) {  //循环影片所有的演员信息
-                        if ($actor['type'] == Actor::TYPE_ACTOR) {
-                            $actors[]   = $actor;
-                        } else {
-                            $director[] = $actor;
+                        $actorsId = $videoInfo['actors_id'] ? explode(',', $videoInfo['actors_id']) : [];
+                        //演员信息，根据type区分演员和导演
+                        $actorlist = $videodao->actorsInfo($actorsId);
+                        $director = $actors = [];
+                        foreach ($actorlist as &$actor) {  //循环影片所有的演员信息
+                            if ($actor['type'] == Actor::TYPE_ACTOR) {
+                                $actors[]   = $actor;
+                            } else {
+                                $director[] = $actor;
+                            }
                         }
+                        $trailer['actors'] = array_values($actors);
+                        $trailer['director'] = array_values($director);
+                        $trailerdata[$k] = $trailer;
                     }
-                    $trailer['actors'] = array_values($actors);
-                    $trailer['director'] = array_values($director);
-                    $trailerdata[$k] = $trailer;
                 }
+                $data[$i]['trailer'] = $trailerdata;
+                $data[$i]['trailer_title'] = $tt;
             }
-            $data['trailer'] = $trailerdata;
+
             //写入缓存
             $redis->setEx($key, json_encode($data));
         }

@@ -451,7 +451,8 @@ class VideoController extends BaseController
 
         $advert_top_pc = [];
         foreach ($data['advert'] as $key => $advert) {
-            if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_PLAY_BEFORE_PC) {
+            //2022-04-22尹 播放器广告，会员不加载
+            if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_PLAY_BEFORE_PC && !$data['isvip']) {
                 if(strpos($advert['ad_image'], '.mp4') !== false) {
                     $ad_type = 'mp4';
                     $ad_url = $advert['ad_image'];
@@ -1552,7 +1553,7 @@ class VideoController extends BaseController
         $data = [];
 
         //查广告
-        $data = Yii::$app->api->get('/video/advert', ['page' => $page, 'city'=> '', 'citycode' => $citycode]);
+        $data = Yii::$app->api->get('/video/advert', ['page' => $page, 'city'=> '', 'citycode' => $citycode, 'uid' => $uid]);
 //        if($advert){
 //            $data['advert'] = $advert['advert'];
 //        }

@@ -4508,8 +4508,8 @@ Movie-Ranking-img-num {
 
 .SSjgJS {
 	display: grid;
-	/*grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;*/
-	grid-template-columns: repeat(17,1fr);
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+	/*grid-template-columns: repeat(17,1fr);*/
 	grid-gap: 10px;
 	overflow: hidden;
 }
@@ -4675,7 +4675,7 @@ Movie-Ranking-img-num {
 	font-size: 14px;
 }
 .qy-player-side-body {
-	height: 813px;
+	height: 790px;
 	padding-bottom: 4px;
 	box-sizing: border-box;
 	*zoom: 1;
@@ -5656,7 +5656,7 @@ Movie-Ranking-img-num {
 		height: 690px;
 	}
 	.qy-player-side-body {
-		height: 690px;
+		height: 650px;
 	}
 	.qy-player-side-body .body-inner .side-content{
 		min-height: 371px;
@@ -5709,7 +5709,7 @@ Movie-Ranking-img-num {
 		height: 550px;
 	}
 	.qy-player-side-body {
-		height: 550px;
+		height: 500px;
 	}
 	.qy-player-side-body .body-inner .side-content{
 		min-height: 231px;

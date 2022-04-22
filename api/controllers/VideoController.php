@@ -3,6 +3,7 @@ namespace api\controllers;
 
 use api\dao\CommonDao;
 use api\dao\RecommendDao;
+use api\dao\UserDao;
 use api\dao\VideoDao;
 use api\exceptions\ApiException;
 use api\helpers\ErrorCode;
@@ -149,6 +150,7 @@ class VideoController extends BaseController
         $page = $this->getParam('page');
         $city = $this->getParam('city');
 
+        $uid = $this->getParam('uid', 0);
         $citycode = $this->getParam('citycode', "");
         $videodao = new VideoDao();
         $citylist = $videodao->findcity($citycode);
@@ -184,7 +186,7 @@ class VideoController extends BaseController
             $data['flash'] = $flash;
         } else if($page == "detail"){
             $data['advert'] = [
-                'playbefore' => (object)$advertLogic->advertByPosition($playbeforePos, $city),
+//                'playbefore' => (object)$advertLogic->advertByPosition($playbeforePos, $city),
                 'playtop' => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_PLAY_STOP, $city),
                 'playliketop' => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_LIKE_TOP, $city),
                 'playlikebottom' => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_LIKE_BOTTOM, $city),
@@ -192,6 +194,14 @@ class VideoController extends BaseController
                 'videobottom' => (object)$advertLogic->advertByPosition($videoBottomPos, $city),
                 'videoright' => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_RIGHT_PC, $city)
             ];
+            //2022-04-22尹 播放器广告，会员不加载
+            $userdao = new UserDao();
+            $vip = $userdao->validuservipPC($uid);
+            if(!$vip){// 不是会员，有广告
+                $data['advert']['playbefore'] = (object)$advertLogic->advertByPosition($playbeforePos, $city);
+            }else{
+                $data['advert']['playbefore'] = [];
+            }
         }else if($page == "searchresult"){
             $advert = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_SEARCH_PC, $city);
             $data['advert'] = $advert;
@@ -377,11 +387,21 @@ class VideoController extends BaseController
                 $city = '';
             }
         }
+
         //jianghu2信息
         $videoLogic = new VideoLogic();
         $data = $videoLogic->playInfo($videoId, $chapterId, $sourceId, $city, $uid);
         //播放记录
         $data['watchlog'] = $videoLogic->lastPlayInfo($videoId,$last_chapter_id,$uid);
+
+        //2022-04-22尹 播放器广告，会员不加载
+        $userdao = new UserDao();
+        $vip = $userdao->validuservipPC($uid);
+        if(!$vip){// 不是会员，有广告
+            $data['isvip'] = 0;
+        }else{
+            $data['isvip'] = 1;
+        }
         return $data;
     }
 

@@ -38,6 +38,7 @@ $(function(){
             kTab = true;
         }else{//无关键字
             kTab = false;
+            window.location.href = '/video/list?channel_id=2';
         }   
         // console.log(kword+","+kTab);
         // console.log(arrIndex); 
@@ -69,6 +70,7 @@ $(function(){
                 kTab = true;
             }else{//无关键字
                 kTab = false;
+                window.location.href = '/video/list?channel_id=2';
             }
             
             //点击非页码，默认页面为1
@@ -138,21 +140,22 @@ $(function(){
     
     <!--关闭关键字-->
     $(document).on('click', '#searchkeywords', function() {
-        $('#searchkeywords').val('');
-        arrIndex['keyword'] = '';        
-        dataloading(false);     
-        //发送请求，获取数据
-        $.get('/video/refresh-video', arrIndex, function(s) {
-            $('#searchVideos').html(s); // 更新内容
-            imgdelayLoading();
-            var totalnum = $("#parcount").val();            
-            zeroSearch(totalnum);
-            $('.totalresult1').text(totalnum); //刷新影片数 
-            page(1,page_size,totalnum); 
-            dataloading(false);
-            var bodycolor = $("body").attr("class");
-            colorHF(bodycolor);            
-        });
+        window.location.href = '/video/list?channel_id=2';
+        // $('#searchkeywords').val('');
+        // arrIndex['keyword'] = '';        
+        // dataloading(false);     
+        // //发送请求，获取数据
+        // $.get('/video/refresh-video', arrIndex, function(s) {
+        //     $('#searchVideos').html(s); // 更新内容
+        //     imgdelayLoading();
+        //     var totalnum = $("#parcount").val();            
+        //     zeroSearch(totalnum);
+        //     $('.totalresult1').text(totalnum); //刷新影片数 
+        //     page(1,page_size,totalnum); 
+        //     dataloading(false);
+        //     var bodycolor = $("body").attr("class");
+        //     colorHF(bodycolor);            
+        // });
     });
     
     <!--点击三个点，加载全部-->
