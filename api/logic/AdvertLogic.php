@@ -8,6 +8,7 @@ use api\helpers\ErrorCode;
 use api\models\advert\AdvertPosition;
 use api\models\advert\AdvertYY;
 use api\models\advert\AdvertYYTitle;
+use api\models\video\City;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
 use common\helpers\Tool;
@@ -170,11 +171,18 @@ class AdvertLogic
         $advert = [];
         $videodao = new VideoDao();
         $city = $videodao->findcity($citycode);
-        if($city){
-            $advert = AdvertYYTitle::find()->andWhere(['city_id'=>$city['id']])->andWhere(['product'=>$product])->asArray()->all();
-            if($advert){
-                foreach ($advert as &$t){
-                    $t['advert'] = AdvertYY::find()->andWhere(['yy_id'=>$t['id']])->asArray()->all();
+
+        //2022-4-22尹 一个城市多个三字码
+        $citys = City::find()->andWhere(['city_name'=>$city['city_name']])->asArray()->all();
+        if($citys){
+            foreach ($citys as $city) {
+                //查询到广告，退出循环
+                $advert = AdvertYYTitle::find()->andWhere(['city_id'=>$city['id']])->andWhere(['product'=>$product])->asArray()->all();
+                if($advert){
+                    foreach ($advert as &$t){
+                        $t['advert'] = AdvertYY::find()->andWhere(['yy_id'=>$t['id']])->asArray()->all();
+                    }
+                    break;
                 }
             }
         }
