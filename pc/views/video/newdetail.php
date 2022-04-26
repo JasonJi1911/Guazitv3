@@ -580,7 +580,7 @@ else
                                                                         data-type="<?= $data['info']['catalog_style']?>"
                                                                         id='chap-<?=$source['resId']?>-<?=$value['chapter_id']?>'>
                                                                         <div class="select-link">
-                                                                            <?= intval($value['title'])?>
+                                                                            <?= $value['title']?>
                                                                         </div>
                                                                     </li>
                                                                 <?php }?>

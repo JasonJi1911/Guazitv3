@@ -203,7 +203,7 @@ $(function(){
                                     "<ul class='Movie-type' name='zt'>"+categorylist+"</ul>" +
                                     "<div class='Movie-star' name='zt'>主演：<span>"+ actors +"</span></div>" +
                                     "<div class='Movie-content' name='zt'>简介：<span>"+data[i]['intro']+"</span></div>" +
-                                    // "<ul class='Movie-btm' name='zt'><li>"+data[i]['play_times']+"</li></ul>" +
+                                    "<ul class='Movie-btm' name='zt'><li>"+data[i]['play_times']+"</li></ul>" +
                                 "</div>"+
                             "</a>"+
                             "<a class='Movie-name02' name='zt' href='/video/detail?video_id="+data[i]['video_id']+ "' >"+data[i]['video_name']+"</a>"+
@@ -250,9 +250,6 @@ $this->registerJs($js);
 <style>
     body {
         background-color: #F9F9F9;
-    }
-    .Movie-content{
-        height:60px;
     }
 </style>
 <!--筛选条件-->

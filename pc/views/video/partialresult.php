@@ -1,11 +1,6 @@
 <?php
 use yii\helpers\Url;
 ?>
-<style>
-    .Movie-content{
-        height:60px;
-    }
-</style>
 <input type="hidden" value="<?= $info['current_page']?>" id="parpage">
 <input type="hidden" value="<?= $info['total_page']?>" id="parpages">
 <input type="hidden" value="<?= $info['total_count']?>" id="parcount">
@@ -154,10 +149,10 @@ use yii\helpers\Url;
                         简介：
                         <span><?= $list['intro']?></span>
                     </div>
-<!--                    <ul class="Movie-btm" name="zt">-->
-<!--                        <li>--><?//= $list['total_views']?><!--</li>-->
+                    <ul class="Movie-btm" name="zt">
+                        <li><?= $list['play_times']?></li>
 <!--                            <li><input class="XQ" type="button" id="" value="详情" /></li>-->
-<!--                    </ul>-->
+                    </ul>
                 </div>
 <!--                <div class="Movie-J">-->
 <!--                    <img src="/images/newindex/tuijian.png" />-->
