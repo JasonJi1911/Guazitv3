@@ -27,7 +27,7 @@ $(function (){
         $(this).parents(".sms-phone").find(".selectJ").attr('data',opJval);
         $('.sms-phone .opJ').removeClass("act");
     });
-    $("#login_sms_account").focus(function(){
+    $("#login_sms_account, #smscode, #password").focus(function(){
         $(".sms-code").addClass("act");
         $("#login-sms").addClass("act");
     });
@@ -100,8 +100,11 @@ $(function (){
         var prefix_phone = $('#sms_prefix_phone').attr('data');
         var account = $('#login_sms_account').val();
         var code = $("#smscode").val();
+        var pwd = $("#password").val();
         var tab = true;
         var arrIndex = {};
+        //新增登录方式
+        var login_type = ""; 
         if(account==""){
             $(".J_login_warning").text("手机号不能为空");
             $(".J_login_warning").show();
@@ -119,21 +122,34 @@ $(function (){
                 arrIndex['mobile_areacode'] = prefix_phone;
             }
         }
-        if(code==""){
-            $(".J_login_warning").text("验证码不能为空");
-            $(".J_login_warning").show();
-            tab = false;
-            return false;
+        
+        if($("#logintitle").text()=="短信登录"){
+            arrIndex['flag'] = 1;            
+            if(code==""){
+                $(".J_login_warning").text("验证码不能为空");
+                $(".J_login_warning").show();
+                tab = false;
+                return false;
+            }else{
+                arrIndex['code'] = code;
+            }
         }else{
-            arrIndex['code'] = code;
+            arrIndex['flag'] = 0;
+            if(pwd==""){
+                $(".J_login_warning").text("密码不能为空");
+                $(".J_login_warning").show();
+                tab = false;
+                return false;
+            }else{
+                arrIndex['password'] = pwd;
+            }
         }
         if(tab){
             $(".J_login_warning").text("正在登录中...");
             $(".J_login_warning").show();
-            arrIndex['flag'] = 1;//flag: 1-短信验证码
-            console.log('短信登录参数---',arrIndex);
+            console.log('登录参数---',arrIndex);
             $.get('/site/new-login',arrIndex,function(res){
-                console.log('短信登录结果---',res);
+                console.log('登录结果---',res);
                 if(res.errno==0 && res.data){
                     $(".J_login_warning").hide();
                     $("#pop-tip").text("登录成功");
@@ -147,7 +163,11 @@ $(function (){
                     window.location.href=document.referrer;
                     // location.reload();
                 }else{
-                    $(".J_login_warning").text("手机号或验证码错误");
+                    var msg = "登录失败";
+                    if(res.error!=""){
+                        msg = res.error;
+                    }
+                    $(".J_login_warning").text(msg);
                     $(".J_login_warning").show();
                 }
             });
@@ -169,7 +189,32 @@ $(function (){
             }
         }
         return mobile;
-    }
+    }    
+    //登录方式切换
+    $("#changelogin").click(function() {
+        $("#smscode").parent().toggleClass("divhidden");
+        $("#password").parent().toggleClass("divhidden");
+        var text = $("#changelogin a").text();
+            $("#logintitle").text(text);
+        if(text=="短信登录"){//切换至短信登录
+            $("#changelogin a").text("账号登录");
+            $("#login-sms").text("登录 / 注册")
+        }else{//切换至密码登录
+            $("#changelogin a").text("短信登录");
+            $("#login-sms").text("登录")
+        }
+    });
+    //密码是否可见
+    $(".eye").click(function() {
+		var eyeOn=$(this).attr("class")
+		if(eyeOn=="eye") {
+			$(this).addClass("act");
+			$(this).siblings(".inp").removeClass("pas").attr("type", "text");
+		} else {
+			$(this).removeClass("act");
+			$(this).siblings(".inp").addClass("pas").attr("type", "password");
+		}
+	});
 });
 JS;
 
@@ -192,12 +237,17 @@ $this->registerJs($js);
     .opJ>li {display: block;width: 100%;height: 30px;line-height: 30px;font-size: 12px;margin-left: 15px;cursor: pointer;}
     .selectJ{width:100px;background-color: #FFFFFF;background-image: url(../images/video/arrow_down.png);background-position: 60px center;background-repeat: no-repeat;background-size: 8px;}
     .loginTip {display: none;font-size: 12px;font-weight: 400;color: #FF556E;}
+    #changelogin{text-align: center;}
+    #changelogin a{display: inline-block;width:auto;height: 100%;margin:0 auto;color: #7A7A7A;font-size: 14px;font-weight: bold;}
+    .divhidden{display: none;}
+    .eye{position: absolute;top: 5px;right: 25px;width: 30px;height: 30px;background-image: url(../images/video/yanjing-3.png);background-position: center;background-repeat: no-repeat;background-color: rgba(255, 255, 255, 0);}
+    .eye.act {background-image: url(../images/video/yanjing.png);}
 </style>
 <div class="display-flex outer-div sms-title" >
     <a class="div-box position-r" href="javascript:window.location.href=document.referrer;">
         <img src="/images/video/left_gray.png">
     </a>
-    <div class="text-center" style="width: calc(100% - 2rem);">短信登录</div>
+    <div id="logintitle" class="text-center" style="width: calc(100% - 2rem);">账号登录</div>
     <div class="div-box position-r"></div>
 </div>
 <div class="outer-div display-flex position-r border-bottom1 sms-phone">
@@ -224,13 +274,20 @@ $this->registerJs($js);
     <input type="button" class="selectJ text-left font12" id="sms_prefix_phone" value="<?=$selectVal?>" data="<?=$selectData?>"/>
     <input type="text" class="inp font12 J_account" name="" placeholder="请输入手机号" id="login_sms_account" value="" />
 </div>
-<div class="outer-div display-flex position-r border-bottom1 mt20" style="padding-left: 20px;">
-    <input type="text" class="inp font12 J_code_input" name="" placeholder="请输入验证码" value="" id="smscode" onkeyup="value=value.replace(/[^0-9]/i,'')" />
+<div class="outer-div display-flex position-r border-bottom1 mt20 divhidden" style="padding-left: 20px;">
+    <input type="text" class="inp font12" name="" placeholder="请输入验证码" value="" id="smscode" onkeyup="value=value.replace(/[^0-9]/i,'')" />
     <input type="button" class="sms-code font12 J_sms_code" value="获取验证码" />
+</div>
+<div class="outer-div display-flex position-r border-bottom1 mt20" style="padding-left: 20px;">
+    <input type="password" class="inp font12" name="" placeholder="请输入密码" value="" id="password" onkeyup="value=value.replace(/[^(\w-*\.*)]/g,'')" />
+    <input type="button" class="eye" value="">
 </div>
 <div class="loginTip mt20 ml20 J_login_warning">请输入手机号</div>
 <div class="outer-div mt20">
-    <button id="login-sms" class="fontW7 font14" >登录 / 注册</button>
+    <button id="login-sms" class="fontW7 font14" >登录</button>
+</div>
+<div id="changelogin" class="outer-div mt20" >
+    <a>短信登录</a>
 </div>
 
 <div class="outer-div sms-bottom" >

@@ -226,5 +226,5 @@ $this->registerJs($js);
 <div class="line" ></div>
 <div class="loginTip mt20 ml20 J_login_warning">请输入手机号</div>
 <div class="outer-div mt20">
-    <button id="login-sms" class="fontW7 font14 act" >绑定</button>
+    <button id="login-sms" class="fontW7 font14 act" >换绑</button>
 </div>

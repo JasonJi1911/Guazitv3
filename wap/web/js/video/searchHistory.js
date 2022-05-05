@@ -109,8 +109,7 @@
 
 //存用户
 function saveuser(uid){
-    console.log(uid);
-    setCookie("uid",uid,1);
+    setCookie("uid",uid,30);
 }
 
 //读用户

@@ -1,6 +1,6 @@
 <?php
 
-namespace pc\assets;
+namespace wap\assets;
 
 use yii\web\AssetBundle;
 
@@ -12,7 +12,7 @@ class StyleMap extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        '/css/map.css?v='. PC_ASSETS_CSS_VERSION,
+        '/css/map.css?v='. WAP_ASSETS_CSS_VERSION,
     ];
     public $js = [
 

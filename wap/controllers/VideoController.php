@@ -589,7 +589,7 @@ class VideoController extends BaseController
     public function actionCooperation(){
         $pageTab = "cooperation";
 
-        $data = Yii::$app->api->get('/service/about');
+        $data = Yii::$app->api->get('/service/about');//接口不可动，涉及app
         return $this->render('cooperation',[
             'pageTab' => $pageTab,
             'data'    => $data,

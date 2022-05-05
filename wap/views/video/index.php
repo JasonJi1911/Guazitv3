@@ -359,6 +359,7 @@ header('X-Frame-Options:Deny');
     </p>
     <p style="text-align:center;">Copyright 2020-2021 <?=PC_HOST_NAME?> Allrights Reserved.</p>
 </div>
+<div style="width:100%;height:1rem;"></div>
 <!--<div class="video-footer">
     <ul class="clearfix footer-top">
         <li><a href="#">关于我们</a></li>
