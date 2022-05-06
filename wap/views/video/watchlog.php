@@ -27,14 +27,16 @@ $(function (){
             $('.w-video').addClass('w-video-edit');
             $('.w-checkbox').show();
             $('#w_remove_bottom').show();         
-            $('.w-remove ').show();  
+            $('.w-remove ').show();        
+            $('.checkbox-div').addClass('checkbox-div-show');
         }else{
             $(that).text("编辑");
             $('.w-video').removeClass('w-video-edit');
             $('.w-checkbox').hide();
             $('#w_remove_bottom').hide();       
             $('.w-remove ').hide();  
-            $("input[type='checkbox']").prop("checked",false);
+            $("input[type='checkbox']").prop("checked",false);    
+            $('.checkbox-div').removeClass('checkbox-div-show');
         }
     });
     $("#w_remove").click(function(){
@@ -62,6 +64,7 @@ $(function (){
                     $('.w-checkbox').hide();
                     $('#w_remove_bottom').hide();       
                     $('.w-remove ').hide();  
+                    $('.checkbox-div').removeClass('checkbox-div-show');
                     $("input[name='w-video-checkbox']").prop("checked",false);
                     $("#pop-tip").text("删除成功");
                     $("#pop-tip").show().delay(1500).fadeOut();
@@ -109,13 +112,20 @@ $this->registerJs($js);
 <style>
     .comment-bottom .bottom-text.checkall{margin-left: 0;}
     .comment-bottom .bottom-left{width: auto;display: block;}
+    .comment-bottom.double-bottom{bottom: 0.95rem;}
+    .checkbox-div{display:none;position: absolute;width: 100%;height: 100%;z-index: 1;top:0;}
+    .checkbox-div-show{display: block;}
 </style>
 <input type="hidden" value="1" id="w_parpage">
 <input type="hidden" value="<?= (isset($data[0]['total_page'])?$data[0]['total_page']:0 )?>" id="w_total">
 <div class="display-flex outer-div sms-title pink w-title" >
+<?php if($bottom!='bottom'):?>
     <a class="div-box position-r white-arrow" href="<?= Url::to(['/video/personal'])?>">
         <img src="/images/video/icon-fh-1.png">
     </a>
+<?php else:?>
+    <div style="width: 1rem;"></div>
+<?php endif;?>
     <div class="text-center title-width">观看记录</div>
     <div class="div-box position-r text-right" id="w_edit">编辑</div>
 </div>
@@ -131,39 +141,43 @@ $this->registerJs($js);
         <?php endif;?>
         <div class="position-r plr15">
         <?php foreach ($watchdate['list'] as $video):?>
-            <div class="w-video position-r">
-                <div class="w-checkbox">
-                    <input type="checkbox" name="w-video-checkbox" data-id="<?=$video['log_id']?>"/>
-                </div>
-                <div>
-                    <a href="<?= Url::to(['detail', 'video_id' => $video['video_id']])?>">
-                        <img src="<?=$video['cover']?>">
-                    </a>
-                </div>
-                <div class="position-r w-video-detail">
-                    <div class="font14 h05" style="height: auto;">
+            <label class="position-r">
+                <div class="w-video position-r">
+                    <div class="w-checkbox">
+                        <input type="checkbox" name="w-video-checkbox" data-id="<?=$video['log_id']?>"/>
+                    </div>
+                    <div>
                         <a href="<?= Url::to(['detail', 'video_id' => $video['video_id']])?>">
-                            <?=$video['title']?>
-                            <?= is_numeric($video['chapter_title']) ? ('第'.$video['chapter_title'].'集') : $video['chapter_title']?>
+                            <img src="<?=$video['cover']?>">
                         </a>
                     </div>
-                    <div class="category">
-                        <span><?=$video['year']?></span>
-                        <?php foreach (explode(' ',$video['category']) as $category): ?>
-                            <span><?= $category?></span>
-                        <?php endforeach;?>
+                    <div class="position-r w-video-detail">
+                        <div class="font14 h05" style="height: auto;">
+                            <a href="<?= Url::to(['detail', 'video_id' => $video['video_id']])?>">
+                                <?=$video['title']?>
+                                <?= is_numeric($video['chapter_title']) ? ('第'.$video['chapter_title'].'集') : $video['chapter_title']?>
+                            </a>
+                        </div>
+                        <div class="category">
+                            <span><?=$video['year']?></span>
+                            <?php foreach (explode(' ',$video['category']) as $category): ?>
+                                <span><?= $category?></span>
+                            <?php endforeach;?>
+                        </div>
+                        <div class="font14 h05 colorB2"><?=$video['watch_time']?></div>
+                        <div class="font14 h05 colorB2 w-bottom-time"><?=$video['time_diff']?></div>
                     </div>
-                    <div class="font14 h05 colorB2"><?=$video['watch_time']?></div>
-                    <div class="font14 h05 colorB2 w-bottom-time"><?=$video['time_diff']?></div>
                 </div>
-            </div>
+                <!-- 编辑遮罩层 -->
+                <div class="checkbox-div"></div>
+            </label>
         <?php endforeach;?>
         </div>
     <?php endforeach;?>
     <div id="w_more"></div>
 <?php endif;?>
 <div class="outer-div w-remove" style="display:none;" ></div>
-<div id="w_remove_bottom" class="comment-bottom w-remove" style="display:none;" >
+<div id="w_remove_bottom" class="comment-bottom w-remove <?=$bottom=='bottom' ? 'double-bottom' : '' ;?>" style="display:none;" >
     <label class="bottom-left" id="w_checkall">
         <input class="w-checkbox-bottom" type="checkbox" name="w-video-checkbox-all"/>
         <span class="bottom-text checkall">全选</span>
@@ -172,3 +186,12 @@ $this->registerJs($js);
         <span class="bottom-text" style="color:#FF556E;">删除</span>
     </div>
 </div>
+<!--底部导航-->
+<?php if($bottom=='bottom'):?>
+    <div style="width:100%;height:1rem;"></div>
+    <div class="bottom-navi">
+        <?php echo $this->render('/video/bottom',[
+            'tab' =>    'watchlog'
+        ]);?>
+    </div>
+<?php endif;?>

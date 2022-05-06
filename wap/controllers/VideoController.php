@@ -494,11 +494,16 @@ class VideoController extends BaseController
     public function actionWatchLog(){
         $pageTab = "watchlog";
         $uid = Yii::$app->user->id;
+        $bottom  = Yii::$app->request->get('bottom', "");
+        if(empty($uid)){
+            return $this->redirect('/video/login');
+        }
 
         $data = Yii::$app->api->get('/video/watchlog-pc',['uid'=>$uid]);
         return $this->render('watchlog',[
             'pageTab' => $pageTab,
             'data'    => $data,
+            'bottom'  => $bottom,
         ]);
     }
     /*
@@ -528,6 +533,9 @@ class VideoController extends BaseController
     public function actionMyComment(){
         $pageTab = "mycomment";
         $uid = Yii::$app->user->id;
+        if(empty($uid)){
+            return $this->redirect('/video/login');
+        }
 
         $data = Yii::$app->api->get('/user/comment-wap',['uid'=>$uid,'page_num'=>1]);
         return $this->render('mycomment',[
@@ -550,11 +558,16 @@ class VideoController extends BaseController
     public function actionFavorite(){
         $pageTab = "favorite";
         $uid = Yii::$app->user->id;
+        $bottom  = Yii::$app->request->get('bottom', "");
+        if(empty($uid)){
+            return $this->redirect('/video/login');
+        }
         $data = [];
         $data = Yii::$app->api->get('/video/favorite-wap',['uid'=>$uid,'page_num'=>1]);
         return $this->render('favorite',[
             'pageTab' => $pageTab,
             'data'    => $data,
+            'bottom'  => $bottom,
         ]);
     }
     /*
@@ -647,5 +660,46 @@ class VideoController extends BaseController
             'pageTab' => $pageTab,
             'data'    => $data,
         ]);
+    }
+
+    /*
+     * 分类
+     */
+    public function actionListall()
+    {
+        //请求影片筛选信息,默认channel_id=2即连续剧
+        $channel_id = 2;
+        $info = Yii::$app->api->get('/video/filters', ['channel_id' => $channel_id, 'tag' => '', 'sort' => 'hot', 'sorttype' => 'desc', 'area' => '',
+            'play_limit' => '', 'year' => '', 'page_num' => 1, 'page_size' =>12 ,'type' => 1, 'status' => 0]);
+
+        //请求热门搜索信息
+        $hot = Yii::$app->api->get('/search/hot-word');
+
+        return $this->render('listall', [
+            'info' => $info,
+            'hot'  => $hot,
+            'channel_id' =>$channel_id,
+        ]);
+    }
+
+    public function actionRefreshCates()
+    {
+        //获取影片系列、剧集、源信息
+        $channel_id = Yii::$app->request->get('channel_id', 0);
+        $sort = Yii::$app->request->get('sort', '');
+//        $sorttype = Yii::$app->request->get('sorttype', 'desc');//排序高低
+        $tag = Yii::$app->request->get('tag', '');
+        $area = Yii::$app->request->get('area', '');
+        $year = Yii::$app->request->get('year', '');
+        $play_limit = Yii::$app->request->get('play_limit', '');
+        $page_num = Yii::$app->request->get('page_num', 1);
+        $page_size = Yii::$app->request->get('page_size', 12);
+        $status = Yii::$app->request->get('status', 0); // 剧集是否完结：全部 / 更新中
+
+        //请求影片筛选信息
+        $data = Yii::$app->api->get('/video/filters', ['channel_id' => $channel_id, 'tag' => $tag, 'sort' => $sort, 'sorttype' => 'desc', 'area' => $area,
+            'play_limit' => $play_limit, 'year' => $year, 'page_num' => $page_num, 'page_size' =>$page_size ,'type' => 1, 'status' => $status]);
+
+        return Tool::responseJson(0, '操作成功', $data);
     }
 }

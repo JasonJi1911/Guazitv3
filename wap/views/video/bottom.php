@@ -8,17 +8,27 @@ use yii\helpers\Url;
             <div class="bottom-textdiv">首页</div>
         </a>
     </li>
-    <li>
-        <div class="bottom-imgdiv bottom-img-category"></div>
-        <div class="bottom-textdiv">影视分类</div>
+    <li class="<?php if($tab == 'category') echo 'act'?>">
+        <a href="<?= Url::to(['/video/listall'])?>">
+            <div class="bottom-imgdiv bottom-img-category"></div>
+            <div class="bottom-textdiv">分类</div>
+        </a>
     </li>
-    <li style="position: relative;">
-        <div class="bottom-img-news"></div>
-        <div class="bottom-textdiv" style="margin-top: 0.7rem;">新闻</div>
+<!--    <li style="position: relative;">-->
+<!--        <div class="bottom-img-news"></div>-->
+<!--        <div class="bottom-textdiv" style="margin-top: 0.7rem;">新闻</div>-->
+<!--    </li>-->
+    <li class="<?php if($tab == 'favorite') echo 'act'?>">
+        <a href="<?= Url::to(['/video/favorite','bottom'=>'bottom'])?>">
+            <div class="bottom-imgdiv bottom-img-service"></div>
+            <div class="bottom-textdiv">收藏</div>
+        </a>
     </li>
-    <li>
-        <div class="bottom-imgdiv bottom-img-service"></div>
-        <div class="bottom-textdiv">生活服务</div>
+    <li class="<?php if($tab == 'watchlog') echo 'act'?>">
+        <a href="<?= Url::to(['/video/watch-log','bottom'=>'bottom'])?>">
+            <div class="bottom-imgdiv bottom-img-watchlog"></div>
+            <div class="bottom-textdiv">记录</div>
+        </a>
     </li>
     <li class="<?php if($tab == 'user') echo 'act'?>">
         <a href="<?= Url::to(['/video/personal'])?>">
@@ -27,11 +37,3 @@ use yii\helpers\Url;
         </a>
     </li>
 </ul>
-<script src="/js/video/jquery.min.1.11.1.js"></script>
-<script>
-    $(function (){
-        $(".bottom-navi ul li").click(function(){
-            $(this).addClass("act").siblings().removeClass("act");
-        });
-    });
-</script>
