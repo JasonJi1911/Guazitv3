@@ -141,6 +141,13 @@ header('X-Frame-Options:Deny');
         color: #fff;
         padding: 10px 0 0 10px;
     }
+    .a-small{
+        width: 50%;
+        padding:0 7.5px;
+    }
+    .img-small{
+        width: 100%;
+    }
 </style>
 
 <header class="video-header">
@@ -226,69 +233,38 @@ header('X-Frame-Options:Deny');
         <?php endif;?>
     </ul>
 </div>
-<style>
-</style>
 <!--今日热点-->
 <div class="video-index-column mt15 today-hot-div">
     <h3 class="video-index-title">今日热点</h3>
-    <dl class="video-list-box clearfix more-change-10">
-        <div class="row-div">
-            <a class="a-big" href="#">
-                <img class="img-big" src="/images/video/hot1.jpg">
-                <h5 class="video-item-name text-left" >nba90%阳性病例是奥克荣</h5>
-            </a>
-        </div>
-        <div class="row-div">
-            <a class="a-small" href="#" >
+    <div id="today-hot" class="video-list-box clearfix more-change-10 swiper-container " style="margin:20px 7.5px 0;padding:0;">
+        <div class="row-div swiper-wrapper cate-list-scroll">
+            <a class="a-small swiper-slide swiper-slide-li" href="#" >
                 <img src="/images/video/hot-2.jpg" class="img-small">
                 <h5 class="video-item-name text-left" >攀登：可复制的领导力</h5>
             </a>
-            <a class="a-small" href="#" >
+            <a class="a-small swiper-slide swiper-slide-li" href="#" >
                 <img src="/images/video/hot-2.jpg" class="img-small">
                 <h5 class="video-item-name text-left" >攀登：可复制的领导力</h5>
             </a>
-        </div>
-        <div class="row-div">
-            <a class="a-small" href="#" >
+            <a class="a-small swiper-slide swiper-slide-li" href="#" >
                 <img src="/images/video/hot-2.jpg" class="img-small">
                 <h5 class="video-item-name text-left" >攀登：可复制的领导力</h5>
             </a>
-            <a class="a-small" href="#" >
+            <a class="a-small swiper-slide swiper-slide-li" href="#" >
                 <img src="/images/video/hot-2.jpg" class="img-small">
                 <h5 class="video-item-name text-left" >攀登：可复制的领导力</h5>
             </a>
         </div>
-    </dl>
-</div>
-<!--新片预告-->
-<?php if($data['trailer']['trailer']):?>
-<div class="video-index-column mt15 trailer-div">
-    <h3 class="video-index-title">新片预告</h3>
-    <div class="trailer-swiper">
-        <img class="trailer-arrow trailer-left" src="/images/video/xleft.png" />
-        <img class="trailer-arrow trailer-right" src="/images/video/xright.png" />
-
-        <dl class="video-list-box clearfix more-change-10 mobile">
-            <?php foreach ($data['trailer']['trailer'] as $key=>$list): ?>
-                <?php if($key < 15) :?>
-                <dd>
-                    <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
-                        <div class="video-item-top">
-                            <img originalSrc="<?= $list['cover']?>" src="/images/default-cover.jpg">
-                            <div class="mark-box">
-                                <p class="mark"><?= $list['flag']?></p>
-                            </div>
-                        </div>
-                        <h5 class="video-item-name"><?= $list['video_name']?></h5>
-<!--                        <p class="video-item-play">--><?//= $list['play_times']?><!--</p>-->
-                    </a>
-                </dd>
-                <?php endif;?>
-            <?php endforeach ?>
-        </dl>
     </div>
 </div>
-<?php endif;?>
+<div class="video-other-more clearfix">
+    <a href="#" class="fl more-item ">
+        <span>查看更多</span>
+    </a>
+    <a href="#" class="fl more-item"><!-- more-change -->
+        <span class="change">换一换</span>
+    </a>
+</div>
 
 <?php if (!empty($data['label'])) :?>
     <?php foreach ($data['label'] as  $labels): ?>
@@ -344,7 +320,39 @@ header('X-Frame-Options:Deny');
         <?php endif; ?>
     <?php endforeach;?>
 <?php endif; ?>
-<div class="addtohomescreen" style="position: fixed;bottom: 1rem;left: 50%;transform: translateX(-50%);width: 75%;max-width: 75%;display: block;">
+
+<!--新片预告-->
+<?php if($data['trailer']):?>
+    <?php foreach ($data['trailer'] as $i=>$trailer):?>
+    <div class="video-index-column mt15 trailer-div">
+        <h3 class="video-index-title"><?=$trailer['trailer_title']['title']?></h3>
+        <div id="trailer<?=$i?>" class="trailer-swiper swiper-container">
+<!--            <img class="trailer-arrow trailer-left" src="/images/video/xleft.png" />-->
+<!--            <img class="trailer-arrow trailer-right" src="/images/video/xright.png" />-->
+
+            <dl class="video-list-box clearfix more-change-10 swiper-wrapper cate-list-scroll" style="padding: 0;">
+                <?php foreach ($trailer['trailer'] as $key=>$list): ?>
+                    <?php if($key < 15) :?>
+                        <dd class="swiper-slide swiper-slide-li swiper-dd" data-video-id="<?=$list['video_id']?>">
+                            <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>" class="swiper-a">
+                                <div class="video-item-top">
+                                    <img originalSrc="<?= $list['cover']?>" src="/images/default-cover.jpg">
+                                    <div class="mark-box">
+                                        <p class="mark"><?= $list['flag']?></p>
+                                    </div>
+                                </div>
+                                <h5 class="video-item-name"><?= $list['video_name']?></h5>
+                                <p class="video-item-play"><?= $list['play_times']?></p>
+                            </a>
+                        </dd>
+                    <?php endif;?>
+                <?php endforeach ?>
+            </dl>
+        </div>
+    </div>
+    <?php endforeach; ?>
+<?php endif;?>
+<div class="addtohomescreen" style="position: fixed;bottom: 1rem;left: 50%;transform: translateX(-50%);width: 75%;max-width: 75%;display: block;z-index: 2;">
     <img src="/images/video/addtohomescreen.png" alt="" style="width: 100%;">
   </div>
 <div class="video-index-notice">
@@ -374,51 +382,25 @@ header('X-Frame-Options:Deny');
         'tab' =>    'home'
     ]);?>
 </div>
+
+<?php //if (!empty($data['flash'])) : ?>
+<div class="bgcover" style="display: none;">
+    <div id="jBox1" class="jBox-wrapper jBox-Modal jBox-Default jBox-closeButton-box">
+        <div style="width:auto;font-size:15px;text-align:center"></div>
+        <a href="" target="_blank">
+            <img src="" style="border: 0px;width:100%;height:100%">
+        </a>
+        <div class="jBox-closeButton jBox-noDrag">
+            <span class="flashCount"></span>
+        </div>
+    </div>
+</div>
+<?php //endif; ?>
 <script src="/js/video/jquery.min.1.11.1.js"></script>
 <script src="/js/video/swiper.min.js"></script>
 <!--<script src="/js/video/video.js?v=1.2"></script>-->
 <script src="/js/video/mtop.js"></script>
 <script>
-    //导航选中项处于中间位置
-    $(function () {
-        var _trailer=0;
-        // var ddwidth = $(".trailer-div dl.mobile dd").width();
-        var ddwidth = ($(window).width()-60)/3;
-        var movelength = (ddwidth+16);
-        $(".trailer-left").click(function(){
-            if(_trailer != 0){
-                _trailer=_trailer-1;
-                $(".trailer-div dl.mobile").stop().animate({left:-_trailer*movelength},1000);
-            }
-        });
-
-        $(".trailer-right").click(function(){
-            var len=$(".trailer-div dl.mobile dd").length;
-            if(_trailer+3 < len){
-                _trailer=_trailer+1;
-                console.log("movelength="+movelength);
-                $(".trailer-div dl.mobile").stop().animate({left:-_trailer*(movelength)},1000);
-            }
-        });
-
-        var index = $('#nav-channel').val();
-
-        $(".video-top-nav li").eq(index).addClass("on").siblings().removeClass("on");
-        var $cur = $("#topNav .on");
-        var index = $cur.index();
-        slideLeft1 = $cur.offset().left-20;
-        slideWidth1 = $cur.outerWidth(true);
-        slideCenter1 = slideLeft1 + slideWidth1 / 2;
-        if (slideCenter1 < swiperWidth / 2) {
-            mySwiper.setTranslate(0);
-        } else if (slideCenter1 > maxWidth) {
-            mySwiper.setTranslate(maxTranslate);
-        } else {
-            nowTlanslate = slideCenter1 - swiperWidth / 2;
-            mySwiper.setTranslate(-nowTlanslate);
-        }
-    });
-
     $('.addtohomescreen').on('click', function () {
         $('.addtohomescreen').hide();
     })
@@ -436,53 +418,45 @@ header('X-Frame-Options:Deny');
         
         arrIndex['page'] = "home";
         var advertKey = 0;
-        $.get('/video/advert', arrIndex, function(res) {
-                    
-            $(".video-add-column").each(function(index){
-                if(!res.data.hasOwnProperty("advert"))
-                    return false;
-                    
-                if(!res.data.advert.hasOwnProperty(index)){  
-                    advertKey = 0;
-                }
+        // $.get('/video/advert', arrIndex, function(res) {
+        //
+        //     $(".video-add-column").each(function(index){
+        //         if(!res.data.hasOwnProperty("advert"))
+        //             return false;
+        //
+        //         if(!res.data.advert.hasOwnProperty(index)){
+        //             advertKey = 0;
+        //         }
+        //
+        //         var addata = res.data.advert[advertKey];
+        //         if (addata.hasOwnProperty("ad_skip_url")) {
+        //             $(this).html("");
+        //             $(this).html(refreshAdvert(addata));
+        //         }
+        //         advertKey++;
+        //     });
+        // })
 
-                var addata = res.data.advert[advertKey];
-                if (addata.hasOwnProperty("ad_skip_url")) {
-                    $(this).html("");
-                    $(this).html(refreshAdvert(addata));
-                }
-                advertKey++;
-            });
-        })
-	});
-	
-	function refreshAdvert(addata)
-	{
-	    var content = '';
-	    content += "<a href='" + addata.ad_skip_url + "'>" + 
-                            "<img src='"+ addata.ad_image + "' alt='new'>" +
-                    "</a>";
-        return content;
-	}
-</script>
+        //新片预告trailer 滑动
+        <?php if($data['trailer']):?>
+            <?php foreach ($data['trailer'] as $i=>$trailer):?>
+                var mytrailer<?=$i?> = new Swiper ('#trailer<?=$i?>', {
+                    slidesPerView:'auto',
+                });
+                mytrailer<?=$i?>.on('tap', function (swiper, e) {
+                    var videoid = $("#trailer<?=$i?> .swiper-slide").eq(this.clickedIndex).attr('data-video-id');
+                    window.location.href = '/video/detail?video_id='+videoid;
+                });
+            <?php endforeach; ?>
+        <?php endif;?>
 
-<?php //if (!empty($data['flash'])) : ?>
-<div class="bgcover" style="display: none;">
-    <div id="jBox1" class="jBox-wrapper jBox-Modal jBox-Default jBox-closeButton-box">
-        <div style="width:auto;font-size:15px;text-align:center"></div>
-        <a href="" target="_blank">
-            <img src="" style="border: 0px;width:100%;height:100%">
-        </a>
-        <div class="jBox-closeButton jBox-noDrag">
-            <span class="flashCount"></span>
-        </div>
-    </div>
-</div>
-<?php //endif; ?>
-<script>
-    //按城市加载广告
-    $(function () {
-        var req = new XMLHttpRequest();
+        //今日热点滑动
+        var todayhot = new Swiper ('#today-hot', {
+            slidesPerView:'auto',
+        });
+
+        //按城市加载广告
+        var req = new XMLHttpRequest();``
         req.open('GET', document.location, false);
         req.send(null);
         var cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
@@ -523,5 +497,14 @@ header('X-Frame-Options:Deny');
                 console.log("广告加载失败");
             }
         });
-    });
+	});
+	
+	function refreshAdvert(addata)
+	{
+	    var content = '';
+	    content += "<a href='" + addata.ad_skip_url + "'>" + 
+                            "<img src='"+ addata.ad_image + "' alt='new'>" +
+                    "</a>";
+        return content;
+	}
 </script>

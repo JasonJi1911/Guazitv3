@@ -14,21 +14,23 @@ use yii\helpers\Url;
                 </li>
                 <li class="comment-detail">
                     <div class="h05 color70 fontW4 mt5" ><?=$comment['nickname']?></div>
-                    <div class="h05 color00 fontW4 mt5" ><?=$comment['content']?></div>
-                    <?php if($comment['reply_info']['list']):?>
-                        <div class="h05 color70 fontW4 comment-reply mt5" >
-                            <?php foreach ($comment['reply_info']['list'] as $key=>$reply):?>
-                                <?php if($key==0):?>
-                                    <div class="h04"><?=$reply['nickname']?>：<?=$reply['content']?></div>
-                                    <?php if($comment['reply_info']['total_count']>1):?>
-                                        <div class="h04 reply-more">共<?=$comment['reply_info']['total_count']?>条评论></div>
-                                    <?php endif;?>
-                                <?php else :?>
-                                    <div class="h04 reply-other"><?=$reply['nickname']?>：<?=$reply['content']?></div>
+                    <div class="h05 color00 fontW4 mt5 height-auto" onclick="showreply(<?=$comment['comment_id']?>)" ><?=$comment['content']?></div>
+                    <div id="commentid<?=$comment['comment_id']?>">
+                        <?php if($comment['reply_info']['list']):?>
+                            <input type="hidden" id="reply-current-<?=$comment['comment_id']?>" value="<?=$comment['reply_info']['current_page']?>" />
+                            <input type="hidden" id="reply-total-<?=$comment['comment_id']?>" value="<?=$comment['reply_info']['total_page']?>" />
+                            <div class="h05 color70 fontW4 comment-reply mt5" >
+                                <?php foreach ($comment['reply_info']['list'] as $key=>$reply):?>
+                                    <div class="h04 height-auto"><?=$reply['nickname']?>：<?=$reply['content']?></div>
+                                <?php endforeach; ?>
+                                <?php if($comment['reply_info']['total_page']>1):?>
+                                    <div class="h04 reply-more" onclick="replymore(<?=$comment['comment_id']?>,this)">
+                                        查看更多回复>
+                                    </div>
                                 <?php endif;?>
-                            <?php endforeach; ?>
-                        </div>
-                    <?php endif; ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
                     <div class="h05 color70 fontW4 mt5"><?=date("Y-m-d",$comment['created_at'])?></div>
                 </li>
             </ul>

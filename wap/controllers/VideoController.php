@@ -553,6 +553,21 @@ class VideoController extends BaseController
         return $this->renderPartial('mycommentmore', ['data' => $data]);
     }
     /*
+     * 加载回复列表
+     */
+    public function actionReplyMore(){
+        $pid = Yii::$app->request->get('pid', -1);
+        $page_num = Yii::$app->request->get('page_num', 0);
+
+        $data = Yii::$app->api->get('/video/reply-more', ['pid' => $pid,'page_num'=>$page_num]);
+        if($data){
+            $errno = 0;
+        }else{
+            $errno = -1;
+        }
+        return TOOL::responseJson($errno,"操作成功",$data);
+    }
+    /*
      * 我的收藏页
      */
     public function actionFavorite(){
@@ -682,6 +697,9 @@ class VideoController extends BaseController
         ]);
     }
 
+    /*
+     * 加载分类条件
+     */
     public function actionRefreshCates()
     {
         //获取影片系列、剧集、源信息

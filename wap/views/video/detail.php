@@ -286,6 +286,8 @@ $this->registerJs($js);
         left: 10px;
         color: #fff;
     }
+
+    .height-auto{height: auto;}
 </style>
 
 <div class="video-box">
@@ -440,7 +442,7 @@ $this->registerJs($js);
 }?>
 <div class="comment-part" id="comment-part">
     <div class="comment-title">
-        <div style="<?=$comment_style?>">评论（<span><?= $info['info']['total_favors']?></span>）</div>
+        <div style="<?=$comment_style?>">评论（<span><?= $info['commentcount']?></span>）</div>
     </div>
     <?php if($info['comments']['list']):?>
         <?php foreach ($info['comments']['list'] as $comment):?>
@@ -455,21 +457,23 @@ $this->registerJs($js);
                     </li>
                     <li class="comment-detail">
                         <div class="h05 color70 fontW4 mt5" ><?=$comment['nickname']?></div>
-                        <div class="h05 color00 fontW4 mt5" ><?=$comment['content']?></div>
-                        <?php if($comment['reply_info']['list']):?>
-                            <div class="h05 color70 fontW4 comment-reply mt5" >
-                                <?php foreach ($comment['reply_info']['list'] as $key=>$reply):?>
-                                    <?php if($key==0):?>
-                                        <div class="h04"><?=$reply['nickname']?>：<?=$reply['content']?></div>
-                                        <?php if($comment['reply_info']['total_count']>1):?>
-                                            <div class="h04 reply-more">共<?=$comment['reply_info']['total_count']?>条评论></div>
-                                        <?php endif;?>
-                                    <?php else :?>
-                                        <div class="h04 reply-other"><?=$reply['nickname']?>：<?=$reply['content']?></div>
+                        <div class="h05 color00 fontW4 mt5 height-auto" onclick="showreply(<?=$comment['comment_id']?>)" ><?=$comment['content']?></div>
+                        <div id="commentid<?=$comment['comment_id']?>">
+                            <?php if($comment['reply_info']['list']):?>
+                                <input type="hidden" id="reply-current-<?=$comment['comment_id']?>" value="<?=$comment['reply_info']['current_page']?>" />
+                                <input type="hidden" id="reply-total-<?=$comment['comment_id']?>" value="<?=$comment['reply_info']['total_page']?>" />
+                                <div class="h05 color70 fontW4 comment-reply mt5" >
+                                    <?php foreach ($comment['reply_info']['list'] as $key=>$reply):?>
+                                        <div class="h04 height-auto"><?=$reply['nickname']?>：<?=$reply['content']?></div>
+                                    <?php endforeach; ?>
+                                    <?php if($comment['reply_info']['total_page']>1):?>
+                                        <div class="h04 reply-more" onclick="replymore(<?=$comment['comment_id']?>,this)">
+                                            查看更多回复>
+                                        </div>
                                     <?php endif;?>
-                                <?php endforeach; ?>
-                            </div>
-                        <?php endif; ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
                         <div class="h05 color70 fontW4 mt5"><?=date("Y-m-d",$comment['created_at'])?></div>
                     </li>
                 </ul>
@@ -504,8 +508,9 @@ $this->registerJs($js);
 </div>
 <div class="comment-shadow comment-edit"></div>
 <div class="comment-description comment-edit" style="">
-    <textarea placeholder="优质友善的评论会被更多人认同哦" style=""></textarea>
+    <textarea class="font14" placeholder="优质友善的评论会被更多人认同哦" style=""></textarea>
     <input type="button" id="send_comment" value="发布" />
+    <input type="hidden" id="reply-pid" value="" />
 </div>
 
 
@@ -734,15 +739,50 @@ $this->registerJs($js);
         }
     });
     //更多回复
-    $(".reply-more").click(function (){
-        $(this).hide();
-        $(this).siblings("div.reply-other").show();
-    });
+    var more_flag = true;
+    function replymore(pid,that){
+        if(more_flag){
+            more_flag = false;
+            var page_num = ($("#reply-current-"+pid).val()!="")?parseInt($("#reply-current-"+pid).val()):0;
+            var total = ($("#reply-total-"+pid).val()!="")?parseInt($("#reply-total-"+pid).val()):0;
+            var ar = {};
+            ar['pid'] = pid;
+            ar['page_num'] = page_num
+            $.ajax({
+                url: '/video/reply-more',
+                data: ar,
+                type:'get',
+                cache:false,
+                dataType:'json',
+                success:function(res) {
+                    more_flag = true;
+                    if(res.errno==0 && res.data.length>0){
+                        var html = "";
+                        var data = res.data;
+                        for(var i=1;i<data.length;i++){
+                            html += '<div class="h04 height-auto ">'+data[i]['nickname']+'：'+data[i]['content']+'</div>';
+                        }
+                        if(total == page_num+1){
+                            $(that).hide();
+                        }else{
+                            $("#reply-current-"+pid).val(++page_num);
+                        }
+                        $(that).before(html);
+                    }
+                },
+                error : function() {
+                    more_flag = true;
+                    console.log("加载失败");
+                }
+            });
+        }
+    }
     //显示评论
     $(".comment-bottom .bottom-left").click(function (){
         var uid = finduser();
         if(!isNaN(uid) && uid!=""){
             $(".comment-edit").show();
+            $("#reply-pid").val(0);
         }else{//登录
             window.location.href = "/video/login";
         }
@@ -754,52 +794,97 @@ $this->registerJs($js);
     });
     //查看更多评论
     $("#comment-more").click(function(){
-        var page_num = ($("#comment-current").val()!="")?parseInt($("#comment-current").val()):0;
-        var total = ($("#comment-total").val()!="")?parseInt($("#comment-total").val()):0;
-        var ar = {};
-        ar['video_id'] = '<?=$info['info']['play_video_id']?>';
-        ar['chapter_id'] = '<?=$info['info']['play_chapter_id']?>';
-        ar['page_num'] = page_num;
-        $.get('/video/comment-more',ar,function(res){
-            $("#comment-more").before(res);//添加评论列表
-            if(total==0 || total == page_num+1){
-                $("#comment-more").hide();
-            }else{
-                $("#comment-more").show();
-                $("#comment-current").val(++page_num);
-            }
-        });
-    });
-    //发送
-    $("#send_comment").click(function(){
-        var ar = {};
-        ar['video_id'] = '<?=$info['info']['play_video_id']?>';
-        ar['chapter_id'] = '<?=$info['info']['play_chapter_id']?>';
-        ar['pid'] = 0;
-        var that = this;
-        var content = $(this).siblings('textarea').val();
-        ar['content'] = content;
-        if(content==""){
-            $("#pop-tip").text("请填写评论");
-            $("#pop-tip").show().delay(1500).fadeOut();
-            return false;
-        }else{
-            $.get('/video/send-comment',ar,function(res){
-                $(".comment-description textarea").val("");
-                $(".comment-edit").hide();
-                if(res.errno==0){
-                    if(res.data.display==1){
-                        commentNum();//本剧集评论数
-                        commentstr(res.data.data);
-                        $("#pop-tip").text("评论成功");
-                        $("#pop-tip").show().delay(1500).fadeOut();
-                        $(that).siblings('textarea').val("");
+        if(more_flag) {
+            // more_flag = false;
+            var page_num = ($("#comment-current").val() != "") ? parseInt($("#comment-current").val()) : 0;
+            var total = ($("#comment-total").val() != "") ? parseInt($("#comment-total").val()) : 0;
+            var ar = {};
+            ar['video_id'] = '<?=$info['info']['play_video_id']?>';
+            ar['chapter_id'] = '<?=$info['info']['play_chapter_id']?>';
+            ar['page_num'] = page_num;
+            $.ajax({
+                url: '/video/comment-more',
+                data: ar,
+                type:'get',
+                cache:false,
+                success:function(res) {
+                    more_flag = true;
+                    $("#comment-more").before(res);//添加评论列表
+                    if(total==0 || total == page_num+1){
+                        $("#comment-more").hide();
                     }else{
-                        $("#pop-tip").text(res.data.message);
-                        $("#pop-tip").show().delay(1500).fadeOut();
+                        $("#comment-more").show();
+                        $("#comment-current").val(++page_num);
                     }
+                },
+                error : function() {
+                    more_flag = true;
+                    console.log("加载失败");
                 }
             });
+        }
+    });
+    //发送
+    var iscommit = true;
+    $("#send_comment").click(function(){
+        if(iscommit){
+            iscommit = false;
+            var pid = $("#reply-pid").val();
+            var ar = {};
+            ar['video_id'] = '<?=$info['info']['play_video_id']?>';
+            ar['chapter_id'] = '<?=$info['info']['play_chapter_id']?>';
+            if(pid>0){
+                ar['pid'] = pid;
+            }else{
+                ar['pid'] = 0;
+            }
+            var that = this;
+            var content = $(this).siblings('textarea').val();
+            ar['content'] = content;
+            if(content==""){
+                iscommit = true;
+                $("#pop-tip").text("请填写评论");
+                $("#pop-tip").show().delay(1500).fadeOut();
+                return false;
+            }else if(content.length>100){
+                iscommit = true;
+                $("#pop-tip").text("评论最多100字");
+                $("#pop-tip").show().delay(1500).fadeOut();
+                return false;
+            }else{
+                $.ajax({
+                    url: '/video/send-comment',
+                    data: ar,
+                    type:'get',
+                    cache:false,
+                    dataType:'json',
+                    success:function(res) {
+                        iscommit = true;
+                        $(".comment-description textarea").val("");
+                        $(".comment-edit").hide();
+                        if(res.errno==0){
+                            if(res.data.display==1){
+                                commentNum();//本剧集评论数
+                                if(pid>0){
+                                    replystr(pid,res.data.data);
+                                }else{
+                                    commentstr(res.data.data);
+                                }
+                                $("#pop-tip").text("评论成功");
+                                $("#pop-tip").show().delay(1500).fadeOut();
+                                $(that).siblings('textarea').val("");
+                            }else{
+                                $("#pop-tip").text(res.data.message);
+                                $("#pop-tip").show().delay(1500).fadeOut();
+                            }
+                        }
+                    },
+                    error : function() {
+                        iscommit = true;
+                        console.log("评论/回复提交失败");
+                    }
+                });
+            }
         }
     });
     //评论数
@@ -808,6 +893,7 @@ $this->registerJs($js);
         var num = parseInt(value!='' ? value : 0 )+1;
         $(".comment-title").find('span').html(num);
     }
+    //新评论
     function commentstr(data){
         var html = "";
         var avatarstr = "";
@@ -821,12 +907,39 @@ $this->registerJs($js);
                         '<li class="comment-avatar" >'+avatarstr+'</li>'+
                         '<li class="comment-detail">'+
                             '<div class="h05 color70 fontW4 mt5" >'+data['nickname']+'</div>'+
-                            '<div class="h05 color00 fontW4 mt5" >'+data['content']+'</div>'+
+                            '<div class="h05 color00 fontW4 mt5 height-auto" onclick="showreply('+data['comment_id']+')" >'+data['content']+'</div>'+
+                            '<div id="commentid'+data['comment_id']+'">'+
                             '<div class="h05 color70 fontW4 mt5">'+data['created_time']+'</div>'+
                         '</li>'+
                     '</ul>'+
                 '</div>';
         $("#comment-part .comment-title").after(html);
         $("#comment-part .comment-title div").show();
+    }
+    //显示回复
+    function showreply(pid){
+        var uid = finduser();
+        if(!isNaN(uid) && uid!=""){
+            $(".comment-edit").show();
+            $("#reply-pid").val(pid);
+        }else{//登录
+            window.location.href = "/video/login";
+        }
+    }
+    //新回复
+    function replystr(pid,data){
+        // console.log($('#commentid'+pid).find('div.comment-reply'));
+        var html = "";
+        var str = '<div class="h04 height-auto">'+data['nickname']+'：'+data['content']+'</div>';
+        if($('#commentid'+pid).find('div.comment-reply').length>0){
+            //已有回复
+            html = str;
+            $('#commentid'+pid).find('div.comment-reply').eq(0).prepend(html);
+        }else{//第一个回复
+            html = '<div class="h05 color70 fontW4 comment-reply mt5">'+str+'</div>';
+            $('#commentid'+pid).prepend(html);
+        }
+
+        // return html;
     }
 </script>

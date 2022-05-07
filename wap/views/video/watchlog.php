@@ -113,7 +113,7 @@ $this->registerJs($js);
     .comment-bottom .bottom-text.checkall{margin-left: 0;}
     .comment-bottom .bottom-left{width: auto;display: block;}
     .comment-bottom.double-bottom{bottom: 0.95rem;}
-    .checkbox-div{display:none;position: absolute;width: 100%;height: 100%;z-index: 1;top:0;}
+    .checkbox-div{display:none;position: absolute;z-index: 1;top: 0;left: 0;right: 0;bottom: 0;width: 100%;height:100%;}
     .checkbox-div-show{display: block;}
 </style>
 <input type="hidden" value="1" id="w_parpage">

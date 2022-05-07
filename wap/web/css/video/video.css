@@ -234,8 +234,8 @@ input[type=search]::-webkit-search-cancel-button{ -webkit-appearance: none; }
 .bottom-navi ul li.act .bottom-img-user{background-image:url(/images/video/user_r.png) ;}
 
 /*新片预告*/
-.trailer-div dd{width: calc(((100% + 15px)/5 - 60px)/3);display: inline-block;float: none;border:none;margin: 20px 5px 0 7.5px;}
-.trailer-swiper{width: 100%;height: auto;margin: 0 auto;overflow: hidden;position: relative;}
+.trailer-div dd{width: calc((100% - 45px) /3);height:auto;display: inline-block;float: none;border:none;margin: 20px 7.5px 0 7.5px;}
+.trailer-swiper{width: calc(100% - 15px);height: auto;margin: 0 7.5px;overflow: hidden;position: relative;}
 .trailer-arrow{display: block;width:auto;height:0.7rem;position: absolute;top:1.4rem;z-index: 1;}
 .trailer-left{left: 14px;}
 .trailer-right{right: 14px;}

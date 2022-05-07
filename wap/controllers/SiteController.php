@@ -80,7 +80,7 @@ class SiteController extends BaseController
             if ( $model->login()) {
                 Yii::$app->cache->set('login_flag', '1');
                 $uid = Yii::$app->user->id;
-                $this->setCookie($uid);
+//                $this->setCookie($uid);
                 $errno = 0;
                 $msg = '登录成功';
             } else {

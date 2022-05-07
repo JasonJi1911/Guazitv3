@@ -159,9 +159,7 @@ $(function (){
                     if(!isNaN(res.data) && res.data!=""){
                         saveuser(res.data);
                     }
-                    // console.log("js获取上(前)一页url"+document.referrer); 
-                    window.location.href=document.referrer;
-                    // location.reload();
+                    window.location.href='/video/personal';
                 }else{
                     var msg = "登录失败";
                     if(res.error!=""){
