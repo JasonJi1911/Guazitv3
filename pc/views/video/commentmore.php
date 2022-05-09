@@ -1,54 +1,20 @@
 <?php
 use yii\helpers\Url;
 ?>
+<?php if($data['total_page']>=0):?>
+    <input id="refreshtotal" class="div-commentlist" type="hidden" value="<?=$data['total_page']?>" />
+<?php endif;?>
 <?php if($data['comments']):?>
     <?php foreach ($data['comments'] as $comment):?>
         <div class="div-commentlist">
             <ul class="per-now-box ul-box" name="zt">
                 <li class="per-now-h">
                     <div class="navTopLogonImg">
-                        <a href="<?=Url::to(['/video/other-home','uid'=>$comment['uid']])?>">
-                            <?php if($comment['avatar']):?>
-                                <img src="<?=$comment['avatar']?>" />
-                            <?php else :?>
-                                <img src="/images/newindex/logon.png" />
-                            <?php endif;?>
-                        </a>
-                    </div>
-                    <div class="navTopLogon-GRXX" name="zt">
-                        <div class="navTopLogon-GRXX-box">
-                            <ul class="navTopLogon-box01">
-                                <li class="navTopLogon-name"><img src="/images/newindex/VIP-1.png" /><?=$comment['nickname']?></li>
-                                <li class="navTopLogon-Gender">
-                                    <?php if($comment['gender']==1):?>
-                                        <img src="/images/newindex/nv.png" />
-                                    <?php elseif($comment['gender']==2) :?>
-                                        <img src="/images/newindex/nan.png" />
-                                    <?php endif;?>
-                                </li>
-                            </ul>
-                            <ul class="navTopLogon-box02">
-                                <li class="navTopLogon-rank">LV.<span>1</span></li>
-                                <li class="navTopLogon-icon01"><img src="/images/newindex/jinbi.png" /></li>
-                                <li class="navTopLogon-text">0</li>
-<!--                                            <li class="per-gz-dz"><img src="/images/newindex/hlp-dz-w.png"><span>澳大利亚</span></li>-->
-<!--                                            <li class="navTopLogon-experience"><span>76</span>/<span>200</span></li>-->
-<!--                                            <li class="navTopLogon-icon01"><img src="/images/newindex/shangsheng.png" /></li>-->
-<!--                                                <li class="navTopLogon-Progress">-->
-<!--                                                    <div>-->
-<!--                                                        <div class="Progress">&nbsp;</div>-->
-<!--                                                    </div>-->
-<!--                                                </li>-->
-                            </ul>
-                        </div>
-                        <ul class="navTopLogon-box03">
-                            <li>
-                                <a class="navTopLogon-A" href="<?=Url::to(['/video/other-home','uid'=>$comment['uid']])?>">个人主页</a>
-                            </li>
-                            <li>
-<!--                                                <input class="per-now-btn" type="" name="" id="" value="私信" />-->
-                            </li>
-                        </ul>
+                        <?php if($comment['avatar']):?>
+                            <img src="<?=$comment['avatar']?>" />
+                        <?php else :?>
+                            <img src="/images/Index/user_c.png" />
+                        <?php endif;?>
                     </div>
                 </li>
                 <li >
@@ -72,49 +38,11 @@ use yii\helpers\Url;
                                 <ul class="per-now-box ul-box" name="zt">
                                     <li class="per-now-h">
                                         <div class="navTopLogonImg">
-<!--                                                                <a href="javascript"><img src="/images/newindex/logon.png" /></a>-->
-                                            <a href="<?=Url::to(['/video/other-home','uid'=>$reply['uid']])?>">
-                                                <?php if($reply['avatar']):?>
-                                                    <img src="<?=$reply['avatar']?>" />
-                                                <?php else :?>
-                                                    <img src="/images/newindex/logon.png" />
-                                                <?php endif;?>
-                                            </a>
-                                        </div>
-                                        <div class="navTopLogon-GRXX" name="zt">
-                                            <div class="navTopLogon-GRXX-box">
-                                                <ul class="navTopLogon-box01">
-                                                    <li class="navTopLogon-name"><img src="/images/newindex/VIP-1.png" /><?=$reply['nickname']?></li>
-                                                    <li class="navTopLogon-Gender">
-                                                        <?php if($reply['gender']==1):?>
-                                                            <img src="/images/newindex/nv.png" />
-                                                        <?php elseif($reply['gender']==2) :?>
-                                                            <img src="/images/newindex/nan.png" />
-                                                        <?php endif;?>
-                                                    </li>
-                                                </ul>
-                                                <ul class="navTopLogon-box02">
-                                                    <li class="navTopLogon-rank">LV.<span>1</span></li>
-                                                    <li class="navTopLogon-icon01"><img src="/images/newindex/jinbi.png" /></li>
-                                                    <li class="navTopLogon-text">0</li>
-<!--                                                                        <li class="per-gz-dz"><img src="/images/newindex/hlp-dz-w.png"><span>澳大利亚</span></li>-->
-<!--                                                                        <li class="navTopLogon-experience"><span>76</span>/<span>200</span></li>-->
-<!--                                                                        <li class="navTopLogon-icon01"><img src="/images/newindex/shangsheng.png" /></li>-->
-<!--                                                                        <li class="navTopLogon-Progress">-->
-<!--                                                                            <div>-->
-<!--                                                                                <div class="Progress">&nbsp;</div>-->
-<!--                                                                            </div>-->
-<!--                                                                        </li>-->
-                                                </ul>
-                                            </div>
-                                            <ul class="navTopLogon-box03">
-                                                <li>
-                                                    <a class="navTopLogon-A" href="<?=Url::to(['/video/other-home','uid'=>$reply['uid']])?>">个人主页</a>
-                                                </li>
-                                                <li>
-<!--                                                                        <input class="per-now-btn" type="" name="" id="" value="私信" />-->
-                                                </li>
-                                            </ul>
+                                            <?php if($reply['avatar']):?>
+                                                <img src="<?=$reply['avatar']?>" />
+                                            <?php else :?>
+                                                <img src="/images/Index/user_c.png" />
+                                            <?php endif;?>
                                         </div>
                                     </li>
                                     <li >

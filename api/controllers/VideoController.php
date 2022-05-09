@@ -801,12 +801,14 @@ class VideoController extends BaseController
 
         $commentLogic = new CommentLogic();
 //        $commentList  = $commentLogic->commentList($videoId, $chapterId, 1);
-        if($order=='replynum'){
+        if($order=='replynum'){//热门评论
             $commentList  = $commentLogic->commentListPCByReply($video_id, $chapter_id, $page_num);
             $data['comments'] = $commentList;
-        }else{
+            $data['total_page'] = $commentList['total_page'];
+        }else{//全部评论
             $commentList  = $commentLogic->commentListPC($video_id, $chapter_id, $page_num);
             $data['comments'] = $commentList['list'];
+            $data['total_page'] = $commentList['total_page'];
         }
         return $data;
     }

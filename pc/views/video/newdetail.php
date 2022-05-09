@@ -578,6 +578,7 @@ else
                                                                         data-video-id="<?= $value['video_id']?>"
                                                                         data-chapter-id="<?= $value['chapter_id']?>"
                                                                         data-type="<?= $data['info']['catalog_style']?>"
+                                                                        data-source-id="<?=$source['resId']?>"
                                                                         id='chap-<?=$source['resId']?>-<?=$value['chapter_id']?>'>
                                                                         <div class="select-link">
                                                                             <?= $value['title']?>
@@ -1152,6 +1153,11 @@ else
     let picUrl = "/video/get-wechat";
     let checkUrl = "/video/check-wechat";
     let clearUrl = "/video/clear-catch";
+
+    //局部刷新后的剧集chapter_id和线路source_id; 20220509 yin
+    var refreshchapterid = '<?=$data['info']['play_chapter_id']?>';
+    var refreshsourceid = '';
+
     $(document).ready(function(){
         $(".wechat-block").remove("");
         if ($("#play_resource").val() != "")
@@ -1183,7 +1189,7 @@ else
         // countPicAds();
         // refreshAds();
 
-        //广告
+        //文字链广告
         var citycode = COUNTRYINFO['city_code'];
         var arrIndex = {};
         arrIndex['citycode'] = citycode;
@@ -1396,11 +1402,12 @@ else
 
     });
 
+    //切换线路
     $('.bar-link').click(function(){
         var videoId = "<?= $data['info']['play_video_id']?>";
-        var chapterId = "<?= $data['info']['play_chapter_id']?>";
+        var chapterId = refreshchapterid;
         var sourceId = $(this).attr('data-source-id');
-
+        refreshsourceid = sourceId;
         if(sourceId != undefined && sourceId != null)
         {
             $('#srcTab-'+sourceId).trigger('click');
@@ -1438,8 +1445,8 @@ else
         arrIndex['browsers'] = $("#v_browser").val();
         arrIndex['description'] = description;
         arrIndex['video_id'] = "<?= $data['info']['play_video_id']?>";
-        arrIndex['chapter_id'] = "<?= $data['info']['play_chapter_id']?>";
-        arrIndex['source_id'] = "<?= $source_id?>";
+        arrIndex['chapter_id'] = refreshchapterid;
+        arrIndex['source_id'] = (refreshsourceid!=""?refreshsourceid:"<?= $source_id?>");
         //发送请求，获取数据
         $.get('/video/save-feedbackinfo', arrIndex, function(s) {
             // console.log(s);
@@ -1539,13 +1546,17 @@ else
         if(!isNaN(uid) && uid!=""){
             var ar = {};
             ar['video_id'] = '<?=$data['info']['play_video_id']?>';
-            ar['chapter_id'] = '<?=$data['info']['play_chapter_id']?>';
+            ar['chapter_id'] = refreshchapterid;
             ar['pid'] = 0;
             var that = this;
             var content = $(this).parent().siblings('textarea').val();
             ar['content'] = content;
             if(content==""){
                 $(".alt-title").text("请填写评论");
+                $("#alt05").show();
+                return false;
+            }else if(content.length>100){
+                $(".alt-title").text("评论最多100字");
                 $("#alt05").show();
                 return false;
             }else{
@@ -1656,12 +1667,16 @@ else
     function sendreply(pid){
         var ar = {};
         ar['video_id'] = '<?=$data['info']['play_video_id']?>';
-        ar['chapter_id'] = '<?=$data['info']['play_chapter_id']?>';
+        ar['chapter_id'] = refreshchapterid;
         ar['pid'] = pid;
         var content = $("#addreplydiv").find('textarea').eq(0).val();
         ar['content'] = content;
         if(content==""){
             $(".alt-title").text("请填写评论");
+            $("#alt05").show();
+            return false;
+        }else if(content.length>100){
+            $(".alt-title").text("评论最多100字");
             $("#alt05").show();
             return false;
         }else{
@@ -1723,16 +1738,16 @@ else
     $("#comment-more").click(function(){
         var page_num = ($("#comment-current").val()!="")?parseInt($("#comment-current").val()):0;
         var total = ($("#comment-total").val()!="")?parseInt($("#comment-total").val()):0;
-        var order = $(".per-tab-comment li.act").attr("data-order");
+        var order = "time";
         var ar = {};
         ar['video_id'] = '<?=$data['info']['play_video_id']?>';
-        ar['chapter_id'] = '<?=$data['info']['play_chapter_id']?>';
+        ar['chapter_id'] = refreshchapterid;
         ar['page_num'] = page_num;
         ar['order'] = order;
         $.get('/video/comment-more',ar,function(res){
             $("#comment-more").before(res);//添加评论列表
             ztBlack();
-            if(total==0 || total == page_num+1){
+            if(total==0 || total <= page_num+1){
                 $("#comment-more").hide();
             }else{
                 $("#comment-more").show();
@@ -1753,7 +1768,7 @@ else
                 var str = replyMorestr(res.data);
                 $("#reply-more-"+pid).before(str);//添加评论列表
                 ztBlack();
-                if(total == page_num+1){
+                if(total <= page_num+1){
                     $("#reply-more-"+pid).hide();
                 }else{
                     $("#reply-more-"+pid).show();
@@ -1823,29 +1838,29 @@ else
         return html;
     }
     //切换order-tab
-    $(".per-tab-comment li").click(function(){
-        var that = this;
-        var page_num = 0;
-        var total = ($("#comment-total").val()!="")?parseInt($("#comment-total").val()):0;
-        var order = $(this).attr("data-order");
-        var ar = {};
-        ar['video_id'] = '<?=$data['info']['play_video_id']?>';
-        ar['chapter_id'] = '<?=$data['info']['play_chapter_id']?>';
-        ar['page_num'] = page_num;
-        ar['order'] = order;
-        $.get('/video/comment-more',ar,function(res){
-            $("#comment-part .div-commentlist").remove();
-            $("#comment-more").before(res);//添加评论列表
-            $(that).addClass("act").siblings().removeClass("act");
-            ztBlack();
-            if(total==0 || total == page_num+1){
-                $("#comment-more").hide();
-            }else{
-                $("#comment-more").show();
-                $("#comment-current").val(++page_num);
-            }
-        });
-    });
+    //$(".per-tab-comment li").click(function(){
+    //    var that = this;
+    //    var page_num = 0;
+    //    var total = ($("#comment-total").val()!="")?parseInt($("#comment-total").val()):0;
+    //    var order = "time";
+    //    var ar = {};
+    //    ar['video_id'] = '';
+    //    ar['chapter_id'] = '';
+    //    ar['page_num'] = page_num;
+    //    ar['order'] = order;
+    //    $.get('/video/comment-more',ar,function(res){
+    //        $("#comment-part .div-commentlist").remove();
+    //        $("#comment-more").before(res);//添加评论列表
+    //        $(that).addClass("act").siblings().removeClass("act");
+    //        ztBlack();
+    //        if(total==0 || total <= page_num+1){
+    //            $("#comment-more").hide();
+    //        }else{
+    //            $("#comment-more").show();
+    //            $("#comment-current").val(++page_num);
+    //        }
+    //    });
+    //});
     //chapterId评论数
     function commentNum(){
         var value = $(".J_comment").text();
@@ -1884,13 +1899,16 @@ else
         var chapterId = $(this).attr('data-chapter-id');
         var sourceId = $('.sourceTab .hover a').attr('data-source-id');
         var type = $(this).attr('data-type');
-        loadvideo(videoId,chapterId,sourceId);
+        loadvideo(videoId,chapterId,sourceId);//局部刷新播放器jianghu2
         // window.location.href = '/video/detail?video_id=' + videoId + '&chapter_id=' + chapterId+"&source_id="+sourceId;
         // window.location.href = '/video/detail?video_id=' + videoId + '&chapter_id=' + chapterId;
     });
     var canSwitch = true; // 2022-04-12 Jason修改
     //切换剧集
     function loadvideo(videoId,chapterId,sourceId){
+        //局部刷新，记录新chapter_id,source_id
+        refreshchapterid = chapterId;
+        refreshsourceid = sourceId;
         // 2022-04-12 Jason修改
         if (!canSwitch) {
             // alert("剧集正在加载中，请稍后...");
@@ -1933,6 +1951,31 @@ else
                 console.log("视频切换失败");
                 canSwitch = true; // 2022-04-12 Jason修改
             }
+        });
+        //局部刷新评论区域--20220509 yin
+        refreshComment(videoId,chapterId);
+    }
+    //局部刷新评论
+    function refreshComment(videoId,chapterId){
+        var page_num = 0;
+        var order = "time";
+        var ar = {};
+        ar['video_id'] = videoId;
+        ar['chapter_id'] = chapterId;
+        ar['page_num'] = page_num;
+        ar['order'] = order;
+        $.get('/video/comment-more',ar,function(res){
+            $("#comment-part .div-commentlist").remove();
+            $("#comment-more").before(res);//局部刷新评论列表
+            var total = ($("#refreshtotal").val()!="")?parseInt($("#refreshtotal").val()):0;
+            ztBlack();
+            if(total==0 || total <= page_num+1){
+                $("#comment-more").hide();
+            }else{
+                $("#comment-more").show();
+            }
+            $("#comment-total").val(total);
+            $("#comment-current").val(++page_num);
         });
     }
 

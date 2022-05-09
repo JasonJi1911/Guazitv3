@@ -123,7 +123,6 @@ class RecommendDao extends BaseDao
              $videoDao = new VideoDao();
              $data = $videoDao->batchGetVideo($videoIds, $fields, false, ['actors']);
          } else {
-//        {
             // 查询对象
             $objVideo = Video::find();
             // 获取推荐位信息
@@ -199,7 +198,17 @@ class RecommendDao extends BaseDao
                 $it['actors'] = array_values($actors);
                 $it['director'] = array_values($director);
                 $it['year'] = $videoInfo['year'];
+            }
 
+            // 缓存推荐位视频id
+            $videoIds = ArrayHelper::getColumn($data, 'video_id');
+            $redis->setEx($redisKey, json_encode($videoIds, JSON_UNESCAPED_UNICODE), 600);
+
+        }
+
+        //24小时更新的剧集，不缓存
+        if($data){
+            foreach ($data as &$it) {
                 /* 首页video检查created_at在24小时内为最新 begin */
                 $time24 = strtotime("-1 day");//24小时之前的时间戳
                 if($it['created_at'] >= $time24){
@@ -211,10 +220,6 @@ class RecommendDao extends BaseDao
                 $it['chapter_new_num'] = VideoChapter::find()->andWhere(['video_id' => $it['video_id']])->andWhere(['>=', 'created_at', $time24])->count();
                 /* 首页video检查created_at在24小时内为最新 end */
             }
-
-            // 缓存推荐位视频id
-            $videoIds = ArrayHelper::getColumn($data, 'video_id');
-            $redis->setEx($redisKey, json_encode($videoIds, JSON_UNESCAPED_UNICODE), 600);
         }
 
         return $data;
