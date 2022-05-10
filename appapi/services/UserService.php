@@ -1,0 +1,66 @@
+<?php
+namespace apinew\services;
+
+use apinew\exceptions\ApiException;
+use apinew\helpers\ErrorCode;
+use apinew\models\DeviceInfo;
+use apinew\models\user\User;
+use apinew\models\user\UserVip;
+use Yii;
+
+
+/**
+ * Class UserService
+ * @package apinew\services
+ */
+class UserService extends Service
+{
+    /**
+     * 设置token
+     * @param $token
+     */
+    public function setToken($token)
+    {
+        if ($token) {
+            $this->model = $this->_getUser($token);
+        }
+    }
+
+    /**
+     * 查询用户,便于使用缓存
+     * @param $token
+     * @return null|static
+     */
+    private function _getUser($token)
+    {
+        return User::findByToken($token);
+    }
+
+    /**
+     * 检测登录
+     * @throws ApiException
+     */
+    public function checkLogin() {
+        if (empty($this->model)) {
+            throw new ApiException(ErrorCode::EC_USER_TOKEN_EXPIRE);
+        }
+
+        if ($this->model->status == User::STATUS_DISABLED) {
+            throw new ApiException(ErrorCode::EC_USER_FORBIDDEN);
+        }
+    }
+
+    /**
+     * 获取用户vip状态
+     * @param $uid
+     * @return int
+     */
+    public function isVip($uid)
+    {
+        $userVip = UserVip::findOne(['uid' => $uid]);
+        if (!$userVip || $userVip->end_time < time()) { //已经过期
+            return 0;
+        }
+        return 1;
+    }
+}

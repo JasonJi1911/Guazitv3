@@ -331,22 +331,24 @@ header('X-Frame-Options:Deny');
 <!--            <img class="trailer-arrow trailer-right" src="/images/video/xright.png" />-->
 
             <dl class="video-list-box clearfix more-change-10 swiper-wrapper cate-list-scroll" style="padding: 0;">
-                <?php foreach ($trailer['trailer'] as $key=>$list): ?>
-                    <?php if($key < 15) :?>
-                        <dd class="swiper-slide swiper-slide-li swiper-dd" data-video-id="<?=$list['video_id']?>">
-                            <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>" class="swiper-a">
-                                <div class="video-item-top">
-                                    <img originalSrc="<?= $list['cover']?>" src="/images/default-cover.jpg">
-                                    <div class="mark-box">
-                                        <p class="mark"><?= $list['flag']?></p>
+                <?php if($trailer['trailer']):?>
+                    <?php foreach ($trailer['trailer'] as $key=>$list): ?>
+                        <?php if($key < 15) :?>
+                            <dd class="swiper-slide swiper-slide-li swiper-dd" data-video-id="<?=$list['video_id']?>">
+                                <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>" class="swiper-a">
+                                    <div class="video-item-top">
+                                        <img originalSrc="<?= $list['cover']?>" src="/images/default-cover.jpg">
+                                        <div class="mark-box">
+                                            <p class="mark"><?= $list['flag']?></p>
+                                        </div>
                                     </div>
-                                </div>
-                                <h5 class="video-item-name"><?= $list['video_name']?></h5>
-                                <p class="video-item-play"><?= $list['play_times']?></p>
-                            </a>
-                        </dd>
-                    <?php endif;?>
-                <?php endforeach ?>
+                                    <h5 class="video-item-name"><?= $list['video_name']?></h5>
+                                    <p class="video-item-play"><?= $list['play_times']?></p>
+                                </a>
+                            </dd>
+                        <?php endif;?>
+                    <?php endforeach ?>
+                <?php endif;?>
             </dl>
         </div>
     </div>
