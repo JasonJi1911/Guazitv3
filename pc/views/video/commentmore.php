@@ -4,6 +4,9 @@ use yii\helpers\Url;
 <?php if($data['total_page']>=0):?>
     <input id="refreshtotal" class="div-commentlist" type="hidden" value="<?=$data['total_page']?>" />
 <?php endif;?>
+<?php if($data['total_comment']>=0):?>
+    <input id="refreshcommentcount" class="div-commentlist" type="hidden" value="<?=$data['total_comment']?>" />
+<?php endif;?>
 <?php if($data['comments']):?>
     <?php foreach ($data['comments'] as $comment):?>
         <div class="div-commentlist">
@@ -64,7 +67,7 @@ use yii\helpers\Url;
                                 </ul>
                             <?php endforeach; ?>
                             <div class="div-replyname" id="reply-more-<?=$comment['comment_id']?>" onclick="findmorereply(<?=$comment['comment_id']?>)"
-                                <?php if($comment['reply_info']['total_page']!=0 && $comment['reply_info']['current_page']==$comment['reply_info']['total_page']):?>
+                                <?php if($comment['reply_info']['total_page']!=0 && $comment['reply_info']['current_page'] >= $comment['reply_info']['total_page']):?>
                                     style="display: none;"
                                 <?php endif;?> >
                                 <input type="hidden" id="reply-current-<?=$comment['comment_id']?>" value="<?=$comment['reply_info']['current_page']?>" />

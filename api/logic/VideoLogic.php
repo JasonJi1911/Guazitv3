@@ -1842,14 +1842,6 @@ class VideoLogic
      * 获取新片预告的视频信息
      */
     public function getTrailerInfo($channelId){
-
-        $key = 'trailerinfo_channel_'.$channelId;
-        $redis = new RedisStore();
-        if($trailerinfo = $redis->get($key)){
-            $data = json_decode($trailerinfo, true);
-            return $data;
-        }
-
         $trailerTitle = TrailerTitle::find()->andWhere(['channel_id'=>$channelId])->asArray()->all();
         $data = [];
         if($trailerTitle){
@@ -1893,9 +1885,6 @@ class VideoLogic
                 $data[$i]['trailer'] = $trailerdata;
                 $data[$i]['trailer_title'] = $tt;
             }
-
-            //写入缓存
-            $redis->setEx($key, json_encode($data));
         }
         return $data;
     }

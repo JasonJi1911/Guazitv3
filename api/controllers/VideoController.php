@@ -804,11 +804,11 @@ class VideoController extends BaseController
         if($order=='replynum'){//热门评论
             $commentList  = $commentLogic->commentListPCByReply($video_id, $chapter_id, $page_num);
             $data['comments'] = $commentList;
-            $data['total_page'] = $commentList['total_page'];
         }else{//全部评论
             $commentList  = $commentLogic->commentListPC($video_id, $chapter_id, $page_num);
             $data['comments'] = $commentList['list'];
             $data['total_page'] = $commentList['total_page'];
+            $data['total_comment'] = $commentList['total_comment'];
         }
         return $data;
     }

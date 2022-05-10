@@ -843,6 +843,7 @@ $this->registerJs($js);
     <!--新片预告-->
     <?php if($data['trailer']):?>
         <?php foreach ($data['trailer'] as $trailer):?>
+            <?php if($trailer['trailer']): ?>
             <ul id="section-trailer<?=$trailer['trailer_title']['id']?>" class="NewTrailer-box" name="zt">
                 <li class="Title-01">
                     <a class="Title-big" href="javaScript:;"><?=$trailer['trailer_title']['title']?></a>
@@ -968,6 +969,7 @@ $this->registerJs($js);
                     <?php endif;?>
                 <?php endforeach ?>
             </ul>
+            <?php endif;?>
         <?php endforeach; ?>
     <?php endif;?>
     <!--赛事直播-->
@@ -1078,7 +1080,7 @@ $this->registerJs($js);
                 <div style="width:auto;font-size:15px;text-align:center"></div>
                 <div id="popup-ads" style="display: block;" data-jbox-content-appended="1">
                     <a href="" target="_blank">
-                        <img src="" style="border: 0px;width:100%;">
+                        <img src="" style="border: 0px;max-width: 100%;max-height: 100%;">
                     </a>
                 </div>
             </div>

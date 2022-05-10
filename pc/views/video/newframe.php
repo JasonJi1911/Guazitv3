@@ -709,7 +709,9 @@ if(empty($is_show_background) || $is_show_background != 1){
 
         <?php if($data['trailer']):?>
             <?php foreach ($data['trailer'] as $trailer):?>
-                <li class="list-item"><a data-id="#section-trailer<?=$trailer['trailer_title']['id']?>" class="list-link"><?=$trailer['trailer_title']['title']?></a></li>
+                <?php if($trailer['trailer']): ?>
+                    <li class="list-item"><a data-id="#section-trailer<?=$trailer['trailer_title']['id']?>" class="list-link"><?=$trailer['trailer_title']['title']?></a></li>
+                <?php endif;?>
             <?php endforeach ?>
         <?php endif;?>
         <li class="list-item"><a href="<?= Url::to(['help', 'tab' => 'contact'])?>" class="list-link">联系客服</a></li>

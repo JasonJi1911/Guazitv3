@@ -223,11 +223,13 @@ else
         padding-left: 29px;
     }
     .per-btn-reply:hover {
-        color: #FF5722;
+        color: #FF556E;
     }
     .div-replyname{
-        color:#FF5722;
+        color:#FF556E;
         cursor: pointer;
+        margin-left: 60px;
+        line-height: 30px;
     }
     .more-comment{
         background-color:#f3f3f3;
@@ -264,12 +266,12 @@ else
     }
 
     .per-tab-comment>li:hover {
-        background-color: #FF5722;
+        background-color: #FF556E;
         color: #FFFFFF;
     }
 
     .per-tab-comment>li.act {
-        background-color: #FF5722;
+        background-color: #FF556E;
         color: #FFF4D6;
     }
     .per-tab-comment.ZT-black,.more-comment.ZT-black{
@@ -380,6 +382,9 @@ else
     }
     .pop-tip {
         left:40%;
+    }
+    .per-now-box{
+        border-bottom: solid 1px #F5F5F6;
     }
 </style>
 <!--黑色区域-->
@@ -983,13 +988,14 @@ else
                                                     </li>
                                                 </ul>
                                             <?php endforeach; ?>
-                                            <?php if($comment['reply_info']['total_page']!=0 && $comment['reply_info']['current_page']==$comment['reply_info']['total_page']):?>
-                                                <div class="div-replyname" id="reply-more-<?=$comment['comment_id']?>" onclick="findmorereply(<?=$comment['comment_id']?>)" style="display: none;">
-                                                    <input type="hidden" id="reply-current-<?=$comment['comment_id']?>" value="<?=$comment['reply_info']['current_page']?>" />
-                                                    <input type="hidden" id="reply-total-<?=$comment['comment_id']?>" value="<?=$comment['reply_info']['total_page']?>" />
-                                                    查看更多回复
-                                                </div>
-                                            <?php endif;?>
+                                            <div class="div-replyname" id="reply-more-<?=$comment['comment_id']?>" onclick="findmorereply(<?=$comment['comment_id']?>)"
+                                                <?php if($comment['reply_info']['total_page']!=0 && $comment['reply_info']['current_page'] >= $comment['reply_info']['total_page']):?>
+                                                    style="display: none;"
+                                                <?php endif;?> >
+                                                <input type="hidden" id="reply-current-<?=$comment['comment_id']?>" value="<?=$comment['reply_info']['current_page']?>" />
+                                                <input type="hidden" id="reply-total-<?=$comment['comment_id']?>" value="<?=$comment['reply_info']['total_page']?>" />
+                                                查看更多回复
+                                            </div>
                                         </div>
                                     <?php endif; ?>
                                 </li>
@@ -1783,40 +1789,11 @@ else
             if(data[i]['avatar']!=""){
                 avatarstr = '<img src="'+data[i]['avatar']+'" />';
             }else{
-                avatarstr = '<img src="/images/newindex/logon.png" />';
-            }
-            var genderstr = "";
-            if(data[i]['gender']==1){
-                genderstr = '<img src="/images/newindex/nv.png" />';
-            }else if(data[i]['gender']==2){
-                genderstr = '<img src="/images/newindex/nan.png" />';
+                avatarstr = '<img src="/images/Index/user_c.png" />';
             }
             html += '<ul class="per-now-box ul-box" name="zt">'+
                 '<li class="per-now-h">'+
-                '<div class="navTopLogonImg">'+
-                '<a href="/video/other-home?uid='+data[i]['uid']+'">'+avatarstr+'</a>'+
-                '</div>'+
-                '<div class="navTopLogon-GRXX" name="zt">'+
-                '<div class="navTopLogon-GRXX-box">'+
-                '<ul class="navTopLogon-box01">'+
-                '<li class="navTopLogon-name">'+
-                '<img src="/images/newindex/VIP-1.png" />'+data[i]['nickname']+
-                '</li>'+
-                '<li class="navTopLogon-Gender">'+genderstr+'</li>'+
-                '</ul>'+
-                '<ul class="navTopLogon-box02">'+
-                '<li class="navTopLogon-rank">LV.<span>1</span></li>'+
-                '<li class="navTopLogon-icon01"><img src="/images/newindex/jinbi.png" /></li>'+
-                '<li class="navTopLogon-text">0</li>'+
-                '</ul>'+
-                '</div>'+
-                '<ul class="navTopLogon-box03">'+
-                '<li>'+
-                '<a class="navTopLogon-A" href="/video/other-home?uid='+data[i]['uid']+'">个人主页</a>'+
-                '</li>'+
-                '<li></li>'+
-                '</ul>'+
-                '</div>'+
+                '<div class="navTopLogonImg">'+avatarstr+'</div>'+
                 '</li>'+
                 '<li >'+
                 '<div class="per-now-box-01">'+
@@ -1968,6 +1945,10 @@ else
             $("#comment-part .div-commentlist").remove();
             $("#comment-more").before(res);//局部刷新评论列表
             var total = ($("#refreshtotal").val()!="")?parseInt($("#refreshtotal").val()):0;
+            var num = ($("#refreshcommentcount").val()!="")?parseInt($("#refreshcommentcount").val()):0;
+            //局部刷新后的总评论数
+            $(".J_comment").text(num);
+            $("#GNbox-PL").find('span').html("("+num+")");
             ztBlack();
             if(total==0 || total <= page_num+1){
                 $("#comment-more").hide();

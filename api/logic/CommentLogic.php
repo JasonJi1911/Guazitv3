@@ -7,6 +7,7 @@ use api\dao\VideoDao;
 use api\data\ActiveDataProvider;
 use api\models\user\TaskInfo;
 use api\models\user\User;
+use api\models\video\VideoChapter;
 use common\helpers\Tool;
 use common\models\setting\SettingSystem;
 use Yii;
@@ -358,6 +359,9 @@ class CommentLogic
         // 获取子级评论
         $data['list'] = $this->_getParentCommentPC($data['list']);
 
+        //获取总评论数
+        $commentcount = VideoChapter::find()->select("total_comment")->andWhere(['id'=>$chapterId])->asArray()->one();
+        $data['total_comment'] = $commentcount['total_comment'];
         return $data;
     }
     /*
