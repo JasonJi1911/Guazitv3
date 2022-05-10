@@ -28,22 +28,22 @@ return [
             'keyPrefix'=>'app-admin',
             'redis' => 'redis',
         ],
-        'log' => [
-            'traceLevel' => YII_DEBUG ? 3 : 0,
-            'targets' => [
-                [
-                    'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
-                    'logFile' => '@app/runtime/logs/admin.log',
-                    'logVars' => [], //关闭$_SERVER  info
-                    'maxFileSize' => 1000000, //1GM
-                    'prefix' => function ($message) {
-                        $uri = Yii::$app->request->url;
-                        return "[$uri]";
-                    }
-                ],
-            ],
-        ],
+//        'log' => [
+//            'traceLevel' => YII_DEBUG ? 3 : 0,
+//            'targets' => [
+//                [
+//                    'class' => 'yii\log\FileTarget',
+//                    'levels' => ['error', 'warning'],
+//                    'logFile' => '@app/runtime/logs/admin.log',
+//                    'logVars' => [], //关闭$_SERVER  info
+//                    'maxFileSize' => 1000000, //1GM
+//                    'prefix' => function ($message) {
+//                        $uri = Yii::$app->request->url;
+//                        return "[$uri]";
+//                    }
+//                ],
+//            ],
+//        ],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],

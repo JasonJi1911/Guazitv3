@@ -27,21 +27,21 @@ return [
             // this is the name of the session cookie used for login on the admin
             'name' => 'soushu-pc',
         ],
-        'log' => [
-            'traceLevel' => YII_DEBUG ? 3 : 0,
-            'targets' => [
-                [
-                    'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
-                    'logVars' => [], //关闭$_SERVER  info
-                    'prefix' => function ($message) {
-                        $uri = Yii::$app->request->url;
-                        return "[$uri]";
-                    },
-                    'logFile' => '@app/runtime/logs/pc.log',
-                ],
-            ],
-        ],
+//        'log' => [
+//            'traceLevel' => YII_DEBUG ? 3 : 0,
+//            'targets' => [
+//                [
+//                    'class' => 'yii\log\FileTarget',
+//                    'levels' => ['error', 'warning'],
+//                    'logVars' => [], //关闭$_SERVER  info
+//                    'prefix' => function ($message) {
+//                        $uri = Yii::$app->request->url;
+//                        return "[$uri]";
+//                    },
+//                    'logFile' => '@app/runtime/logs/pc.log',
+//                ],
+//            ],
+//        ],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],

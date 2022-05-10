@@ -19,23 +19,23 @@ return [
         'session' => [
             'name' => 'app-page',
         ],
-        'log' => [
-            'traceLevel' => YII_DEBUG ? 3 : 0,
-            'targets' => [
-                [
-                    'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
-                    'logFile' => '@app/runtime/logs/page.log',
-                    'logVars' => [], //关闭$_SERVER  info
-                    'maxFileSize' => 1000000, //1GM
-                    'maxLogFiles' => 3,
-                    'prefix' => function ($message) {
-                        $uri = Yii::$app->request->url;
-                        return "[$uri]";
-                    }
-                ],
-            ],
-        ],
+//        'log' => [
+//            'traceLevel' => YII_DEBUG ? 3 : 0,
+//            'targets' => [
+//                [
+//                    'class' => 'yii\log\FileTarget',
+//                    'levels' => ['error', 'warning'],
+//                    'logFile' => '@app/runtime/logs/page.log',
+//                    'logVars' => [], //关闭$_SERVER  info
+//                    'maxFileSize' => 1000000, //1GM
+//                    'maxLogFiles' => 3,
+//                    'prefix' => function ($message) {
+//                        $uri = Yii::$app->request->url;
+//                        return "[$uri]";
+//                    }
+//                ],
+//            ],
+//        ],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],

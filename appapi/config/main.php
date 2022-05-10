@@ -36,28 +36,28 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        'log' => [
-            'traceLevel' => YII_DEBUG ? 3 : 0,
-            'targets' => [
-                [
-                    'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
-                    'logFile' => '@app/runtime/logs/api.log',
-                    'logVars' => [], //关闭$_SERVER  info
-                    'maxFileSize' => 1000000, //1GM
-                    'maxLogFiles' => 3,
-                    'prefix' => function ($message) {
-                        $uri = Yii::$app->request->url;
-                        return "[$uri]";
-                    }
-                ],
+//        'log' => [
+//            'traceLevel' => YII_DEBUG ? 3 : 0,
+//            'targets' => [
 //                [
 //                    'class' => 'yii\log\FileTarget',
-//                    'levels' => ['info'],
-//                    'logFile' => '@app/runtime/logs/info.log',
-//                ]
-            ],
-        ],
+//                    'levels' => ['error', 'warning'],
+//                    'logFile' => '@app/runtime/logs/api.log',
+//                    'logVars' => [], //关闭$_SERVER  info
+//                    'maxFileSize' => 1000000, //1GM
+//                    'maxLogFiles' => 3,
+//                    'prefix' => function ($message) {
+//                        $uri = Yii::$app->request->url;
+//                        return "[$uri]";
+//                    }
+//                ],
+////                [
+////                    'class' => 'yii\log\FileTarget',
+////                    'levels' => ['info'],
+////                    'logFile' => '@app/runtime/logs/info.log',
+////                ]
+//            ],
+//        ],
 
         'urlManager' => [
             'enablePrettyUrl' => true,

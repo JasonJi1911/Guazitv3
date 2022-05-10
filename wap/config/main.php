@@ -13,23 +13,23 @@ return [
     'bootstrap' => ['log'],
     'modules' => [],
     'components' => [
-        'log' => [
-            'traceLevel' => YII_DEBUG ? 3 : 0,
-            'targets' => [
-                [
-                    'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
-                    'logVars' => [], //关闭$_SERVER  info
-                    'maxFileSize' => 4000000, //1GM
-                    'maxLogFiles' => 10,
-                    'prefix' => function ($message) {
-                        $uri = Yii::$app->request->url;
-                        return "[$uri]";
-                    },
-                    'logFile' => '@app/runtime/logs/wap.log',
-                ],
-            ],
-        ],
+//        'log' => [
+//            'traceLevel' => YII_DEBUG ? 3 : 0,
+//            'targets' => [
+//                [
+//                    'class' => 'yii\log\FileTarget',
+//                    'levels' => ['error', 'warning'],
+//                    'logVars' => [], //关闭$_SERVER  info
+//                    'maxFileSize' => 4000000, //1GM
+//                    'maxLogFiles' => 10,
+//                    'prefix' => function ($message) {
+//                        $uri = Yii::$app->request->url;
+//                        return "[$uri]";
+//                    },
+//                    'logFile' => '@app/runtime/logs/wap.log',
+//                ],
+//            ],
+//        ],
         'request' => [
             'csrfParam' => '_csrf-mp',
             'cookieValidationKey' => 'IO_en1cN-nkqsobLLf6lm-j43dFxGdIa',
