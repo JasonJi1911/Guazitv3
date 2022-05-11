@@ -242,10 +242,10 @@ $this->registerJs($js);
     .eye.act {background-image: url(../images/video/yanjing.png);}
 </style>
 <div class="display-flex outer-div sms-title" >
-    <a class="div-box position-r" href="javascript:window.location.href=document.referrer;">
+    <a class="div-box position-r" href="<?= Url::to(['/video/index'])?>">
         <img src="/images/video/left_gray.png">
     </a>
-    <div id="logintitle" class="text-center" style="width: calc(100% - 2rem);">账号登录</div>
+    <div id="logintitle" class="text-center" style="width: calc(100% - 2rem);">短信登录</div>
     <div class="div-box position-r"></div>
 </div>
 <div class="outer-div display-flex position-r border-bottom1 sms-phone">
@@ -272,19 +272,19 @@ $this->registerJs($js);
     <input type="button" class="selectJ text-left font12" id="sms_prefix_phone" value="<?=$selectVal?>" data="<?=$selectData?>"/>
     <input type="text" class="inp font12 J_account" name="" placeholder="请输入手机号" id="login_sms_account" value="" />
 </div>
-<div class="outer-div display-flex position-r border-bottom1 mt20 divhidden" style="padding-left: 20px;">
+<div class="outer-div display-flex position-r border-bottom1 mt20 " style="padding-left: 20px;">
     <input type="text" class="inp font12" name="" placeholder="请输入验证码" value="" id="smscode" onkeyup="value=value.replace(/[^0-9]/i,'')" />
     <input type="button" class="sms-code font12 J_sms_code" value="获取验证码" />
 </div>
-<div class="outer-div display-flex position-r border-bottom1 mt20" style="padding-left: 20px;">
+<div class="outer-div display-flex position-r border-bottom1 mt20 divhidden" style="padding-left: 20px;">
     <input type="password" class="inp font12" name="" placeholder="请输入密码" value="" id="password" onkeyup="value=value.replace(/[^(\w-*\.*)]/g,'')" />
     <input type="button" class="eye" value="">
 </div>
 <div class="loginTip mt20 ml20 J_login_warning">请输入手机号</div>
 <div class="outer-div mt20">
-    <button id="login-sms" class="fontW7 font14" >登录</button>
+    <button id="login-sms" class="fontW7 font14" >登录 / 注册</button>
 </div>
-<div id="changelogin" class="outer-div mt20" >
+<div id="changelogin" class="outer-div mt20" style="display: none" >
     <a>短信登录</a>
 </div>
 

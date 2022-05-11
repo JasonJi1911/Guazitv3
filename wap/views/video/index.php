@@ -21,7 +21,7 @@ header('X-Frame-Options:Deny');
         //     $(".bgcover").fadeIn();
 		// }
 		
-		$(".jBox-closeButton").click(function(){
+		$(".jBox-closeButton, #jBox1").click(function(){
             // $("#jBox1-overlay").hide();
             $(".bgcover").fadeOut();
         });
@@ -162,7 +162,7 @@ header('X-Frame-Options:Deny');
         <ul class="swiper-wrapper">
             <?php if(!empty($channels)) : ?>
                 <?php foreach ($channels['list'] as $key => $channel): ?>
-                    <li class="swiper-slide on swiper-slide-li">
+                    <li class="swiper-slide swiper-slide-li <?= $channel['channel_id'] == $channel_id ? 'on' : ''?>">
                         <a href="<?= Url::to(['/video/index', 'channel_id' => $channel['channel_id']])?>"><?= $channel['channel_name']?></a>
                         <span class="line <?= $channel['channel_id'] == $channel_id ? 'line_show' : ''?>"></span>
                         <?php if ($channel['channel_id'] == $channel_id) : ?>
@@ -217,7 +217,7 @@ header('X-Frame-Options:Deny');
 <div class="video-detail-series-bottom video-index-other-nav">
     <ul class=" clearfix <?= $channel_id != 0 ? 'nav-show' : 'nav-no-show'?>">
         <?php if($channel_id != 0 && !empty($data['tags'])) : ?>
-            <?php foreach ($data['tags'] as $li): ?>
+            <?php foreach ($data['tags'] as $key=>$li): ?>
                 <?php
                 foreach ($li['search'] as $s_k => $s_v) {
                     if($s_v['field'] == 'tag') {
@@ -228,13 +228,15 @@ header('X-Frame-Options:Deny');
                     }
                 }
                 ?>
+                <?php if($key<4):?>
                 <li class="swiper-slide on"><a href="<?= Url::to(['list', 'channel_id' => $channel, 'tag' => $tag])?>"><?= $li['name']?></a></li>
+                <?php endif;?>
             <?php endforeach ?>
         <?php endif;?>
     </ul>
 </div>
 <!--今日热点-->
-<div class="video-index-column mt15 today-hot-div">
+<div class="video-index-column mt15 today-hot-div" style="display:none;">
     <h3 class="video-index-title">今日热点</h3>
     <div id="today-hot" class="video-list-box clearfix more-change-10 swiper-container " style="margin:20px 7.5px 0;padding:0;">
         <div class="row-div swiper-wrapper cate-list-scroll">
@@ -257,7 +259,7 @@ header('X-Frame-Options:Deny');
         </div>
     </div>
 </div>
-<div class="video-other-more clearfix">
+<div class="video-other-more clearfix" style="display:none;">
     <a href="#" class="fl more-item ">
         <span>查看更多</span>
     </a>
@@ -324,18 +326,17 @@ header('X-Frame-Options:Deny');
 <!--新片预告-->
 <?php if($data['trailer']):?>
     <?php foreach ($data['trailer'] as $i=>$trailer):?>
-    <div class="video-index-column mt15 trailer-div">
+    <div class="video-index-column mt15"><!--  trailer-div -->
         <h3 class="video-index-title"><?=$trailer['trailer_title']['title']?></h3>
-        <div id="trailer<?=$i?>" class="trailer-swiper swiper-container">
+<!--        <div id="trailer--><?//=$i?><!--" class="trailer-swiper">-->
 <!--            <img class="trailer-arrow trailer-left" src="/images/video/xleft.png" />-->
 <!--            <img class="trailer-arrow trailer-right" src="/images/video/xright.png" />-->
-
-            <dl class="video-list-box clearfix more-change-10 swiper-wrapper cate-list-scroll" style="padding: 0;">
+            <dl class="video-list-box clearfix ">
                 <?php if($trailer['trailer']):?>
                     <?php foreach ($trailer['trailer'] as $key=>$list): ?>
-                        <?php if($key < 15) :?>
-                            <dd class="swiper-slide swiper-slide-li swiper-dd" data-video-id="<?=$list['video_id']?>">
-                                <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>" class="swiper-a">
+                        <?php if($key < 6) :?>
+                            <dd data-video-id="<?=$list['video_id']?>">
+                                <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
                                     <div class="video-item-top">
                                         <img originalSrc="<?= $list['cover']?>" src="/images/default-cover.jpg">
                                         <div class="mark-box">
@@ -351,7 +352,7 @@ header('X-Frame-Options:Deny');
                 <?php endif;?>
             </dl>
         </div>
-    </div>
+<!--    </div>-->
     <?php endforeach; ?>
 <?php endif;?>
 <div class="addtohomescreen" style="position: fixed;bottom: 1rem;left: 50%;transform: translateX(-50%);width: 75%;max-width: 75%;display: block;z-index: 2;">
@@ -440,17 +441,17 @@ header('X-Frame-Options:Deny');
         // })
 
         //新片预告trailer 滑动
-        <?php if($data['trailer']):?>
-            <?php foreach ($data['trailer'] as $i=>$trailer):?>
-                var mytrailer<?=$i?> = new Swiper ('#trailer<?=$i?>', {
-                    slidesPerView:'auto',
-                });
-                mytrailer<?=$i?>.on('tap', function (swiper, e) {
-                    var videoid = $("#trailer<?=$i?> .swiper-slide").eq(this.clickedIndex).attr('data-video-id');
-                    window.location.href = '/video/detail?video_id='+videoid;
-                });
-            <?php endforeach; ?>
-        <?php endif;?>
+<!--        --><?php //if($data['trailer']):?>
+<!--            --><?php //foreach ($data['trailer'] as $i=>$trailer):?>
+//                var mytrailer<?//=$i?>// = new Swiper ('#trailer<?//=$i?>//', {
+//                    slidesPerView:'auto',
+//                });
+//                mytrailer<?//=$i?>//.on('tap', function (swiper, e) {
+//                    var videoid = $("#trailer<?//=$i?>// .swiper-slide").eq(this.clickedIndex).attr('data-video-id');
+//                    window.location.href = '/video/detail?video_id='+videoid;
+//                });
+//            <?php //endforeach; ?>
+<!--        --><?php //endif;?>
 
         //今日热点滑动
         var todayhot = new Swiper ('#today-hot', {
@@ -459,14 +460,22 @@ header('X-Frame-Options:Deny');
 
         //按城市加载广告
         var req = new XMLHttpRequest();``
-        req.open('GET', document.location, false);
+        req.open('GET', '/images/video/addtohomescreen.png', false);
         req.send(null);
         var cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
+        var cf_cache_status = req.getResponseHeader('cf-cache-status');//指定cf-cache-status的值
         var citycode = '';
-        if(cf_ray && cf_ray.length>3){
+        if(cf_cache_status == 'HIT'){
             citycode = cf_ray.substring(cf_ray.length-3);
+        }else{
+            req.open('GET', document.location, false);
+            req.send(null);
+            cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
+            if(cf_ray && cf_ray.length>3){
+                citycode = cf_ray.substring(cf_ray.length-3);
+            }
         }
-        // citycode = 'SYD';
+        // citycode = 'MEL';
         // console.log(citycode);
         var arrIndex = {};
         arrIndex['citycode'] = citycode;
@@ -483,7 +492,8 @@ header('X-Frame-Options:Deny');
                     var dataar = res.data.advert;
                     if(dataar.length>0){
                         for(var i=0;i<dataar.length;i++){
-                            $(".video-index-column").eq(i).before('<div class="video-add-column"><a href="'+dataar[i].ad_skip_url+'"> <img src="'+dataar[i].ad_image+'" alt=""></a></div>');
+                            //今日热点和连续剧前不加广告
+                            $(".video-index-column").eq(i+2).before('<div class="video-add-column"><a href="'+dataar[i].ad_skip_url+'"> <img src="'+dataar[i].ad_image+'" alt=""></a></div>');
                         }
                     }
                     dataar = res.data.flash;

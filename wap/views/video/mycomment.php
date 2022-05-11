@@ -42,6 +42,7 @@ $this->registerJs($js);
 <style>
     .comment-div{display: grid;grid-template-columns: 20px auto;grid-gap: 10px;margin:10px 0;}
     .comment-avatar{width: 100%;}
+    .h-content{height: auto;line-height: 20px; }
 </style>
 <input type="hidden" value="1" id="w_parpage">
 <input type="hidden" value="<?= (isset($data[0]['total_page'])?$data[0]['total_page']:0 )?>" id="w_total">
@@ -63,7 +64,7 @@ $this->registerJs($js);
             <div>
                 <div class="h20 color91"><?=$comment['username']?></div>
                 <div class="h20 color91"><?=$comment['date']?></div>
-                <div class="h20"><?=$comment['content']?></div>
+                <div class="h-content"><?=$comment['content']?></div>
                 <div class="h20">《<?=$comment['film_name']?>》</div>
                 <div class="line mt5" ></div>
             </div>

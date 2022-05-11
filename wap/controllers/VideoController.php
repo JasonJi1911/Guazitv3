@@ -506,6 +506,20 @@ class VideoController extends BaseController
             'bottom'  => $bottom,
         ]);
     }
+
+    /*
+     * 添加播放记录
+     */
+    public function actionAddWatchlog(){
+        $uid = Yii::$app->user->id;
+        $video_id = Yii::$app->request->get('video_id', 0);
+        $chapter_id = Yii::$app->request->get('chapter_id', 0);
+        $watchTime = Yii::$app->request->get('watchTime', 0);
+        $totalTime = Yii::$app->request->get('totalTime', 0);
+        $result = Yii::$app->api->get('/video/add-watchlog',['uid'=>$uid,'video_id'=>$video_id,'chapter_id'=>$chapter_id,'watchTime'=>$watchTime,'totalTime'=>$totalTime]);
+        return TOOL::responseJson(0,"操作成功",$result);
+    }
+
     /*
      * 删除播放记录
      */

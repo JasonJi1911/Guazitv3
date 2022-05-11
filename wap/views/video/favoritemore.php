@@ -10,16 +10,16 @@ use api\models\video\Video;
         <label class="position-r">
             <div class="w-video position-r <?php if($tab=="取消"):?>w-video-edit<?php endif;?>">
                 <div class="w-checkbox" <?php if($tab=="取消"):?>style="display: block;" <?php endif;?>>
-                    <input type="checkbox" name="w-video-checkbox" data-id="<?=$video['video_id']?>"/>
+                    <input type="checkbox" name="w-video-checkbox" data-id="<?=$video['video_id']?>" id="J_chechbox<?=$video['video_id']?>"/>
                 </div>
                 <div>
-                    <a href="<?= Url::to(['detail', 'video_id' => $video['video_id']])?>">
-                        <img src="<?=$video['cover']?>">
+                    <a href="javascript:void(0);" onclick="clicka(<?=$video['video_id']?>)">
+                        <img originalSrc="<?= $video['cover']?>" src="/images/default-cover.jpg">
                     </a>
                 </div>
                 <div class="position-r w-video-detail">
                     <div class="font14 h05">
-                        <a href="<?= Url::to(['detail', 'video_id' => $video['video_id']])?>"><?=$video['video_name']?></a>
+                        <a href="javascript:void(0);" onclick="clicka(<?=$video['video_id']?>)"><?=$video['video_name']?></a>
                     </div>
                     <div class="category">
                         <span><?=$video['year']?></span>
@@ -31,8 +31,6 @@ use api\models\video\Video;
                     <div class="font14 h05 colorB2 w-bottom-time"><?=(($video['type']==Video::STATUS_DISABLED)?$video['flag']:'')?></div>
                 </div>
             </div>
-            <!-- 编辑遮罩层 -->
-            <div class="checkbox-div  <?php if($tab=="取消"):?>checkbox-div-show<?php endif;?>"></div>
         </label>
     </div>
 <?php endforeach;?>

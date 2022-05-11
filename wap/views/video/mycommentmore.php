@@ -10,7 +10,7 @@ use yii\helpers\Url;
             <div>
                 <div class="h20 color91"><?=$comment['username']?></div>
                 <div class="h20 color91"><?=$comment['date']?></div>
-                <div class="h20"><?=$comment['content']?></div>
+                <div class="h-content"><?=$comment['content']?></div>
                 <div class="h20">《<?=$comment['film_name']?>》</div>
                 <div class="line mt5" ></div>
             </div>

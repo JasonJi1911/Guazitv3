@@ -10,16 +10,16 @@ use yii\helpers\Url;
             <label class="position-r">
                 <div class="w-video position-r <?php if($tab=="取消"):?>w-video-edit<?php endif;?>">
                     <div class="w-checkbox" <?php if($tab=="取消"):?>style="display: block;" <?php endif;?>>
-                        <input type="checkbox" name="w-video-checkbox" data-id="<?=$video['log_id']?>"/>
+                        <input type="checkbox" name="w-video-checkbox" data-id="<?=$video['log_id']?>" id="J_chechbox<?=$video['video_id']?>"/>
                     </div>
                     <div>
-                        <a href="<?= Url::to(['detail', 'video_id' => $video['video_id']])?>">
-                            <img src="<?=$video['cover']?>">
+                        <a href="javascript:void(0);" onclick="clicka(<?=$video['video_id']?>)">
+                            <img originalSrc="<?= $video['cover']?>" src="/images/default-cover.jpg">
                         </a>
                     </div>
                     <div class="position-r w-video-detail">
                         <div class="font14 h05" style="height: auto;">
-                            <a href="<?= Url::to(['detail', 'video_id' => $video['video_id']])?>">
+                            <a href="javascript:void(0);" onclick="clicka(<?=$video['video_id']?>)">
                                 <?=$video['title']?>
                                 <?= is_numeric($video['chapter_title']) ? ('第'.$video['chapter_title'].'集') : $video['chapter_title']?>
                             </a>
@@ -34,8 +34,6 @@ use yii\helpers\Url;
                         <div class="font14 h05 colorB2 w-bottom-time"><?=$video['time_diff']?></div>
                     </div>
                 </div>
-                <!-- 编辑遮罩层 -->
-                <div class="checkbox-div  <?php if($tab=="取消"):?>checkbox-div-show<?php endif;?>"></div>
             </label>
         <?php endforeach;?>
     </div>

@@ -28,7 +28,6 @@ $(function (){
             $('.w-checkbox').show();
             $('#w_remove_bottom').show();         
             $('.w-remove ').show();        
-            $('.checkbox-div').addClass('checkbox-div-show');
         }else{
             $(that).text("编辑");
             $('.w-video').removeClass('w-video-edit');
@@ -36,7 +35,6 @@ $(function (){
             $('#w_remove_bottom').hide();       
             $('.w-remove ').hide();  
             $("input[type='checkbox']").prop("checked",false);    
-            $('.checkbox-div').removeClass('checkbox-div-show');
         }
     });
     $("#w_remove").click(function(){
@@ -64,7 +62,6 @@ $(function (){
                     $('.w-checkbox').hide();
                     $('#w_remove_bottom').hide();       
                     $('.w-remove ').hide();  
-                    $('.checkbox-div').removeClass('checkbox-div-show');
                     $("input[name='w-video-checkbox']").prop("checked",false);
                     $("#pop-tip").text("删除成功");
                     $("#pop-tip").show().delay(1500).fadeOut();
@@ -113,8 +110,6 @@ $this->registerJs($js);
     .comment-bottom .bottom-text.checkall{margin-left: 0;}
     .comment-bottom .bottom-left{width: auto;display: block;}
     .comment-bottom.double-bottom{bottom: 0.95rem;}
-    .checkbox-div{display:none;position: absolute;z-index: 1;top: 0;left: 0;right: 0;bottom: 0;width: 100%;height:100%;}
-    .checkbox-div-show{display: block;}
 </style>
 <input type="hidden" value="1" id="w_parpage">
 <input type="hidden" value="<?= (isset($data[0]['total_page'])?$data[0]['total_page']:0 )?>" id="w_total">
@@ -144,16 +139,16 @@ $this->registerJs($js);
             <label class="position-r">
                 <div class="w-video position-r">
                     <div class="w-checkbox">
-                        <input type="checkbox" name="w-video-checkbox" data-id="<?=$video['log_id']?>"/>
+                        <input type="checkbox" name="w-video-checkbox" data-id="<?=$video['log_id']?>" id="J_chechbox<?=$video['video_id']?>"/>
                     </div>
                     <div>
-                        <a href="<?= Url::to(['detail', 'video_id' => $video['video_id']])?>">
-                            <img src="<?=$video['cover']?>">
+                        <a href="javascript:void(0);" onclick="clicka(<?=$video['video_id']?>)">
+                            <img originalSrc="<?= $video['cover']?>" src="/images/default-cover.jpg">
                         </a>
                     </div>
                     <div class="position-r w-video-detail">
                         <div class="font14 h05" style="height: auto;">
-                            <a href="<?= Url::to(['detail', 'video_id' => $video['video_id']])?>">
+                            <a href="javascript:void(0);" onclick="clicka(<?=$video['video_id']?>)">
                                 <?=$video['title']?>
                                 <?= is_numeric($video['chapter_title']) ? ('第'.$video['chapter_title'].'集') : $video['chapter_title']?>
                             </a>
@@ -168,8 +163,6 @@ $this->registerJs($js);
                         <div class="font14 h05 colorB2 w-bottom-time"><?=$video['time_diff']?></div>
                     </div>
                 </div>
-                <!-- 编辑遮罩层 -->
-                <div class="checkbox-div"></div>
             </label>
         <?php endforeach;?>
         </div>
@@ -195,3 +188,16 @@ $this->registerJs($js);
         ]);?>
     </div>
 <?php endif;?>
+<script>
+    //a标签点选
+    function clicka(videoid){
+        var text = document.getElementById("w_edit").innerText;
+        if(text=="编辑"){
+            //正常模式，跳转页面
+            window.location.href = '/video/detail?video_id='+videoid;
+        }else{
+            //编辑模式，选中或不选中
+            document.getElementById("J_chechbox"+videoid).checked = !document.getElementById("J_chechbox"+videoid).checked;
+        }
+    }
+</script>

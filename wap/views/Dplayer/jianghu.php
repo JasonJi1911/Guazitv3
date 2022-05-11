@@ -151,6 +151,22 @@ $type =initialUrl($url);
 
         $('.dplayer-icons-left').trigger('click');
         // dp.play();
+
+
+        //添加播放记录
+        var seconds_flag = true;//执行添加播放记录标志
+        dp.on('timeupdate',function(){//视频播放事件
+            if(seconds_flag){
+                seconds_flag = false;
+                //每隔10秒执行1次
+                setTimeout( function timer() {
+                    var watchTime = dp.video.currentTime;
+                    var totalTime = dp.video.duration;
+                    addwatchlog(watchTime,totalTime);//添加播放记录
+                    seconds_flag = true;
+                }, 10000 );
+            }
+        });
     }
 
 </script>
@@ -159,14 +175,22 @@ $type =initialUrl($url);
     let dp;
     $(document).ready(function () {
         var req = new XMLHttpRequest();
-        req.open('GET', document.location, false);
+        req.open('GET', '/images/video/icon-fh-1.png', false);
         req.send(null);
         var cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
+        var cf_cache_status = req.getResponseHeader('cf-cache-status');//指定cf-cache-status的值
         var citycode = '';
-        if(cf_ray && cf_ray.length>3){
+        if(cf_cache_status == 'HIT'){
             citycode = cf_ray.substring(cf_ray.length-3);
+        }else{
+            req.open('GET', document.location, false);
+            req.send(null);
+            cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
+            if(cf_ray && cf_ray.length>3){
+                citycode = cf_ray.substring(cf_ray.length-3);
+            }
         }
-        // citycode = 'SYD';
+        // citycode = 'MEL';
         // console.log(citycode);
         $.ajax( {
             url:'/video/advert-info',
@@ -267,6 +291,7 @@ $type =initialUrl($url);
             });
             dp.on("error", function() {
                 $("#player1 .dplayer-notice").hide();
+                dp.controller.hide();
             });
             var span = document.getElementById("time_ad");
             var num = span.innerHTML;
@@ -353,6 +378,33 @@ $type =initialUrl($url);
                 type: 'auto',
             };
             initialPlayer(ini_video);
+        }
+    }
+
+
+    //添加播放记录
+    $(document).ready(function () {
+        //网页关闭时执行的方法
+        $(window).bind("beforeunload", function () {
+            var watchTime = dp.video.currentTime;
+            var totalTime = dp.video.duration;
+            addwatchlog(watchTime,totalTime);
+        });
+    });
+    function addwatchlog(watchTime,totalTime){
+        var uid = finduser();
+        if(!isNaN(uid) && uid!=""){
+            var arrindex = {};
+            arrindex['video_id'] = '<?=$videos[0]['video_id']?>';
+            arrindex['chapter_id'] = '<?=$play_chapter_id?>';
+            arrindex['watchTime'] = parseInt(watchTime);
+            arrindex['totalTime'] = parseInt(totalTime);
+            if(arrindex['totalTime']>0){
+                // console.log(arrindex);
+                $.get('/video/add-watchlog',arrindex,function(res){
+                    console.log(res.data);
+                });
+            }
         }
     }
 </script>

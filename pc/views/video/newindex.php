@@ -52,7 +52,7 @@ $(function(){
             document.getElementById('closeAd').innerHTML = msg+"秒后自动关闭"; 
     }) 
 	
-	$(".jBox-closeButton").click(function(){
+	$(".jBox-closeButton, #jBox1").click(function(){
 	    $("#jBox1-overlay").hide();
         $("#jBox1").fadeOut();
 	});
