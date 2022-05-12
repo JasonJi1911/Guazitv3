@@ -118,6 +118,10 @@ $type =initialUrl($url);
         box-sizing: border-box;
         z-index: 99
     }
+    /*页面全屏按钮隐藏*/
+    .dplayer.dplayer-mobile .dplayer-controller .dplayer-icons .dplayer-full .dplayer-full-in-icon{
+        display: none !important;
+    }
 </style>
 
 <img id="load1-img" src="/images/video/Dplayer_before.gif" />
@@ -152,6 +156,9 @@ $type =initialUrl($url);
         $('.dplayer-icons-left').trigger('click');
         // dp.play();
 
+        dp.on('loadstart', function () {
+            dp.controller.show();
+        });
 
         //添加播放记录
         var seconds_flag = true;//执行添加播放记录标志
@@ -287,7 +294,8 @@ $type =initialUrl($url);
                 '<div class="ADMask" id="ADMask"></div>');
 
             $("#ADMask").click(function() {
-                document.getElementById('link').click();
+                // document.getElementById('link').click();
+                document.getElementById('link').getElementsByTagName("a").item(0).click();
             });
             dp.on("error", function() {
                 $("#player1 .dplayer-notice").hide();
@@ -342,7 +350,8 @@ $type =initialUrl($url);
                 '<div class="ADMask" id="ADMask"></div>');
 
             $("#ADMask").on('click', function() {
-                document.getElementById('link').click();
+                // document.getElementById('link').click();
+                document.getElementById('link').getElementsByTagName("a").item(0).click();
                 $('#link').trigger('click');
             });
 

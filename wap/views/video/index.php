@@ -344,7 +344,7 @@ header('X-Frame-Options:Deny');
                                         </div>
                                     </div>
                                     <h5 class="video-item-name"><?= $list['video_name']?></h5>
-                                    <p class="video-item-play"><?= $list['play_times']?></p>
+                                    <p class="video-item-play"><?= $list['title']?></p>
                                 </a>
                             </dd>
                         <?php endif;?>

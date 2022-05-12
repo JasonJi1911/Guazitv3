@@ -1367,9 +1367,12 @@ class UserLogic
                 $randStr = str_shuffle('1234567890');
                 $code = substr($randStr,0,$length);
 
-                $code = 123;//测试用
-                $returnId = 11122;//测试用
-//                $returnId = $this->sendSMScode($mobile,$code);
+                if($mobile=='+113674281436'){//测试用
+                    $code = 123;//测试用
+                    $returnId = 11122;//测试用
+                }else{//正式
+                    $returnId = $this->sendSMScode($mobile,$code);
+                }
 
                 if(!empty($returnId)){
                     $redis->setEx($key, $code,60);
