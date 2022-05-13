@@ -23,7 +23,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子,tv,瓜子tv,�
 </div>
 <div class="text-center logo-box">
     <img src="/images/video/guazi.png" />
-    <div class="fontW7">瓜子TV</div>
+    <div class="fontW7 font12">瓜子TV</div>
 </div>
 <a class="outer-div" href="<?= Url::to(['/video/agreement'])?>">
     <span class="font14">软件许可及服务协议</span>
