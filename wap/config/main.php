@@ -42,7 +42,7 @@ return [
         'user' => [
             'identityClass' => 'wap\models\User',
             'enableAutoLogin' => true,
-            'authTimeout' => 3600*24*30,
+            'authTimeout' => 3600*24*180,
             'identityCookie' => ['name' => '_identity-wap', 'httpOnly' => true],
         ],
         'session' => [

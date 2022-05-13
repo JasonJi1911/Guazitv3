@@ -109,7 +109,7 @@
 
 //存用户
 function saveuser(uid){
-    setCookie("uid",uid,30);
+    setCookie("uid",uid,180);
 }
 
 //读用户
