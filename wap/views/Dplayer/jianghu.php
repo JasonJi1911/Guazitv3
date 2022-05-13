@@ -127,7 +127,9 @@ $type =initialUrl($url);
 <img id="load1-img" src="/images/video/Dplayer_before.gif" />
 <div class="Dplayer_box">
     <div class="player_av">
-        <div class="box" id="player1">
+        <div class="box" id="player_ad">
+        </div>
+        <div class="box" id="player1" style="display: none;">
         </div>
     </div>
 </div>
@@ -138,9 +140,9 @@ $type =initialUrl($url);
 <script src="/DPlayer/v-h/js/jquery.js?v=1" type="text/javascript" charset="utf-8"></script>
 <script src="/DPlayer/v-h/js/hls.min.js?v=1" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
-
+    var dp1;
     function initialPlayer(e) {
-        dp = new DPlayer({
+        dp1 = new DPlayer({
             element: document.getElementById('player1'),
             theme: '#FF556E',
             loop: false,
@@ -156,19 +158,19 @@ $type =initialUrl($url);
         $('.dplayer-icons-left').trigger('click');
         // dp.play();
 
-        dp.on('loadstart', function () {
-            dp.controller.show();
+        dp1.on('loadstart', function () {
+            dp1.controller.show();
         });
 
         //添加播放记录
         var seconds_flag = true;//执行添加播放记录标志
-        dp.on('timeupdate',function(){//视频播放事件
+        dp1.on('timeupdate',function(){//视频播放事件
             if(seconds_flag){
                 seconds_flag = false;
                 //每隔10秒执行1次
                 setTimeout( function timer() {
-                    var watchTime = dp.video.currentTime;
-                    var totalTime = dp.video.duration;
+                    var watchTime = dp1.video.currentTime;
+                    var totalTime = dp1.video.duration;
                     addwatchlog(watchTime,totalTime);//添加播放记录
                     seconds_flag = true;
                 }, 10000 );
@@ -179,7 +181,7 @@ $type =initialUrl($url);
 </script>
 <script>
     console.log(" %c 该项目基于Dplayer.js", 'color:red');
-    let dp;
+    var dp;
     $(document).ready(function () {
         var req = new XMLHttpRequest();
         req.open('GET', '/images/video/icon-fh-1.png', false);
@@ -199,6 +201,10 @@ $type =initialUrl($url);
         }
         // citycode = 'MEL';
         // console.log(citycode);
+        var advert = {};
+        advert['ad_type'] = '';
+        advert['ad_url'] = '';
+        advert['ad_link'] = '';
         $.ajax( {
             url:'/video/advert-info',
             data:{
@@ -209,12 +215,11 @@ $type =initialUrl($url);
             type:'get',
             cache:false,
             dataType:'json',
+            timeout: 4000,
             success:function(res) {
+                console.log(res);
                 if(res.errno == 0){
-                    var advert = {};
-                    advert['ad_type'] = '';
-                    advert['ad_url'] = '';
-                    advert['ad_link'] = '';
+                    //播放前
                     if(res.data.advert.playbefore.ad_image){
                         advert['ad_url'] = res.data.advert.playbefore.ad_image;
                         advert['ad_link'] = res.data.advert.playbefore.ad_skip_url;
@@ -226,26 +231,52 @@ $type =initialUrl($url);
                             advert['ad_type'] = 'img';
                         }
                     }
-                    advertinfo(advert);
-                }else{
-                    defaultAdvertInfo();
+                    var ad = {};
+                    //猜你喜欢上方
+                    if(res.data.advert.videotop.ad_image){
+                        ad = res.data.advert.playliketop;
+                        $(".video-top-ad a").attr("href", ad.ad_skip_url);
+                        if(ad.ad_url_type==2){
+                            $(".video-top-ad a").attr("target", "_blank");
+                        }
+                        $(".video-top-ad img").attr("src", ad.ad_image);
+                    }
+                    //猜你喜欢下方
+                    if(res.data.advert.videobottom.ad_image){
+                        ad = res.data.advert.playlikebottom;
+                        $(".video-bottom-add a").attr("href", ad.ad_skip_url);
+                        if(ad.ad_url_type==2){
+                            $(".video-bottom-add a").attr("target", "_blank");
+                        }
+                        $(".video-bottom-add img").attr("src", ad.ad_image);
+                    }
                 }
+                advertinfo(advert);
             },
             error : function() {
-                defaultAdvertInfo();
+                advertinfo(advert);
+            },
+            complete:function(XHR,TextStatus){
+                if(TextStatus=='timeout'){ //超时执行的程序
+                    console.log("请求超时！");
+                }
             }
         });
     });
-    function defaultAdvertInfo(){
-        var advert = {};
-        advert['ad_type'] = '';
-        advert['ad_url'] = '';
-        advert['ad_link'] = '';
-        advertinfo(advert);
-    }
     function advertinfo(advert){
+
+        //视频 player1
+        var ini_video = {
+            url: '<?php echo $type;?>',
+            pic: '',
+            type: 'auto',
+        };
+        initialPlayer(ini_video);
+        dp1.pause();
+
+        //广告 player_ad
         dp = new DPlayer({
-            element: document.getElementById('player1'),
+            element: document.getElementById('player_ad'),
             theme: '#FF556E',
             loop: false,
             lang: 'zh-cn',
@@ -281,7 +312,7 @@ $type =initialUrl($url);
             );
             $('#load1-img').remove();
 
-            $("#player1").append('<div id="link" style="height: 100%" class="add-box">' +
+            $("#player_ad").append('<div id="link" style="height: 100%" class="add-box">' +
                 '<a href="'+ l +'" target="_blank" class="btn-add-detail ad_url_link">' +
                 '点击查看广告详情<i class="ad-arrow-wrapper ad-arrow"></i></a>' +
                 '<a href="'+ l +'" target="_blank" class="ad_url_link">' +
@@ -298,7 +329,7 @@ $type =initialUrl($url);
                 document.getElementById('link').getElementsByTagName("a").item(0).click();
             });
             dp.on("error", function() {
-                $("#player1 .dplayer-notice").hide();
+                $("#player_ad .dplayer-notice").hide();
                 dp.controller.hide();
             });
             var span = document.getElementById("time_ad");
@@ -314,12 +345,15 @@ $type =initialUrl($url);
                         $('#link').remove();
                         $('#ADMask').remove();
                         dp.destroy();
-                        var ini_video = {
-                            url: '<?php echo $type;?>',
-                            pic: '',
-                            type: 'auto',
-                        };
-                        initialPlayer(ini_video);
+                        $("#player_ad").hide();
+                        $("#player1").show();
+                        dp1.play();
+                        //var ini_video = {
+                        //    url: '<?php //echo $type;?>//',
+                        //    pic: '',
+                        //    type: 'auto',
+                        //};
+                        //initialPlayer(ini_video);
                     }
                 }, 1000);
             }, 1);
@@ -335,9 +369,19 @@ $type =initialUrl($url);
                     type: 'auto'
                 }
             );
-            $('#load1-img').remove();
+            var playflag = false;
+            //5秒执行，广告NaN直接删除，播放视频
+            setTimeout(function(){
+                if(!playflag){
+                    $('#load1-img').remove();
+                    $("#player_ad").hide();
+                    dp.destroy();
+                    $("#player1").show();
+                    dp1.play();
+                }
+            },5000);
 
-            $("#player1").append('<div id="link" style="height: 100%" class="add-box">' +
+            $("#player_ad").append('<div id="link" style="height: 100%" class="add-box">' +
                 '<a href="'+ l +'" target="_blank" class="btn-add-detail ad_url_link">' +
                 '点击查看广告详情<i class="ad-arrow-wrapper ad-arrow"></i></a>' +
                 '<a href="'+ l +'" target="_blank" class="ad_url_link">' +
@@ -357,9 +401,14 @@ $type =initialUrl($url);
 
             dp.on('loadedmetadata', function () {
                 document.getElementById('time_ad').innerText = Math.floor(dp.video.duration);
+                playflag = true;
+                $('#load1-img').remove();
+                dp.controller.show();
+                dp.play();
             });
             dp.on('timeupdate', function () {
-                document.getElementById('time_ad').innerText = Math.floor(dp.video.duration - dp.video.currentTime);
+                if(document.getElementById('time_ad'))
+                    document.getElementById('time_ad').innerText = Math.floor(dp.video.duration - dp.video.currentTime);
             });
             // dp.play();
             $('.dplayer-video-wrap').trigger('click');
@@ -372,21 +421,28 @@ $type =initialUrl($url);
                 dp.destroy();
             });
             dp.on('destroy', function () {
-                var ini_video = {
-                    url: '<?php echo $type;?>',
-                    pic: '',
-                    type: 'auto',
-                };
-                initialPlayer(ini_video);
+                $("#player_ad").hide();
+                $("#player1").show();
+                dp1.play();
+                //var ini_video = {
+                //    url: '<?php //echo $type;?>//',
+                //    pic: '',
+                //    type: 'auto',
+                //};
+                //initialPlayer(ini_video);
             });
         }else if(advert['ad_type']==''){
+            dp.destroy();
             $('#load1-img').remove();
-            var ini_video = {
-                url: '<?php echo $type;?>',
-                pic: '',
-                type: 'auto',
-            };
-            initialPlayer(ini_video);
+            $("#player_ad").hide();
+            $("#player1").show();
+            dp1.play();
+            //var ini_video = {
+            //    url: '<?php //echo $type;?>//',
+            //    pic: '',
+            //    type: 'auto',
+            //};
+            //initialPlayer(ini_video);
         }
     }
 
@@ -395,8 +451,8 @@ $type =initialUrl($url);
     $(document).ready(function () {
         //网页关闭时执行的方法
         $(window).bind("beforeunload", function () {
-            var watchTime = dp.video.currentTime;
-            var totalTime = dp.video.duration;
+            var watchTime = dp1.video.currentTime;
+            var totalTime = dp1.video.duration;
             addwatchlog(watchTime,totalTime);
         });
     });

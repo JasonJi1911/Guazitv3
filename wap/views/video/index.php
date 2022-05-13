@@ -355,9 +355,9 @@ header('X-Frame-Options:Deny');
 <!--    </div>-->
     <?php endforeach; ?>
 <?php endif;?>
-<div class="addtohomescreen" style="position: fixed;bottom: 1rem;left: 50%;transform: translateX(-50%);width: 75%;max-width: 75%;display: block;z-index: 2;">
+<div class="addtohomescreen" style="position: fixed;bottom: 1rem;left: 50%;transform: translateX(-50%);width: 75%;max-width: 75%;z-index: 2;display: none;">
     <img src="/images/video/addtohomescreen.png" alt="" style="width: 100%;">
-  </div>
+</div>
 <div class="video-index-notice">
      <p style="padding-bottom: 5px;text-align: center;">
         <a class="browser browser1" href="<?= Url::to(['map'])?>">网站地图</a>
@@ -390,7 +390,7 @@ header('X-Frame-Options:Deny');
 <div class="bgcover" style="display: none;">
     <div id="jBox1" class="jBox-wrapper jBox-Modal jBox-Default jBox-closeButton-box">
         <div style="width:auto;font-size:15px;text-align:center"></div>
-        <a href="" target="_blank">
+        <a href="">
             <img src="" style="border: 0px;width:100%;height:100%">
         </a>
         <div class="jBox-closeButton jBox-noDrag">
@@ -460,7 +460,7 @@ header('X-Frame-Options:Deny');
 
         //按城市加载广告
         var req = new XMLHttpRequest();``
-        req.open('GET', '/images/video/addtohomescreen.png', false);
+        req.open('GET', '/images/video/icon-gx.png', false);
         req.send(null);
         var cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
         var cf_cache_status = req.getResponseHeader('cf-cache-status');//指定cf-cache-status的值
@@ -489,16 +489,27 @@ header('X-Frame-Options:Deny');
             dataType:'json',
             success:function(res) {
                 if(res.errno==0){
+                    //首页
                     var dataar = res.data.advert;
                     if(dataar.length>0){
+                        var urltype = '';
                         for(var i=0;i<dataar.length;i++){
+                            if(dataar[i].ad_url_type==2){
+                                urltype = ' target="_blank" ';
+                            }else{
+                                urltype = '';
+                            }
                             //今日热点和连续剧前不加广告
-                            $(".video-index-column").eq(i+2).before('<div class="video-add-column"><a href="'+dataar[i].ad_skip_url+'"> <img src="'+dataar[i].ad_image+'" alt=""></a></div>');
+                            $(".video-index-column").eq(i+2).before('<div class="video-add-column"><a href="'+dataar[i].ad_skip_url+'" '+urltype+'> <img src="'+dataar[i].ad_image+'" alt=""></a></div>');
                         }
                     }
+                    //首页弹窗
                     dataar = res.data.flash;
                     if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
                         $("#jBox1 a").attr("href",dataar.ad_skip_url);
+                        if(dataar.ad_url_type==2){
+                            $("#jBox1 a").attr("target", "_blank");
+                        }
                         $("#jBox1 a img").attr("src",dataar.ad_image);
                         $(".flashCount").text("关闭")
                         $(".bgcover").fadeIn();

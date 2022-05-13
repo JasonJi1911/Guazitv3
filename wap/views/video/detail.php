@@ -372,14 +372,10 @@ $this->registerJs($js);
     <span class="fr video-intro-btn">简介</span>
 </div>
 <p class="video-detail-eval"><em class="fontArial"><?= $info['info']['score']?></em>/<?= $info['info']['category']?>/<?= $info['info']['area']?>/<?= $info['info']['year']?></p>
-<div class="video-add-column">
-    <?php foreach ($info['advert'] as $key => $value): ?>
-        <?php if($key == 2) : ?>
-            <a href="<?= $value['ad_skip_url']?>">
-                <img src="<?= $value['ad_image']?>" alt="">
-            </a>
-        <?php endif;?>
-    <?php endforeach;?>
+<div class="video-add-column video-top-ad">
+    <a href="">
+        <img src="" alt="">
+    </a>
 </div>
 <div class="video-detail-series">
     <div class="clearfix video-detail-series-top">
@@ -425,7 +421,11 @@ $this->registerJs($js);
         <?php endforeach;?>
     </dl>
 </div>
-
+<div class="video-add-column video-bottom-add">
+    <a href="">
+        <img src="" alt="">
+    </a>
+</div>
 <!--<div class="video-other-more clearfix">-->
 <!--    <a href="" class="fl more-item ">-->
 <!--        <span>查看更多</span>-->
@@ -629,7 +629,7 @@ $this->registerJs($js);
 <script>
     let timer = null;
     $(document).ready(function(){
-        refreshAds();
+        // refreshAds();
         // $('#btn-video-play').trigger("click");
     });
     
@@ -664,7 +664,7 @@ $this->registerJs($js);
     function refreshAds()
     {
         var arrIndex = {};
-        
+
         arrIndex['page'] = "detail";
         var advertKey = 0;
         $.get('/video/advert', arrIndex, function(res) {

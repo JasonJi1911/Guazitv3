@@ -220,7 +220,7 @@ $this->registerJs($js);
 
 ?>
 <style>
-    .inp{width: calc(100% - 105px);height: 1rem;line-height: 1rem;box-sizing: border-box;}
+    .inp{width: calc(100% - 105px);height: 0.9rem;line-height: 0.9rem;box-sizing: border-box;}
     input.inp::-webkit-input-placeholder{color: #B2B2B2;}
     .sms-code{width: 100px;height: 100%;color: #B2B2B2;cursor: pointer;-webkit-appearance: none;background-color: #FFFFFF;}
     .sms-code.act{color: #FF556E;}

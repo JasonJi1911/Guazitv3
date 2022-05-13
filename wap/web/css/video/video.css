@@ -52,7 +52,7 @@ svg { -webkit-transform-origin: 0; -moz-transform-origin: 0; -ms-transform-origi
 .video-banner .swiper-pagination-bullet-active{opacity:1;}
 .video-banner .swiper-pagination{text-align: right;padding-right:18px;}
 .video-banner.swiper-container-horizontal>.swiper-pagination-bullets .swiper-pagination-bullet{margin:0 2px;}
-.video-banner.swiper-container-horizontal>.swiper-pagination-bullets{bottom:13px;right:0;left:auto; display:none;}/*width:97px;*/
+.video-banner.swiper-container-horizontal>.swiper-pagination-bullets{bottom:13px;right:0;left:auto;width:auto;}/*width:97px;*/
 .video-other-nav{margin:13px 0 0;padding-bottom:18px;position:relative;font-size:0;-webkit-text-size-adjust:none;}
 .video-other-nav:after{content:"";width:200%;height:1px;background:#E5E8ED;transform: scale(0.5);position:absolute;bottom:0;left:-50%;}
 .video-other-nav li{width:25%;display:inline-block;}
