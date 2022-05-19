@@ -315,7 +315,7 @@ class VideoController extends BaseController
 
 //        $citycode = 'SYD';
         //查广告
-        $data = Yii::$app->api->get('/video/advert', ['page' => $page, 'city'=> '','citycode' => $citycode]);
+        $data = Yii::$app->api->get('/video/advert', ['page' => $page, 'city'=> '','citycode' => $citycode, 'uid' => $uid]);
 //        if($advert){
 //            $data['advert'] = $advert['advert'];
 //        }
