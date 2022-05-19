@@ -458,68 +458,70 @@ header('X-Frame-Options:Deny');
             slidesPerView:'auto',
         });
 
-        //按城市加载广告
-        var req = new XMLHttpRequest();``
-        req.open('GET', '/images/video/icon-gx.png', false);
-        req.send(null);
-        var cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
-        var cf_cache_status = req.getResponseHeader('cf-cache-status');//指定cf-cache-status的值
-        var citycode = '';
-        if(cf_cache_status == 'HIT'){
-            citycode = cf_ray.substring(cf_ray.length-3);
-        }else{
-            req.open('GET', document.location, false);
+        if(channel_id==0){
+            //按城市加载广告
+            var req = new XMLHttpRequest();
+            req.open('GET', '/images/video/icon-gx.png', false);
             req.send(null);
-            cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
-            if(cf_ray && cf_ray.length>3){
+            var cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
+            var cf_cache_status = req.getResponseHeader('cf-cache-status');//指定cf-cache-status的值
+            var citycode = '';
+            if(cf_cache_status == 'HIT'){
                 citycode = cf_ray.substring(cf_ray.length-3);
-            }
-        }
-        // citycode = 'MEL';
-        // console.log(citycode);
-        var arrIndex = {};
-        arrIndex['citycode'] = citycode;
-        arrIndex['page'] = 'home';
-        arrIndex['chapterId'] = 0;
-        $.ajax({
-            url: '/video/advert-info',
-            data: arrIndex,
-            type:'get',
-            cache:false,
-            dataType:'json',
-            success:function(res) {
-                if(res.errno==0){
-                    //首页
-                    var dataar = res.data.advert;
-                    if(dataar.length>0){
-                        var urltype = '';
-                        for(var i=0;i<dataar.length;i++){
-                            if(dataar[i].ad_url_type==2){
-                                urltype = ' target="_blank" ';
-                            }else{
-                                urltype = '';
-                            }
-                            //今日热点和连续剧前不加广告
-                            $(".video-index-column").eq(i+2).before('<div class="video-add-column"><a href="'+dataar[i].ad_skip_url+'" '+urltype+'> <img src="'+dataar[i].ad_image+'" alt=""></a></div>');
-                        }
-                    }
-                    //首页弹窗
-                    dataar = res.data.flash;
-                    if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
-                        $("#jBox1 a").attr("href",dataar.ad_skip_url);
-                        if(dataar.ad_url_type==2){
-                            $("#jBox1 a").attr("target", "_blank");
-                        }
-                        $("#jBox1 a img").attr("src",dataar.ad_image);
-                        $(".flashCount").text("关闭")
-                        $(".bgcover").fadeIn();
-                    }
+            }else{
+                req.open('GET', document.location, false);
+                req.send(null);
+                cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
+                if(cf_ray && cf_ray.length>3){
+                    citycode = cf_ray.substring(cf_ray.length-3);
                 }
-            },
-            error : function() {
-                console.log("广告加载失败");
             }
-        });
+            // citycode = 'MEL';
+            // console.log(citycode);
+            var arrIndex = {};
+            arrIndex['citycode'] = citycode;
+            arrIndex['page'] = 'home';
+            arrIndex['chapterId'] = 0;
+            $.ajax({
+                url: '/video/advert-info',
+                data: arrIndex,
+                type:'get',
+                cache:false,
+                dataType:'json',
+                success:function(res) {
+                    if(res.errno==0){
+                        //首页
+                        var dataar = res.data.advert;
+                        if(dataar.length>0){
+                            var urltype = '';
+                            for(var i=0;i<dataar.length;i++){
+                                if(dataar[i].ad_url_type==2){
+                                    urltype = ' target="_blank" ';
+                                }else{
+                                    urltype = '';
+                                }
+                                //今日热点和连续剧前不加广告
+                                $(".video-index-column").eq(i+2).before('<div class="video-add-column"><a href="'+dataar[i].ad_skip_url+'" '+urltype+'> <img src="'+dataar[i].ad_image+'" alt=""></a></div>');
+                            }
+                        }
+                        //首页弹窗
+                        dataar = res.data.flash;
+                        if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
+                            $("#jBox1 a").attr("href",dataar.ad_skip_url);
+                            if(dataar.ad_url_type==2){
+                                $("#jBox1 a").attr("target", "_blank");
+                            }
+                            $("#jBox1 a img").attr("src",dataar.ad_image);
+                            $(".flashCount").text("关闭")
+                            $(".bgcover").fadeIn();
+                        }
+                    }
+                },
+                error : function() {
+                    console.log("广告加载失败");
+                }
+            });
+        }
 	});
 	
 	function refreshAdvert(addata)
