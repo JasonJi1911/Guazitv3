@@ -177,8 +177,10 @@ class AdvertLogic
         if($citys){
             foreach ($citys as $city) {
                 //查询到广告，退出循环
-                $advert = AdvertYYTitle::find()->andWhere(['city_id'=>$city['id']])->andWhere(['in','product',[$product,0]])->asArray()->all();
-                if($advert){
+                $advert = AdvertYYTitle::find()
+                    ->andWhere(['city_id'=>$city['id']])
+                    ->andWhere(['in','product',[$product,0]])
+                    ->andWhere(['platform'=>PLATFORM])->asArray()->all();if($advert){
                     foreach ($advert as &$t){
                         $t['advert'] = AdvertYY::find()->andWhere(['yy_id'=>$t['id']])->asArray()->all();
                     }

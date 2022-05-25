@@ -1423,7 +1423,7 @@ class VideoController extends BaseController
         $result = [];
         if($tab=="watchlog"){
             //播放记录
-            $result = Yii::$app->api->get('/video/search-watchlog',['uid'=>$uid,'searchword'=>$searchword,'page_num'=>$page_num]);
+            $result = Yii::$app->api->get('/video/search-watchlog',['uid'=>$uid,'searchword'=>$searchword,'page_num'=>$page_num,'channel_id'=>$channel]);
         }else if($tab=="favorite"){
             //收藏
             $result = Yii::$app->api->get('/video/search-favorite',['uid'=>$uid,'searchword'=>$searchword,
@@ -1647,5 +1647,22 @@ class VideoController extends BaseController
             'mobile_areacode'=>$mobile_areacode,'mobile'=>$mobile,'code'=>$code,]);
 
         return TOOL::responseJson($result['errno'],'操作成功',$result);
+    }
+
+    /*
+     * 检查后台登录失效，但cookie有uid
+     */
+    public function actionLoginUid(){
+        $uid2 = Yii::$app->user->id;
+        if(!$uid2){
+            $uid = Yii::$app->request->get('uid', '');
+            $model = new LoginForm();
+            $model->uid = $uid;
+            if ( $model->login2()) {
+                Yii::$app->cache->set('login_flag', '1');
+            }
+        }
+        $result['uid'] = Yii::$app->user->id;
+        return Tool::responseJson(0,'操作成功',$result);
     }
 }

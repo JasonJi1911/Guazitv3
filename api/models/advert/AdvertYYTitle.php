@@ -11,7 +11,8 @@ class AdvertYYTitle extends \common\models\advert\AdvertYYTitle
             'city_id',
             'display_order',
             'status',
-            'product'
+            'product',
+            'platform'
         ];
     }
 

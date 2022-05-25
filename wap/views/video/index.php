@@ -132,14 +132,15 @@ header('X-Frame-Options:Deny');
     
     .jBox-closeButton-box .jBox-closeButton {
         top: 0;
-        right: 0;
-        width: 46px;
-        height: 24px;
+        right: 20px;
+        /*width: 46px;*/
+        /*height: 24px;*/
         background: transparent;
         z-index: 10001;
         position: absolute;
         color: #fff;
         padding: 10px 0 0 10px;
+        font-size: 16px;
     }
     .a-small{
         width: 50%;
@@ -269,42 +270,56 @@ header('X-Frame-Options:Deny');
 </div>
 
 <?php if (!empty($data['label'])) :?>
-    <?php foreach ($data['label'] as  $labels): ?>
+    <?php foreach ($data['label'] as  $i=>$labels): ?>
         <?php if (!isset($labels['advert_id'])) : ?>
-                <div class="video-index-column <?= $key == 0 ? 'mt20' : 'mt15';?>">
-                    <h3 class="video-index-title"><?= $labels['title']?></h3>
-                    <dl class="video-list-box clearfix <?= 'more-change-'.$labels['recommend_id'] ?>">
-                        <?php foreach ($labels['list'] as $key => $list): ?>
-                            <?php if($key < 9) :?>
-                            <dd>
-                                <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
-                                    <div class="video-item-top">
-                                        <img originalSrc="<?= $list['cover']?>" src="/images/default-cover.jpg">
-                                        <div class="mark-box">
-                                            <p class="mark"><?= $list['flag']?></p>
-                                        </div>
-                                    </div>
-                                    <h5 class="video-item-name"><?= $list['video_name']?></h5>
-                                    <p class="video-item-play"><?= $list['play_times']?></p>
-                                </a>
-                            </dd>
-                            <?php endif;?>
-                        <?php endforeach;?>
-                    </dl>
-                </div>
-
             <?php
-                $tag = '';
-                $channel = '';
-                foreach ($labels['search'] as $s_k => $s_v) {
-                    if($s_v['field'] == 'channel_id') {
-                        $channel = $s_v['value'];
-                    }
-                    if($s_v['field'] == 'tag') {
-                        $tag = $s_v['value'];
-                    }
+            $tag = '';
+            $channel = '';
+            foreach ($labels['search'] as $s_k => $s_v) {
+                if($s_v['field'] == 'channel_id') {
+                    $channel = $s_v['value'];
                 }
+                if($s_v['field'] == 'tag') {
+                    $tag = $s_v['value'];
+                }
+            }
             ?>
+            <!-- 类目页去除第一个 -->
+            <?php if (!($channel_id!=0 && $i==0)) : ?>
+            <div class="video-index-column <?= $key == 0 ? 'mt20' : 'mt15';?>">
+                <h3 class="video-index-title"><?= $labels['title']?></h3>
+                <dl class="video-list-box clearfix <?= 'more-change-'.$labels['recommend_id'] ?>">
+                    <?php foreach ($labels['list'] as $key => $list): ?>
+                        <?php if($key < 9) :?>
+                        <dd>
+                            <a href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
+                                <div class="video-item-top">
+                                    <img originalSrc="<?= $list['cover']?>" src="/images/default-cover.jpg">
+                                    <div class="mark-box">
+                                        <p class="mark">
+                                            <?php if(mb_strlen($list['flag']) > 11){
+                                                echo mb_substr($list['flag'],0,11,'utf-8');
+                                            }else{
+                                                echo $list['flag'];
+                                            } ?>
+                                        </p>
+
+                                    </div>
+                                </div>
+                                <h5 class="video-item-name"><?= $list['video_name']?></h5>
+                                <p class="video-item-play">
+                                    <?php if($channel_id==0 && $channel==2):?>
+                                        <?= $list['summary']?>
+                                    <?php else:?>
+                                        <?= $list['play_times']?>
+                                    <?php endif;?>
+                                </p>
+                            </a>
+                        </dd>
+                        <?php endif;?>
+                    <?php endforeach;?>
+                </dl>
+            </div>
             <div class="video-other-more clearfix">
                 <a href="<?= Url::to(['list', 'channel_id' => $channel, 'tag' => $tag])?>" class="fl more-item ">
                     <span>查看更多</span>
@@ -313,6 +328,7 @@ header('X-Frame-Options:Deny');
                     <span class="change">换一换</span>
                 </a>
             </div>
+            <?php endif; ?>
 <!--        --><?php // else: ?>
 <!--            <div class="video-add-column">-->
 <!--                <a href="">-->
@@ -340,7 +356,13 @@ header('X-Frame-Options:Deny');
                                     <div class="video-item-top">
                                         <img originalSrc="<?= $list['cover']?>" src="/images/default-cover.jpg">
                                         <div class="mark-box">
-                                            <p class="mark"><?= $list['flag']?></p>
+                                            <p class="mark">
+                                                <?php if(mb_strlen($list['flag']) > 11){
+                                                    echo mb_substr($list['flag'],0,11,'utf-8');
+                                                }else{
+                                                    echo $list['flag'];
+                                                } ?>
+                                            </p>
                                         </div>
                                     </div>
                                     <h5 class="video-item-name"><?= $list['video_name']?></h5>
@@ -388,10 +410,10 @@ header('X-Frame-Options:Deny');
 
 <?php //if (!empty($data['flash'])) : ?>
 <div class="bgcover" style="display: none;">
-    <div id="jBox1" class="jBox-wrapper jBox-Modal jBox-Default jBox-closeButton-box">
+    <div id="jBox1" class="jBox-wrapper jBox-Modal jBox-Default jBox-closeButton-box" style="width:100%;">
         <div style="width:auto;font-size:15px;text-align:center"></div>
         <a href="">
-            <img src="" style="border: 0px;width:100%;height:100%">
+            <img src="" style="border: 0px;max-width: 100%;max-height: 100%;margin: 0 auto;">
         </a>
         <div class="jBox-closeButton jBox-noDrag">
             <span class="flashCount"></span>
@@ -403,6 +425,7 @@ header('X-Frame-Options:Deny');
 <script src="/js/video/swiper.min.js"></script>
 <!--<script src="/js/video/video.js?v=1.2"></script>-->
 <script src="/js/video/mtop.js"></script>
+<script src="/js/video/searchHistory.js"></script>
 <script>
     $('.addtohomescreen').on('click', function () {
         $('.addtohomescreen').hide();
@@ -506,7 +529,8 @@ header('X-Frame-Options:Deny');
                         }
                         //首页弹窗
                         dataar = res.data.flash;
-                        if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
+                        var flashtime = getCookie("wapgzflash");
+                        if(flashtime!=1 && dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
                             $("#jBox1 a").attr("href",dataar.ad_skip_url);
                             if(dataar.ad_url_type==2){
                                 $("#jBox1 a").attr("target", "_blank");
@@ -514,11 +538,35 @@ header('X-Frame-Options:Deny');
                             $("#jBox1 a img").attr("src",dataar.ad_image);
                             $(".flashCount").text("关闭")
                             $(".bgcover").fadeIn();
+                            setCookie("wapgzflash",1,(1/3));//有效时间8小时
                         }
                     }
                 },
                 error : function() {
                     console.log("广告加载失败");
+                }
+            });
+        }
+
+        //检验用户信息
+        var uid = finduser();
+        var arrIndex = {};
+        arrIndex['uid'] = uid;
+        var uid2 = '<?=Yii::$app->user->id?>';
+        if(uid2=='' && (!isNaN(uid) && uid!="")){
+            // console.log(arrIndex);
+            $.ajax({
+                url:'/video/login-uid',
+                data:arrIndex,
+                type:'get',
+                cache:false,
+                dataType:'json',
+                success:function(res) {
+                    // console.log(res);
+                    saveuser(res.data.uid);
+                },
+                error : function() {
+                    console.log("用户信息获取失败");
                 }
             });
         }

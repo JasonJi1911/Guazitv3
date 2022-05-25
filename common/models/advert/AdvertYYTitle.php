@@ -15,6 +15,7 @@ use Yii;
  * @property int $display_order 排序
  * @property int $status 状态（1-显示，2-隐藏）
  * @property int $product 产品线 1App 2wap 3PC
+ * @property string $platform 平台-播放平台(RY/GZ)
  * @property int $created_at 创建时间
  * @property int $updated_at 更新时间
  * @property int $deleted_at 删除时间
@@ -39,6 +40,13 @@ class AdvertYYTitle extends \xiang\db\ActiveRecord implements StatusToggleInterf
         self::PRODUCT_APP        => 'App端',
         self::PRODUCT_WAP         => 'Wap端',
         self::PRODUCT_PC        => 'PC端',
+    ];
+
+    const PLATFORM_GZ = 'GZ'; // 瓜子
+    const PLATFORM_RY = 'RY'; // 如意
+    public static $platformmap=[
+        self::PLATFORM_GZ        => '瓜子',
+        self::PLATFORM_RY        => '如意',
     ];
 
     /**

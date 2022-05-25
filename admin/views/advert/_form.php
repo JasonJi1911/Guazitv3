@@ -87,6 +87,7 @@ $this->registerJs($js);
             echo $form->field($model, 'city_id')->dropDownList(ArrayHelper::map(IpAddress::find()->where(['not', ['sort' => 0]])->groupBy('city')->orderBy("sort desc")->all(), 'id', 'city'), ['prompt' => '全部' ])->wrapper(['width' => 2]);
             ?>
             <?= $form->field($model, 'skip_url')->textInput(['maxlength' => true, 'placeholder' => 'http://或https://']) ?>
+            <?= $form->field($model, 'platform')->dropDownList(Advert::$platformmap)->wrapper(['width' => 2]) ?>
         </div>
 
         <div id="sdk_advert_info" style="display:none">

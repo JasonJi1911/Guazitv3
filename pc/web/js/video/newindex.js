@@ -1511,11 +1511,13 @@ function advertByCity(page){
 						}
 					}
 					dataar = res.data.flash;
-					if(dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
+					var flashtime = getCookie("pcgzflash");
+					if(flashtime!=1 && dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
 						$("#popup-ads a").attr("href",dataar.ad_skip_url);
 						$("#popup-ads a img").attr("src",dataar.ad_image);
 						$("#jBox1-overlay").show();
 						$("#jBox1").fadeIn();
+						setCookie("pcgzflash",1,(1/3));//有效时间8小时
 					}
 				}else if(page == 'channel'){
 					dataar = res.data.advert;
@@ -1550,6 +1552,53 @@ function eventStop(){
 	window.event.cancelBubble = true;
 	return false;
 }
+
+//60s倒计时实现逻辑
+var login_countdown = 60;
+var login_countdown1 = 60;
+var login_timer;
+var login_timer1;
+function setloginTime(obj,send_source) {
+	if(send_source == 'sms'){
+		login_timer = setInterval(function(){
+			obj.prop('disabled', true);
+			obj.val(login_countdown+"s") ;
+			login_countdown--;
+			if (login_countdown==0){
+				login_countdown = 60;
+				obj.prop('disabled', false);
+				obj.val("获取验证码");
+				clearInterval(login_timer);
+				$(obj).parent().siblings('.J_tel').find('.J_account').attr('disabled',false);
+				setCookie("pcsmscode",1,-1);//到60秒取消
+			}
+		},1000);
+	}
+	if(send_source == 'reg'){
+		login_timer1 = setInterval(function(){
+			obj.prop('disabled', true);
+			obj.val(login_countdown1+"s") ;
+			login_countdown1--;
+			if (login_countdown1==0){
+				login_countdown1 = 60;
+				obj.prop('disabled', false);
+				obj.val("获取验证码");
+				clearInterval(login_timer1);
+				$(obj).parent().siblings('.J_tel').find('.J_account').attr('disabled',false);
+				setCookie("pcsmscode",1,-1);//到60秒取消
+			}
+		},1000);
+	}
+}
+function clearlogintime(){
+	login_countdown = 60;
+	login_countdown1 = 60;
+	$('.J_sms_code').prop('disabled', false);
+	$('.J_sms_code').val("获取验证码");
+	clearInterval(login_timer);
+	clearInterval(login_timer1);
+	$('.J_sms_code').parent().siblings('.J_tel').find('.J_account').attr('disabled',false);
+}
 //隐藏警告
 function changeLogin(type){
 	$(".J_login_warning").hide();
@@ -1560,6 +1609,7 @@ function changeLogin(type){
 	if(type != 'code'){
 		$(".J_account").val("");
 		$(".J_code_input").val("");
+		clearlogintime();
 	}
 
 	$(".eye").removeClass("act");

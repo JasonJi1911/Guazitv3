@@ -268,6 +268,7 @@ $(document).ready(function() {
             </div>
         </div>
         <!--tab 播放记录-->
+        <input type="hidden" value="" id="watchlog-channel" />
         <div class="per-tab-box-new c_watchlog" name="zt">
             <!-- 头部导航 -->
             <div class="per-sp-box-new">
@@ -493,6 +494,7 @@ $(document).ready(function() {
         <!--tab 安全中心-->
         <div class="per-tab-box-new c_safe J_safe_auth" name="zt">
             <?php
+            //手机
             $account_length = strlen($data['user']['mobile']);
             $hide_account_length = $account_length - 5;
             $xing = '';
@@ -505,6 +507,19 @@ $(document).ready(function() {
             } else {
                 $hide_account = $data['user']['mobile'];
             }
+            //邮件
+            $email_length = strlen($data['user']['email']);
+            $hide_email_length = $email_length - 5;
+            $e = '';
+            $hide_email = '';
+            if ($hide_email_length > 0) {
+                for ($i = 0; $i < $hide_email_length; $i++) {
+                    $e .= '*';
+                }
+                $hide_email = substr($data['user']['email'],0, 3) . $xing . substr($data['user']['email'],-2);
+            } else {
+                $hide_email = $data['user']['email'];
+            }
             ?>
 <!--            安全中心列表页-->
             <ul class="per-safe-box J_safe_list act">
@@ -515,7 +530,7 @@ $(document).ready(function() {
                 </li>
                 <li>
                     <span class="per-safe-title-c">邮箱</span>
-                    <span class="per-safe-content J_is_bind_email"><?php if($data['user']['email']):?><?=$data['user']['email']?><?php else:?>未绑定<?php endif;?></span>
+                    <span class="per-safe-content J_is_bind_email"><?php if($data['user']['email']):?><?=$hide_email?><?php else:?>未绑定<?php endif;?></span>
                     <span class="per-safe-action J_per_edit_email">修改</span>
                 </li>
                 <li>
@@ -971,7 +986,11 @@ function channelswatchlog(channel_id,obj){
     var arr = {};
     if(channel_id != 'all'){
         arr['channel_id'] = channel_id;
+        $("#watchlog-channel").val(channel_id);
+    }else{
+        $("#watchlog-channel").val(0);
     }
+
     var str = $("#watchlog_stext").val();
     if(str){
         arr['searchword'] = str;
@@ -1050,7 +1069,8 @@ function findwatchloglist(list){
     var timetitle = $(".per-bf-lst-btn:last").text();
     var timetitlestr = "";
     for(var i=0;i<list.length;i++){
-        if(list[i]['date']!=timetitle && (i==0 || list[i]['date']!=list[i-1]['date'])){
+        //当频道筛选第一页显示时间标题，或第一次出现显示时间标题
+        if((arrall['watchlog-page']==1 && i==0) || (list[i]['date']!=timetitle && (i==0 || list[i]['date']!=list[i-1]['date']))){
             timetitlestr = '<div class="per-bf-lst-btn">'+list[i]['date']+'</div>';
         }else {
             timetitlestr = '';
@@ -1148,6 +1168,7 @@ $(window).scroll(function () {
                     arrall[tab+'-page'] = page;
                 }else if(tab=="watchlog"){
                     params['searchword'] = $("#watchlog_stext").val();
+                    params['channel'] = $("#watchlog-channel").val();
                     arrall[tab+'-page'] = page;
                 }else if(tab=="comment"){
                     var type = $(".per-tab04>li.act").attr("data-type");

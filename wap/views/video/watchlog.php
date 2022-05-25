@@ -142,13 +142,13 @@ $this->registerJs($js);
                         <input type="checkbox" name="w-video-checkbox" data-id="<?=$video['log_id']?>" id="J_chechbox<?=$video['video_id']?>"/>
                     </div>
                     <div>
-                        <a href="javascript:void(0);" onclick="clicka(<?=$video['video_id']?>)">
+                        <a href="javascript:void(0);" onclick="clickwatchlog(<?=$video['video_id']?>,<?=$video['chapter_id']?>)">
                             <img originalSrc="<?= $video['cover']?>" src="/images/default-cover.jpg">
                         </a>
                     </div>
                     <div class="position-r w-video-detail">
                         <div class="font14 h05" style="height: auto;">
-                            <a href="javascript:void(0);" onclick="clicka(<?=$video['video_id']?>)">
+                            <a href="javascript:void(0);" onclick="clickwatchlog(<?=$video['video_id']?>,<?=$video['chapter_id']?>)">
                                 <?=$video['title']?>
                                 <?= is_numeric($video['chapter_title']) ? ('第'.$video['chapter_title'].'集') : $video['chapter_title']?>
                             </a>
@@ -190,11 +190,11 @@ $this->registerJs($js);
 <?php endif;?>
 <script>
     //a标签点选
-    function clicka(videoid){
+    function clickwatchlog(videoid,chapterid){
         var text = document.getElementById("w_edit").innerText;
         if(text=="编辑"){
             //正常模式，跳转页面
-            window.location.href = '/video/detail?video_id='+videoid;
+            window.location.href = '/video/detail?video_id='+videoid+'&chapter_id='+chapterid;
         }else{
             //编辑模式，选中或不选中
             document.getElementById("J_chechbox"+videoid).checked = !document.getElementById("J_chechbox"+videoid).checked;

@@ -20,6 +20,7 @@ class LoginForm extends Model
     public $flag;
 
     private $_user;
+    public $uid;
 
     /**
      * {@inheritdoc}
@@ -80,6 +81,19 @@ class LoginForm extends Model
     {
         if ($this->validateUser()) {
             return Yii::$app->user->login($this->getUser(), Yii::$app->user->authTimeout);
+        }
+
+        return false;
+    }
+
+    /*
+     * 检验uid失效，重新登录
+     */
+    public function login2()
+    {
+        if ($this->uid) {
+            $this->_user = User::findIdentity($this->uid);
+            return Yii::$app->user->login($this->_user, Yii::$app->user->authTimeout);
         }
 
         return false;

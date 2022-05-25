@@ -519,13 +519,7 @@ else
                                         <?= $data['info']['video_name']?>
                                     </a>
                                     <span class="update-tip-1">
-                                        <?php if($data['channel_id'] == '2'){?>
-                                            更新至<?= count($data['info']['videos'])?>集
-                                        <?php } elseif($data['channel_id'] == '3'){?>
-                                            更新至<?= $data['info']['videos'][0]['title']?>
-                                        <?php } elseif($data['channel_id'] >= 4){?>
-                                            更新至第<?= count($data['info']['videos'])?>集
-                                        <?php } ?>
+                                        <?=$data['info']['flag']?>
                                     </span>
                                 </h2>
                             </div>

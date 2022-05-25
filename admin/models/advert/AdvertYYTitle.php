@@ -15,7 +15,8 @@ class AdvertYYTitle extends \common\models\advert\AdvertYYTitle
             [['title', 'display_order'], 'required'],
             [['city_id', 'display_order', 'status','product', 'created_at', 'updated_at', 'deleted_at'], 'integer'],
             [['title'], 'string', 'min' => 0, 'max' => 32],
-            [['city_id','product'],'default','value'=>0]
+            [['city_id','product'],'default','value'=>0],
+            [['platform'], 'string', 'max' => 2],
         ];
     }
 
@@ -31,6 +32,7 @@ class AdvertYYTitle extends \common\models\advert\AdvertYYTitle
             'display_order' => '排序',
             'status'=> '状态',
             'product' => '展示渠道',
+            'platform'=>'平台',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'deleted_at' => 'Deleted At',

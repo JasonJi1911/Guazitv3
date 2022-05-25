@@ -166,6 +166,9 @@ $this->registerJs($js);
     .Movie-type {
         display: none;
     }
+    .sort_content:hover .sort_img a div{
+        color: #FF556E;
+    }
 </style>
 <!--首页大轮播-->
 <div id="playBox" class="play-box">
@@ -844,7 +847,7 @@ $this->registerJs($js);
     <?php if($data['trailer']):?>
         <?php foreach ($data['trailer'] as $trailer):?>
             <?php if($trailer['trailer']): ?>
-            <ul id="section-trailer<?=$trailer['trailer_title']['id']?>" class="NewTrailer-box" name="zt">
+            <ul id="section-trailer<?=$trailer['trailer_title']['id']?>" class="NewTrailer-box J-ad-box" name="zt">
                 <li class="Title-01">
                     <a class="Title-big" href="javaScript:;"><?=$trailer['trailer_title']['title']?></a>
                 </li>
@@ -1117,9 +1120,32 @@ $this->registerJs($js);
     }?>
     var trailer_length = <?=$trailercount?>;
 
-    //按城市加载广告
     $(function () {
+        //按城市加载广告
         advertByCity('home');
+
+        //检验用户信息
+        var uid = finduser();
+        var arrIndex = {};
+        arrIndex['uid'] = uid;
+        var uid2 = '<?=Yii::$app->user->id?>';
+        if(uid2=='' && (!isNaN(uid) && uid!="")){
+            // console.log(arrIndex);
+            $.ajax({
+                url:'/video/login-uid',
+                data:arrIndex,
+                type:'get',
+                cache:false,
+                dataType:'json',
+                success:function(res) {
+                    // console.log(res);
+                    saveuser(res.data.uid);
+                },
+                error : function() {
+                    console.log("用户信息获取失败");
+                }
+            });
+        }
 
         $('#det-nav>ul>.list-item>a.list-link').click(function () {
             var target = $(this).attr('data-id');

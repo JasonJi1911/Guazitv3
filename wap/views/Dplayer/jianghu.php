@@ -162,6 +162,10 @@ $type =initialUrl($url);
             dp1.controller.show();
         });
 
+        dp1.on('playing', function () {
+            dp1.controller.hide();
+        });
+
         //添加播放记录
         var seconds_flag = true;//执行添加播放记录标志
         dp1.on('timeupdate',function(){//视频播放事件

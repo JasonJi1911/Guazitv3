@@ -281,7 +281,7 @@ $this->registerJs($js);
 <?php endif;?>
 <div class="box02-new channel-new container">
 <?php if (!empty($data['label'])) :?>
-    <?php foreach ($data['label'] as  $labels): ?>
+    <?php foreach ($data['label'] as  $i=>$labels): ?>
         <?php if (!isset($labels['advert_id'])) : ?>
             <?php
             $tag = '';
@@ -303,6 +303,8 @@ $this->registerJs($js);
                 }
             }
             ?>
+            <!-- 类目页去除第一个 -->
+            <?php if ($i!=0) : ?>
             <ul class="Sports-box" name="zt" style="margin: 0 auto;">
                 <li class="Title-01">
 <!--                    <img src="/images/newindex/logo-02.png" />-->
@@ -455,6 +457,7 @@ $this->registerJs($js);
                     <?php endif;?>
                 <?php endforeach;?>
             </ul>
+            <?php endif; ?>
 <!--        --><?php // else: ?>
 <!--            <div class="play-box video-add-column">-->
 <!--                <a href="--><?//=$labels['ad_skip_url']?><!--" target="_blank">-->

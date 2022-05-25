@@ -1477,6 +1477,7 @@ class VideoDao extends BaseDao
             if($country){
                 $city['country_code'] = $country['country_code'];
                 $city['country_name'] = $country['country_name'];
+                $city['imgname'] = $country['imgname'];
             }
         }
         $redis->setEx($key, json_encode($city));

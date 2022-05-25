@@ -41,11 +41,13 @@ $(function (){
     function sendyzm(obj){
         var prefix_phone = $('#sms_prefix_phone').attr('data');
         var account = $('#login_sms_account').val();
+        $('#login_sms_account').attr('disabled',true);
         var tab = true;
         var arrIndex = {};
         if(account==""){
             $(".J_login_warning").text("手机号不能为空");
             $(".J_login_warning").show();
+            $('#login_sms_account').attr('disabled',false);
             tab = false;
             return false;
         }else{
@@ -53,29 +55,38 @@ $(function (){
             if(account == ""){
                 $(".J_login_warning").text("手机号格式错误");
                 $(".J_login_warning").show();
+                $('#login_sms_account').attr('disabled',false);
                 tab = false;
                 return false;
             }
         }
         if(tab) {
-            arrIndex['mobile_areacode'] = prefix_phone;
-            arrIndex['mobile'] = account;
-            console.log('发送短信验证码参数---',arrIndex);
-            $.get('/video/send-code', arrIndex, function(res) {
-                console.log('发送短信验证码结果---',res);
-                if(res.errno==0){
-                    setTime(obj);//开始倒计时
-                }else{
-                    var mes = "";
-                    if(res.data!=''){
-                        mes = res.data.msg;
+            var smstime = getCookie("wapsmscode");
+            if(smstime!=1){
+                setCookie("wapsmscode",1,(1/1440));//1分钟有效
+                arrIndex['mobile_areacode'] = prefix_phone;
+                arrIndex['mobile'] = account;
+                console.log('发送短信验证码参数---',arrIndex);
+                $.get('/video/send-code', arrIndex, function(res) {
+                    console.log('发送短信验证码结果---',res);
+                    if(res.errno==0){
+                        setTime(obj);//开始倒计时
                     }else{
-                        mes = '发送失败';
+                        var mes = "";
+                        if(res.data!=''){
+                            mes = res.data.msg;
+                        }else{
+                            mes = '发送失败';
+                        }
+                        $(".J_login_warning").text(mes);
+                        $(".J_login_warning").show();
                     }
-                    $(".J_login_warning").text(mes);
-                    $(".J_login_warning").show();
-                }
-            });
+                }); 
+            }else{
+                $('#login_sms_account').attr('disabled',false);
+                $(".J_login_warning").text("您发送短信验证码太频繁，请1分钟后重试");
+                $(".J_login_warning").show();
+            }
         }
     }
 
@@ -92,6 +103,8 @@ $(function (){
                 obj.prop('disabled', false);
                 obj.val("获取验证码");
                 clearInterval(timer);
+                $('#login_sms_account').attr('disabled',false);
+				setCookie("wapsmscode",1,-1);//到60秒取消
             }
         },1000);
     }

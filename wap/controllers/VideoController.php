@@ -7,6 +7,7 @@ use common\models\AdvertPosition;
 use common\models\UserAuth;
 use common\helpers\Tool;
 use common\models\WxSetting;
+use wap\models\LoginForm;
 use Yii;
 use yii\helpers\Url;
 use yii\web\Cookie;
@@ -313,7 +314,7 @@ class VideoController extends BaseController
 //            $city = '';
 //        }
 
-//        $citycode = 'SYD';
+        $citycode = 'MEL';
         //查广告
         $data = Yii::$app->api->get('/video/advert', ['page' => $page, 'city'=> '','citycode' => $citycode, 'uid' => $uid]);
 //        if($advert){
@@ -733,5 +734,21 @@ class VideoController extends BaseController
             'play_limit' => $play_limit, 'year' => $year, 'page_num' => $page_num, 'page_size' =>$page_size ,'type' => 1, 'status' => $status]);
 
         return Tool::responseJson(0, '操作成功', $data);
+    }
+    /*
+     * 检查后台登录失效，但cookie有uid
+     */
+    public function actionLoginUid(){
+        $uid2 = Yii::$app->user->id;
+        if(!$uid2){
+            $uid = Yii::$app->request->get('uid', '');
+            $model = new LoginForm();
+            $model->uid = $uid;
+            if ( $model->login2()) {
+                Yii::$app->cache->set('login_flag', '1');
+            }
+        }
+        $result['uid'] = Yii::$app->user->id;
+        return Tool::responseJson(0,'操作成功',$result);
     }
 }

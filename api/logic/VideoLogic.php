@@ -374,8 +374,8 @@ class VideoLogic
         $data['tab'] = $searchTab;
         return $data;
     }
-    /**
-     * @return array
+    /*
+     * 2022-4-19尹 频道页热搜词组
      */
     public function hotWordByChannelId($channelId)
     {

@@ -952,6 +952,7 @@ if(empty($is_show_background) || $is_show_background != 1){
 
 <script>
     $(function(){
+        imgdelayLoading();
         $("#keywords").focus(function(){
             findwords();
         });

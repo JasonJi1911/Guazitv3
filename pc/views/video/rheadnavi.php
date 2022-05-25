@@ -60,7 +60,7 @@ use yii\helpers\Url;
                                 <?php $i++;?>
                                 <?php if($i<6):?>
                                 <li data-video-id="<?=$watchlog['video_id']?>">
-                                    <a href="<?= Url::to(['detail', 'video_id' => $watchlog['video_id']])?>">
+                                    <a href="<?= Url::to(['detail', 'video_id' => $watchlog['video_id'],'chapter_id'=>$watchlog['chapter_id']])?>">
                                         <div><?=$watchlog['title']?>&nbsp;&nbsp;<?= is_numeric($watchlog['chapter_title']) ? ('第'.$watchlog['chapter_title'].'集') : $watchlog['chapter_title']?></div>
                                         <div>观看至<?=$watchlog['watch_percent']?>%</div>
                                         <div>
@@ -252,6 +252,7 @@ $(function(){
     function sendyzm(obj){
         var prefix_phone = $(obj).parent().siblings('.J_tel').find('.J_prefix_phone').attr('data');
         var account = $(obj).parent().siblings('.J_tel').find('.J_account').val();
+        $(obj).parent().siblings('.J_tel').find('.J_account').attr('disabled',true);
         var send_source = $(obj).attr('source');
         var tab = true;
         var arrIndex = {};
@@ -259,6 +260,7 @@ $(function(){
             $(obj).parent().siblings('.J_tel').addClass("wor");
             $(obj).parent().siblings(".loginTip").text("手机号不能为空");
             $(obj).parent().siblings(".loginTip").show();
+            $(obj).parent().siblings('.J_tel').find('.J_account').attr('disabled',false);
             tab = false;
             return false;
         }else{
@@ -267,64 +269,44 @@ $(function(){
                 $(obj).parent().siblings('.J_tel').addClass("wor");
                 $(obj).parent().siblings(".loginTip").text("手机号格式错误");
                 $(obj).parent().siblings(".loginTip").show();
+                $(obj).parent().siblings('.J_tel').find('.J_account').attr('disabled',false);
                 tab = false;
                 return false;
             }
         }
         if(tab) {
-            arrIndex['mobile_areacode'] = prefix_phone;
-            arrIndex['mobile'] = account;
-            console.log('发送短信验证码参数---',arrIndex);
-            $.get('/video/send-code', arrIndex, function(res) {
-                console.log('发送短信验证码结果---',res);
-                if(res.errno==0){
-                    setTime(obj,send_source);//开始倒计时
-                }else{
-                    var mes = "";
-                    if(res.data!=''){
-                        mes = res.data.message;
+            var smstime = getCookie("pcsmscode");
+            if(smstime!=1){
+                setCookie("pcsmscode",1,(1/1440));//1分钟有效
+
+                arrIndex['mobile_areacode'] = prefix_phone;
+                arrIndex['mobile'] = account;
+                // console.log('发送短信验证码参数---',arrIndex);
+                $.get('/video/send-code', arrIndex, function(res) {
+                    // console.log('发送短信验证码结果---',res);
+                    if(res.errno==0){
+                        setloginTime(obj,send_source);//开始倒计时
                     }else{
-                        mes = '发送失败';
+                        var mes = "";
+                        if(res.data!=''){
+                            mes = res.data.message;
+                        }else{
+                            mes = '发送失败';
+                        }
+                        $(obj).parent().addClass("wor");
+                        $(obj).parent().siblings(".loginTip").text(mes);
+                        $(obj).parent().siblings(".loginTip").show();
                     }
-                    $(obj).parent().addClass("wor");
-                    $(obj).parent().siblings(".loginTip").text(mes);
-                    $(obj).parent().siblings(".loginTip").show();
-                }
-            });
+                });
+            }else{
+                $(obj).parent().siblings('.J_tel').find('.J_account').attr('disabled',false);
+                $(obj).parent().addClass("wor");
+                $(obj).parent().siblings(".loginTip").text("您发送短信验证码太频繁，请1分钟后重试");
+                $(obj).parent().siblings(".loginTip").show();
+            }
         }
     }
 
-    //60s倒计时实现逻辑
-    var countdown = 60;
-    var countdown1 = 60;
-    function setTime(obj,send_source) {
-        if(send_source == 'sms'){
-            var timer = setInterval(function(){
-                obj.prop('disabled', true);
-                obj.val(countdown+"s") ;
-                countdown--;
-                if (countdown==0){
-                    countdown = 60;
-                    obj.prop('disabled', false);
-                    obj.val("获取验证码");
-                    clearInterval(timer);
-                }
-            },1000);
-        }
-        if(send_source == 'reg'){
-            var timer1 = setInterval(function(){
-                obj.prop('disabled', true);
-                obj.val(countdown1+"s") ;
-                countdown1--;
-                if (countdown1==0){
-                    countdown1 = 60;
-                    obj.prop('disabled', false);
-                    obj.val("获取验证码");
-                    clearInterval(timer1);
-                }
-            },1000);
-        }
-    }
     //验证码登录
     $("#login_sms_submit").click(function(){
         var account = $("#login_sms_account").val();

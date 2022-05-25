@@ -39,6 +39,16 @@ use admin\models\advert\AdvertYYTitle;
                 return AdvertYYTitle::$productMap[$model->product];
             }
         ],
+        [
+            'attribute' => 'platform',
+            'format' => 'raw',
+            'value' => function($model) {
+                if (!empty($model->platform)) {
+                    return AdvertYYTitle::$platformmap[$model->platform];
+                }
+                return '--';
+            }
+        ],
         'display_order',
         '@status',
         [
