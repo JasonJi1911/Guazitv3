@@ -501,7 +501,8 @@ class VideoController extends BaseController
             'percent'   => $percent,
             'video_name'=> $data['info']['video_name'],
             'lastplayinfo'   => $data['watchlog'],
-            'advert_top_pc'  => $advert_top_pc
+            'advert_top_pc'  => $advert_top_pc,
+            'source_count'      => count($data['info']['filter'])
         ]);
     }
 

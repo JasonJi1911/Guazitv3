@@ -120,8 +120,8 @@ class UploadBehavior extends Behavior
                     return;
                 }
 
-                if($model instanceof Advert)
-                    $model->$attribute = ADVERTURL.$imgPath;
+                if($model instanceof Advert && $oss->server_point)
+                    $model->$attribute = $oss->server_point.'/'.$imgPath;
                 else
                     $model->$attribute = $imgPath;
             }

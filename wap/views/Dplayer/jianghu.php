@@ -122,6 +122,18 @@ $type =initialUrl($url);
     .dplayer.dplayer-mobile .dplayer-controller .dplayer-icons .dplayer-full .dplayer-full-in-icon{
         display: none !important;
     }
+
+    #player-load1-warn{
+        color:#fff;
+        z-index:5;
+        position:absolute;
+        top:5px;
+        width:100%;
+        text-align:center;
+    }
+    #player-load1-warn span{
+        color:#FF556E
+    }
 </style>
 
 <img id="load1-img" src="/images/video/Dplayer_before.gif" />
@@ -157,6 +169,16 @@ $type =initialUrl($url);
 
         $('.dplayer-icons-left').trigger('click');
         // dp.play();
+
+        var strtext = "<div id='player-load1-warn'>如果卡顿，下方<span>来源</span>处切换<span>1080P</span>线路</div>";
+        var source_count = <?=count($source)?>;
+        //只有1080P的或者只有720P的，不显示“切换1080P”的提示
+        if(source_count > 1){
+            $("#player1").prepend(strtext);
+            setTimeout(function(){
+                $("#player-load1-warn").hide();
+            },20000);
+        }
 
         dp1.on('loadstart', function () {
             dp1.controller.show();

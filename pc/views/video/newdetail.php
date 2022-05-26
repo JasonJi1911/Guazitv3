@@ -436,7 +436,8 @@ else
                         'source'            => $data['info']['source'],
                         'last_chapter'      => $data['info']['last_chapter'],
                         'next_chapter'      => $data['info']['next_chapter'],
-                        'last_play_time'    => $data['info']['last_play_time']
+                        'last_play_time'    => $data['info']['last_play_time'],
+                        'source_count'      => count($data['info']['filter'])
                     ]);?>
                 </div>
                 <!--评论，点赞，差评等按钮-->

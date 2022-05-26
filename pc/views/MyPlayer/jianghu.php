@@ -871,10 +871,14 @@ function initialUrl($url)
         // dp1.play();
 
         var strtext = "<div id='player-load1-warn'>如果卡顿，请在<span>播放窗口右侧</span>更换<span>1080P</span>线路</div>";
-        $("#player1").prepend(strtext);
-        warnTimeout = setTimeout(function(){
-            $("#player-load1-warn").hide();
-        },20000);
+        var source_count = <?=$source_count?>;
+        //只有1080P的或者只有720P的，不显示“切换1080P”的提示
+        if(source_count > 1){
+            $("#player1").prepend(strtext);
+            warnTimeout = setTimeout(function(){
+                $("#player-load1-warn").hide();
+            },20000);
+        }
         dp1.on('loadedmetadata', function () {
             var totaltime = parseInt(dp1.video.duration);
             if(totaltime>0){
