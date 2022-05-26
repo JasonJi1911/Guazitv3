@@ -638,14 +638,29 @@ class VideoController extends BaseController
         }
 
         if(!$data){
-            if($country_name){
-                $data['country_name'] = $country_name;
-                $data['country_code'] = $country_code;
-            }else{
-                $data['country_name'] = "全球";
-                $data['country_code'] = "GL";
+            if(PLATFORM=='GZ'){//瓜子城市为空，执行默认城市-澳洲 / 墨尔本
+                $data['city_code'] = 'MEL';
+                $data['city_name'] = '澳洲';
+                if($country_name){
+                    $data['country_name'] = $country_name;
+                    $data['country_code'] = $country_code;
+                }else{
+                    $data['country_name'] = "澳洲";
+                    $data['country_code'] = "AU";
+                }
+                $data['imgname'] = "AUgq.png";
+            }else if(PLATFORM=='RY'){//如意城市为空，执行默认城市-北美 / 洛杉矶
+                $data['city_code'] = 'LAX';
+                $data['city_name'] = '北美';
+                if($country_name){
+                    $data['country_name'] = $country_name;
+                    $data['country_code'] = $country_code;
+                }else{
+                    $data['country_name'] = "美国";
+                    $data['country_code'] = "US";
+                }
+                $data['imgname'] = "USgq.png";
             }
-            $data['imgname'] = "GLgq.png";
         }
         return $data;
     }
