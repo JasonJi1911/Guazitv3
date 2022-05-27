@@ -68,11 +68,14 @@ class ApiService
         }
 
         // 合并默认参数
+        // 20220527 尹 新增参数from_channel、marketChannel
         $params = array_merge([
             'ver'    => '1.0',
             'osType' => $osType,
             'time'   => time(),
             'product'=> Common::PRODUCT_PC,
+            'from_channel'=> Common::FROM_CHANNEL_PC,
+            'marketChannel'=> 0,
             'debug' => 1,
             'ip' => Tool::getIp(),
         ], $params);

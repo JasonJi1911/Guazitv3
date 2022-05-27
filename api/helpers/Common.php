@@ -60,6 +60,7 @@ class Common implements ProductInterface, FromChannelInterface, SourceInterface
         self::FROM_CHANNEL_ANDROID => self::SOURCE_ANDROID_APP,
         self::FROM_CHANNEL_IOS     => self::SOURCE_IOS_APP,
         self::FROM_CHANNEL_MP      => self::SOURCE_MP,
+        self::FROM_CHANNEL_WAP     => self::SOURCE_WAP,
     ];
 
     public static function getSecretKey($product, $os_type)
