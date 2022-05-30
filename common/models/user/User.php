@@ -123,7 +123,9 @@ class User extends \xiang\db\ActiveRecord implements StatusToggleInterface, Sour
 
     public static $sourceMap = [
         self::SOURCE_ANDROID_APP => '安卓',
-        self::SOURCE_IOS_APP => 'ios'
+        self::SOURCE_IOS_APP => 'ios',
+        self::SOURCE_PC => 'PC',
+        self::SOURCE_WAP => 'WAP'
     ];
 
     /**
