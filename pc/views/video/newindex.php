@@ -166,7 +166,7 @@ $this->registerJs($js);
     .Movie-type {
         display: none;
     }
-    .sort_content:hover .sort_img a div{
+    .sort_content:hover .sort_img a div.sort-text{
         color: #FF556E;
     }
 </style>

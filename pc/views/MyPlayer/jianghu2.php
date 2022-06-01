@@ -690,7 +690,6 @@ function initialUrl($url)
     <input type="button" onclick="send()">
 </div>
 <script type="text/javascript">
-    // console.log(<?= json_encode($videos)?>);
     var selected_id = <?=$play_chapter_id?>;
     var player_last_chapter = '';//无上一集样式
     var last_chapter = parseInt('<?=$last_chapter?>');
@@ -879,12 +878,12 @@ function initialUrl($url)
                 $("#player-load1-warn").hide();
             },20000);
         }
-        dp1.on('loadedmetadata', function () {
-            var totaltime = parseInt(dp1.video.duration);
-            if(totaltime>0){
-                // $("#player-load1-warn").hide();
-            }
-        });
+        // dp1.on('loadedmetadata', function () {
+        //     var totaltime = parseInt(dp1.video.duration);
+        //     if(totaltime>0){
+        //         $("#player-load1-warn").hide();
+        //     }
+        // });
 
         dp1.on('quality_end',function(){
             dp1.play();
@@ -906,51 +905,51 @@ function initialUrl($url)
         });
 
         //加载播放时间
-        var watchflag = true;
-        dp1.on('playing',function(){
-            if(watchflag){
-                watchflag = false;
-                var arrIndex = {};
-                arrIndex['video_id'] = '<?=$videos[0]['video_id']?>';
-                arrIndex['chapter_id'] = '<?=$play_chapter_id?>';
-                // console.log(arrIndex);
-                $.ajax({
-                    url:'/video/last-playinfo',
-                    data:arrIndex,
-                    type:'get',
-                    cache:false,
-                    dataType:'json',
-                    success:function(res) {
-                        // console.log(res)
-                        if(res.errno==0){
-                            var time = res.data.lastPlayTime;
-                            if(time > 0){
-                                // dp1.notice('您上次播放到 '+res.data.playtime+' <a style="display: inline-block;color:  #03c8d4 ;cursor: pointer;text-decoration: none;z-index:111111;">继续观看</a>', 500000);
-                                var strtext = '<div id="last-play-time">您上次播放到 '+res.data.playtime+' <span onclick="keepwatch('+time+');">继续观看</span></div>';
-                                $("#last-play-time").remove();
-                                $("#player1").prepend(strtext);
-                                $('#last-play-time').show().delay(5000).fadeOut();
-                            }
-                        }
-                    },
-                    error : function() {
-                        console.log("播放记忆时间加载失败");
-                    }
-                });
-            }
-        });
+        //var watchflag = true;
+        //dp1.on('playing',function(){
+        //    if(watchflag){
+        //        watchflag = false;
+        //        var arrIndex = {};
+        //        arrIndex['video_id'] = '<?//=$videos[0]['video_id']?>//';
+        //        arrIndex['chapter_id'] = '<?//=$play_chapter_id?>//';
+        //        // console.log(arrIndex);
+        //        $.ajax({
+        //            url:'/video/last-playinfo',
+        //            data:arrIndex,
+        //            type:'get',
+        //            cache:false,
+        //            dataType:'json',
+        //            success:function(res) {
+        //                // console.log(res)
+        //                if(res.errno==0){
+        //                    var time = res.data.lastPlayTime;
+        //                    if(time > 0){
+        //                        // dp1.notice('您上次播放到 '+res.data.playtime+' <a style="display: inline-block;color:  #03c8d4 ;cursor: pointer;text-decoration: none;z-index:111111;">继续观看</a>', 500000);
+        //                        var strtext = '<div id="last-play-time">您上次播放到 '+res.data.playtime+' <span onclick="keepwatch('+time+');">继续观看</span></div>';
+        //                        $("#last-play-time").remove();
+        //                        $("#player1").prepend(strtext);
+        //                        $('#last-play-time').show().delay(5000).fadeOut();
+        //                    }
+        //                }
+        //            },
+        //            error : function() {
+        //                console.log("播放记忆时间加载失败");
+        //            }
+        //        });
+        //    }
+        //});
 
         dp1.on("pause", function(){
             dp1.controller.show();
         });
     }
     //继续观看
-    function keepwatch(last_play_time){
-        if(last_play_time > 0){
-            dp1.seek(last_play_time);
-            $('#last-play-time').hide();
-        }
-    }
+    // function keepwatch(last_play_time){
+    //     if(last_play_time > 0){
+    //         dp1.seek(last_play_time);
+    //         $('#last-play-time').hide();
+    //     }
+    // }
     //验证视频播放权限
     function sourceLimit(index,limit){
         if(limit==0){
@@ -1049,7 +1048,6 @@ function initialUrl($url)
     // });
 
     //  集数tab 全部显示
-
     $("#player1").on('click', '.player-tab-all', function() {
         event.stopPropagation();
         $(this).hide().parents(".player-tab").addClass("player-all");
@@ -1062,7 +1060,6 @@ function initialUrl($url)
     });
 
     // 集数tab切换
-
     $("#player1").on('click', '.player-tab>.player-tab-a', function() {
         var tabNum = $(this).index() - 2;
         $(this).addClass("act").siblings(".player-tab-a").removeClass("act");
@@ -1225,15 +1222,6 @@ function initialUrl($url)
                         $("#player1").show();
                         IsShow(self);
                         dp1.play();
-<!--                        --><?php //$default_qua = 0;?>
-//                        $('#load1-img').remove();
-//                        var ini_video = {
-//                            quality: eval('(' + qualitystr + ')'),
-//                            pic: '',
-//                            defaultQuality: <?php //echo $default_qua;?>//,
-//                            defaultPlayLimit:'<?php //echo $source[$default_qua]['play_limit'];?>//'
-//                        };
-//                        initialPlayer(ini_video);
                     }
                 }, 1000);
             }, 1);
@@ -1302,15 +1290,6 @@ function initialUrl($url)
                 $("#player1").show();
                 IsShow(self);
                 dp1.play();
-<!--                --><?php //$default_qua = 0;?>
-//                $('#load1-img').remove();
-//                var ini_video = {
-//                    quality: eval('(' + qualitystr + ')'),
-//                    pic: '',
-//                    defaultQuality: <?php //echo $default_qua;?>//,
-//                    defaultPlayLimit:'<?php //echo $source[$default_qua]['play_limit'];?>//'
-//                };
-//                initialPlayer(ini_video);
             });
         }else if(ad_type==''){
             dp.destroy();
@@ -1319,15 +1298,6 @@ function initialUrl($url)
             $("#player1").show();
             IsShow(self);
             dp1.play();
-<!--            --><?php //$default_qua = 0;?>
-//            $('#load1-img').remove();
-//            var ini_video = {
-//                quality: eval('(' + qualitystr + ')'),
-//                pic: '',
-//                defaultQuality: <?php //echo $default_qua;?>//,
-//                defaultPlayLimit:'<?php //echo $source[$default_qua]['play_limit'];?>//'
-//            };
-//            initialPlayer(ini_video);
         }
     }
     function IsShow(_self){

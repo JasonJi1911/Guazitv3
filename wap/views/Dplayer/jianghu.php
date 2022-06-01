@@ -130,6 +130,7 @@ $type =initialUrl($url);
         top:5px;
         width:100%;
         text-align:center;
+        font-size: 13px;
     }
     #player-load1-warn span{
         color:#FF556E
@@ -373,6 +374,7 @@ $type =initialUrl($url);
                         dp.destroy();
                         $("#player_ad").hide();
                         $("#player1").show();
+                        IsShow(self);
                         dp1.play();
                         //var ini_video = {
                         //    url: '<?php //echo $type;?>//',
@@ -449,6 +451,7 @@ $type =initialUrl($url);
             dp.on('destroy', function () {
                 $("#player_ad").hide();
                 $("#player1").show();
+                IsShow(self);
                 dp1.play();
                 //var ini_video = {
                 //    url: '<?php //echo $type;?>//',
@@ -462,6 +465,7 @@ $type =initialUrl($url);
             $('#load1-img').remove();
             $("#player_ad").hide();
             $("#player1").show();
+            IsShow(self);
             dp1.play();
             //var ini_video = {
             //    url: '<?php //echo $type;?>//',
@@ -497,6 +501,20 @@ $type =initialUrl($url);
                 });
             }
         }
+    }
+    function IsShow(_self){
+        var int=_self.setInterval(function(){
+            if($("#player1").is(":visible"))
+            {
+                // 2022-04-12 Jason修改
+                canSwitch = true;
+                $("#player1 .dplayer-play-icon").trigger("click");
+                if(dp1.paused){
+                    dp1.play();
+                }
+                clearInterval(int);
+            }
+        },100);
     }
 </script>
 <script>

@@ -680,218 +680,6 @@ class VideoLogic
      * @return array
      * @throws ApiException
      */
-    public function playInfoApp($videoId, $chapterId, $sourceId, $city='')
-    {
-        //获取影片信息
-        $videoDao = new VideoDao();
-        $videoInfo = $videoDao->videoInfo($videoId, ['channel_id', 'video_id', 'video_name', 'actors_id', 'area', 'score', 'category', 'type', 'year', 'intro', 'intro', 'cover', 'horizontal_cover', 'flag', 'tag', 'play_limit', 'total_views','episode_num', 'is_down', 'total_price']);
-
-        if (!$videoInfo) { //视频不存在
-            throw new ApiException(ErrorCode::EC_VIDEO_NOT_EXIST);
-        }
-
-        // 获取影片剧集信息
-        $videos = $videoDao->videoChapter($videoId, [], true);
-        if (!$videos) { // 没有剧集抛出异常
-            throw new ApiException(ErrorCode::EC_VIDEO_CHAPTER_NOT_EXIST);
-        }
-
-        // 获取源信息
-        $commonDao = new CommonDao();
-        //改动新版本
-        $sources = $commonDao->videoSource(Yii::$app->common->product);
-        if(!$chapterId)
-        {
-            $res_list = array_column($sources, 'source_id');
-            foreach ($sources as $src)
-            {
-                $src_id = $src['source_id'];
-                foreach ($videos as $video)
-                {
-                    foreach ($video['resource_url'] as $k=>$v)
-                    {
-                        if(empty($v))
-                            unset($video['resource_url'][$k]);
-                    }
-                    $url_res_list = array_keys($video['resource_url']);
-//                    if(!empty(array_intersect($res_list,$url_res_list)))
-                    if (in_array($src_id, $url_res_list))
-                    {
-                        $chapterId = $video['chapter_id'];
-                        break;
-                    }
-                }
-                if($chapterId)
-                    break;
-            }
-        }
-
-        // 获取上次播放记录,如果传入的id为空，则获取上次播放历史续播
-        $lastPlayLInfo = $this->lastPlayInfo($videoId, $chapterId);
-        // 根据章节id获取章节内容,没有此id默认获取第一章
-        $chapterInfo = ArrayHelper::getValue($videos, $lastPlayLInfo['chapter_id'], reset($videos));
-        if (empty($chapterInfo['resource_url'])) {
-            throw new ApiException(ErrorCode::EC_VIDEO_PLAY_URL_ERROR);
-        }
-
-        // source_id异常时,将 source_id 置空
-        if (!$sourceId || !isset($chapterInfo['resource_url'][$sourceId]) || empty($chapterInfo['resource_url'][$sourceId])) {
-            $sourceId = '';
-        }
-
-        // 获取源信息
-        // $commonDao = new CommonDao();
-        // 旧版
-        // $sources = $commonDao->videoSource();
-        //改动新版本
-        // $sources = $commonDao->videoSource(Yii::$app->common->product);
-
-        //APP端 全走视频流, 网页端全走IFrame嵌套
-        $resourceType = Yii::$app->common->product == Common::PRODUCT_APP ? VideoChapter::RESOURCE_TYPE_DATA : VideoChapter::RESOURCE_TYPE_HTML;
-
-        $ossHelper = new OssHelper();
-        $iconURL= $ossHelper->server_point;
-
-        $source = [];
-        foreach ($sources as $item) {
-            if (!in_array($item['source_id'], array_keys($chapterInfo['resource_url'])) || empty($chapterInfo['resource_url'][$item['source_id']])) { // source_id不在视频里面或者没有视频播放连接
-                continue;
-            }
-
-            //app端不返回html的链接，暂时使用
-            $reUrl = $chapterInfo['resource_url'][$item['source_id']];
-            if (Yii::$app->common->product == Common::PRODUCT_APP && !strpos($reUrl,'.m3u8'))
-                continue;
-
-            if (!$sourceId) {
-                $sourceId = $item['source_id'];
-            }
-
-            //补全域名
-            $toUrl=new OssUrlHelper($item['icon']);
-            $source[] = [
-                'source_id'    => $item['source_id'],
-                'name'         => $item['name'],
-                'icon'         => $toUrl->toUrl(),
-                // 'icon'         => $iconURL.'/'.$item['icon'],
-                'resource_url' => $this->parseUrl($chapterInfo['resource_url'][$item['source_id']], Yii::$app->common->product, $item['source_id'], $sources),
-                'resource_type' => $resourceType,
-                'checked'      => $sourceId == $item['source_id'] ? 1 : 0
-            ];
-        }
-
-        $videoInfo['catalog_style'] = 1; //目录样式 1连续剧 2综艺
-
-        $purchaseInfo = $this->_purchaseInfo($videoId, $videoInfo, $chapterInfo['chapter_id'], $videos);
-        // 重新格式化数据
-        $videos = array_values($videos);
-        $videosBak = $videos;
-        // 格式化章节信息
-        foreach ($videos as $key => &$video) {
-            if (mb_strlen($video['title']) > 6) {
-                $videoInfo['catalog_style'] = 2;
-            }
-            $video['checked']       = $chapterInfo['chapter_id'] == $video['chapter_id'] ? 1 : 0; // 是否当前选中状态
-            $video['cover']         = $videoInfo['horizontal_cover'];
-            $video['download_name'] = md5($videoInfo['video_name'] . ' ' . $video['title']);
-            $video['mime_type']     = substr(strrchr($video['resource_url'][$sourceId], '.'), 1);
-            $video['last_chapter']  = isset($videos[$key-1]) ? $videos[$key-1]['chapter_id'] : 0;
-            $video['next_chapter']  = isset($videos[$key+1]) ? $videos[$key+1]['chapter_id'] : 0;
-            if (Yii::$app->common->product == Common::PRODUCT_APP) {
-                unset($video['resource_url']); // 安全考虑，删除剧集播放连接，防止全部播放连接一次性全返回
-            }
-        }
-
-        // 演员信息
-        $actorsId = $videoInfo['actors_id'] ? explode(',', $videoInfo['actors_id']) : [];
-        $actors = $videoDao->actorsInfo($actorsId);
-
-        //将演员 分成 导演和主演两组
-        $actorsGroup = ArrayHelper::index($actors, null, 'type');
-        $director = '';
-        if (isset($actorsGroup[Actor::TYPE_DIRECTOR])) {
-            $director = implode(' ', ArrayHelper::getColumn($actorsGroup[Actor::TYPE_DIRECTOR], 'actor_name'));
-        }
-
-        $actor = '';
-        if (isset($actorsGroup[Actor::TYPE_ACTOR])) {
-            $actor = implode(' ', ArrayHelper::getColumn($actorsGroup[Actor::TYPE_ACTOR], 'actor_name'));
-        }
-
-        // 收藏信息
-        $userLogic = new UserLogic();
-        $isFav = $userLogic->isFav($videoId) ? 1 : 0;
-        // 增加观看次数
-        $this->increaseViews($videoId);
-        // 猜你喜欢
-        $guessLike = $videoDao->refreshVideo(['channel_id' => $videoInfo['channel_id']], ['video_id', 'video_name', 'tag', 'flag', 'play_times', 'cover', 'horizontal_cover', 'intro', 'summary'], 12, [$videoInfo['video_id']]);
-        // 评论信息
-        $commentData = $this->videoInfoComment($videoId, $chapterInfo['chapter_id']);
-        // 获取用户观看视频任务状态
-        $taskLogic = new TaskLogic();
-        $taskStatus = $taskLogic->taskStatus(Yii::$app->user->id, TaskInfo::TASK_ACTION_PLAY_VIDEO);
-        $sourceFilter = $this->filterResourceChapter($videosBak, $sources, $sourceId, $videoInfo['horizontal_cover']);
-        // $souceVideos = ArrayHelper::index($sourceFilter, 'resId')[$sourceId]['data'];
-        $data = [
-            'info' => array_merge($videoInfo,
-                [
-                    'is_fav'          => $isFav,
-                    'cats'            => STYLE_SIGN . $videoInfo['score'] . STYLE_SIGN . '/' . $videoInfo['category'] . '/' . $videoInfo['area'] . '/' . $videoInfo['year'],
-                    'play_chapter_id' => $chapterInfo['chapter_id'],
-                    'chapter_title'   => $chapterInfo['title'],
-                    'play_video_id'   => $chapterInfo['video_id'],
-                    'resource_url'    => $this->parseUrl($chapterInfo['resource_url'][$sourceId], Yii::$app->common->product, $sourceId, $sources),
-                    'resource_type'   => $resourceType,
-                    'total_comment'   => VideoChapter::getTotalComment($chapterInfo['chapter_id']), // 获取评论总数
-//                    'total_views'     => $chapterInfo['total_views'],
-                    'play_limit'      => $chapterInfo['play_limit'],
-                    'last_play_time'  => intval($lastPlayLInfo['lastPlayTime']),
-                    'next_chapter'    => ArrayHelper::index($videos, 'chapter_id')[$chapterInfo['chapter_id']]['next_chapter'],
-                    // 'next_chapter'    => ArrayHelper::index($souceVideos, 'chapter_id')[$chapterInfo['chapter_id']]['next_chapter'],
-                    // 'last_chapter'    => ArrayHelper::index($souceVideos, 'chapter_id')[$chapterInfo['chapter_id']]['last_chapter'],
-                    'video_task_time' => $taskStatus ? 0 : 60, //TODO
-                    'videos'          => $videos,
-                    'source'          => $source,
-                    'actors'          => array_values($actors),
-                    'director'        => $director,
-                    'actor'           => $actor,
-                    'filter'          => $sourceFilter,
-                    'source_id'       => $sourceId,
-                ]),
-            'guess_like'    => $guessLike, // 猜你喜欢
-            'comments'      => $commentData, // 评论
-            "purchase_info" => $purchaseInfo, // 是否可播放信息
-            'channel_id'    => $videoInfo['channel_id'],
-        ];
-
-        //添加广告
-        $advertLogic = new AdvertLogic();
-        $playbeforePos = Yii::$app->common->product == Common::PRODUCT_PC
-            ? AdvertPosition::POSITION_PLAY_BEFORE_PC : AdvertPosition::POSITION_PLAY_BEFORE;
-        $videoTopPos = Yii::$app->common->product == Common::PRODUCT_PC
-            ? AdvertPosition::POSITION_VIDEO_TOP_PC : AdvertPosition::POSITION_VIDEO_TOP_PC;
-        $videoBottomPos = Yii::$app->common->product == Common::PRODUCT_PC
-            ? AdvertPosition::POSITION_VIDEO_BOTTOM_PC : AdvertPosition::POSITION_VIDEO_BOTTOM_PC;
-
-        $data['advert'] = [
-            (object)$advertLogic->advertByPosition($playbeforePos, $city),
-            (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_PLAY_STOP, $city),
-            (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_LIKE_TOP, $city),
-            (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_LIKE_BOTTOM, $city),
-            (object)$advertLogic->advertByPosition($videoTopPos, $city),
-            (object)$advertLogic->advertByPosition($videoBottomPos, $city),
-        ];
-
-        return $data;
-    }
-    /**
-     * 播放页详情信息
-     * @param $videoId
-     * @param $chapterId
-     * @param $sourceId
-     * @return array
-     * @throws ApiException
-     */
     public function playInfo($videoId, $chapterId, $sourceId, $city='', $uid='')
     {
         //获取影片信息
@@ -1166,6 +954,202 @@ class VideoLogic
             (object)$advertLogic->advertByPosition($videoTopPos, $city),
             (object)$advertLogic->advertByPosition($videoBottomPos, $city),
             (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_RIGHT_PC, $city)
+        ];
+
+        return $data;
+    }
+
+    /*
+     * 20220601 尹 局部刷新播放器
+     */
+    public function playInfoPart($videoId, $chapterId, $sourceId, $city='', $uid='',$last_chapter_id)
+    {
+        //获取影片信息
+        $videoDao = new VideoDao();
+        $videoInfo = $videoDao->videoInfo($videoId, ['channel_id', 'video_id', 'video_name', 'actors_id',
+            'area', 'score', 'category', 'type', 'year', 'intro', 'intro', 'cover', 'horizontal_cover',
+            'flag', 'tag', 'play_limit', 'total_views','episode_num', 'is_down', 'total_price', 'created_at','summary','total_favors']);
+
+        if (!$videoInfo) { //视频不存在
+            throw new ApiException(ErrorCode::EC_VIDEO_NOT_EXIST);
+        }
+
+        // 获取影片剧集信息
+        $order = 'asc';
+        if($videoInfo['channel_id']==3){//综艺倒序
+            $order = 'desc';
+        }
+        $videos = $videoDao->videoChapter($videoId, [], true, $order);
+        if (!$videos) { // 没有剧集抛出异常
+            throw new ApiException(ErrorCode::EC_VIDEO_CHAPTER_NOT_EXIST);
+        }
+
+        // 获取源信息
+        $commonDao = new CommonDao();
+        //改动新版本
+        $sources = $commonDao->videoSource(Yii::$app->common->product);
+        if(!$chapterId)
+        {
+            $res_list = array_column($sources, 'source_id');
+            foreach ($sources as $src)
+            {
+                $src_id = $src['source_id'];
+                foreach ($videos as $video)
+                {
+                    foreach ($video['resource_url'] as $k=>$v)
+                    {
+                        if(empty($v))
+                            unset($video['resource_url'][$k]);
+                    }
+                    $url_res_list = array_keys($video['resource_url']);
+//                    if(!empty(array_intersect($res_list,$url_res_list)))
+                    if (in_array($src_id, $url_res_list))
+                    {
+                        $chapterId = $video['chapter_id'];
+                        break;
+                    }
+                }
+                if($chapterId)
+                    break;
+            }
+        }
+
+        // 根据章节id获取章节内容,没有此id默认获取第一章
+        $chapterInfo = ArrayHelper::getValue($videos, $chapterId, reset($videos));
+        if (empty($chapterInfo['resource_url'])) {
+            throw new ApiException(ErrorCode::EC_VIDEO_PLAY_URL_ERROR);
+        }
+
+        // source_id异常时,将 source_id 置空
+        if (!$sourceId || !isset($chapterInfo['resource_url'][$sourceId]) || empty($chapterInfo['resource_url'][$sourceId])) {
+            $sourceId = '';
+        }
+
+        $source = [];
+        foreach ($sources as $item) {
+            if (!in_array($item['source_id'], array_keys($chapterInfo['resource_url'])) || empty($chapterInfo['resource_url'][$item['source_id']])) { // source_id不在视频里面或者没有视频播放连接
+                continue;
+            }
+
+            if (!$sourceId) {
+                $sourceId = $item['source_id'];
+            }
+
+            //补全域名
+            $toUrl=new OssUrlHelper($item['icon']);
+            $source[] = [
+                'source_id'    => $item['source_id'],
+                'name'         => $item['name'],
+                'icon'         => $toUrl->toUrl(),
+                'resource_url' => $this->parseUrl($chapterInfo['resource_url'][$item['source_id']], Yii::$app->common->product, $item['source_id'], $sources, $uid),
+                'resource_type' => VideoChapter::RESOURCE_TYPE_HTML,//网页端全走IFrame嵌套
+                'checked'      => $sourceId == $item['source_id'] ? 1 : 0,
+                'play_limit'   => $item['play_limit']
+            ];
+        }
+
+//        $videoInfo['catalog_style'] = 1; //目录样式 1连续剧 2综艺
+
+        // 重新格式化数据
+        $videos = array_values($videos);
+        $videosBak = $videos;
+        // 格式化章节信息
+        foreach ($videos as $key => &$video) {
+//            if (mb_strlen($video['title']) > 6) {
+//                $videoInfo['catalog_style'] = 2;
+//            }
+            $video['checked']       = $chapterInfo['chapter_id'] == $video['chapter_id'] ? 1 : 0; // 是否当前选中状态
+            $video['cover']         = $videoInfo['horizontal_cover'];
+            $video['download_name'] = md5($videoInfo['video_name'] . ' ' . $video['title']);
+            $video['mime_type']     = substr(strrchr($video['resource_url'][$sourceId], '.'), 1);
+            $video['last_chapter']  = isset($videos[$key-1]) ? $videos[$key-1]['chapter_id'] : 0;
+            $video['next_chapter']  = isset($videos[$key+1]) ? $videos[$key+1]['chapter_id'] : 0;
+//            if(Yii::$app->common->product == Common::PRODUCT_APP){
+//                unset($video['resource_url']); // 安全考虑，删除剧集播放连接，防止全部播放连接一次性全返回
+//            }
+            if(empty($video['resource_url']))
+            {
+                unset($videos[$key]);
+                continue;
+            }
+            $can_play = false;
+            foreach ($sources as $ssc)
+            {
+                if ($video['resource_url'][$ssc['source_id']]){
+                    $ssc_url = $video['resource_url'][$ssc['source_id']];
+                    unset($video['resource_url'][$ssc['source_id']]);
+                    $video['resource_url'][$ssc['source_id']] = $ssc_url;
+                    $can_play = true;
+                }
+            }
+            if(!$can_play)
+                unset($videos[$key]);
+        }
+
+        // 增加观看次数
+        $this->increaseViews($videoId);
+
+        $sourceFilter = $this->filterResourceChapter($videosBak, $sources, $sourceId, $videoInfo['horizontal_cover']);
+        $sourceVideos = ArrayHelper::index($sourceFilter, 'resId')[$sourceId]['data'];
+        $next_chapter = 0;
+        $last_chapter = 0;
+        if ($sourceVideos) {
+            $next_chapter = ArrayHelper::index($sourceVideos, 'chapter_id')[$chapterInfo['chapter_id']]['next_chapter'];
+            $last_chapter = ArrayHelper::index($sourceVideos, 'chapter_id')[$chapterInfo['chapter_id']]['last_chapter'];
+        }
+        //总收藏数+详情-更新：summary
+//        $video_total = Video::find()->select("total_favors,is_finished")->andWhere(['id'=>$videoId])->asArray()->one();
+//        $videoInfo['is_finished'] = $video_total['is_finished'];
+//        //详情-更新：summary
+//        if($video_total['is_finished']==1){
+//            $videoInfo['summary'] = "已完结";
+//        }else if($videoInfo['summary']==""){
+//            $videoInfo['summary'] = "更新中";
+//        }
+
+        $videos = array_values($videos);//视频有效剧集序号重新排序
+
+        //计算播放时长百分比
+        $watchlog = $this->lastPlayInfo($videoId,$last_chapter_id,$uid);
+        $percent = '';
+        if($watchlog){
+            $last_chapter_id = $watchlog['chapter_id'];
+            $totalTime = $watchlog['totaltime'];
+            $watchTime = $watchlog['lastPlayTime'];
+            if($totalTime == 0 || $watchTime == 0){
+                $percent = '0%';
+            }else{
+                $percent = intval(intval($watchTime) / intval($totalTime)*100).'%';
+            }
+        }
+
+        $data = [
+            'info' => array_merge($videoInfo,
+                [
+                    'play_chapter_id' => $chapterInfo['chapter_id'],
+                    'resource_url'    => $this->parseUrl($chapterInfo['resource_url'][$sourceId], Yii::$app->common->product, $sourceId, $sources,$uid),
+//                    'last_play_time'  => intval($lastPlayLInfo['lastPlayTime']),
+                    'next_chapter'    => $next_chapter,
+                    'last_chapter'    => $last_chapter,
+                    'videos'          => $videos,
+                    'source'          => $source,
+                    'filter'          => $sourceFilter,
+                    'source_id'       => $sourceId,
+                ]),
+            'watchlog' => $watchlog,
+            'percent' => $percent
+        ];
+
+        //添加广告
+        $advertLogic = new AdvertLogic();
+        $playbeforePos = Yii::$app->common->product == Common::PRODUCT_PC
+            ? AdvertPosition::POSITION_PLAY_BEFORE_PC : AdvertPosition::POSITION_PLAY_BEFORE;
+        $videoTopPos = Yii::$app->common->product == Common::PRODUCT_PC
+            ? AdvertPosition::POSITION_VIDEO_TOP_PC : AdvertPosition::POSITION_VIDEO_TOP_PC;
+
+        $data['advert'] = [
+            (object)$advertLogic->advertByPosition($playbeforePos, $city),
+            (object)$advertLogic->advertByPosition($videoTopPos, $city),
         ];
 
         return $data;

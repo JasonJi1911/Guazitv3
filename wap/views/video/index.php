@@ -499,7 +499,6 @@ header('X-Frame-Options:Deny');
                     citycode = cf_ray.substring(cf_ray.length-3);
                 }
             }
-            // citycode = 'MEL';
             // console.log(citycode);
             var arrIndex = {};
             arrIndex['citycode'] = citycode;

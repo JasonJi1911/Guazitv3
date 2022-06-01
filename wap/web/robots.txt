@@ -1,3 +1,3 @@
 User-agent: *
 Sitemap: http://guazitv.tv/sitemapindex.xml
-Allow: /
+Disallow: /

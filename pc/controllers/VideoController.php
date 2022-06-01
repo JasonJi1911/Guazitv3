@@ -440,16 +440,10 @@ class VideoController extends BaseController
             return $this->redirect('/site/error');
         }
 
-        //请求热门搜索信息
-        $source_id = $data['info']['source_id'];
-        $sourceFilter = $data['info']['filter'];
-        $souceVideos = ArrayHelper::index($sourceFilter, 'resId')[$source_id]['data'];
-        if ($souceVideos) {
-            $data['info']['next_chapter'] = ArrayHelper::index($souceVideos, 'chapter_id')[$data['info']['play_chapter_id']]['next_chapter'];
-            $data['info']['last_chapter'] = ArrayHelper::index($souceVideos, 'chapter_id')[$data['info']['play_chapter_id']]['last_chapter'];
-        }
-
         $advert_top_pc = [];
+        $ad_url = '';
+        $ad_link = '';
+        $ad_type = '';
         foreach ($data['advert'] as $key => $advert) {
             //2022-04-22尹 播放器广告，会员不加载
             if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_PLAY_BEFORE_PC && !$data['isvip']) {
@@ -472,18 +466,6 @@ class VideoController extends BaseController
                 $advert_top_pc = $advert;
             }
         }
-        //计算播放时长百分比
-        $percent = '';
-        if($data['watchlog']){
-            $last_chapter_id = $data['watchlog']['chapter_id'];
-            $totalTime = $data['watchlog']['totaltime'];
-            $watchTime = $data['watchlog']['lastPlayTime'];
-            if($totalTime == 0 || $watchTime == 0){
-                $percent = '0%';
-            }else{
-                $percent = intval(intval($watchTime) / intval($totalTime)*100).'%';
-            }
-        }
 
         return $this->renderPartial('/MyPlayer/jianghu2', [
             'url'      => explode('v=',$data['info']['resource_url'])[1],
@@ -496,9 +478,9 @@ class VideoController extends BaseController
             'source'          => $data['info']['source'],
             'last_chapter'    => $data['info']['last_chapter'],
             'next_chapter'    => $data['info']['next_chapter'],
-            'last_play_time'  => $data['info']['last_play_time'],
+//            'last_play_time'  => $data['info']['last_play_time'],
             'last_chapter_id' => $last_chapter_id,
-            'percent'   => $percent,
+            'percent'   => $data['percent'],
             'video_name'=> $data['info']['video_name'],
             'lastplayinfo'   => $data['watchlog'],
             'advert_top_pc'  => $advert_top_pc,

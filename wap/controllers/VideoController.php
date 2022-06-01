@@ -305,29 +305,10 @@ class VideoController extends BaseController
         $chapterId = Yii::$app->request->get('chapterId', 0);
 
         $data = [];
-        //查城市
-//        $citylist = Yii::$app->api->get('/video/city-info', ['citycode' => $citycode]);
-//
-//        if($citylist){
-//            $city = $citylist['city_name'];
-//        }else{
-//            $city = '';
-//        }
 
-        $citycode = 'MEL';
         //查广告
         $data = Yii::$app->api->get('/video/advert', ['page' => $page, 'city'=> '','citycode' => $citycode, 'uid' => $uid]);
-//        if($advert){
-//            $data['advert'] = $advert['advert'];
-//        }
 
-        //查线路
-//        if($chapterId!=0){
-//            $sources = Yii::$app->api->get('/video/chapter-sources',['uid'=>$uid,'chapterId'=>$chapterId,]);
-//            if($sources){
-//                $data['sources'] = $sources;
-//            }
-//        }
         if($data){
             $errno = 0;
         }else{

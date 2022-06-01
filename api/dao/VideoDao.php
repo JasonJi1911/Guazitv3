@@ -189,11 +189,19 @@ class VideoDao extends BaseDao
         }
 
         //影片的演员id信息,只查id并缓存起来
-        $actorId = VideoActor::find()
-            ->select('actor_id')
-            ->andWhere(['video_id' => $videoId])
-            ->column();
-        $data['actors_id'] = implode(',', $actorId);
+        $actorId_key = 'videoinfo_video_'.$videoId;
+        if($actorId = $redis->get($actorId_key)){
+            $actorId = json_decode($actorId, true);
+        }else{
+            $actorId = VideoActor::find()
+                ->select('actor_id')
+                ->andWhere(['video_id' => $videoId])
+                ->column();
+            $redis->setEx($actorId_key, json_encode($actorId));
+        }
+        if($actorId){
+            $data['actors_id'] = implode(',', $actorId);
+        }
 
         // 地区
         $videoAreaInfo = $this->_getVideoAreaInfo();

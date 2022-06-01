@@ -364,7 +364,9 @@ class VideoController extends BaseController
         return $videoLogic->playInfo($videoId, $chapterId, $sourceId, $city, $uid);
     }
 
-
+    /*
+     * 20220601 尹 局部刷新播放器
+     */
     public function actionInfoPart()
     {
         $videoId   = $this->getParamOrFail('video_id');
@@ -390,9 +392,9 @@ class VideoController extends BaseController
 
         //jianghu2信息
         $videoLogic = new VideoLogic();
-        $data = $videoLogic->playInfo($videoId, $chapterId, $sourceId, $city, $uid);
-        //播放记录
-        $data['watchlog'] = $videoLogic->lastPlayInfo($videoId,$last_chapter_id,$uid);
+        //$chapterId -- 要跳转的 chapterId
+        //$last_chapter_id -- 上次播放的chapterId
+        $data = $videoLogic->playInfoPart($videoId, $chapterId, $sourceId, $city, $uid, $last_chapter_id);
 
         //2022-04-22尹 播放器广告，会员不加载
         $userdao = new UserDao();

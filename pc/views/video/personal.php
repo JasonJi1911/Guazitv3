@@ -510,13 +510,9 @@ $(document).ready(function() {
             //邮件
             $email_length = strlen($data['user']['email']);
             $hide_email_length = $email_length - 5;
-            $e = '';
             $hide_email = '';
             if ($hide_email_length > 0) {
-                for ($i = 0; $i < $hide_email_length; $i++) {
-                    $e .= '*';
-                }
-                $hide_email = substr($data['user']['email'],0, 3) . $xing . substr($data['user']['email'],-2);
+                $hide_email = substr($data['user']['email'],0, 3) . '******' . substr($data['user']['email'],-2);
             } else {
                 $hide_email = $data['user']['email'];
             }
@@ -1339,6 +1335,8 @@ $(".J_per_save_user").click(function (){
             if(data=='nickname'){
                 $("#loggedin").find('.navTopLogonName').text(str);
             }
+            $("#pop-tip").text("修改成功");
+            $("#pop-tip").show().delay(1500).fadeOut();
         }else{
             $("#pop-tip").text("修改失败");
             $("#pop-tip").show().delay(1500).fadeOut();

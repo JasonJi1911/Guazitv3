@@ -1257,6 +1257,7 @@ function initialUrl($url)
                         dp.destroy();
                         $("#player_ad").hide();
                         $("#player1").show();
+                        IsShow(self);
                         dp1.play();
 <!--                        --><?php //$default_qua = 0;?>
 //                        $('#load1-img').remove();
@@ -1330,6 +1331,7 @@ function initialUrl($url)
                 dp.fullScreen.cancel();
                 $("#player_ad").hide();
                 $("#player1").show();
+                IsShow(self);
                 dp1.play();
 <!--                --><?php //$default_qua = 0;?>
 //                $('#load1-img').remove();
@@ -1346,6 +1348,7 @@ function initialUrl($url)
             $('#load1-img').remove();
             $("#player_ad").hide();
             $("#player1").show();
+            IsShow(self);
             dp1.play();
 <!--            --><?php //$default_qua = 0;?>
 //            $('#load1-img').remove();
@@ -1357,6 +1360,20 @@ function initialUrl($url)
 //            };
 //            initialPlayer(ini_video);
         }
+    }
+    function IsShow(_self){
+        var int=_self.setInterval(function(){
+            if($("#player1").is(":visible"))
+            {
+                // 2022-04-12 Jason修改
+                canSwitch = true;
+                $("#player1 .dplayer-play-icon").trigger("click");
+                if(dp1.paused){
+                    dp1.play();
+                }
+                clearInterval(int);
+            }
+        },100);
     }
 </script>
 <script>
