@@ -1109,20 +1109,6 @@ class VideoLogic
 
         $videos = array_values($videos);//视频有效剧集序号重新排序
 
-        //计算播放时长百分比
-        $watchlog = $this->lastPlayInfo($videoId,$last_chapter_id,$uid);
-        $percent = '';
-        if($watchlog){
-            $last_chapter_id = $watchlog['chapter_id'];
-            $totalTime = $watchlog['totaltime'];
-            $watchTime = $watchlog['lastPlayTime'];
-            if($totalTime == 0 || $watchTime == 0){
-                $percent = '0%';
-            }else{
-                $percent = intval(intval($watchTime) / intval($totalTime)*100).'%';
-            }
-        }
-
         $data = [
             'info' => array_merge($videoInfo,
                 [

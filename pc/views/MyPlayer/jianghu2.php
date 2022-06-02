@@ -1115,14 +1115,6 @@ function initialUrl($url)
         ?>
         qualitystr = "["+"<?=$qstr?>"+"]";
         advertinfo(qualitystr);
-        //加载播放记录
-        var watchstr = '<li data-video-id="<?=$videos[0]['video_id']?>"><a href="/video/detail?video_id=<?=$videos[0]['video_id']?>">'+
-                        '<div><?=$video_name?>&nbsp;&nbsp;<?=$last_chapter_title?></div>'+
-                        '<div>观看至<?=$percent?></div>'+
-                        '<div><span>0秒前</span></div>'+
-                        '</a></li>';
-        $('#LSmenuBox_div ul.LSmenu li[data-video-id=<?=$videos[0]['video_id']?>]').remove();
-        $('#LSmenuBox_div ul.LSmenu').prepend(watchstr);
 
         //2022-4-19尹 PC播放页-播放窗口上方广告局部刷新
         <?php $advert_top = '';

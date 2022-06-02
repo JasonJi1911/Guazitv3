@@ -1926,6 +1926,20 @@ else
         });
         //局部刷新评论区域--20220509 yin
         refreshComment(videoId,chapterId);
+        refreshwatchlog();//右上角局部刷新
+    }
+    //右上角局部刷新
+    function refreshwatchlog(){
+        var uid = finduser();
+        var ar = {};
+        ar['uid'] = uid;
+        $.get('/video/userall',ar,function(res){
+            $("#navTopBtnBox").html(res);
+            ztBlack();
+            if(!isNaN(uid) && uid!=""){
+                $("#det_login").parent().parent().hide();
+            }
+        });
     }
     //局部刷新评论
     function refreshComment(videoId,chapterId){

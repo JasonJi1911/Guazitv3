@@ -10,7 +10,7 @@ $(document).ready(function() {
     //缓存为空
     if (!countrylist || typeof (countrylist) == "undefined" || countrylist == 0 || countrylist == "undefined") {
         // console.log("returnCitySN="+JSON.stringify(returnCitySN));
-
+        var isSave = true;
         var req = new XMLHttpRequest();
         req.open('GET', '../../images/NewVideo/logo.png', false);
         req.send(null);
@@ -27,6 +27,7 @@ $(document).ready(function() {
             if(cf_cache_status == 'HIT'){
                 citycode = cf_ray.substring(cf_ray.length-3);
             }else{
+                isSave = false;
                 citycode = 'MEL'//墨尔本
             }
         }
@@ -42,8 +43,10 @@ $(document).ready(function() {
                 if (res.errno == 0 && res.data) {
                     COUNTRYINFO = res.data;
                     countrylist = JSON.stringify(res.data);
-                    window.localStorage.setItem("countrylist", countrylist);
-                    setCookie("currentcountry",1,1);
+                    if(isSave){
+                        window.localStorage.setItem("countrylist", countrylist);
+                        setCookie("currentcountry",1,1);
+                    }
                 }
                 showcountry();
             });
