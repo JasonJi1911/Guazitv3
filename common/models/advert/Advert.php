@@ -29,6 +29,7 @@ use Yii;
  * @property int $status 状态（1-开启，2-关闭）
  * @property int $city_id 城市id
  * @property string $platform 平台-播放平台(RY/GZ)
+ * @property int $display_order 排序
  * @property int $created_at 创建时间
  * @property int $updated_at 更新时间
  * @property int $deleted_at 删除时间

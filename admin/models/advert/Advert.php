@@ -15,7 +15,7 @@ class Advert extends \common\models\advert\Advert
     public function rules()
     {
         return [
-            [['position_id', 'ad_type','city_id', 'width', 'height', 'url_type', 'pv', 'click', 'status', 'created_at', 'updated_at', 'deleted_at'], 'integer'],
+            [['position_id', 'ad_type','city_id', 'width', 'height', 'url_type', 'pv', 'click', 'status', 'created_at', 'updated_at', 'deleted_at', 'display_order'], 'integer'],
             [['title'], 'string', 'max' => 64],
             [['ad_key', 'ad_android_key'], 'string', 'max' => 128],
             [['skip_url'], 'string', 'max' => 256],
@@ -51,7 +51,8 @@ class Advert extends \common\models\advert\Advert
             'updated_at' => 'Updated At',
             'deleted_at' => 'Deleted At',
             'cityName' => '地域',
-            'platform' => '平台'
+            'platform' => '平台',
+            'display_order' => '排序'
         ];
     }
 

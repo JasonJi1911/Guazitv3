@@ -94,6 +94,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 return '--';
             }
         ],
+        'display_order',
         [
             'class' => 'metronic\grid\ActionColumn',
             'template' => '{update} {shelve} {delete}',

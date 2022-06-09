@@ -17,6 +17,7 @@ class AdvertSearch extends Advert implements SearchInterface
     {
         return [
             [['position_id'], 'integer'],
+            [['platform'], 'string', 'max' => 2],
         ];
     }
 
@@ -25,7 +26,8 @@ class AdvertSearch extends Advert implements SearchInterface
      */
     public function prepareQuery($query)
     {
-        $query->andFilterWhere(['position_id' => $this->position_id]);
+        $query->andFilterWhere(['position_id' => $this->position_id])
+            ->andFilterWhere(['platform' => $this->platform]);
 
         return $query;
     }

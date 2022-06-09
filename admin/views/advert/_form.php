@@ -88,6 +88,7 @@ $this->registerJs($js);
             ?>
             <?= $form->field($model, 'skip_url')->textInput(['maxlength' => true, 'placeholder' => 'http://或https://']) ?>
             <?= $form->field($model, 'platform')->dropDownList(Advert::$platformmap)->wrapper(['width' => 2]) ?>
+            <?= $form->field($model, 'display_order')->numberInput(['min' => 0, 'max' => '255'])->wrapper(['width' => 3])->hint('0 ~ 255之间，值越大，显示越靠前') ?>
         </div>
 
         <div id="sdk_advert_info" style="display:none">
@@ -161,6 +162,7 @@ $this->registerJs($js);
                 echo $form->field($model, 'city_id')->dropDownList(ArrayHelper::map(IpAddress::find()->where(['not', ['sort' => 0]])->groupBy('city')->orderBy("sort desc")->all(), 'id', 'city'), ['prompt' => '全部' ])->wrapper(['width' => 2]);
                 echo $form->field($model, 'skip_url')->textInput(['maxlength' => true, 'placeholder' => 'http://或https://']);
                 echo $form->field($model, 'platform')->dropDownList(Advert::$platformmap)->wrapper(['width' => 2]);
+                echo $form->field($model, 'display_order')->numberInput(['min' => 0, 'max' => '255'])->wrapper(['width' => 3])->hint('0 ~ 255之间，值越大，显示越靠前');
                 break;
 
             default :   //sdk广告
