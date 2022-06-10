@@ -1,9 +1,9 @@
 <?php
-namespace apinew\controllers;
+namespace appapi\controllers;
 
-use apinew\dao\RankDao;
-use apinew\logic\ChannelLogic;
-use apinew\models\video\RankVideo;
+use appapi\dao\RankDao;
+use appapi\logic\ChannelLogic;
+use appapi\models\video\RankVideo;
 
 class RankController extends BaseController
 {

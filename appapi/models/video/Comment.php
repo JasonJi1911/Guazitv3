@@ -1,7 +1,7 @@
 <?php
-namespace apinew\models\video;
+namespace appapi\models\video;
 
-use api\models\user\User;
+use appapi\models\user\User;
 use common\helpers\Tool;
 
 class Comment extends \common\models\video\Comment
@@ -20,7 +20,6 @@ class Comment extends \common\models\video\Comment
             'time_flag' => function($model){
                 return !empty($model->created_at) ? Tool::timeFormat($model->created_at) : '';
             },
-            'likes_num'
         ];
     }
 

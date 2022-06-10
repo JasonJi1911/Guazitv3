@@ -1,9 +1,9 @@
 <?php
-namespace apinew\controllers;
+namespace appapi\controllers;
 
-use apinew\dao\CommonDao;
-use apinew\logic\VideoLogic;
-use apinew\models\video\Topic;
+use appapi\dao\CommonDao;
+use appapi\logic\VideoLogic;
+use appapi\models\video\Topic;
 
 class TopicController extends BaseController
 {

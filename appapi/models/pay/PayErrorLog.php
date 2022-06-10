@@ -1,5 +1,5 @@
 <?php
-namespace apinew\models\pay;
+namespace appapi\models\pay;
 
 class PayErrorLog extends \common\models\pay\PayErrorLog
 {

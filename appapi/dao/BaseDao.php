@@ -1,5 +1,5 @@
 <?php
-namespace apinew\dao;
+namespace appapi\dao;
 
 use yii\base\Component;
 

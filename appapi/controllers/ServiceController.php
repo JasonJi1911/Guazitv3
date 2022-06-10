@@ -1,13 +1,13 @@
 <?php
-namespace apinew\controllers;
+namespace appapi\controllers;
 
-use apinew\dao\CommonDao;
-use apinew\helpers\Common;
-use apinew\logic\CommonLogic;
-use apinew\models\advert\StartPage;
-use apinew\models\Announcement;
-use apinew\models\apps\AppsCheckSwitch;
-use apinew\models\Domain;
+use appapi\dao\CommonDao;
+use appapi\helpers\Common;
+use appapi\logic\CommonLogic;
+use appapi\models\advert\StartPage;
+use appapi\models\Announcement;
+use appapi\models\apps\AppsCheckSwitch;
+use appapi\models\Domain;
 use common\helpers\Tool;
 use common\models\apps\AppsVersion;
 use common\models\IpAddress;
@@ -90,13 +90,13 @@ class ServiceController extends BaseController
                 return $checkInfo;
             }
 
-//            $objIpAddress = new IpAddress();
-//            $objIpAddress->ip = $ip;
-//            $objIpAddress->area = $ipAddress['area'];
-//            $objIpAddress->province = $ipAddress['province'];
-//            $objIpAddress->city = $ipAddress['city'];
-//            $objIpAddress->created_at = time();
-//            $objIpAddress->save();
+            // $objIpAddress = new IpAddress();
+            // $objIpAddress->ip = $ip;
+            // $objIpAddress->area = $ipAddress['area'];
+            // $objIpAddress->province = $ipAddress['province'];
+            // $objIpAddress->city = $ipAddress['city'];
+            // $objIpAddress->created_at = time();
+            // $objIpAddress->save();
         }
 
         //为了区分 大陆和香港台湾,做一下特殊处理

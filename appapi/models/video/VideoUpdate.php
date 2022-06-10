@@ -1,6 +1,6 @@
 <?php
 
-namespace apinew\models\video;
+namespace appapi\models\video;
 
 class VideoUpdate extends \common\models\video\VideoUpdate
 {

@@ -1,5 +1,5 @@
 <?php
-namespace apinew\models;
+namespace appapi\models;
 
 class Answer extends \common\models\Answer
 {

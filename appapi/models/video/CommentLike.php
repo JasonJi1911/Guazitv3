@@ -1,5 +1,5 @@
 <?php
-namespace apinew\models\video;
+namespace appapi\models\video;
 
 class CommentLike extends \common\models\video\CommentLike
 {

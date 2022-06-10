@@ -1,5 +1,5 @@
 <?php
-namespace apinew\models\video;
+namespace appapi\models\video;
 
 class ActorArea extends \common\models\video\ActorArea
 {

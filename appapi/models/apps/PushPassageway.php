@@ -1,5 +1,5 @@
 <?php
-namespace apinew\models\apps;
+namespace appapi\models\apps;
 
 class PushPassageway extends \common\models\apps\PushPassageway
 {

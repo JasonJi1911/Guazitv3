@@ -1,5 +1,5 @@
 <?php
-namespace apinew\models\advert;
+namespace appapi\models\advert;
 
 class AdvertPosition extends \common\models\advert\AdvertPosition
 {

@@ -5,24 +5,24 @@
  * Time: 15:01
  */
 
-namespace apinew\logic;
+namespace appapi\logic;
 
-use apinew\exceptions\ApiException;
-use apinew\helpers\Aop;
-use apinew\helpers\ErrorCode;
-use apinew\models\pay\AppleTrade;
-use apinew\models\pay\Goods;
-use apinew\models\pay\Order;
-use apinew\dao\PayChannelDao;
-use apinew\dao\PayDao;
-use apinew\models\pay\PayChannel;
-use apinew\helpers\Common;
-use apinew\models\pay\PayErrorLog;
-use apinew\models\user\UserAssets;
-use apinew\models\user\UserCoupon;
-use apinew\services\PayService;
+use appapi\exceptions\ApiException;
+use appapi\helpers\Aop;
+use appapi\helpers\ErrorCode;
+use appapi\models\pay\AppleTrade;
+use appapi\models\pay\Goods;
+use appapi\models\pay\Order;
+use appapi\dao\PayChannelDao;
+use appapi\dao\PayDao;
+use appapi\models\pay\PayChannel;
+use appapi\helpers\Common;
+use appapi\models\pay\PayErrorLog;
+use appapi\models\user\UserAssets;
+use appapi\models\user\UserCoupon;
+use appapi\services\PayService;
 use common\helpers\Tool;
-use apinew\helpers\Wxpay;
+use appapi\helpers\Wxpay;
 use common\models\setting\SettingSystem;
 use Yii;
 use yii\db\Exception;
@@ -225,7 +225,7 @@ class PayLogic
      * 支付宝回调
      * @param $input
      * @return string
-     * @throws \apinew\exceptions\ApiException
+     * @throws \appapi\exceptions\ApiException
      */
     public function alipayNotify($input) {
         $aop = new Aop();
@@ -336,7 +336,7 @@ class PayLogic
      * 微信支付
      * @param $goodsId
      * @return array
-     * @throws \apinew\exceptions\ApiException
+     * @throws \appapi\exceptions\ApiException
      */
     public function wxpay($goodsId)
     {
@@ -385,7 +385,7 @@ class PayLogic
     /**
      * 微信支付回调
      * @return array
-     * @throws \apinew\exceptions\ApiException
+     * @throws \appapi\exceptions\ApiException
      */
     public function wxpayNotify()
     {
@@ -500,7 +500,7 @@ class PayLogic
      * @param $num 数量
      * @param $videoId 视频
      * @return bool
-     * @throws \apinew\exceptions\ApiException
+     * @throws \appapi\exceptions\ApiException
      */
     public function consumeCoupon($uid, $num, $videoId)
     {

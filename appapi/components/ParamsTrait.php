@@ -1,9 +1,9 @@
 <?php
-namespace apinew\components;
+namespace appapi\components;
 
-use apinew\exceptions\InvalidParamException;
-use apinew\helpers\Common;
-use apinew\logic\CommonLogic;
+use appapi\exceptions\InvalidParamException;
+use appapi\helpers\Common;
+use appapi\logic\CommonLogic;
 use Yii;
 
 trait ParamsTrait

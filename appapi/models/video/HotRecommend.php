@@ -1,5 +1,5 @@
 <?php
-namespace apinew\models\video;
+namespace appapi\models\video;
 
 class HotRecommend extends \common\models\video\HotRecommend
 {

@@ -1,5 +1,5 @@
 <?php
-namespace apinew\models;
+namespace appapi\models;
 
 class DeviceInfo extends \common\models\DeviceInfo
 {

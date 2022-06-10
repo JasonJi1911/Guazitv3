@@ -1,5 +1,5 @@
 <?php
-namespace apinew\models\video;
+namespace appapi\models\video;
 
 class Industry extends \common\models\video\Industry
 {

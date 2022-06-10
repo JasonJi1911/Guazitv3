@@ -1,32 +1,28 @@
 <?php
-namespace apinew\logic;
+namespace appapi\logic;
 
-use apinew\helpers\Common;
-use apinew\models\user\TaskInfo;
-use apinew\models\video\Actor;
-use apinew\models\video\TrailerTitle;
-use apinew\models\video\VideoUpdateTitle;
-use apinew\models\video\UserWatchLog;
-use apinew\models\video\VideoFavorite;
+use appapi\helpers\Common;
+use appapi\models\user\TaskInfo;
+use appapi\models\video\Actor;
+use appapi\models\video\UserWatchLog;
+use appapi\models\video\VideoFavorite;
 use common\helpers\Tool;
 use common\services\Setting;
 use Yii;
-use apinew\dao\CommentDao;
-use apinew\dao\CommonDao;
-use apinew\dao\TopicDao;
-use apinew\dao\VideoDao;
-use apinew\dao\UserDao;
-use apinew\data\ActiveDataProvider;
-use apinew\exceptions\ApiException;
-use apinew\helpers\ErrorCode;
-use apinew\models\advert\AdvertPosition;
-use apinew\models\user\UserCoupon;
-use apinew\models\video\Comment;
-use apinew\models\video\Video;
-use apinew\models\video\VideoChapter;
+use appapi\dao\CommentDao;
+use appapi\dao\CommonDao;
+use appapi\dao\TopicDao;
+use appapi\dao\VideoDao;
+use appapi\data\ActiveDataProvider;
+use appapi\exceptions\ApiException;
+use appapi\helpers\ErrorCode;
+use appapi\models\advert\AdvertPosition;
+use appapi\models\user\UserCoupon;
+use appapi\models\video\Comment;
+use appapi\models\video\Video;
+use appapi\models\video\VideoChapter;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
-use yii\base\BaseObject;
 use yii\helpers\ArrayHelper;
 use common\helpers\OssHelper;
 
@@ -77,62 +73,7 @@ class VideoLogic
             ];
         }
         // 筛选项
-        $data['search_box'] = array_merge($data['search_box'], $this->searchBox($channelId, $sort, $tag, $area, $year, $playLimit, ''));
-
-        return $data;
-    }
-    /**
-     * 筛选页面
-     * @param $channelId
-     * @param $sort
-     * @param $tag
-     * @param $area
-     * @param $year
-     * @param $type
-     * @param $playLimit
-     * @param $status 状态
-     * @return mixed
-     */
-    public function filterHeaders($channelId, $sort, $tag, $area, $year, $type, $playLimit, $status)
-    {
-        $commonDao = new CommonDao();
-        $videoChannel = $commonDao->videoChannel(['channel_id', 'channel_name'], true); //获取频道并建立索引
-        // 检索项
-        $data['search_box'] = [];
-
-        $channelId_check = $channelId;
-
-        // 不传channel_id时，默认获取第一个
-        //2022-04-19尹，搜索页新增全部频道，去掉默认获取频道
-//        if (empty($channelId)) {
-//            $channelId = reset($videoChannel)['channel_id'];
-//        }
-        // 标题头
-        $data['title'] = $videoChannel[$channelId]['channel_name'];
-
-        // 当传入1时，未点击分类进入，返回所有频道筛选项
-        if ($type == 1) {
-            $searchChannel = [];
-            foreach ($videoChannel as $channel) {
-                $searchChannel[] = [
-                    'display' => $channel['channel_name'],
-                    'value'   => $channel['channel_id'],
-                    'checked' => $channel['channel_id'] == $channelId_check ? 1 : 0,
-                ];
-            }
-
-            if (isset($searchChannel)) {
-                array_unshift($searchChannel, ['display' => '全部', 'value' => 0, 'checked' => empty($channelId_check) ? 1 : 0]);
-            }
-
-            $data['search_box'][] = [
-                'label' => '频道',
-                'field' => 'channel_id',
-                'list'  => $searchChannel
-            ];
-        }
-        // 筛选项
-        $data['search_box'] = array_merge($data['search_box'], $this->searchBox($channelId, $sort, $tag, $area, $year, $playLimit, $status));
+        $data['search_box'] = array_merge($data['search_box'], $this->searchBox($channelId, $sort, $tag, $area, $year, $playLimit));
 
         return $data;
     }
@@ -146,7 +87,7 @@ class VideoLogic
      * @param $playLimit
      * @return array
      */
-    public function searchBox($channelId, $sort, $tag, $area, $year, $playLimit, $status)
+    public function searchBox($channelId, $sort, $tag, $area, $year, $playLimit)
     {
         // 排序
         $sortItem['label'] = '排序';
@@ -197,30 +138,11 @@ class VideoLogic
         $data[] = $tagItem;
 
         // 地区
-        $videoArea = [];
-        if(empty($channelId)){
-            //2022-04-19尹 搜索页新增全部频道，获取所有频道对应地区
-            $commonDao = new CommonDao();
-            $videoChannel = $commonDao->videoChannel(['channel_id', 'channel_name'], true); //获取频道并建立索引
-            if($videoChannel){
-                foreach ($videoChannel as $channel) {
-                    $va = ArrayHelper::index($channelLogic->channelArea($channel['channel_id'], ['area_id', 'area']),'area_id');
-                    if($va){
-                        foreach ($va as $k=>$a){
-                            $videoArea[$k] = $a;
-                        }
-                    }
-                }
-                $videoArea = array_values($videoArea);
-            }
-        }else{
-            //2022-04-19尹 指定频道对应的地区
-            $videoArea = $channelLogic->channelArea($channelId, ['area_id', 'area']);
-        }
+        $videoArea = $channelLogic->channelArea($channelId, ['area_id', 'area']);
         $areaItem['label'] = '地区';
         $areaItem['field'] = 'area';
         $areaChecked = 0;
-
+        
         foreach ($videoArea as $key => $value) {
             $areaItem['list'][$key]['display'] = $value['area'];
             $areaItem['list'][$key]['value']   = $value['area_id'];
@@ -261,46 +183,23 @@ class VideoLogic
             $yearItem['list'] = [];
         }
         $data[] = $yearItem;
-
-        // 状态：1-完结；2-更新中
-        $statusItem['label'] = '状态';
-        $statusItem['field'] = 'status';
-        $statusItem['list'] = [
-            [
-                'display' => '全部',
-                'value'   => 0,
-                'checked' => ($status != 1 && $status != 2) ? 1 : 0,
-            ],
-            [
-                'display' => '完结',
-                'value'   => 1,
-                'checked' => $status == 1 ? 1 : 0,
-            ],
-            [
-                'display' => '更新中',
-                'value'   => 2,
-                'checked' => $status == 2 ? 1 : 0,
-            ],
-        ];
-        $data[] = $statusItem;
-
         /** 去掉用券和免费筛选条件
         $limit = [
-        'label' => '播放限制',
-        'field' => 'play_limit',
-        'list'  => [],
+            'label' => '播放限制',
+            'field' => 'play_limit',
+            'list'  => [],
         ];
         foreach (Video::$playLimitMap as $key => $desc) {
-        $limit['list'][] = [
-        'display' => $desc,
-        'value'   => $key,
-        'checked' => $key == $playLimit ? 1 : 0,
-        ];
+            $limit['list'][] = [
+                'display' => $desc,
+                'value'   => $key,
+                'checked' => $key == $playLimit ? 1 : 0,
+            ];
         }
         // 把全部选项塞到数组中
         array_unshift($limit['list'], ['display' => '全部', 'value' => 0, 'checked' => $playLimit == 0 ? 1 : 0]);
         $data[] = $limit;
-         */
+        */
         return $data;
     }
 
@@ -332,6 +231,7 @@ class VideoLogic
     {
         $commentLogic = new CommentLogic();
         $commentList  = $commentLogic->commentList($videoId, $chapterId, 1);
+        
         $comments = $commentList['list'];
         return array_slice($comments, 0, 3);
     }
@@ -367,39 +267,9 @@ class VideoLogic
         $videoDao = new VideoDao();
         foreach ($searchTab as &$tab) {
             //所有需要查询的视频信息
-            $tab['list'] = $videoDao->batchGetVideo($tab['list']
-                , ['video_id', 'video_name', 'score', 'tag', 'play_times', 'cover', 'summary', 'category', 'year', 'area']
-                , false, ['actors_id', 'actors', 'director', 'artist']);
+            $tab['list'] = $videoDao->batchGetVideo($tab['list'], ['video_id', 'video_name', 'score', 'tag', 'play_times', 'cover', 'summary'], false, ['actors_id', 'actors', 'director', 'artist']);
         }
         $data['tab'] = $searchTab;
-        return $data;
-    }
-    /**
-     * @return array
-     */
-    public function hotWordByChannelId($channelId)
-    {
-        $commonDao = new CommonDao();
-        $videoChannel = $commonDao->videoChannel(['channel_id', 'channel_name'], true); //获取频道并建立索引
-
-        $videoDao   = new VideoDao();
-        $searchTab  = $videoDao->searchHotWord();
-
-        $channeltab = [];
-        foreach ($searchTab as &$tab) {
-            //所有需要查询的视频信息
-            $tab['list'] = $videoDao->batchGetVideo($tab['list']
-                , ['video_id', 'video_name', 'score', 'tag', 'play_times', 'cover', 'summary', 'category', 'year', 'area']
-                , false, ['actors_id', 'actors', 'director', 'artist']);
-            if($tab['title'] == $videoChannel[$channelId]['channel_name']){
-                $channeltab[0] = $tab ;//频道对应有热搜，则取值
-            }
-        }
-        if(!$channeltab){//频道对应没有热搜，则默认取第一个
-            $channeltab = $searchTab;
-        }
-
-        $data['tab'] = array_values($channeltab);
         return $data;
     }
 
@@ -446,12 +316,7 @@ class VideoLogic
         $videoDao = new VideoDao();
         $videos = $videoDao->batchGetVideo($seriesId, ['video_id', 'video_name', 'category', 'cover', 'horizontal_cover', 'intro', 'flag', 'score', 'play_times','title', 'area', 'year', 'tag', 'director', 'artist'], false, ['channel_id', 'actors_id', 'actors', 'director', 'artist', 'chapters']);
 
-        foreach ($videos as $k=>&$videoInfo) {
-            if(empty($videoInfo['chapters']))
-            {
-                unset($videos[$k]);
-                continue;
-            }
+        foreach ($videos as &$videoInfo) {
             $videoInfo['cats'] = implode('/', explode(' ', $videoInfo['category']));
         }
 
@@ -483,7 +348,7 @@ class VideoLogic
             $videoDao->checkFilterParams($channelId, $tag, $area);
         }
         $order = $sort == 'new' ? 'created_at' : ($sort == 'score' ? 'score' : 'total_views');
-
+        
         $dataProvider = new ActiveDataProvider([
             'query' => Video::find()
                 ->joinWith('years')
@@ -494,7 +359,7 @@ class VideoLogic
                 ->andFilterWhere(['area' => $area])
                 ->andFilterWhere(['year' => $year])
                 ->andFilterWhere(['play_limit' => $playLimit])
-            //->orderBy("$order desc, id desc")
+                ->orderBy("$order desc, id desc")
         ]);
         $data = $dataProvider->setPagination(['page_num' => $page, 'page_size' => $pageSize])->toArray([
             'video_id',
@@ -502,7 +367,7 @@ class VideoLogic
 
         //根据查询的video_id获取影片信息
         $seriesId = array_column($data['list'], 'video_id');
-
+        
         foreach ($seriesId as $k=>$dd)
         {
             $objChapters = VideoChapter::find();
@@ -537,126 +402,6 @@ class VideoLogic
         $videos = $videoDao->batchGetVideo($seriesId, ['video_id', 'video_name', 'category', 'cover', 'horizontal_cover', 'intro', 'flag', 'score', 'play_times','title', 'area', 'year', 'tag', 'director', 'artist'], false, ['channel_id', 'actors_id', 'actors', 'director', 'artist', 'chapters']);
 
         foreach ($videos as $k=>&$videoInfo) {
-            if(empty($videoInfo['chapters']))
-            {
-                unset($videos[$k]);
-                continue;
-            }
-            $videoInfo['cats'] = implode('/', explode(' ', $videoInfo['category']));
-        }
-
-        $data['list'] = $videos;
-
-        array_unshift($videoChannel,  ['channel_id' => '', 'channel_name' => '全部']);
-        $data['tabs'] = $videoChannel;
-
-        return $data;
-    }
-    /**
-     * 检索页面检索逻辑
-     * @param $channelId
-     * @param $keyword
-     * @param $sort
-     * @param $sorttype
-     * @param $tag
-     * @param $area
-     * @param $year
-     * @param $type
-     * @param $playLimit
-     * @param $page
-     * @param $pageSize
-     * @param $status 状态
-     * @return array
-     */
-    public function searchResult2($channelId, $keyword, $sort,$sorttype, $tag, $area, $year, $type, $playLimit, $page, $pageSize, $status)
-    {
-        $commonDao = new CommonDao();
-        $videoDao = new VideoDao();
-        $videoChannel = $commonDao->videoChannel(['channel_id', 'channel_name']);
-
-        if (empty($channelId)) { //如果没有传channel id,则默认查询所有的频道
-            $channelId = array_column($videoChannel, 'channel_id');
-        }
-        else
-        {
-            $videoDao->checkFilterParams($channelId, $tag, $area);
-        }
-        $order = $sort == 'new' ? 'created_at' : ($sort == 'score' ? 'score' : 'total_views');
-
-        if($status == 1 || $status == 2){
-            $dataProvider = new ActiveDataProvider([
-                'query' => Video::find()
-//                    ->joinWith('years')
-                    ->select('id')
-                    ->andWhere(['or',
-                        ['like', 'title', $keyword],
-                        ['like', 'summary', $keyword]])
-                    ->andFilterWhere(['channel_id' => $channelId])
-                    ->andFilterWhere(['like', 'category_ids' , $tag])
-                    ->andFilterWhere(['area' => $area])
-                    ->andFilterWhere(['year' => $year])
-                    ->andFilterWhere(['play_limit' => $playLimit])
-                    ->andFilterWhere(['is_finished' => $status])
-                    ->orderBy("{$order} {$sorttype}")
-            ]);
-        }else{
-            $dataProvider = new ActiveDataProvider([
-                'query' => Video::find()
-//                    ->joinWith('video_year')
-                    ->select('id')
-                    ->andWhere(['or',
-                        ['like', 'title', $keyword],
-                        ['like', 'summary', $keyword]])
-                    ->andFilterWhere(['channel_id' => $channelId])
-                    ->andFilterWhere(['like', 'category_ids' , $tag])
-                    ->andFilterWhere(['area' => $area])
-                    ->andFilterWhere(['year' => $year])
-                    ->andFilterWhere(['play_limit' => $playLimit])
-                    ->orderBy("{$order} {$sorttype}")
-            ]);
-        }
-
-        $data = $dataProvider->setPagination(['page_num' => $page, 'page_size' => $pageSize])->toArray([
-            'video_id',
-        ]);
-
-        //根据查询的video_id获取影片信息
-        $seriesId = array_column($data['list'], 'video_id');
-
-        foreach ($seriesId as $k=>$dd)
-        {
-            $objChapters = VideoChapter::find();
-            $objChapters->andWhere(['video_id' => $dd]);
-            $chapters = $objChapters->asArray()->all();
-            if (empty($chapters))
-            {
-                unset($seriesId[$k]);
-                continue;
-            }
-
-            $isvalid = false;
-            foreach ($chapters as $cp)
-            {
-                $chapterurlArr = json_decode($cp['resource_url'], true);
-                foreach ($chapterurlArr as $val)
-                {
-                    if(!empty($val))
-                    {
-                        $isvalid = true;
-                        break;
-                    }
-                }
-                if ($isvalid)
-                    break;
-            }
-            if (!$isvalid)
-                unset($seriesId[$k]);
-        }
-
-        // $videoDao = new VideoDao();
-        $videos = $videoDao->batchGetVideo($seriesId, ['video_id', 'video_name', 'category', 'cover', 'horizontal_cover', 'intro', 'flag', 'score', 'play_times','title', 'area', 'year', 'tag', 'director', 'artist', 'created_at','total_views'], false, ['channel_id', 'channel_name', 'actors_id', 'actors', 'director', 'artist', 'chapters']);
-
-        foreach ($videos as $k=>&$videoInfo) {
             if($videoInfo['chapters']){
                 $videoInfo['cats'] = implode('/', explode(' ', $videoInfo['category']));
             }else{
@@ -665,6 +410,7 @@ class VideoLogic
         }
 
         $data['list'] = $videos;
+        $data['total_count'] = count($videos,0);
 
         array_unshift($videoChannel,  ['channel_id' => '', 'channel_name' => '全部']);
         $data['tabs'] = $videoChannel;
@@ -680,7 +426,7 @@ class VideoLogic
      * @return array
      * @throws ApiException
      */
-    public function playInfoApp($videoId, $chapterId, $sourceId, $city='')
+    public function playInfo($videoId, $chapterId, $sourceId, $city='')
     {
         //获取影片信息
         $videoDao = new VideoDao();
@@ -689,13 +435,13 @@ class VideoLogic
         if (!$videoInfo) { //视频不存在
             throw new ApiException(ErrorCode::EC_VIDEO_NOT_EXIST);
         }
-
+        
         // 获取影片剧集信息
         $videos = $videoDao->videoChapter($videoId, [], true);
         if (!$videos) { // 没有剧集抛出异常
             throw new ApiException(ErrorCode::EC_VIDEO_CHAPTER_NOT_EXIST);
         }
-
+        
         // 获取源信息
         $commonDao = new CommonDao();
         //改动新版本
@@ -742,13 +488,13 @@ class VideoLogic
         // 获取源信息
         // $commonDao = new CommonDao();
         // 旧版
-        // $sources = $commonDao->videoSource();
+        // $sources = $commonDao->videoSource(); 
         //改动新版本
         // $sources = $commonDao->videoSource(Yii::$app->common->product);
 
         //APP端 全走视频流, 网页端全走IFrame嵌套
         $resourceType = Yii::$app->common->product == Common::PRODUCT_APP ? VideoChapter::RESOURCE_TYPE_DATA : VideoChapter::RESOURCE_TYPE_HTML;
-
+        
         $ossHelper = new OssHelper();
         $iconURL= $ossHelper->server_point;
 
@@ -757,7 +503,7 @@ class VideoLogic
             if (!in_array($item['source_id'], array_keys($chapterInfo['resource_url'])) || empty($chapterInfo['resource_url'][$item['source_id']])) { // source_id不在视频里面或者没有视频播放连接
                 continue;
             }
-
+            
             //app端不返回html的链接，暂时使用
             $reUrl = $chapterInfo['resource_url'][$item['source_id']];
             if (Yii::$app->common->product == Common::PRODUCT_APP && !strpos($reUrl,'.m3u8'))
@@ -872,7 +618,7 @@ class VideoLogic
             ? AdvertPosition::POSITION_VIDEO_TOP_PC : AdvertPosition::POSITION_VIDEO_TOP_PC;
         $videoBottomPos = Yii::$app->common->product == Common::PRODUCT_PC
             ? AdvertPosition::POSITION_VIDEO_BOTTOM_PC : AdvertPosition::POSITION_VIDEO_BOTTOM_PC;
-
+            
         $data['advert'] = [
             (object)$advertLogic->advertByPosition($playbeforePos, $city),
             (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_PLAY_STOP, $city),
@@ -884,293 +630,7 @@ class VideoLogic
 
         return $data;
     }
-    /**
-     * 播放页详情信息
-     * @param $videoId
-     * @param $chapterId
-     * @param $sourceId
-     * @return array
-     * @throws ApiException
-     */
-    public function playInfo($videoId, $chapterId, $sourceId, $city='', $uid='')
-    {
-        //获取影片信息
-        $videoDao = new VideoDao();
-        $videoInfo = $videoDao->videoInfo($videoId, ['channel_id', 'video_id', 'video_name', 'actors_id',
-            'area', 'score', 'category', 'type', 'year', 'intro', 'intro', 'cover', 'horizontal_cover',
-            'flag', 'tag', 'play_limit', 'total_views','episode_num', 'is_down', 'total_price', 'created_at','summary','total_favors']);
-
-        if (!$videoInfo) { //视频不存在
-            throw new ApiException(ErrorCode::EC_VIDEO_NOT_EXIST);
-        }
-        // 获取上次播放记录,如果传入的id为空，则获取上次播放历史续播
-        // 新加参数用户uid
-        $lastPlayLInfo = $this->lastPlayInfo($videoId, $chapterId,$uid);
-
-        if(!$chapterId){
-            $chapterId = $lastPlayLInfo['chapter_id'];
-        }
-
-        // 获取影片剧集信息
-        $order = 'asc';
-        if($videoInfo['channel_id']==3){//综艺倒序
-            $order = 'desc';
-        }
-        $videos = $videoDao->videoChapter($videoId, [], true, $order);
-        if (!$videos) { // 没有剧集抛出异常
-            throw new ApiException(ErrorCode::EC_VIDEO_CHAPTER_NOT_EXIST);
-        }
-
-        /* 添加24小时更新的剧集 begin */
-        if($videos){
-            $result = $videoDao->findVideoChapterByVideoId($videoId);
-            foreach ($videos as $key => $chap){
-                $chap['latest'] = 0;
-                foreach($result as $chap2){
-                    if($chap['title'] == $chap2['title']){
-                        $chap['latest'] = 1;
-                    }
-                }
-                $videos[$key] = $chap;
-            }
-        }
-        /* 添加24小时更新的剧集 end */
-
-
-        // 获取源信息
-        $commonDao = new CommonDao();
-        //改动新版本
-        $sources = $commonDao->videoSource(Yii::$app->common->product);
-        if(!$chapterId)
-        {
-            $res_list = array_column($sources, 'source_id');
-            foreach ($sources as $src)
-            {
-                $src_id = $src['source_id'];
-                foreach ($videos as $video)
-                {
-                    foreach ($video['resource_url'] as $k=>$v)
-                    {
-                        if(empty($v))
-                            unset($video['resource_url'][$k]);
-                    }
-                    $url_res_list = array_keys($video['resource_url']);
-//                    if(!empty(array_intersect($res_list,$url_res_list)))
-                    if (in_array($src_id, $url_res_list))
-                    {
-                        $chapterId = $video['chapter_id'];
-                        break;
-                    }
-                }
-                if($chapterId)
-                    break;
-            }
-        }
-
-        // 根据章节id获取章节内容,没有此id默认获取第一章
-        $chapterInfo = ArrayHelper::getValue($videos, $lastPlayLInfo['chapter_id'], reset($videos));
-        if (empty($chapterInfo['resource_url'])) {
-            throw new ApiException(ErrorCode::EC_VIDEO_PLAY_URL_ERROR);
-        }
-
-        // source_id异常时,将 source_id 置空
-        if (!$sourceId || !isset($chapterInfo['resource_url'][$sourceId]) || empty($chapterInfo['resource_url'][$sourceId])) {
-            $sourceId = '';
-        }
-
-        // 旧版
-        // $sources = $commonDao->videoSource();
-
-        //APP端 全走视频流, 网页端全走IFrame嵌套
-        $resourceType = Yii::$app->common->product == Common::PRODUCT_APP ? VideoChapter::RESOURCE_TYPE_DATA : VideoChapter::RESOURCE_TYPE_HTML;
-
-        $source = [];
-        foreach ($sources as $item) {
-            if (!in_array($item['source_id'], array_keys($chapterInfo['resource_url'])) || empty($chapterInfo['resource_url'][$item['source_id']])) { // source_id不在视频里面或者没有视频播放连接
-                continue;
-            }
-
-            // app端不返回html的链接，暂时使用
-            $reUrl = $chapterInfo['resource_url'][$item['source_id']];
-            if (Yii::$app->common->product == Common::PRODUCT_APP && strpos($reUrl,'.m3u8'))
-                continue;
-
-            if (!$sourceId) {
-                $sourceId = $item['source_id'];
-            }
-
-            //补全域名
-            $toUrl=new OssUrlHelper($item['icon']);
-            $source[] = [
-                'source_id'    => $item['source_id'],
-                'name'         => $item['name'],
-                'icon'         => $toUrl->toUrl(),
-                //'icon'         => $item['icon'],
-                'resource_url' => $this->parseUrl($chapterInfo['resource_url'][$item['source_id']], Yii::$app->common->product, $item['source_id'], $sources, $uid),
-                'resource_type' => $resourceType,
-                'checked'      => $sourceId == $item['source_id'] ? 1 : 0,
-                'play_limit'   => $item['play_limit']
-            ];
-        }
-
-        $videoInfo['catalog_style'] = 1; //目录样式 1连续剧 2综艺
-
-        $purchaseInfo = $this->_purchaseInfo($videoId, $videoInfo, $chapterInfo['chapter_id'], $videos);
-        // 重新格式化数据
-        $videos = array_values($videos);
-        $videosBak = $videos;
-        // 格式化章节信息
-        foreach ($videos as $key => &$video) {
-            if (mb_strlen($video['title']) > 6) {
-                $videoInfo['catalog_style'] = 2;
-            }
-            $video['checked']       = $chapterInfo['chapter_id'] == $video['chapter_id'] ? 1 : 0; // 是否当前选中状态
-            $video['cover']         = $videoInfo['horizontal_cover'];
-            $video['download_name'] = md5($videoInfo['video_name'] . ' ' . $video['title']);
-            $video['mime_type']     = substr(strrchr($video['resource_url'][$sourceId], '.'), 1);
-            $video['last_chapter']  = isset($videos[$key-1]) ? $videos[$key-1]['chapter_id'] : 0;
-            $video['next_chapter']  = isset($videos[$key+1]) ? $videos[$key+1]['chapter_id'] : 0;
-            if(Yii::$app->common->product == Common::PRODUCT_APP){
-                unset($video['resource_url']); // 安全考虑，删除剧集播放连接，防止全部播放连接一次性全返回
-            }
-            if(empty($video['resource_url']))
-            {
-                unset($videos[$key]);
-                continue;
-            }
-            $can_play = false;
-            foreach ($sources as $ssc)
-            {
-                if ($video['resource_url'][$ssc['source_id']]){
-                    $ssc_url = $video['resource_url'][$ssc['source_id']];
-                    unset($video['resource_url'][$ssc['source_id']]);
-                    // array_push($video['resource_url'], [$ssc['source_id']=>$ssc_url]);
-                    $video['resource_url'][$ssc['source_id']] = $ssc_url;
-                    $can_play = true;
-                }
-            }
-            if(!$can_play)
-                unset($videos[$key]);
-        }
-
-        // 演员信息
-        $actorsId = $videoInfo['actors_id'] ? explode(',', $videoInfo['actors_id']) : [];
-        $actors = $videoDao->actorsInfo($actorsId);
-
-        //将演员 分成 导演和主演两组
-        $actorsGroup = ArrayHelper::index($actors, null, 'type');
-        $director = '';
-        if (isset($actorsGroup[Actor::TYPE_DIRECTOR])) {
-            $director = implode(' ', ArrayHelper::getColumn($actorsGroup[Actor::TYPE_DIRECTOR], 'actor_name'));
-        }
-
-        $actor = '';
-        if (isset($actorsGroup[Actor::TYPE_ACTOR])) {
-            $actor = implode(' ', ArrayHelper::getColumn($actorsGroup[Actor::TYPE_ACTOR], 'actor_name'));
-        }
-
-        // 收藏信息
-        $userLogic = new UserLogic();
-        $isFav = $userLogic->isFav($videoId) ? 1 : 0;
-        // 增加观看次数
-        $this->increaseViews($videoId);
-        // 猜你喜欢
-        $guessLike = $videoDao->refreshVideo(['channel_id' => $videoInfo['channel_id']]
-            , ['video_id', 'video_name', 'tag', 'flag', 'play_times', 'cover', 'horizontal_cover', 'intro', 'summary',
-                'category', 'year', 'area']
-            , 12, [$videoInfo['video_id']]);
-        // 评论信息
-//        $commentData = $this->videoInfoComment($videoId, $chapterInfo['chapter_id']);
-        $commentLogic = new CommentLogic();
-        $commentList  = $commentLogic->commentListPC($videoId, $chapterId, 1);
-        $commentData = $commentList;
-        // 获取用户观看视频任务状态
-        $taskLogic = new TaskLogic();
-        $taskStatus = $taskLogic->taskStatus(Yii::$app->user->id, TaskInfo::TASK_ACTION_PLAY_VIDEO);
-        $sourceFilter = $this->filterResourceChapter($videosBak, $sources, $sourceId, $videoInfo['horizontal_cover']);
-//        $souceVideos = ArrayHelper::index($sourceFilter, 'resId')[$sourceId]['data'];
-
-        //判断登录用户是否收藏本视频
-        $fav_status = 0;
-        $videoFav = VideoFavorite::find()
-            ->andWhere(['uid' => $uid])
-            ->andWhere(['video_id' => $videoId])->asArray()->one();
-        if($videoFav){
-            $fav_status = $videoFav['status'];
-        }
-        //总收藏数+详情-更新：summary
-        $video_total = Video::find()->select("total_favors,is_finished")->andWhere(['id'=>$videoId])->asArray()->one();
-        $videoInfo['is_finished'] = $video_total['is_finished'];
-        //详情-更新：summary
-        if($video_total['is_finished']==1){
-            $videoInfo['summary'] = "已完结";
-        }else if($videoInfo['summary']==""){
-            $videoInfo['summary'] = "更新中";
-        }
-        //获取总评论数
-        $commentcount = VideoChapter::find()->select("total_comment")->andWhere(['id'=>$chapterId])->asArray()->one();
-
-        $videos = array_values($videos);//视频有效剧集序号重新排序
-
-        $data = [
-            'info' => array_merge($videoInfo,
-                [
-                    'is_fav'          => $isFav,
-                    'cats'            => STYLE_SIGN . $videoInfo['score'] . STYLE_SIGN . '/' . $videoInfo['category'] . '/' . $videoInfo['area'] . '/' . $videoInfo['year'],
-                    'play_chapter_id' => $chapterInfo['chapter_id'],
-                    'chapter_title'   => $chapterInfo['title'],
-                    'play_video_id'   => $chapterInfo['video_id'],
-                    'resource_url'    => $this->parseUrl($chapterInfo['resource_url'][$sourceId], Yii::$app->common->product, $sourceId, $sources,$uid),
-                    'resource_type'   => $resourceType,
-                    'total_comment'   => VideoChapter::getTotalComment($chapterInfo['chapter_id']), // 获取评论总数
-//                    'total_views'     => $chapterInfo['total_views'],
-                    'play_limit'      => $chapterInfo['play_limit'],
-                    'last_play_time'  => intval($lastPlayLInfo['lastPlayTime']),
-                    'next_chapter'    => ArrayHelper::index($videos, 'chapter_id')[$chapterInfo['chapter_id']]['next_chapter'],
-                    'last_chapter'    => ArrayHelper::index($videos, 'chapter_id')[$chapterInfo['chapter_id']]['last_chapter'],
-//                    'next_chapter'    => ArrayHelper::index($souceVideos, 'chapter_id')[$chapterInfo['chapter_id']]['next_chapter'],
-//                    'last_chapter'    => ArrayHelper::index($souceVideos, 'chapter_id')[$chapterInfo['chapter_id']]['last_chapter'],
-                    'video_task_time' => $taskStatus ? 0 : 60, //TODO
-                    'videos'          => $videos,
-                    'source'          => $source,
-                    'all_source'        => $sources,
-                    'actors'          => array_values($actors),
-                    'director'        => $director,
-                    'actor'           => $actor,
-                    'filter'          => $sourceFilter,
-                    'source_id'       => $sourceId,
-                    'fav_status'      => $fav_status,
-                    'total_favors'    => $video_total['total_favors']
-                ]),
-            'guess_like'    => $guessLike, // 猜你喜欢
-            'comments'      => $commentData, // 评论
-            "purchase_info" => $purchaseInfo, // 是否可播放信息
-            'channel_id'    => $videoInfo['channel_id'],
-            'commentcount' => $commentcount['total_comment']
-        ];
-
-        //添加广告
-        $advertLogic = new AdvertLogic();
-        $playbeforePos = Yii::$app->common->product == Common::PRODUCT_PC
-            ? AdvertPosition::POSITION_PLAY_BEFORE_PC : AdvertPosition::POSITION_PLAY_BEFORE;
-        $videoTopPos = Yii::$app->common->product == Common::PRODUCT_PC
-            ? AdvertPosition::POSITION_VIDEO_TOP_PC : AdvertPosition::POSITION_VIDEO_TOP_PC;
-        $videoBottomPos = Yii::$app->common->product == Common::PRODUCT_PC
-            ? AdvertPosition::POSITION_VIDEO_BOTTOM_PC : AdvertPosition::POSITION_VIDEO_BOTTOM_PC;
-
-        $data['advert'] = [
-            (object)$advertLogic->advertByPosition($playbeforePos, $city),
-            (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_PLAY_STOP, $city),
-            (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_LIKE_TOP, $city),
-            (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_LIKE_BOTTOM, $city),
-            (object)$advertLogic->advertByPosition($videoTopPos, $city),
-            (object)$advertLogic->advertByPosition($videoBottomPos, $city),
-            (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_RIGHT_PC, $city)
-        ];
-
-        return $data;
-    }
-
+    
     private function filterResourceChapter($videos, $sources, $sourceId, $cover)
     {
         $data = [];
@@ -1194,12 +654,11 @@ class VideoLogic
             }
             unset($chap['resource_url']); // 安全考虑，删除剧集播放连接，防止全部播放连接一次性全返回
         }
-        if ($data[$sourceId]['data']) {
-            foreach ($data[$sourceId]['data'] as $key => &$video) {
-                $video['last_chapter']  = isset($data[$sourceId]['data'][$key-1]) ? $data[$sourceId]['data'][$key-1]['chapter_id'] : 0;
-                $video['next_chapter']  = isset($data[$sourceId]['data'][$key+1]) ? $data[$sourceId]['data'][$key+1]['chapter_id'] : 0;
-                // unset($video['resource_url']); // 安全考虑，删除剧集播放连接，防止全部播放连接一次性全返回
-            }
+
+        foreach ($data[$sourceId]['data'] as $key => &$video) {
+            $video['last_chapter']  = isset($data[$sourceId]['data'][$key-1]) ? $data[$sourceId]['data'][$key-1]['chapter_id'] : 0;
+            $video['next_chapter']  = isset($data[$sourceId]['data'][$key+1]) ? $data[$sourceId]['data'][$key+1]['chapter_id'] : 0;
+            // unset($video['resource_url']); // 安全考虑，删除剧集播放连接，防止全部播放连接一次性全返回
         }
 
         return array_values($data);
@@ -1230,18 +689,7 @@ class VideoLogic
      * @param $product
      * @return string
      */
-    public function parseUrl($url, $product, $source = 0, $sourcesList = [],$uid='') {
-        $sourcesList = ArrayHelper::index($sourcesList, 'source_id');
-        if ($source == 0 || empty($sourcesList))
-            $player = VIDEO_JIXI_URL_LOCAL;
-
-        if (!isset($sourcesList[$source]) || !isset($sourcesList[$source]['player']))
-            $player = VIDEO_JIXI_URL_LOCAL;
-        else
-        {
-            $player = $sourcesList[$source]['player'];
-        }
-
+    public function parseUrl_bak($url, $product) {
         if ($product == Common::PRODUCT_APP) {
             $resourceType = $this->getResourceType($url);
             if ($resourceType == VideoChapter::RESOURCE_TYPE_DATA) {
@@ -1278,30 +726,70 @@ class VideoLogic
             return $url;
 
         } else if($product == Common::PRODUCT_PC){
-            //            return '/360apitv/jiexi/jianghu.php?v='.urlencode($url);
-            if ($sourcesList[$source]['play_limit'] == 1) {
-                if($uid){
-                    $userdao = new UserDao();
-                    $vip = $userdao->validuservipPC($uid);
-                    if($vip){
-                        return urlencode($url);
-                    }else{
-                        return '';
-                    }
-                }else{
-                    return '';
-                }
-            }else
-            {
-                return urlencode($url);
-            }
-//            return $player.urlencode($url);
+            return '/360apitv/jiexi/jianghu.php?v='.urlencode($url);
 //            return $url;
+        } else {
+            // return VIDEO_JIXI_URL_WAP.'?v='.urlencode($url);
+            return '/360apitv/jiexi/jianghu.php?v='.urlencode($url);
+//            return $url;
+        }
+    }
+    
+    public function parseUrl($url, $product, $source = 0, $sourcesList = []) {
+        if ($source == 0 || empty($sourcesList))
+            $player = VIDEO_JIXI_URL_LOCAL;
+
+        if (!isset($sourcesList[$source]) || !isset($sourcesList[$source]['player']))
+            $player = VIDEO_JIXI_URL_LOCAL;
+        else
+        {
+            $player = $sourcesList[$source]['player'];
+        }
+
+        if ($product == Common::PRODUCT_APP) {
+            $resourceType = $this->getResourceType($url);
+            if ($resourceType == VideoChapter::RESOURCE_TYPE_DATA) {
+                return $url;
+            }
+            //执行开始时间
+            $startTime = microtime(true) * 1000;
+            //请求接口获取地址
+            $query = VIDEO_JSON_URL.'?url='. urlencode($url);
+
+            $i = 2;
+            do {
+                $response = Tool::httpGet($query);
+
+                $i--;
+                if (!$response['data']) {
+                    continue;
+                }
+
+                $data = json_decode($response['data'], true);
+                if (empty($data) || $data['code'] != 200) {
+                    continue;
+                }
+
+                $url = $data['url'];
+                break;
+            } while($i>0);
+
+            //计算结束时间，打印日志
+            $endTime = microtime(true) * 1000;
+            $intTimeUsed = $endTime - $startTime;
+            Yii::warning("360apitv req cost: " . $intTimeUsed);
+
+            return $url;
+
+        } else if($product == Common::PRODUCT_PC){
+            //            return '/360apitv/jiexi/jianghu.php?v='.urlencode($url);
+            // return $player.urlencode($url);
+            return $url;
         } else {
             // return VIDEO_JIXI_URL_WAP.'?v='.urlencode($url);
 //            return '/360apitv/jiexi/jianghu.php?v='.urlencode($url);
             return $player.urlencode($url);
-//            return $url;
+            // return $url;
         }
     }
 
@@ -1375,7 +863,7 @@ class VideoLogic
 
             }
         }
-
+        
         return [ // 购买相关信息
             "probation"          => $canPlay ? 0 : 1, // 试看
             'probation_time'     => 360,
@@ -1656,17 +1144,15 @@ class VideoLogic
      * @param $chapterId
      * @return array|int
      */
-    public function lastPlayInfo($videoId, $chapterId = '',$uid='')
+    public function lastPlayInfo($videoId, $chapterId = '')
     {
         // 初始数据
         $data = [
             'chapter_id' => $chapterId,
-            'lastPlayTime' => 0,
-            'totaltime'
+            'lastPlayTime' => 0
         ];
-        if(empty($uid)){
-            $uid = Yii::$app->user->id;
-        }
+
+        $uid = Yii::$app->user->id;
         if (!$uid) {
             return $data;
         }
@@ -1676,7 +1162,7 @@ class VideoLogic
             ->one();
 
         if ($watchLog) {
-            $data = ['chapter_id' => $watchLog->chapter_id, 'lastPlayTime' => $watchLog->time, 'totaltime' => $watchLog->total_time];
+            $data = ['chapter_id' => $watchLog->chapter_id, 'lastPlayTime' => $watchLog->time];
         }
 
         return $data;
@@ -1704,8 +1190,8 @@ class VideoLogic
 
         return $videoList;
     }
-
-
+    
+    
     /**
      * 拼音首字母搜索
      */
@@ -1716,7 +1202,7 @@ class VideoLogic
                 ->select('id')
                 ->andWhere(['like', 'title_en', $keyword."%" ,false])
                 ->orderby('total_views desc')
-            //->andWhere(['like', 'title_en', $keyword])
+                //->andWhere(['like', 'title_en', $keyword])
         ]);
         $data = $dataProvider->setPagination(['page_num' => $page, 'page_size' => $pageSize])->toArray([
             'video_id',
@@ -1732,6 +1218,7 @@ class VideoLogic
 
         return $data;
     }
+    
     /*
      * 根据$chapterId取线路url
      */
@@ -1836,125 +1323,5 @@ class VideoLogic
 //        Yii::warning("360apitv req cost: " . $intTimeUsed);
 
         return $url;
-    }
-
-    /*
-     * 获取新片预告的视频信息
-     */
-    public function getTrailerInfo($channelId){
-
-        $key = 'trailerinfo_channel_'.$channelId;
-        $redis = new RedisStore();
-        if($trailerinfo = $redis->get($key)){
-            $data = json_decode($trailerinfo, true);
-            return $data;
-        }
-
-        $trailerTitle = TrailerTitle::find()->andWhere(['channel_id'=>$channelId])->asArray()->all();
-        $data = [];
-        if($trailerTitle){
-            $fields = ['video_id', 'video_name', 'score', 'cover', 'horizontal_cover', 'flag', 'tag', 'play_times', 'intro', 'category', 'actors_id', 'summary', 'year','created_at'];
-            $videodao = new VideoDao();
-            foreach ($trailerTitle as $i=>$tt) {
-                $trailerdata = $videodao->findTrailer($tt['id']);
-                if($trailerdata){
-                    foreach ($trailerdata as $k=>$trailer){
-                        $videoInfo = $videodao->videoInfo($trailer['video_id'], $fields);
-                        $trailer['video_name']       = $videoInfo['video_name'];
-                        $trailer['score']            = $videoInfo['score'];
-                        $trailer['cover']            = $videoInfo['cover'];
-                        $trailer['horizontal_cover'] = $videoInfo['horizontal_cover'];
-                        $trailer['flag']             = $videoInfo['flag'];
-                        $trailer['tag']              = $videoInfo['tag'];
-                        $trailer['play_times']       = $videoInfo['play_times'];
-                        $trailer['intro']            = $videoInfo['intro'];
-                        $trailer['category']         = $videoInfo['category'];
-                        //$trailer['actors_id']        = $videoInfo[$trailer['video_id']]['actors_id'];
-                        $trailer['summary']          = $videoInfo['summary'];
-                        $trailer['year']             = $videoInfo['year'];
-                        $trailer['created_at']       = $videoInfo['created_at'];
-
-                        $actorsId = $videoInfo['actors_id'] ? explode(',', $videoInfo['actors_id']) : [];
-                        //演员信息，根据type区分演员和导演
-                        $actorlist = $videodao->actorsInfo($actorsId);
-                        $director = $actors = [];
-                        foreach ($actorlist as &$actor) {  //循环影片所有的演员信息
-                            if ($actor['type'] == Actor::TYPE_ACTOR) {
-                                $actors[]   = $actor;
-                            } else {
-                                $director[] = $actor;
-                            }
-                        }
-                        $trailer['actors'] = array_values($actors);
-                        $trailer['director'] = array_values($director);
-                        $trailerdata[$k] = $trailer;
-                    }
-                }
-                $data[$i]['trailer'] = $trailerdata;
-                $data[$i]['trailer_title'] = $tt;
-            }
-
-            //写入缓存
-            $redis->setEx($key, json_encode($data));
-        }
-        return $data;
-    }
-
-    /*
-   * 获取更新列表的视频信息
-   */
-    public function getVideoUpdateInfo($channelId,$week=''){
-
-        $key = 'videoupdateinfo_channel_'.$channelId.'_'.$week;
-        $redis = new RedisStore();
-        if($videoupdateinfo = $redis->get($key)){
-            $data = json_decode($videoupdateinfo, true);
-            return $data;
-        }
-
-        $videoUpdateTitle = VideoUpdateTitle::findOne(['channel_id'=>$channelId]);
-        $data = [];
-        if($videoUpdateTitle){
-            $data['video_update_title'] = $videoUpdateTitle->toArray();
-            $fields = ['video_id', 'video_name', 'score', 'cover', 'horizontal_cover', 'flag', 'tag', 'play_times', 'intro', 'category', 'actors_id', 'summary', 'year','created_at'];
-            $videodao = new VideoDao();
-            $videoupdatedata = $videodao->findVideoUpdate($videoUpdateTitle['id'],$week);
-            if($videoupdatedata){
-                foreach ($videoupdatedata as $k=>$videoupdate){
-                    $videoInfo = $videodao->videoInfo($videoupdate['video_id'], $fields);
-                    $videoupdate['video_name']       = $videoInfo['video_name'];
-                    $videoupdate['score']            = $videoInfo['score'];
-                    $videoupdate['cover']            = $videoInfo['cover'];
-                    $videoupdate['horizontal_cover'] = $videoInfo['horizontal_cover'];
-                    $videoupdate['flag']             = $videoInfo['flag'];
-                    $videoupdate['tag']              = $videoInfo['tag'];
-                    $videoupdate['play_times']       = $videoInfo['play_times'];
-                    $videoupdate['intro']            = $videoInfo['intro'];
-                    $videoupdate['category']         = $videoInfo['category'];
-                    $videoupdate['summary']          = $videoInfo['summary'];
-                    $videoupdate['year']             = $videoInfo['year'];
-                    $videoupdate['created_at']       = $videoInfo['created_at'];
-
-                    $actorsId = $videoInfo['actors_id'] ? explode(',', $videoInfo['actors_id']) : [];
-                    //演员信息，根据type区分演员和导演
-                    $actorlist = $videodao->actorsInfo($actorsId);
-                    $director = $actors = [];
-                    foreach ($actorlist as &$actor) {  //循环影片所有的演员信息
-                        if ($actor['type'] == Actor::TYPE_ACTOR) {
-                            $actors[]   = $actor;
-                        } else {
-                            $director[] = $actor;
-                        }
-                    }
-                    $videoupdate['actors'] = array_values($actors);
-                    $videoupdate['director'] = array_values($director);
-                    $videoupdatedata[$k] = $videoupdate;
-                }
-            }
-            $data['video_update'] = $videoupdatedata;
-            //写入缓存
-            $redis->setEx($key, json_encode($data));
-        }
-        return $data;
     }
 }

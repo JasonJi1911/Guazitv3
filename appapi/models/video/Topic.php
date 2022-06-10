@@ -1,5 +1,5 @@
 <?php
-namespace apinew\models\video;
+namespace appapi\models\video;
 
 class Topic extends \common\models\video\Topic
 {

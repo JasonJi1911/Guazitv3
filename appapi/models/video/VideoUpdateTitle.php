@@ -1,6 +1,6 @@
 <?php
 
-namespace apinew\models\video;
+namespace appapi\models\video;
 
 class VideoUpdateTitle extends \common\models\video\VideoUpdateTitle
 {

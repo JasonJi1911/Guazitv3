@@ -1,5 +1,5 @@
 <?php
-namespace apinew\models\video;
+namespace appapi\models\video;
 
 class VideoArea extends \common\models\video\VideoArea
 {

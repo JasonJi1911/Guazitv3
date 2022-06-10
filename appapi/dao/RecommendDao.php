@@ -1,12 +1,11 @@
 <?php
-namespace apinew\dao;
+namespace appapi\dao;
 
-use apinew\data\ActiveDataProvider;
-use apinew\models\video\Recommend;
-use apinew\models\video\Video;
-use apinew\models\video\VideoChapter;
-use apinew\models\video\Actor;
-use apinew\helpers\Common;
+use appapi\data\ActiveDataProvider;
+use appapi\models\video\Recommend;
+use appapi\models\video\Video;
+use appapi\models\video\VideoChapter;
+use appapi\helpers\Common;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
 use yii\helpers\ArrayHelper;
@@ -117,13 +116,14 @@ class RecommendDao extends BaseDao
         $redisKey = RedisKey::recommendVideo($recommendId);
         $redis = new RedisStore();
 
-         if ($str = $redis->get($redisKey)) {
-             $videoIds = json_decode($str, true);
+        if ($str = $redis->get($redisKey)) {
+            $videoIds = json_decode($str, true);
 
-             $videoDao = new VideoDao();
-             $data = $videoDao->batchGetVideo($videoIds, $fields, false, ['actors']);
-         } else {
-//        {
+            $videoDao = new VideoDao();
+            $data = $videoDao->batchGetVideo($videoIds, $fields, false, ['actors']);
+            // $data = json_decode($str, true);
+        } else {
+        // {
             // 查询对象
             $objVideo = Video::find();
             // 获取推荐位信息
@@ -144,7 +144,7 @@ class RecommendDao extends BaseDao
                 }
             }
 
-            $limitCnt = Yii::$app->common->product == Common::PRODUCT_APP ? 9 : 20;//15:15
+            $limitCnt = Yii::$app->common->product == Common::PRODUCT_APP ? 15 : 15;
             // 根据样式返回数据个数
             $videoDataProvider = new ActiveDataProvider([
                 'query' => $objVideo->orderBy('total_views desc')->limit($limitCnt),
@@ -180,36 +180,15 @@ class RecommendDao extends BaseDao
                 if (!$isvalid)
                     unset($data[$k]);
             }
-
+            
             foreach ($data as &$it)
             {
                 $videoDao = new VideoDao();
                 $videoInfo = $videoDao->videoInfo($it['video_id'], $fields);
                 $actorsId = $videoInfo['actors_id'] ? explode(',', $videoInfo['actors_id']) : [];
-                //演员信息，根据type区分演员和导演
-                $actorlist = $videoDao->actorsInfo($actorsId);
-                $director = $actors = [];
-                foreach ($actorlist as &$actor) {  //循环影片所有的演员信息
-                    if ($actor['type'] == Actor::TYPE_ACTOR) {
-                        $actors[]   = $actor;
-                    } else {
-                        $director[] = $actor;
-                    }
-                }
+                $actors = $videoDao->actorsInfo($actorsId);
                 $it['actors'] = array_values($actors);
-                $it['director'] = array_values($director);
                 $it['year'] = $videoInfo['year'];
-
-                /* 首页video检查created_at在24小时内为最新 begin */
-                $time24 = strtotime("-1 day");//24小时之前的时间戳
-                if($it['created_at'] >= $time24){
-                    $it['video_newest'] = '1';//是最新
-                }else{
-                    $it['video_newest'] = '0';
-                }
-                //查询24小时内更新的集数
-                $it['chapter_new_num'] = VideoChapter::find()->andWhere(['video_id' => $it['video_id']])->andWhere(['>=', 'created_at', $time24])->count();
-                /* 首页video检查created_at在24小时内为最新 end */
             }
 
             // 缓存推荐位视频id

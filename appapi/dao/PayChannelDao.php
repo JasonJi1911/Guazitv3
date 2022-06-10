@@ -1,7 +1,7 @@
 <?php
-namespace apinew\dao;
-use apinew\data\ActiveDataProvider;
-use apinew\models\pay\PayChannel;
+namespace appapi\dao;
+use appapi\data\ActiveDataProvider;
+use appapi\models\pay\PayChannel;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
 

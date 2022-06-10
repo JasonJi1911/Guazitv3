@@ -1,5 +1,5 @@
 <?php
-namespace apinew\models\apps;
+namespace appapi\models\apps;
 
 class AppsTencentInfo extends \common\models\apps\AppsTencentInfo
 {

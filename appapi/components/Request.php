@@ -1,6 +1,6 @@
 <?php
 
-namespace apinew\components;
+namespace appapi\components;
 
 use Yii;
 use yii\web\Request as BaseRequest;

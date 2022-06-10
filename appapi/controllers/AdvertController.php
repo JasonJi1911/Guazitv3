@@ -1,7 +1,7 @@
 <?php
-namespace apinew\controllers;
+namespace appapi\controllers;
 
-use apinew\logic\AdvertLogic;
+use appapi\logic\AdvertLogic;
 
 class AdvertController extends BaseController
 {
@@ -20,7 +20,7 @@ class AdvertController extends BaseController
     /**
      * 去广告
      * @return bool
-     * @throws \apinew\exceptions\ApiException
+     * @throws \appapi\exceptions\ApiException
      */
     public function actionRemoveAd()
     {

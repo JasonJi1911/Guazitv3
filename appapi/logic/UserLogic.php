@@ -1,35 +1,34 @@
 <?php
-namespace apinew\logic;
+namespace appapi\logic;
 
-use apinew\dao\AdvertDao;
-use apinew\dao\PayDao;
-use apinew\dao\UserDao;
-use apinew\dao\VideoDao;
-use apinew\data\ActiveDataProvider;
-use apinew\exceptions\ApiException;
-use apinew\exceptions\Exception;
-use apinew\exceptions\LoginException;
-use apinew\helpers\ErrorCode;
-use apinew\models\advert\AdvertPosition;
-use apinew\models\DeviceInfo;
-use apinew\models\Feedback;
-use apinew\models\pay\Expend;
-use apinew\models\pay\Goods;
-use apinew\models\pay\Order;
-use apinew\models\user\Sign;
-use apinew\models\user\SignLog;
-use apinew\models\user\SignStatus;
-use apinew\models\user\TaskInfo;
-use apinew\models\user\User;
-use apinew\models\user\UserAssets;
-use apinew\models\user\UserAuthApp;
-use apinew\models\user\UserMessage;
-use apinew\models\user\UserRelations;
-use apinew\models\user\UserVip;
-use apinew\models\video\Comment;
-use apinew\models\video\UserWatchLog;
-use apinew\models\video\Video;
-use apinew\models\video\VideoFavorite;
+use appapi\dao\AdvertDao;
+use appapi\dao\PayDao;
+use appapi\dao\UserDao;
+use appapi\dao\VideoDao;
+use appapi\data\ActiveDataProvider;
+use appapi\exceptions\ApiException;
+use appapi\exceptions\Exception;
+use appapi\exceptions\LoginException;
+use appapi\helpers\ErrorCode;
+use appapi\models\advert\AdvertPosition;
+use appapi\models\DeviceInfo;
+use appapi\models\Feedback;
+use appapi\models\pay\Expend;
+use appapi\models\pay\Goods;
+use appapi\models\pay\Order;
+use appapi\models\user\Sign;
+use appapi\models\user\SignLog;
+use appapi\models\user\SignStatus;
+use appapi\models\user\TaskInfo;
+use appapi\models\user\User;
+use appapi\models\user\UserAssets;
+use appapi\models\user\UserAuthApp;
+use appapi\models\user\UserMessage;
+use appapi\models\user\UserVip;
+use appapi\models\video\Comment;
+use appapi\models\video\UserWatchLog;
+use appapi\models\video\Video;
+use appapi\models\video\VideoFavorite;
 use common\helpers\Message;
 use common\helpers\OssHelper;
 use common\helpers\RedisKey;
@@ -38,7 +37,6 @@ use common\helpers\Tool;
 use common\models\user\CancelAccountLog;
 use common\services\PayService;
 use Yii;
-use yii\base\BaseObject;
 use yii\helpers\ArrayHelper;
 
 
@@ -46,7 +44,7 @@ use yii\helpers\ArrayHelper;
  * 用户相关逻辑类
  * 非token查询用户,统一走私有的findOne方法
  * Class UserLogic
- * @package apinew\logic
+ * @package appapi\logic
  */
 class UserLogic
 {
@@ -124,7 +122,7 @@ class UserLogic
      * @param $code
      * @return $this|User|bool|null
      * @throws ApiException
-     * @throws \apinew\exceptions\LoginException
+     * @throws \appapi\exceptions\LoginException
      */
     public function mobileLogin($mobile, $code)
     {
@@ -153,7 +151,7 @@ class UserLogic
      * @param $mobile
      * @param $code
      * @return array
-     * @throws \apinew\exceptions\ApiException
+     * @throws \appapi\exceptions\ApiException
      */
     public function bindMobile($mobile, $code)
     {
@@ -186,7 +184,7 @@ class UserLogic
      * 微信登陆
      * @param $code
      * @return null|static
-     * @throws \apinew\exceptions\ApiException
+     * @throws \appapi\exceptions\ApiException
      */
     public function wechatLogin($code)
     {
@@ -235,7 +233,7 @@ class UserLogic
      * app绑定微信
      * @param $code
      * @return null|static
-     * @throws \apinew\exceptions\ApiException
+     * @throws \appapi\exceptions\ApiException
      */
     public function bindWechat($code)
     {
@@ -285,8 +283,8 @@ class UserLogic
      * qq登录
      * @param $accessToken
      * @return null|static
-     * @throws \apinew\exceptions\ApiException
-     * @throws \apinew\exceptions\LoginException
+     * @throws \appapi\exceptions\ApiException
+     * @throws \appapi\exceptions\LoginException
      */
     public function qqLogin($accessToken)
     {
@@ -394,7 +392,7 @@ class UserLogic
      * qq open id信息
      * @param $accessToken
      * @return mixed
-     * @throws \apinew\exceptions\LoginException
+     * @throws \appapi\exceptions\LoginException
      */
     private function _getQqUser($accessToken)
     {
@@ -437,7 +435,7 @@ class UserLogic
      * 查询用户,根据状态返回
      * @param $condition
      * @return bool|null|static
-     * @throws \apinew\exceptions\ApiException
+     * @throws \appapi\exceptions\ApiException
      */
     private function _findOne($condition)
     {
@@ -457,7 +455,7 @@ class UserLogic
      * 用户注册,所有用户注册都走这个方法
      * @param $data 包括 from_channel reg_type等其他参数
      * @return bool
-     * @throws \apinew\exceptions\ApiException
+     * @throws \appapi\exceptions\ApiException
      */
     public function register($data)
     {
@@ -534,7 +532,7 @@ class UserLogic
      * @param $avatar
      * @return array
      * @throws ApiException
-     * @throws \apinew\exceptions\LoginException
+     * @throws \appapi\exceptions\LoginException
      */
     public function setAvatar($avatar)
     {
@@ -557,7 +555,7 @@ class UserLogic
      * @param $nickname
      * @return array
      * @throws ApiException
-     * @throws \apinew\exceptions\LoginException
+     * @throws \appapi\exceptions\LoginException
      */
     public function setNickname($nickname)
     {
@@ -604,7 +602,7 @@ class UserLogic
      * 获取微信用户信息
      * @param $code 登录code,根据code获取用户信息
      * @return mixed
-     * @throws \apinew\exceptions\ApiException
+     * @throws \appapi\exceptions\ApiException
      */
     private function _getWechatUser($code)
     {
@@ -1214,7 +1212,7 @@ class UserLogic
     /**
      * 消息
      * @return array
-     * @throws \apinew\exceptions\LoginException
+     * @throws \appapi\exceptions\LoginException
      */
     public function message()
     {
@@ -1265,153 +1263,5 @@ class UserLogic
         }
         $redis->setEx($lockKey, 1, 1296000); // 15天
         throw new ApiException(ErrorCode::EC_CANCEL_SUCCESS);
-    }
-
-    /*
-     * web注册
-     */
-    public function webRegister($data){
-        $result = [];
-        if(User::findOne(['email' => $data['email']])){
-            $result['message'] = '邮箱已注册过';
-            $result['errno'] = -1;
-            return $result;
-        }else if(User::findOne(['mobile' => $data['mobile']])){
-            $result['message'] = '手机号已注册过';
-            $result['errno'] = -1;
-            return $result;
-        }else{
-            $uid = $this->register($data);
-            $user = User::findOne(['uid' => $uid]);
-            $result['message'] = $user;
-            $result['errno'] = 0;
-            return $result;
-        }
-    }
-    /*
-     * web注册
-     */
-    public function messageRegister($data){
-        $result = [];
-        if($u = User::findOne(['mobile' => $data['mobile']])){
-            $result['message'] = $u;
-            $result['errno'] = 0;
-        }else{
-            $uid = $this->register($data);
-            $user = User::findOne(['uid' => $uid]);
-            $result['message'] = $user;
-            $result['errno'] = 0;
-        }
-        return $result;
-    }
-
-    /**
-     * 回复评论列表
-     * @return array
-     */
-    public function replyList()
-    {
-        $uid      = Yii::$app->user->id;
-        $avatar   = Yii::$app->user->avatar->toUrl();
-        $username = Yii::$app->user->nickname;
-
-        //取所有我的评论id
-        $commentlist = Comment::find()->andWhere(['uid' => $uid])->all();
-
-        //取（pid=我的评论id） 的评论，即回复
-        $dataProvider = new ActiveDataProvider([
-            'query' => Comment::find()
-                ->joinWith('user')
-                ->where(['in', 'pid', array_column($commentlist, 'id')])
-        ]);
-        $data = $dataProvider->setPagination()->toArray(['uid', 'content', 'video_id', 'created_at']);
-        if ($data['list']) {
-            $videoId = array_column($data['list'], 'video_id');
-            $videoDao = new VideoDao();
-            $videoInfo = $videoDao->batchGetVideo($videoId, ['video_id', 'video_name', 'cover', 'flag'], true);
-            foreach ($data['list'] as &$comment) {
-                $user = User::find()->andWhere(['uid' => $comment['pid'] ])->one();
-                $comment['avatar']    = $avatar;
-                $comment['username']  = $comment['nickname'];
-                $comment['film_name'] = $videoInfo[$comment['video_id']]['video_name'];
-                $comment['date']      = date('Y-m-d', $comment['created_at']);
-                unset($comment['created_at']);
-            }
-        }
-        return $data['list'];
-    }
-
-    /*
-     * 创建验证码
-     * $mobile:手机区号+手机号
-     */
-    public function createSMScode($mobile){
-        if(empty($mobile)){
-            $return['errno'] = -1;
-            $return['msg'] = '手机号不能为空';
-        }
-        $return = [];
-        $key = 'SMScode'.$mobile;//记录验证码
-        $key_time = 'SMScode_time'.$mobile;//记录创建时间
-        $redis = new RedisStore();
-        if($key_time_data = $redis->get($key_time)){
-            $return['errno'] = -1;
-            $return['msg'] = '短信验证码已发送，60s内不允许重复发送';
-        }else{
-            if($code = $redis->get($key)){
-                $return['errno'] = -2;
-                $return['msg'] = '短信验证码已发送，60s内不允许重复发送';
-            }else{
-                $redis->setEx($key_time, time(),60);
-                $length = SMSCODE_LENGTH;
-                $randStr = str_shuffle('1234567890');
-                $code = substr($randStr,0,$length);
-
-                $code = 123;//测试用
-                $returnId = 11122;//测试用
-//                $returnId = $this->sendSMScode($mobile,$code);
-
-                if(!empty($returnId)){
-                    $redis->setEx($key, $code,60);
-                    $return['errno'] = 0;
-                    $return['msg'] = '短信发送成功';
-                }else{
-                    $return['errno'] = -1;
-                    $return['msg'] = '短信发送失败';
-                }
-            }
-        }
-        return $return;
-    }
-
-    /*
-     * 发送短信
-     */
-    public function sendSMScode($mobile,$code){
-        $access_key = SMS_ACCESS_KEY;
-        $MessageBird = new \MessageBird\Client($access_key);
-        $Message = new \MessageBird\Objects\Message();
-        $Message->originator = 'guazitv';
-        $Message->recipients = array($mobile);
-
-//        $Message->recipients = array('+61401441376');//测试用号码
-
-        $Message->body = 'The SMS verification code is '.$code;
-        $result = $MessageBird->messages->create($Message);
-
-        return $result->getId();
-    }
-
-    /*
-     * 修改性别、昵称、手机号
-     */
-    public function modifyUserinfo($data){
-        $row = 0;
-        if(!empty($data['uid'])){
-            $user = User::findOne(['uid'=>$data['uid']]);
-            $user->oldAttributes = $user;
-            $row = $user->updateAttributes($data);
-        }
-        return $row;
     }
 }

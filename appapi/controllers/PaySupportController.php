@@ -5,11 +5,11 @@
  * Time: 下午8:30
  */
 
-namespace apinew\controllers;
+namespace appapi\controllers;
 
-use apinew\helpers\ErrorCode;
-use apinew\models\pay\PayChannel;
-use apinew\models\User;
+use appapi\helpers\ErrorCode;
+use appapi\models\pay\PayChannel;
+use appapi\models\User;
 use common\helpers\Tool;
 use Yii;
 use yii\web\Controller;

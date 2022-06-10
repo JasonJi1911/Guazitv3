@@ -1,5 +1,5 @@
 <?php
-namespace apinew\models\video;
+namespace appapi\models\video;
 
 class VideoAduser extends \common\models\video\VideoAduser
 {

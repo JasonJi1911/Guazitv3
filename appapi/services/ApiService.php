@@ -1,8 +1,8 @@
 <?php
 
-namespace apinew\services;
+namespace appapi\services;
 
-use apinew\helpers\Common;
+use appapi\helpers\Common;
 use common\helpers\Tool;
 use Yii;
 use yii\base\UnknownMethodException;

@@ -1,5 +1,5 @@
 <?php
-namespace apinew\helpers;
+namespace appapi\helpers;
 
 use common\models\traits\FromChannelInterface;
 use common\models\traits\FromChannelTrait;

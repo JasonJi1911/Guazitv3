@@ -1,8 +1,8 @@
 <?php
-namespace apinew\filters;
+namespace appapi\filters;
 
-use apinew\exceptions\LoginException;
-use apinew\helpers\ErrorCode;
+use appapi\exceptions\LoginException;
+use appapi\helpers\ErrorCode;
 use Yii;
 
 /**

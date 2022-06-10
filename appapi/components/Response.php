@@ -1,10 +1,10 @@
 <?php
 
-namespace apinew\components;
+namespace appapi\components;
 
 use common\helpers\Encrypt;
 use Yii;
-use apinew\helpers\ErrorCode;
+use appapi\helpers\ErrorCode;
 
 /**
  * 响应类

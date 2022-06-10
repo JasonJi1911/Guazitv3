@@ -1,8 +1,8 @@
 <?php
-namespace apinew\controllers;
+namespace appapi\controllers;
 
-use apinew\dao\AnswerDao;
-use apinew\logic\AnswerLogic;
+use appapi\dao\AnswerDao;
+use appapi\logic\AnswerLogic;
 
 /**
  * 帮助问题

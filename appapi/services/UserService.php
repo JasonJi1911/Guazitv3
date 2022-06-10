@@ -1,17 +1,17 @@
 <?php
-namespace apinew\services;
+namespace appapi\services;
 
-use apinew\exceptions\ApiException;
-use apinew\helpers\ErrorCode;
-use apinew\models\DeviceInfo;
-use apinew\models\user\User;
-use apinew\models\user\UserVip;
+use appapi\exceptions\ApiException;
+use appapi\helpers\ErrorCode;
+use appapi\models\DeviceInfo;
+use appapi\models\user\User;
+use appapi\models\user\UserVip;
 use Yii;
 
 
 /**
  * Class UserService
- * @package apinew\services
+ * @package appapi\services
  */
 class UserService extends Service
 {

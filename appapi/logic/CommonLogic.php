@@ -1,10 +1,10 @@
 <?php
-namespace apinew\logic;
+namespace appapi\logic;
 
-use apinew\dao\BookRecommendDao;
-use apinew\dao\ComicRecommendDao;
-use apinew\dao\CommonDao;
-use apinew\models\Domain;
+use appapi\dao\BookRecommendDao;
+use appapi\dao\ComicRecommendDao;
+use appapi\dao\CommonDao;
+use appapi\models\Domain;
 use common\helpers\Tool;
 use common\models\ProjectType;
 use yii\helpers\ArrayHelper;
@@ -12,7 +12,7 @@ use yii\helpers\ArrayHelper;
 /**
  * 公共逻辑类
  * Class CommonLogic
- * @package apinew\logic
+ * @package appapi\logic
  */
 class CommonLogic
 {

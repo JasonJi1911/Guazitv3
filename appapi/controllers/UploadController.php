@@ -1,5 +1,5 @@
 <?php
-namespace apinew\controllers;
+namespace appapi\controllers;
 
 use common\helpers\OssHelper;
 use common\helpers\OssUrlHelper;

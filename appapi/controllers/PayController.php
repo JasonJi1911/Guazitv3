@@ -1,12 +1,12 @@
 <?php
-namespace apinew\controllers;
+namespace appapi\controllers;
 
-use apinew\exceptions\ApiException;
-use apinew\helpers\ErrorCode;
-use apinew\logic\PayLogic;
-use apinew\models\pay\Goods;
-use apinew\models\pay\Order;
-use apinew\services\PayService;
+use appapi\exceptions\ApiException;
+use appapi\helpers\ErrorCode;
+use appapi\logic\PayLogic;
+use appapi\models\pay\Goods;
+use appapi\models\pay\Order;
+use appapi\services\PayService;
 use Yii;
 use yii\web\Response;
 

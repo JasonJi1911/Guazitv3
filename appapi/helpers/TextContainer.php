@@ -5,7 +5,7 @@
  * Time: 15:49
  */
 
-namespace apinew\helpers;
+namespace appapi\helpers;
 
 
 class TextContainer

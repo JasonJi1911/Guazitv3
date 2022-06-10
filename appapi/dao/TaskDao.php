@@ -1,8 +1,8 @@
 <?php
-namespace apinew\dao;
+namespace appapi\dao;
 
-use apinew\data\ActiveDataProvider;
-use apinew\models\user\TaskInfo;
+use appapi\data\ActiveDataProvider;
+use appapi\models\user\TaskInfo;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
 

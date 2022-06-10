@@ -3,10 +3,10 @@
  * api异常处理类
  */
 
-namespace apinew\exceptions;
+namespace appapi\exceptions;
 
 
-use apinew\helpers\ErrorCode;
+use appapi\helpers\ErrorCode;
 
 class ApiException extends Exception
 {

@@ -1,19 +1,19 @@
 <?php
 
-namespace apinew\controllers;
+namespace appapi\controllers;
 
-use apinew\components\ParamsTrait;
-use apinew\logic\AdvertLogic;
-use apinew\logic\CommonLogic;
+use appapi\components\ParamsTrait;
+use appapi\logic\AdvertLogic;
+use appapi\logic\CommonLogic;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
 use Yii;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use common\helpers\Tool;
-use apinew\helpers\Common;
-use apinew\exceptions\InvalidParamException;
-use apinew\exceptions\InvalidSignException;
+use appapi\helpers\Common;
+use appapi\exceptions\InvalidParamException;
+use appapi\exceptions\InvalidSignException;
 
 /**
  * Base基类
@@ -29,7 +29,7 @@ class BaseController extends Controller
     /**
      * @var string|array the configuration for creating the serializer that formats the response data.
      */
-    public $serializer = 'apinew\data\Serializer';
+    public $serializer = 'appapi\data\Serializer';
 
     // 记录接口请求时长
     public $startTime;

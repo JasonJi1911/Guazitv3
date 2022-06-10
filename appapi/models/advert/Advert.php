@@ -1,5 +1,5 @@
 <?php
-namespace apinew\models\advert;
+namespace appapi\models\advert;
 
 use common\models\IpAddress;
 

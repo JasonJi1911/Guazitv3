@@ -1,5 +1,5 @@
 <?php
-namespace apinew\models;
+namespace appapi\models;
 
 class Announcement extends \common\models\Announcement
 {

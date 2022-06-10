@@ -1,9 +1,9 @@
 <?php
 
-namespace apinew\exceptions;
+namespace appapi\exceptions;
 
 use Yii;
-use apinew\helpers\ErrorCode;
+use appapi\helpers\ErrorCode;
 use yii\base\UserException;
 
 class Exception extends UserException

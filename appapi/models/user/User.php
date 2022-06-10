@@ -1,8 +1,7 @@
 <?php
-namespace apinew\models\user;
+namespace appapi\models\user;
 
 use common\helpers\Tool;
-use Yii;
 
 class User extends \common\models\user\User
 {
@@ -28,16 +27,6 @@ class User extends \common\models\user\User
                 return $this->avatar->resize(100, 100)->toUrl();
             },
 
-            'email',
-
-            'password_hash',
-
-            'security_question',
-
-            'security_answer',
-            'fans_num',
-            'follow_num',
-            'password_flag'
         ];
     }
 
@@ -70,13 +59,5 @@ class User extends \common\models\user\User
         $scenarios = parent::scenarios();
         $scenarios['update_token'] = ['user_token'];
         return $scenarios;
-    }
-
-    /*
-     * 验证密码
-     */
-    public function validatePassword($password)
-    {
-        return Yii::$app->security->validatePassword($password, $this->password_hash);
     }
 }

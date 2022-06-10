@@ -1,5 +1,5 @@
 <?php
-namespace apinew\services;
+namespace appapi\services;
 
 use Yii;
 use yii\base\Arrayable;

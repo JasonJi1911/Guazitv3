@@ -1,9 +1,9 @@
 <?php
-namespace apinew\controllers;
+namespace appapi\controllers;
 
-use apinew\logic\CommentLogic;
+use appapi\logic\CommentLogic;
 use Yii;
-use apinew\models\video\CommentLike;
+use appapi\models\video\CommentLike;
 
 class CommentController extends BaseController
 {

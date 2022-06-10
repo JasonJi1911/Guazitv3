@@ -1,5 +1,5 @@
 <?php
-namespace apinew\models\user;
+namespace appapi\models\user;
 
 class UserVip extends \common\models\user\UserVip
 {

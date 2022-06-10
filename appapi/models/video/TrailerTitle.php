@@ -1,6 +1,6 @@
 <?php
 
-namespace apinew\models\video;
+namespace appapi\models\video;
 
 class TrailerTitle extends \common\models\video\TrailerTitle
 {

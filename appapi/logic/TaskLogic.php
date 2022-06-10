@@ -1,19 +1,19 @@
 <?php
-namespace apinew\logic;
+namespace appapi\logic;
 
-use apinew\dao\CommonDao;
-use apinew\dao\TaskDao;
-use apinew\dao\UserDao;
-use apinew\exceptions\LoginException;
-use apinew\helpers\ErrorCode;
-use apinew\models\advert\AdvertPosition;
-use apinew\models\pay\Expend;
-use apinew\models\user\Sign;
-use apinew\models\user\SignLog;
-use apinew\models\user\SignStatus;
-use apinew\models\user\TaskInfo;
-use apinew\models\user\UserAssets;
-use apinew\models\user\UserTask;
+use appapi\dao\CommonDao;
+use appapi\dao\TaskDao;
+use appapi\dao\UserDao;
+use appapi\exceptions\LoginException;
+use appapi\helpers\ErrorCode;
+use appapi\models\advert\AdvertPosition;
+use appapi\models\pay\Expend;
+use appapi\models\user\Sign;
+use appapi\models\user\SignLog;
+use appapi\models\user\SignStatus;
+use appapi\models\user\TaskInfo;
+use appapi\models\user\UserAssets;
+use appapi\models\user\UserTask;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
 use common\helpers\Tool;
@@ -26,7 +26,7 @@ use Yii;
 /**
  * 任务和签到相关逻辑层
  * Class TaskLogic
- * @package apinew\logic
+ * @package appapi\logic
  */
 class TaskLogic
 {
@@ -61,7 +61,7 @@ class TaskLogic
      * @param int $taskId
      * @param int $uid 传入uid
      * @return bool
-     * @throws \apinew\exceptions\LoginException
+     * @throws \appapi\exceptions\LoginException
      */
     public function finishTask($taskId, $uid = 0)
     {

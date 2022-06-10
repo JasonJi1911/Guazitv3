@@ -1,17 +1,12 @@
 <?php
-namespace apinew\logic;
+namespace appapi\logic;
 
-use apinew\dao\AdvertDao;
-use apinew\dao\VideoDao;
-use apinew\exceptions\ApiException;
-use apinew\helpers\ErrorCode;
-use apinew\models\advert\AdvertPosition;
-use apinew\models\advert\AdvertYY;
-use apinew\models\advert\AdvertYYTitle;
-use apinew\models\video\City;
+use appapi\dao\AdvertDao;
+use appapi\exceptions\ApiException;
+use appapi\helpers\ErrorCode;
+use appapi\models\advert\AdvertPosition;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
-use common\helpers\Tool;
 use common\models\IpAddress;
 use common\models\pay\Expend;
 use common\models\traits\PositionInterface;
@@ -24,7 +19,7 @@ use yii\helpers\ArrayHelper;
 /**
  * 广告逻辑类
  * Class AdvertLogic
- * @package apinew\logic
+ * @package appapi\logic
  */
 class AdvertLogic
 {
@@ -51,11 +46,9 @@ class AdvertLogic
             return [];
         }
         // 如果是首页和发现页，获取全部广告，其他位置随机获取一条广告
-        // 首页和类目页广告，获取全部广告
          if ($position == AdvertPosition::POSITION_VIDEO_INDEX
             || $position == AdvertPosition::POSITION_VIDEO_INDEX_PC
-            || $position == AdvertPosition::POSITION_VIDEO_TOPIC
-             || $position == AdvertPosition::POSITION_VIDEO_CHANNEL_PC1) {
+            || $position == AdvertPosition::POSITION_VIDEO_TOPIC) {
             $advert = [];
             foreach ($advertId as $id) {
                 // 添加PV
@@ -148,100 +141,5 @@ class AdvertLogic
 
         $redis->releaseLock($lockKey);
         return true;
-    }
-
-    /*
-     * 数据库读取亿忆广告
-     * 20220421-新增渠道$product 1App 2wap 3PC
-     */
-    public function getAdYY($citycode){
-        if(!$citycode){
-            return [];
-        }
-        $product = Yii::$app->common->product;
-        if(!$product){
-            return [];
-        }
-        $key = 'advert_yeeyi_'.$citycode.$product;
-        $redis = new RedisStore();
-        if($data = $redis->get($key)){
-            $advert = json_decode($data, true);
-            return $advert;
-        }
-        $advert = [];
-        $videodao = new VideoDao();
-        $city = $videodao->findcity($citycode);
-
-        //2022-4-22尹 一个城市多个三字码
-        $citys = City::find()->andWhere(['city_name'=>$city['city_name']])->asArray()->all();
-        if($citys){
-            foreach ($citys as $city) {
-                //查询到广告，退出循环
-                $advert = AdvertYYTitle::find()->andWhere(['city_id'=>$city['id']])->andWhere(['product'=>$product])->asArray()->all();
-                if($advert){
-                    foreach ($advert as &$t){
-                        $t['advert'] = AdvertYY::find()->andWhere(['yy_id'=>$t['id']])->asArray()->all();
-                    }
-                    break;
-                }
-            }
-        }
-        $redis->setEx($key, json_encode($advert));
-        return $advert;
-    }
-
-    /*
-     * 瓜子tv展示亿忆分类信息帖子广告接口
-     */
-    public function getThreadAdInfo($citycode){
-        $videodao = new VideoDao();
-        $citys = $videodao->findcity($citycode);
-        $city = $citys['city_name'];
-        $url = "http://apwep.zhayieye.com/interface.php?app=guazitv&act=getThreadAdInfo";//post
-        $data = [];
-        $data['cityId'] = $this->getCityId($city);
-
-        //需求城市id固定=2-悉尼
-        if($data['cityId']==2){
-            $result = Tool::httpPost($url,$data);
-            $result['data'] = json_decode($result['data'],true);
-        }else{
-            $result['data'] = [];
-        }
-        return $result;
-    }
-    public function getCityId($city){
-        $cityId = 0;
-        switch ($city) {
-            case "墨尔本":
-                $cityId = 1;break;
-            case "悉尼":
-                $cityId = 2;break;
-            case "黄金海岸":
-                $cityId = 3;break;
-            case "布里斯班":
-                $cityId = 4;break;
-            case "阿德莱德":
-                $cityId = 5;break;
-            case "堪培拉":
-                $cityId = 6;break;
-            case "珀斯":
-                $cityId = 7;break;
-            case "达尔文":
-                $cityId = 8;break;
-            case "霍巴特":
-                $cityId = 10;break;
-            case "卧龙岗":
-                $cityId = 12;break;
-            case "中央海岸":
-                $cityId = 13;break;
-            case "吉朗":
-                $cityId = 14;break;
-            case "巴拉瑞特":
-                $cityId = 15;break;
-            default :   // 其他
-                $cityId = 11;
-        }
-        return $cityId;
     }
 }

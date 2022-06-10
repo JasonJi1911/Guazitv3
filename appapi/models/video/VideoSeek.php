@@ -1,5 +1,5 @@
 <?php
-namespace apinew\models\video;
+namespace appapi\models\video;
 
 class VideoSeek extends \common\models\video\VideoSeek
 {
@@ -12,8 +12,7 @@ class VideoSeek extends \common\models\video\VideoSeek
             'area_id',
             'year',
             'director_name',
-            'actor_name',
-            'uid'
+            'actor_name'
         ];
     }
 

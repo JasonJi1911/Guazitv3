@@ -1,20 +1,17 @@
 <?php
-namespace apinew\controllers;
+namespace appapi\controllers;
 
-use apinew\exceptions\Exception;
-use apinew\helpers\ErrorCode;
-use apinew\logic\TaskLogic;
-use apinew\models\user\TaskInfo;
-use apinew\models\user\User;
-use apinew\models\user\UserAssets;
-use apinew\models\user\UserAuthApp;
-use apinew\models\user\UserRelations;
-use apinew\models\user\UserVip;
-use common\helpers\RedisStore;
+use appapi\exceptions\Exception;
+use appapi\helpers\ErrorCode;
+use appapi\logic\TaskLogic;
+use appapi\models\user\TaskInfo;
+use appapi\models\user\User;
+use appapi\models\user\UserAssets;
+use appapi\models\user\UserAuthApp;
+use appapi\models\user\UserVip;
 use Yii;
-use apinew\exceptions\ApiException;
-use apinew\logic\UserLogic;
-use apinew\dao\UserDao;
+use appapi\exceptions\ApiException;
+use appapi\logic\UserLogic;
 
 class UserController extends BaseController
 {
@@ -140,7 +137,7 @@ class UserController extends BaseController
      * 同步设备
      * @return int
      * @throws ApiException
-     * @throws \apinew\exceptions\InvalidParamException
+     * @throws \appapi\exceptions\InvalidParamException
      */
     public function actionSyncDevice()
     {
@@ -152,7 +149,7 @@ class UserController extends BaseController
     /**
      * 删除观影记录
      * @return int
-     * @throws \apinew\exceptions\InvalidParamException
+     * @throws \appapi\exceptions\InvalidParamException
      */
     public function actionDelWatchLog()
     {
@@ -291,388 +288,12 @@ class UserController extends BaseController
     }
     /**
      * 观看视频1分钟任务
-     * @throws \apinew\exceptions\LoginException
+     * @throws \appapi\exceptions\LoginException
      */
     public function actionOneMinuteTask()
     {
         // 完成任务
         $taskLogic = new TaskLogic();
         return $taskLogic->finishTask(TaskInfo::TASK_ACTION_PLAY_VIDEO);
-    }
-
-    /*
-     * 邮箱密码登录
-     */
-    public function actionEmailWeblogin(){
-        $email = $this->getParam('email', '');
-        $password = $this->getParam('password', '');
-        // $password = Yii::$app->security->generatePasswordHash($password);
-
-        $userDao = new UserDao();
-        $param['email'] = $email;
-        $param['password_hash'] = $password;
-        $user = $userDao->finduserInfo($param);
-        return $user;
-    }
-    /*
-     * 手机密码登录
-     */
-    public function actionMobileWeblogin(){
-        $mobile = $this->getParam('mobile', '');
-        $password = $this->getParam('password', '');
-        // $password = Yii::$app->security->generatePasswordHash($password);
-
-        $userDao = new UserDao();
-        $param['mobile'] = $mobile;
-        $param['email'] = '';
-        $param['password_hash'] = $password;
-        $user = $userDao->finduserInfo($param);
-
-        // $result['user'] = $user;
-        // $result['ss'] = $param;
-        return $user;
-    }
-
-    /*
-     * web用户注册（手机邮箱+密码，密保）
-     */
-    public function actionWebregister(){
-        $email = $this->getParam('email', '');
-        $mobile_areacode = $this->getParam('mobile_areacode', '');
-        $mobile = $this->getParam('mobile', '');
-        $question = $this->getParam('question', 0);
-        $answer = $this->getParam('answer', '');
-
-        $password = $this->getParam('password', '');
-        $password = Yii::$app->security->generatePasswordHash($password);
-
-        $userLogic = new UserLogic();
-        $user = $userLogic->webRegister(['email'=>$email, 'mobile_areacode'=>$mobile_areacode, 'mobile'=>$mobile,
-            'security_question'=>$question, 'security_answer'=>$answer, 'password_hash'=>$password]);
-
-        return $user;
-    }
-
-    /*
-     * PC端手机短信验证码注册
-     */
-    public function actionMessageRegister(){
-        $mobile_areacode = $this->getParam('mobile_areacode', '');
-        $mobile = $this->getParam('mobile', '');
-        $password = $this->getParam('password', '');
-        $password = Yii::$app->security->generatePasswordHash($password);
-
-        $userLogic = new UserLogic();
-        $user = $userLogic->messageRegister(['mobile_areacode'=>$mobile_areacode,'mobile'=>$mobile,'password_hash'=>$password]);
-
-        return $user;
-    }
-
-    /*
-     * PC端用户修改密码
-     */
-    public function actionModifyPassword(){
-        $account = $this->getParam('account', '');
-        $question = $this->getParam('question', 0);
-        $answer = $this->getParam('answer', '');
-        $password = $this->getParam('password', '');
-        $password = Yii::$app->security->generatePasswordHash($password);
-        $is_email = $this->getParam('is_email', false);
-        if($is_email){
-            $param['email'] = $account;
-        }else{
-            $param['mobile'] = $account;
-        }
-        $param['security_question'] = $question;
-        $param['security_answer'] = $answer;
-        $userDao = new UserDao();
-        $data = $userDao->finduserInfoToReason($param);
-        $rows = 0;
-        if($data && $data['errno']==0){
-            $rows = $userDao->modifypassword($data['uid'],$password);
-        }
-        $data['row'] = $rows;
-        return $data;
-    }
-    /*
-     * PC端用户修改密码
-     */
-    public function actionNewModifyPassword(){
-        $mobile = $this->getParam('mobile', '');
-        $password = $this->getParam('password', '');
-        $password = Yii::$app->security->generatePasswordHash($password);
-
-        $userDao = new UserDao();
-        $data = [];
-
-        $rows = $userDao->modifypasswordByMobile($mobile,$password);
-        $data['row'] = $rows;
-        if($rows>0){
-            $data['error'] = 0;
-            $data['msg'] = '密码修改成功';
-        }else{
-            $data['error'] = -1;
-            $data['msg'] = '密码修改失败';
-        }
-        return $data;
-    }
-
-    /*
-     * PC端用户修改邮箱
-     */
-    public function actionModifyEmail(){
-        $email = $this->getParam('email', '');
-        $mobile = $this->getParam('mobile', '');
-
-        $param['mobile'] = $mobile;
-        $param['email'] = $email;
-        $userDao = new UserDao();
-        $data = [];
-        $rows = $userDao->modifyemail($param);
-        $data['row'] = $rows;
-        if($rows>0){
-            $data['error'] = 0;
-            $data['msg'] = '邮箱修改成功';
-        }else{
-            $data['error'] = -1;
-            $data['msg'] = '邮箱修改失败';
-        }
-        return $data;
-    }
-
-    /*
-     * PC端查vip是否有效
-     */
-    public function actionUservip(){
-        $uid = $this->getParam('uid', '');
-        $userdao = new UserDao();
-        $vip = $userdao->validuservipPC($uid);
-        return $vip;
-    }
-
-    /*
-     * 主页查询用户信息及相关视频信息
-     */
-    public function actionOtherHome(){
-        $uid = $this->getParam('uid', 0);
-        $other_uid = $this->getParam('other_uid', 0);
-        //加载用户信息
-        $userdao = new UserDao();
-        $result = $userdao->finduserById($uid,$other_uid,UserRelations::TYPE_FOLLOW);
-        //用户上传的视频
-
-        return $result;
-    }
-    /*
-     * 关注/拉黑 或取消
-     */
-    public function actionChangeRelations(){
-        $uid  = $this->getParam('uid', 0);
-        $other_uid  = $this->getParam('other_uid', 0);
-        $type  = $this->getParam('type', 1);
-        $userdao = new UserDao();
-        $result = $userdao->addRelations($uid,$other_uid,$type);
-        return $result;
-    }
-
-    /*
-     * 我的消息
-     */
-    public function actionCommentPc(){
-        $uid = $this->getParam('uid', "");
-        $userdao = new UserDao();
-
-        //消息-我发表的（包括我回复的）
-        $data['comment'] = $userdao->commentListPC($uid);
-        //消息-回复我的（pid==uid）
-        $data['reply'] = $userdao->replyListPC($uid);
-        //消息-系统信息
-        $data['system_message'] = $userdao->messagePC($uid);
-        return $data;
-    }
-
-    /*
-     * 系统消息
-     */
-    public function actionMessagePc(){
-        $uid = $this->getParam('uid', "");
-        $userdao = new UserDao();
-        //消息-系统信息
-        $data = $userdao->messagePC($uid);
-        return $data;
-    }
-
-    /*
-     * 消息加载更多
-     */
-    public function actionSearchComment(){
-        $uid = $this->getParam('uid', "");
-        $page_num = $this->getParam('page_num', 1);
-        $type = $this->getParam('type', 'comment');
-        $userdao = new UserDao();
-        if($type=="reply"){
-            //消息-回复我的（pid==uid）
-            $data = $userdao->replyListPC($uid,$page_num);
-        }else if($type=="system_message"){
-            //消息-系统信息
-            $data = $userdao->messagePC($uid,$page_num);
-        }else{
-            //消息-我发表的（包括我回复的）- comment
-            $data = $userdao->commentListPC($uid,$page_num);
-        }
-        return $data;
-    }
-
-    /*
-     * 我的评论(wap)
-     */
-    public function actionCommentWap(){
-        $uid = $this->getParam('uid', 0);
-        $page_num = $this->getParam('page_num', 1);
-        $userdao = new UserDao();
-        $data = $userdao->commentListPC($uid,$page_num);
-        return $data;
-    }
-
-    /*
-     * 我的关注
-     */
-    public function actionRelationsPc(){
-        $uid = $this->getParam('uid', "");
-        $userdao = new UserDao();
-        //关注
-        $data['follow'] = $userdao->findRelationsByCondition($uid,UserRelations::TYPE_FOLLOW,'time','');
-        //黑名单
-        $data['blacklist'] = $userdao->findRelationsByCondition($uid,UserRelations::TYPE_BLACKLIST,'time','');
-        //粉丝
-        $data['fans'] = $userdao->findFansByCondition($uid,'time','');
-        return $data;
-    }
-
-    /*
-     * 点赞
-     */
-    public function actionAddLikes(){
-        $comment_id  = $this->getParam('comment_id', 0);
-        $cal  = $this->getParam('cal', 'plus');
-        $userdao = new UserDao();
-        $result = $userdao->addlikesNumPC($comment_id,$cal);
-        return $result;
-    }
-    /*
-     * 删除系统消息
-     */
-    public function actionRemoveMessage(){
-        $uid  = $this->getParam('uid', 0);
-        $comment_id  = $this->getParam('comment_id', 0);
-        $userdao = new UserDao();
-        $result = $userdao->removeMessagePC($comment_id,$uid);
-        return $result;
-    }
-    /*
-     * 删除评论
-     */
-    public function actionRemoveComment(){
-        $comment_id  = $this->getParam('comment_id', 0);
-        $userdao = new UserDao();
-        $result = $userdao->removeCommentPC($comment_id);
-        return $result;
-    }
-
-    /*
-     * 根据条件重新查消息
-     */
-    public function actionSearchRelation(){
-        $uid = $this->getParam('uid', 0);
-        $type  = $this->getParam('type', 1);
-        $order = $this->getParam('order', 'time');
-        $searchword  = $this->getParam('searchword', '');
-        $page_num = $this->getParam('page_num', 1);
-
-        $userdao = new UserDao();
-        if($type==3){
-            $result = $userdao->findFansByCondition($uid,$order,$searchword,$page_num);
-        }else{
-            $result = $userdao->findRelationsByCondition($uid,$type,$order,$searchword,$page_num);
-        }
-        return $result;
-    }
-
-    /*
-     * 查用户信息
-     */
-    public function actionUserinfo(){
-        $uid = $this->getParam('uid', 0);
-        $userdao = new UserDao();
-        $return  = [];
-        $result = $userdao->finduserByuid($uid);
-        $return['user'] = $result;
-        $vip = $userdao->validuservipPC($uid);
-        if($vip){
-            $return['vip'] = $vip;
-            $return['isvip'] = 1;
-        }
-        return $return;
-    }
-    /*
-     * 发送验证码
-     */
-    public function actionSendCode(){
-        $mobile_areacode = $this->getParam('mobile_areacode', "");
-        $mobile = $this->getParam('mobile', "");//手机
-        $userlogic = new UserLogic();
-        $result = $userlogic->createSMScode($mobile_areacode.$mobile);
-        return $result;
-    }
-
-    /*
-     * 修改性别、昵称、手机号
-     */
-    public function actionModifyUserinfo(){
-        $uid = $this->getParam('uid', "");
-        $mobile_areacode = $this->getParam('mobile_areacode', "");
-        $mobile   = $this->getParam('mobile', "");//手机
-        $flag     = $this->getParam('flag',"");//修改项
-        $flag_value     = $this->getParam('flag_value',"");//修改值
-        $code     = $this->getParam('code', "");
-
-        $param = [];
-        $userlogic = new UserLogic();
-        $row = 0;
-        $result = [];
-        $result['uid'] = $uid;
-        //短信验证码登录
-        if(!empty($flag)){
-            if($flag == 'mobile'){//修改手机
-                $redis = new RedisStore();
-                $key = 'SMScode'.$mobile_areacode.$mobile;
-                if($redis->get($key) && $redis->get($key)==$code){
-                    $param['uid'] = $uid;
-                    $param['mobile'] = $mobile;
-                    $param['mobile_areacode'] = $mobile_areacode;
-                    $row = $userlogic->modifyUserinfo($param);
-                }else{
-                    $row = -2;
-                }
-            }else{//修改其他基本信息
-                $param['uid'] = $uid;
-                $param[$flag] = $flag_value;
-                $row = $userlogic->modifyUserinfo($param);
-            }
-            if($row > 0){
-                $result['errno'] = 0;
-                $result['msg'] = '修改成功';
-            }else if($row == -2){
-                $result['errno'] = -1;
-                $result['msg'] = '短信验证码输入错误';
-            }else{
-                $result['errno'] = -1;
-                $result['msg'] = '修改失败';
-            }
-        }else{
-            $result['errno'] = -1;
-            $result['msg'] = '修改失败!';
-        }
-        return $result;
     }
 }

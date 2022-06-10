@@ -1,10 +1,10 @@
 <?php
-namespace apinew\dao;
+namespace appapi\dao;
 
-use apinew\data\ActiveDataProvider;
-use apinew\models\video\Rank;
-use apinew\models\video\RankVideo;
-use apinew\models\video\Video;
+use appapi\data\ActiveDataProvider;
+use appapi\models\video\Rank;
+use appapi\models\video\RankVideo;
+use appapi\models\video\Video;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
 use common\helpers\Tool;

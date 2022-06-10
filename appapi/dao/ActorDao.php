@@ -1,11 +1,11 @@
 <?php
-namespace apinew\dao;
+namespace appapi\dao;
 
 
-use apinew\data\ActiveDataProvider;
-use apinew\models\video\Actor;
-use apinew\models\video\ActorArea;
-use apinew\models\video\VideoActor;
+use appapi\data\ActiveDataProvider;
+use appapi\models\video\Actor;
+use appapi\models\video\ActorArea;
+use appapi\models\video\VideoActor;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
 

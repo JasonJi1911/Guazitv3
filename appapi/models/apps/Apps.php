@@ -1,5 +1,5 @@
 <?php
-namespace apinew\models\apps;
+namespace appapi\models\apps;
 
 class Apps extends \common\models\apps\Apps
 {

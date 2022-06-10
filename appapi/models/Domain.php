@@ -1,5 +1,5 @@
 <?php
-namespace apinew\models;
+namespace appapi\models;
 
 class Domain extends \common\models\Domain
 {

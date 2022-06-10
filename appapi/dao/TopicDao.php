@@ -1,9 +1,9 @@
 <?php
-namespace apinew\dao;
+namespace appapi\dao;
 
-use apinew\data\ActiveDataProvider;
-use apinew\models\video\Topic;
-use apinew\models\video\TopicVideo;
+use appapi\data\ActiveDataProvider;
+use appapi\models\video\Topic;
+use appapi\models\video\TopicVideo;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
 use yii\helpers\ArrayHelper;

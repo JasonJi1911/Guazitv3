@@ -1,5 +1,5 @@
 <?php
-namespace apinew\models\advert;
+namespace appapi\models\advert;
 
 class StartPage extends \common\models\advert\StartPage
 {

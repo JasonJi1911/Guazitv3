@@ -1,5 +1,5 @@
 <?php
-namespace apinew\models\apps;
+namespace appapi\models\apps;
 
 class AppsCheckSwitch extends \common\models\apps\AppsCheckSwitch
 {

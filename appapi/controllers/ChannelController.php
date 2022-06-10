@@ -1,7 +1,7 @@
 <?php
-namespace apinew\controllers;
+namespace appapi\controllers;
 
-use apinew\dao\CommonDao;
+use appapi\dao\CommonDao;
 
 class ChannelController extends BaseController
 {

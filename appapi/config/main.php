@@ -7,31 +7,31 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'app-apinew',
+    'id' => 'app-appapi',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    'controllerNamespace' => 'apinew\controllers',
+    'controllerNamespace' => 'appapi\controllers',
     'components' => [
         'request' => [
-            'class' => 'apinew\components\Request',
+            'class' => 'appapi\components\Request',
             'enableCsrfValidation' => false,
         ],
         // 用户
         'user' => [
-            'class'  => 'apinew\services\UserService',
+            'class'  => 'appapi\services\UserService',
             'params' => ['token'],
         ],
         'api' => function () {
-            return new \apinew\services\ApiService;
+            return new \appapi\services\ApiService;
         },
         'common' => [
-            'class'  => 'apinew\services\CommonService',
+            'class'  => 'appapi\services\CommonService',
         ],
         'response' => [
-            'class' => 'apinew\components\Response',
+            'class' => 'appapi\components\Response',
         ],
         'session' => [
-            'name' => 'app-apinew',
+            'name' => 'app-appapi',
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -71,7 +71,7 @@ return [
 
     //强制登录预操作
     'as access' => [
-        'class'  => 'apinew\filters\AccessControl',
+        'class'  => 'appapi\filters\AccessControl',
         'user'   => false,
         'only' => ['answer/feedback-list', 'user/info', 'user/bind-*', 'user/set-*', 'advert/remove-ad', 'comment/*', 'user/order-list', 'user/watch-log', 'pay/*'],
         'except' => ['comment/list', 'user/mobile-login',

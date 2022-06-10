@@ -1,6 +1,6 @@
 <?php
 
-namespace apinew\models\pay;
+namespace appapi\models\pay;
 
 use Yii;
 

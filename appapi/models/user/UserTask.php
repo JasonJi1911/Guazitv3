@@ -1,5 +1,5 @@
 <?php
-namespace apinew\models\user;
+namespace appapi\models\user;
 
 class UserTask extends \common\models\user\UserTask
 {

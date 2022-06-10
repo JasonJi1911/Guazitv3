@@ -1,13 +1,13 @@
 <?php
-namespace apinew\controllers;
+namespace appapi\controllers;
 
-use apinew\dao\CommonDao;
-use apinew\dao\VideoDao;
-use apinew\logic\CommonLogic;
-use apinew\logic\TaskLogic;
-use apinew\logic\VideoLogic;
-use apinew\models\user\TaskInfo;
-use apinew\models\video\Actor;
+use appapi\dao\CommonDao;
+use appapi\dao\VideoDao;
+use appapi\logic\CommonLogic;
+use appapi\logic\TaskLogic;
+use appapi\logic\VideoLogic;
+use appapi\models\user\TaskInfo;
+use appapi\models\video\Actor;
 use Yii;
 
 class ShareController extends BaseController
@@ -44,7 +44,7 @@ class ShareController extends BaseController
     /**
      * 影视分享
      * @return array
-     * @throws \apinew\exceptions\InvalidParamException
+     * @throws \appapi\exceptions\InvalidParamException
      */
     public function actionVideo()
     {

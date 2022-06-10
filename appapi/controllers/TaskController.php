@@ -1,9 +1,9 @@
 <?php
-namespace apinew\controllers;
+namespace appapi\controllers;
 
-use apinew\logic\TaskLogic;
-use apinew\logic\UserLogic;
-use apinew\models\user\TaskInfo;
+use appapi\logic\TaskLogic;
+use appapi\logic\UserLogic;
+use appapi\models\user\TaskInfo;
 
 class TaskController extends BaseController
 {
@@ -20,7 +20,7 @@ class TaskController extends BaseController
     /**
      * 完成观看视频1分钟
      * @return array
-     * @throws \apinew\exceptions\LoginException
+     * @throws \appapi\exceptions\LoginException
      */
     public function actionWatch()
     {

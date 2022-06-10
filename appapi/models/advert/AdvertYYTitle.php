@@ -1,5 +1,5 @@
 <?php
-namespace apinew\models\advert;
+namespace appapi\models\advert;
 
 class AdvertYYTitle extends \common\models\advert\AdvertYYTitle
 {

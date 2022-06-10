@@ -1,7 +1,7 @@
 <?php
-namespace apinew\models\video;
+namespace appapi\models\video;
 
-use apinew\models\user\User;
+use appapi\models\user\User;
 use common\helpers\Tool;
 
 class VideoChapter extends \common\models\video\VideoChapter

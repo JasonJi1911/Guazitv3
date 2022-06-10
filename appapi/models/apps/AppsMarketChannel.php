@@ -1,5 +1,5 @@
 <?php
-namespace apinew\models\apps;
+namespace appapi\models\apps;
 
 class AppsMarketChannel extends \common\models\apps\AppsMarketChannel
 {

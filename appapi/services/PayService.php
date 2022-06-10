@@ -5,22 +5,22 @@
  * Time: 下午5:22
  */
 
-namespace apinew\services;
+namespace appapi\services;
 
 
-use apinew\dao\PayDao;
-use apinew\exceptions\ApiException;
-use apinew\helpers\ErrorCode;
-use apinew\logic\TaskLogic;
-use apinew\models\pay\AppleTrade;
-use apinew\models\pay\Goods;
-use apinew\models\pay\Order;
-use apinew\models\pay\PayErrorLog;
-use apinew\models\user\TaskInfo;
-use apinew\models\user\User;
-use apinew\models\user\UserAssets;
-use apinew\models\user\UserCoupon;
-use apinew\models\user\UserVip;
+use appapi\dao\PayDao;
+use appapi\exceptions\ApiException;
+use appapi\helpers\ErrorCode;
+use appapi\logic\TaskLogic;
+use appapi\models\pay\AppleTrade;
+use appapi\models\pay\Goods;
+use appapi\models\pay\Order;
+use appapi\models\pay\PayErrorLog;
+use appapi\models\user\TaskInfo;
+use appapi\models\user\User;
+use appapi\models\user\UserAssets;
+use appapi\models\user\UserCoupon;
+use appapi\models\user\UserVip;
 use common\helpers\Tool;
 use Yii;
 
@@ -405,10 +405,10 @@ class PayService extends Service
 
     /**
      * 微信支付回调流程
-     * @param \apinew\helpers\Wxpay $objWxPay
+     * @param \appapi\helpers\Wxpay $objWxPay
      * @param                    $arrNotifyData
      * @return array
-     * @throws \apinew\exceptions\ApiException
+     * @throws \appapi\exceptions\ApiException
      */
     public function wxpayNotify($objWxPay, $arrNotifyData) {
         $flag = $objWxPay->checkSign($arrNotifyData);

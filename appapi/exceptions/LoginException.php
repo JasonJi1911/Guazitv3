@@ -1,7 +1,7 @@
 <?php
-namespace apinew\exceptions;
+namespace appapi\exceptions;
 
-use apinew\helpers\ErrorCode;
+use appapi\helpers\ErrorCode;
 
 class LoginException extends Exception
 {

@@ -1,7 +1,7 @@
 <?php
-namespace apinew\services;
+namespace appapi\services;
 
-use apinew\components\ParamsTrait;
+use appapi\components\ParamsTrait;
 use Yii;
 
 class CommonService extends Service

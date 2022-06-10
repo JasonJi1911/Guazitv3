@@ -1,9 +1,9 @@
 <?php
-namespace apinew\dao;
+namespace appapi\dao;
 
-use apinew\data\ActiveDataProvider;
-use apinew\models\video\Comment;
-use apinew\models\video\CommentLike;
+use appapi\data\ActiveDataProvider;
+use appapi\models\video\Comment;
+use appapi\models\video\CommentLike;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
 use yii\helpers\ArrayHelper;

@@ -1,10 +1,10 @@
 <?php
-namespace apinew\dao;
+namespace appapi\dao;
 
-use apinew\data\ActiveDataProvider;
-use apinew\exceptions\ApiException;
-use apinew\helpers\ErrorCode;
-use apinew\models\pay\Goods;
+use appapi\data\ActiveDataProvider;
+use appapi\exceptions\ApiException;
+use appapi\helpers\ErrorCode;
+use appapi\models\pay\Goods;
 
 class PayDao extends BaseDao
 {
@@ -28,7 +28,7 @@ class PayDao extends BaseDao
      * 商品详情
      * @param $goodsId
      * @return array
-     * @throws \apinew\exceptions\ApiException
+     * @throws \appapi\exceptions\ApiException
      */
     public function goodsInfo($goodsId) 
     {

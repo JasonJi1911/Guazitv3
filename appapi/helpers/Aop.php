@@ -1,6 +1,6 @@
 <?php
 
-namespace apinew\helpers;
+namespace appapi\helpers;
 use Yii;
 
 //加载alipay支付入口文件

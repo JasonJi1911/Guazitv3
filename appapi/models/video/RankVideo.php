@@ -1,5 +1,5 @@
 <?php
-namespace apinew\models\video;
+namespace appapi\models\video;
 
 class RankVideo extends \common\models\video\RankVideo
 {

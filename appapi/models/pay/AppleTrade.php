@@ -1,5 +1,5 @@
 <?php
-namespace apinew\models\pay;
+namespace appapi\models\pay;
 
 class AppleTrade extends \common\models\pay\AppleTrade
 {

@@ -1,7 +1,7 @@
 <?php
-namespace apinew\controllers;
+namespace appapi\controllers;
 
-use apinew\dao\UserDao;
+use appapi\dao\UserDao;
 use Yii;
 
 class CouponController extends BaseController

@@ -1,5 +1,5 @@
 <?php
-namespace apinew\models\agent;
+namespace appapi\models\agent;
 
 class AgentInfo extends \common\models\agent\AgentInfo
 {

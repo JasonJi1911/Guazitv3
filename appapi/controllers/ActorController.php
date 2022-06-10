@@ -1,7 +1,7 @@
 <?php
-namespace apinew\controllers;
+namespace appapi\controllers;
 
-use apinew\dao\ActorDao;
+use appapi\dao\ActorDao;
 
 class ActorController extends BaseController
 {

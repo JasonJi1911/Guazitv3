@@ -1,5 +1,5 @@
 <?php
-namespace apinew\models\video;
+namespace appapi\models\video;
 
 class VideoChannel extends \common\models\video\VideoChannel
 {
@@ -10,13 +10,6 @@ class VideoChannel extends \common\models\video\VideoChannel
             'channel_name',
             'icon' => function() {
                 return $this->icon->toUrl();
-            },
-            'icon_gray' => function() {
-                if($this->icon_gray){
-                    return $this->icon_gray->toUrl();
-                }else{
-                    return '';
-                }
             },
             'description',
             'areas',

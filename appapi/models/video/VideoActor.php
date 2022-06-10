@@ -1,7 +1,7 @@
 <?php
-namespace apinew\models\video;
+namespace appapi\models\video;
 
-use apinew\models\video\Actor;
+use appapi\models\video\Actor;
 
 class VideoActor extends \common\models\video\VideoActor
 {

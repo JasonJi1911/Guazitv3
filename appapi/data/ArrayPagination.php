@@ -1,12 +1,12 @@
 <?php
-namespace apinew\data;
+namespace appapi\data;
 
 use Yii;
 
 /**
  * 数组手动分页
  * Class ArrayPagination
- * @package apinew\data
+ * @package appapi\data
  */
 class ArrayPagination
 {

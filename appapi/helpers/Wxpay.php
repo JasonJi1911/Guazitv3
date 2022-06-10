@@ -1,6 +1,6 @@
 <?php
 
-namespace apinew\helpers;
+namespace appapi\helpers;
 
 use common\helpers\Tool;
 use common\models\WechatPaySetting;

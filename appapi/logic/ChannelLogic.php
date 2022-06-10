@@ -1,28 +1,27 @@
 <?php
-namespace apinew\logic;
+namespace appapi\logic;
 
-use apinew\dao\AdvertDao;
-use apinew\dao\CommonDao;
-use apinew\dao\RankDao;
-use apinew\dao\RecommendDao;
-use apinew\data\ActiveDataProvider;
-use apinew\helpers\Common;
-use apinew\models\advert\AdvertPosition;
-use apinew\models\video\VideoChannel;
-use apinew\models\video\VideoFavorite;
+use appapi\dao\AdvertDao;
+use appapi\dao\CommonDao;
+use appapi\dao\RankDao;
+use appapi\dao\RecommendDao;
+use appapi\data\ActiveDataProvider;
+use appapi\helpers\Common;
+use appapi\models\advert\AdvertPosition;
+use appapi\models\video\VideoChannel;
 use yii\helpers\ArrayHelper;
 use yii;
 
 class ChannelLogic
 {
     //视频字段
-    private $videoFields = ['video_id', 'video_name', 'score', 'cover', 'horizontal_cover', 'flag', 'tag', 'play_times', 'intro', 'category', 'actors_id', 'summary', 'year','created_at'];
+    private $videoFields = ['video_id', 'video_name', 'score', 'cover', 'horizontal_cover', 'flag', 'tag', 'play_times', 'intro', 'category', 'actors_id', 'summary', 'year'];
 
     /**
      * 频道首页数据
      * @return mixed
      */
-    public function channelIndexData($city='',$uid=0)
+    public function channelIndexData($city='')
     {
         // 首页金刚位
         $data['king_kong'] = $this->_kingKong();
@@ -43,12 +42,9 @@ class ChannelLogic
         // 获取广告
         $advertLogic = new AdvertLogic();
         //        $advert = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX);
-//        $adposition = Yii::$app->common->product == Common::PRODUCT_PC ? AdvertPosition::POSITION_VIDEO_INDEX_PC : AdvertPosition::POSITION_VIDEO_INDEX;
-//        $advert = $advertLogic->advertByPosition($adposition, $city);
-        $advertArray = [];
-//        if(Yii::$app->common->product == Common::PRODUCT_PC ){
-//            $advertArray = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX_PC, $city);
-//        }
+        $adposition = Yii::$app->common->product == Common::PRODUCT_PC
+            ? AdvertPosition::POSITION_VIDEO_INDEX_PC : AdvertPosition::POSITION_VIDEO_INDEX;
+        $advert = $advertLogic->advertByPosition($adposition, $city);
         // 广告循环key
         $advertKey = 0;
         foreach ($channelList as $index => $channel) {
@@ -83,35 +79,13 @@ class ChannelLogic
             $recommend['search'][]    = ['field' => 'channel_id', 'value' => $channel['channel_id']];
             // 推荐位频道下影片
             $recommend['list'] = $videoRecommend->recommendVideo($recommend['recommend_id'], $this->videoFields);
-            $recommend['list'] = array_values($recommend['list']);//数组序号重排
-            //新增用户每个视频是否收藏，220117
-            if(!empty($recommend['list']) && $uid!=0){
-                foreach($recommend['list'] as &$list){
-                    $favorite = VideoFavorite::find()
-                        ->andWhere(['uid'=>$uid])
-                        ->andWhere(['video_id'=>$list['video_id']])
-                        ->asArray()->one();
-                    if($favorite){
-                        $list['favorite'] = $favorite['status'];//状态：1收藏，0：取消收藏
-                    }else{
-                        $list['favorite'] = VideoFavorite::STATUS_NO;
-                    }
-                }
-            }
             // 每两个推荐位插入广告
-//            if ($advert) {
-//                if ($index != 0 && $index % 2 == 0) {
-//                    $advertKey = isset($advert[$advertKey]) ? $advertKey : 0;
-//                    array_push($data['label'], $advert[$advertKey]);
-//                    $advertKey ++;
-//                }
-//            }
-            // 每个推荐位对应插入广告-20210823
-            if ($advertArray) {
-                if ($advertArray[$advertKey]) {
-                    array_push($data['label'], $advertArray[$advertKey]);
+            if ($advert) {
+                if ($index != 0 && $index % 2 == 0) {
+                    $advertKey = isset($advert[$advertKey]) ? $advertKey : 0;
+                    array_push($data['label'], $advert[$advertKey]);
+                    $advertKey ++;
                 }
-                $advertKey++;
             }
             array_push($data['label'], $recommend);
         }
@@ -135,9 +109,8 @@ class ChannelLogic
         // 获取分类数据
         $tagFields = ['cat_id', 'name'];
         $channelTags = $this->channelCategory($channelId, $tagFields);
-        // 获取前三个分类，
-        //20220217 改取7个分类
-        $channelTags = array_slice($channelTags, 0, 7);
+        // 获取前三个分类
+        $channelTags = array_slice($channelTags, 0, 3);
 
         foreach ($channelTags as $key => &$value){
             $value['search'] = [
@@ -163,13 +136,9 @@ class ChannelLogic
         // 获取广告
         $advertLogic = new AdvertLogic();
         // $advert = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_INDEX);
-//        $adposition = Yii::$app->common->product == Common::PRODUCT_PC
-//            ? AdvertPosition::POSITION_VIDEO_INDEX_PC : AdvertPosition::POSITION_VIDEO_INDEX;
-//        $advert = $advertLogic->advertByPosition($adposition, $city);
-        $advertArray = [];
-//        if(Yii::$app->common->product == Common::PRODUCT_PC ){
-//            $advertArray = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC1, $city);
-//        }
+        $adposition = Yii::$app->common->product == Common::PRODUCT_PC
+            ? AdvertPosition::POSITION_VIDEO_INDEX_PC : AdvertPosition::POSITION_VIDEO_INDEX;
+        $advert = $advertLogic->advertByPosition($adposition, $city);
         // 广告循环key
         $advertKey = 0;
         $label = [];
@@ -185,19 +154,12 @@ class ChannelLogic
                 continue;
             }
             // 添加广告
-//            if ($advert) {
-//                if ($index != 0 && $index % 2 == 0) {
-//                    $advertKey = isset($advert[$advertKey]) ? $advertKey : 0;
-//                    array_push($label, $advert[$advertKey]);
-//                    $advertKey ++;
-//                }
-//            }
-            // 每个推荐位对应插入广告-20210823
-            if ($advertArray) {
-                if ($advertArray[$advertKey]) {
-                    array_push($label, $advertArray[$advertKey]);
+            if ($advert) {
+                if ($index != 0 && $index % 2 == 0) {
+                    $advertKey = isset($advert[$advertKey]) ? $advertKey : 0;
+                    array_push($label, $advert[$advertKey]);
+                    $advertKey ++;
                 }
-                $advertKey++;
             }
              // 添加返回值
             array_push($label, $item);

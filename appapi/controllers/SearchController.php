@@ -1,10 +1,9 @@
 <?php
-namespace apinew\controllers;
+namespace appapi\controllers;
 
-use apinew\data\ActiveDataProvider;
-use apinew\exceptions\InvalidParamException;
-use apinew\logic\VideoLogic;
-use apinew\dao\VideoDao;
+use appapi\data\ActiveDataProvider;
+use appapi\exceptions\InvalidParamException;
+use appapi\logic\VideoLogic;
 use common\models\apps\AppsCheckSwitch;
 use common\models\apps\AppsVersion;
 
@@ -16,32 +15,7 @@ class SearchController extends BaseController
     public function actionHotWord()
     {
         $videoLogic = new VideoLogic();
-        $hotwordList = $videoLogic->hotWord();
-        /* 查询剧名对应的集数在24小时内更新总数 begin */
-        //video_chapter
-        $VideoDao = new VideoDao();
-        foreach($hotwordList['tab'] as $keys => $tab){
-            foreach ($tab['list'] as $key => $list){
-                $num = $VideoDao->findVideoChapterNumByVideoId($list['video_id']);
-                $list['num'] = $num;
-                $tab['list'][$key] = $list;
-            }
-            $hotwordList['tab'][$keys] = $tab;
-        }
-        /* 查询剧名对应的集数在24小时内更新总数 end */
-        return $hotwordList;
-    }
-
-    /*
-     * 2022-4-19尹 频道页热搜词组
-     */
-    public function actionChannelHotword()
-    {
-        $channelId = $this->getParam('channel_id', 0);  //频道id
-
-        $videoLogic = new VideoLogic();
-        $hotwordList = $videoLogic->hotWordByChannelId($channelId);
-        return $hotwordList;
+        return $videoLogic->hotWord();
     }
 
     /**
@@ -65,10 +39,9 @@ class SearchController extends BaseController
      */
     public function actionNewResult()
     {
-        $keyword   = $this->getParam('keyword', '');  //关键词
+        $keyword = $this->getParam('keyword', '');  //关键词
         $channelId = $this->getParam('channel_id', ''); // 频道
-        $sort      = $this->getParam('sort', 'new');
-        $sorttype  = $this->getParam('sorttype', 'desc');//排序高低
+        $sort      = $this->getParam('sort', 'hot'); // 排序
         $tag       = $this->getParam('tag', ''); // 标签
         $area      = $this->getParam('area', ''); // 地区
         $year      = $this->getParam('year', ''); // 年代
@@ -76,7 +49,6 @@ class SearchController extends BaseController
         $pageSize  = $this->getParam('page_size', 10);
         $type      = $this->getParam('type', 0); // 类型 当传入1时，位点击分类进入，服务端要返回所有频道筛选项
         $playLimit = $this->getParam('play_limit', '');
-        $status    = $this->getParam('status', 0); // 剧集是否完结：全部 / 更新中
 
         $area      = !empty($area) ? $area : '';
         $year      = !empty($year) ? $year : '';
@@ -92,30 +64,10 @@ class SearchController extends BaseController
         $data = [];
         // 当请求为第一页时，返回筛选页头部信息
         if ($page == 1) {
-            $data = $videoLogic->filterHeaders($channelId, $sort, $tag, $area, $year, $type, $playLimit, $status);
+            $data = $videoLogic->filterHeader($channelId, $sort, $tag, $area, $year, $type, $playLimit);
         }
-        $video = $videoLogic->searchResult2($channelId, $keyword, $sort, $sorttype, $tag, $area, $year, $type, $playLimit, $page, $pageSize, $status);
+        $video = $videoLogic->searchResult1($channelId, $keyword, $sort, $tag, $area, $year, $type, $playLimit, $page, $pageSize);
         $data = array_merge($data, $video);
-
-        /* 添加24小时更新的剧集 begin */
-        $videoDao = new VideoDao();
-        if($data){
-            foreach ($data['list'] as $i => $list){
-                $result = $videoDao->findVideoChapterByVideoId($list['chapters'][0]['video_id']);
-                $list['chapters'] = array_values($list['chapters']);
-                foreach ($list['chapters'] as $key => $chap){
-                    $chap['latest'] = 0;
-                    foreach($result as $chap2){
-                        if($chap['title'] == $chap2['title']){
-                            $chap['latest'] = 1;
-                        }
-                    }
-                    $list['chapters'][$key] = $chap;
-                }
-                $data['list'][$i] = $list;
-            }
-        }
-        /* 添加24小时更新的剧集 end */
         return $data;
     }
     

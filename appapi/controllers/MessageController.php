@@ -1,8 +1,8 @@
 <?php
-namespace apinew\controllers;
+namespace appapi\controllers;
 
-use apinew\exceptions\LoginException;
-use apinew\helpers\ErrorCode;
+use appapi\exceptions\LoginException;
+use appapi\helpers\ErrorCode;
 use common\helpers\Message;
 use Yii;
 

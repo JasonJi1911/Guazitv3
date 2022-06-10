@@ -1,52 +1,36 @@
 <?php
-namespace apinew\dao;
+namespace appapi\dao;
 
-use apinew\data\ActiveDataProvider;
+use appapi\data\ActiveDataProvider;
 
-use apinew\exceptions\ApiException;
-use apinew\helpers\Common;
-use apinew\helpers\ErrorCode;
-use apinew\logic\ChannelLogic;
-use apinew\logic\TaskLogic;
-use apinew\logic\VideoLogic;
-use apinew\models\user\TaskInfo;
-use apinew\models\video\Actor;
-use apinew\models\video\Banner;
-use apinew\models\video\City;
-use apinew\models\video\HotRecommend;
-use apinew\models\video\HotRecommendList;
-use apinew\models\video\Industry;
-use apinew\models\video\Trailer;
-use apinew\models\video\VideoUpdate;
-use apinew\models\video\UserWatchLog;
-use apinew\models\video\Video;
-use apinew\models\video\VideoActor;
-use apinew\models\video\VideoArea;
-use apinew\models\video\VideoAduser;
-use apinew\models\video\VideoChannel;
-use apinew\models\video\VideoChapter;
-use apinew\models\video\VideoFavorite;
-use apinew\models\video\VideoFeedback;
-use apinew\models\video\VideoFeedbackinfo;
-use apinew\models\video\VideoFeedcountry;
-use apinew\models\video\VideoSeek;
-use apinew\models\video\VideoYear;
+use appapi\exceptions\ApiException;
+use appapi\helpers\Common;
+use appapi\helpers\ErrorCode;
+use appapi\logic\ChannelLogic;
+use appapi\models\video\Actor;
+use appapi\models\video\Banner;
+use appapi\models\video\City;
+use appapi\models\video\HotRecommend;
+use appapi\models\video\HotRecommendList;
+use appapi\models\video\Video;
+use appapi\models\video\VideoActor;
+use appapi\models\video\VideoArea;
+use appapi\models\video\VideoChannel;
+use appapi\models\video\VideoChapter;
+use appapi\models\video\VideoFeedcountry;
+use appapi\models\video\VideoSeek;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
 use common\helpers\Tool;
 use common\models\IpAddress;
-use console\models\AnalyzeApiLog;
-use yii\base\BaseObject;
 use yii\helpers\ArrayHelper;
 use yii;
+
 
 class VideoDao extends BaseDao
 {
     //影片字段,影片缓存的所有字段
-    private $_fields = ['video_id', 'channel_id', 'category_ids', 'video_name', 'intro', 'issue_date',
-        'score', 'category', 'type', 'flag', 'tag','play_times','cover', 'horizontal_cover', 'area',
-        'year', 'cats', 'episode_num', 'total_views', 'actors_id', 'play_limit', 'total_price', 'is_down',
-        'summary', 'created_at','is_finished','total_favors'];
+    private $_fields = ['video_id', 'channel_id', 'category_ids', 'video_name', 'intro', 'issue_date', 'score', 'category', 'type', 'flag', 'tag','play_times','cover', 'horizontal_cover', 'area', 'year', 'cats', 'episode_num', 'total_views', 'actors_id', 'play_limit', 'total_price', 'is_down', 'summary'];
 
     public static $chapterInfo = [];
 
@@ -62,18 +46,18 @@ class VideoDao extends BaseDao
      */
     public function banner($channelId, $fields = [], $city='')
     {
-
+        
         $redis = new RedisStore();
-
+        
         $key = RedisKey::videoBanner($channelId);
         if($channelId == 0){
             $key = RedisKey::videoBannerProduct(\Yii::$app->common->product);
         }
-
+        
         if ($city != '') {
             $key = $key.'_'.md5($city);
         }
-
+        
         if ($str = $redis->get($key)) {
             $data = json_decode($str, true);
         } else {
@@ -82,7 +66,7 @@ class VideoDao extends BaseDao
             $bannerDataProvider = new ActiveDataProvider([
                 'query' => Banner::find()->andWhere(['channel_id' => $channelId])->andWhere(['in','product',[\Yii::$app->common->product,Common::PRODUCT_UNKNOWN]]),
             ]);
-
+            
             if ($city != '')
             {
                 $bannerDataProvider = new ActiveDataProvider([
@@ -91,7 +75,7 @@ class VideoDao extends BaseDao
                         ->andWhere(["city_id" => $citylist]),
                 ]);
             }
-
+        
             $data = $bannerDataProvider->toArray();
             // todo 优化
             foreach ($data as $k => $banner) {
@@ -112,7 +96,7 @@ class VideoDao extends BaseDao
         }
 
         //$redis->del($key);
-
+       
         //非APP端 过滤掉APP页面跳转
         foreach ($data as $k => &$v) {
             if ($v['action'] == Banner::ACTION_SCHEME && \Yii::$app->common->product != Common::PRODUCT_APP) {
@@ -124,10 +108,10 @@ class VideoDao extends BaseDao
                 $v['content'] = '/video/detail?video_id='. $v['content'];
             }
         }
-
+      
         //重新索引数据
         $data = array_values($data);
-
+      
         // 过滤字段
         $data = $this->filter($data, $fields);
 
@@ -163,7 +147,7 @@ class VideoDao extends BaseDao
         } else {
             /** @var Video $videoObj */
             $videoObj = Video::findOne(['id' => $videoId]);
-
+            
             if (!$videoObj) {
                 return [];
             }
@@ -336,7 +320,20 @@ class VideoDao extends BaseDao
                     ->orderBy('display_order asc, id asc')
             ]);
             $video['chapters']     = $chapProvider->toArray();
+            // foreach ($video['chapters'] as &$cap)
+            // {
+            //     $resUrlArr = $cap['resource_url'];
+            //     foreach ($resUrlArr as $k=>$res)
+            //     {
+            //         if (!empty($res))
+            //         {
+            //             $cap['source_id'] = $k;
+            //             break;
+            //         }
+            //     }
+            // }
             //改动新版本
+            $commonDao = new CommonDao();
             $sources = $commonDao->videoSource(Yii::$app->common->product);
             foreach ($video['chapters'] as $k=>$cp)
             {
@@ -533,96 +530,7 @@ class VideoDao extends BaseDao
             'intro',
             'category',
         ], true, ['channel_id', 'actors_id', 'actors', 'director', 'artist', 'chapters']);
-
-        $data['list'] = array_values($list);
-
-        // 写入缓存
-        $redis->setEx($key, json_encode($data, JSON_UNESCAPED_UNICODE), 600);
-
-        return $data;
-    }
-
-
-    /**
-     * 视频筛选
-     * @param $channelId
-     * @param $sort
-     * @param $sorttype
-     * @param $tag
-     * @param $area
-     * @param $year
-     * @param $type
-     * @param $page
-     * @param $playLimit
-     * @param $pageSize
-     * @return array|mixed
-     */
-    public function filterVideoList2($channelId, $sort, $sorttype, $tag, $area, $year, $type, $playLimit, $page, $pageSize, $status)
-    {
-        // 不传channel_id时，默认获取第一个
-        //2022-04-19尹，搜索页新增全部频道，去掉默认获取频道
-//        if (empty($channelId)) {
-//            $commonDao = new CommonDao();
-//            $videoChannel = $commonDao->videoChannel(['channel_id', 'channel_name'], true); //获取频道并建立索引
-//            $channelId = reset($videoChannel)['channel_id'];
-//        }
-
-        //2022-04-19尹，新增全部频道，地区不置空;指定频道判断tag，area是否存在当前频道下，不存在则重置为空
-        $param_area = $area;
-        $this->checkFilterParams($channelId, $tag, $area);
-        if (empty($channelId)) {//全部频道
-            $area = $param_area;
-        }
-
-        $key = RedisKey::videoFilterList([$channelId, $sort, $tag, $area, $year, $type, $page, $pageSize, $playLimit,$sorttype, $status]);
-
-        $redis = new RedisStore();
-        if ($data = $redis->get($key)) {
-            return json_decode($data, true);
-        }
-
-        $order = $sort == 'new' ? 'created_at' : ($sort == 'score' ? 'score' : 'total_views');
-
-        $y = VideoYear::tableName();
-        $v = Video::tableName();
-        $orderstr = $y.'.display_order desc, '.$v.'.'.$order.' '.$sorttype;
-        $query = Video::find()
-            ->select($v.'.id')->leftJoin($y,$y.'.id='.$v.'.year')
-            ->andFilterWhere([$v.'.channel_id' => $channelId])
-            ->andFilterWhere(['like', $v.'.category_ids' , $tag])
-            ->andFilterWhere([$v.'.area' => $area])
-            ->andFilterWhere([$v.'.year' => $year])
-            ->andFilterWhere([$v.'.play_limit' => $playLimit]);
-
-        // 根据状态：完结/更新中
-        if($status == 1 || $status == 2){
-            $query = $query->andWhere([$v.'.is_finished' => $status]);
-        }
-        $query = $query->orderBy($orderstr);
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query
-        ]);
-
-        //根据条件查询 视频id
-        $data = $dataProvider->setPagination(['page_num' => $page, 'page_size' => $pageSize])->toArray([
-            'video_id',
-        ]);
-
-        $ids = ArrayHelper::getColumn($data['list'], 'video_id');
-
-        $list = $this->batchGetVideo($ids, [
-            'video_id',
-            'video_name',
-            'tag',
-            'flag',
-            'play_times',
-            'cover',
-            'score',
-            'horizontal_cover',
-            'intro',
-            'category',
-        ], true, ['channel_id', 'actors_id', 'actors', 'director', 'artist', 'chapters']);
-
+        
         $data['list'] = array_values($list);
 
         // 写入缓存
@@ -662,7 +570,7 @@ class VideoDao extends BaseDao
      * @param bool  $index
      * @return array
      */
-    public function videoChapter($videoId, $fields = [], $index = false, $order='asc')
+    public function videoChapter($videoId, $fields = [], $index = false)
     {
         //静态缓存
         if (self::$chapterInfo) {
@@ -676,7 +584,7 @@ class VideoDao extends BaseDao
                 $dataProvider= new ActiveDataProvider([
                     'query' => VideoChapter::find()
                         ->where(['video_id' => $videoId])
-                        ->orderBy('display_order '.$order.', id '.$order)
+                        ->orderBy('display_order asc, id asc')
                 ]);
                 $data = $dataProvider->toArray();
                 $redis->setEx($key, json_encode($data, JSON_UNESCAPED_UNICODE));
@@ -817,7 +725,7 @@ class VideoDao extends BaseDao
         $videoChapter->total_comment += 1;
         $videoChapter->save();
     }
-
+    
     /*
      * 查询频道和地区
      */
@@ -833,15 +741,13 @@ class VideoDao extends BaseDao
 
         $data['areas'] = $areas->toArray();
         $data['channels'] = $channels->toArray();
-        // 年代
-        $data['years'] = $this->_getYearsInfo();
         return $data;
     }
 
     /*
      * 提交求片信息
      */
-    public function saveSeekInfo($video_name,$channel_id,$area_id,$year,$director_name,$actor_name,$uid){
+    public function saveSeekInfo($video_name,$channel_id,$area_id,$year,$director_name,$actor_name){
         if(!$video_name){
             return [];
         }
@@ -852,137 +758,8 @@ class VideoDao extends BaseDao
         $seek->year = $year;
         $seek->director_name = $director_name;
         $seek->actor_name = $actor_name;
-        $seek->uid = $uid;
         $result = $seek->insert();
         return $result;
-    }
-
-    /*
-     * 在线反馈信息查询
-     * 国家、行业
-     */
-    public function findFeedbackinfo(){
-        $data = [];
-        $internet = new ActiveDataProvider([
-                    'query' => VideoFeedbackinfo::find()
-                        ->where(['type' => 1])
-                        ->orderBy('id asc')
-                    ]);
-        $data['internet'] = $internet->toArray();
-
-        $system = new ActiveDataProvider([
-                    'query' => VideoFeedbackinfo::find()
-                        ->where(['type' => 2])
-                        ->orderBy('id asc')
-                  ]);
-        $data['system'] = $system->toArray();
-
-        $browser = new ActiveDataProvider([
-                    'query' => VideoFeedbackinfo::find()
-                        ->where(['type' => 3])
-                        ->orderBy('id asc')
-                   ]);
-        $data['browser'] = $browser->toArray();
-
-        $question = new ActiveDataProvider([
-                'query' => VideoFeedbackinfo::find()
-                        ->where(['type' => 4])
-                        ->orderBy('id asc')
-        ]);
-        $data['question'] = $question->toArray();
-
-        $country = new ActiveDataProvider([
-            'query' => VideoFeedcountry::find()
-        ]);
-        $data['country'] = $country->toArray();//国家
-
-        $industry = new ActiveDataProvider([
-            'query' => Industry::find()
-        ]);
-        $data['industry'] = $industry->toArray();//行业
-
-        return $data;
-    }
-
-    /*
-     * 保存反馈信息
-     */
-    public function saveFeedbackinfo($country,$internets,$systems,$browsers,$description,$video_id,$chapter_id,$source_id,$uid){
-        $feedback = new VideoFeedback();
-        $feedback->country = $country;
-        $feedback->internets = $internets;
-        $feedback->systems = $systems;
-        $feedback->browsers = $browsers;
-        $feedback->description = $description;
-        $feedback->video_id = $video_id;
-        $feedback->chapter_id = $chapter_id;
-        $feedback->source_id = $source_id;
-        $feedback->uid = $uid;
-        $result = $feedback->insert();
-        return $result;
-    }
-
-    /*
-     * 查询各个频道24小时内更新剧集数
-     */
-    public function findVideoNumByChannelId($channel_id){
-        $time24 = strtotime("-1 day");
-        $num = Video::find()
-               ->andWhere(['channel_id' => $channel_id ])
-               ->andFilterWhere(['and',['>=' , 'created_at', $time24]])
-               ->count();
-        return $num;
-    }
-
-    /*
-     * 查询指定剧的24小时更新总数
-     */
-    public function findVideoChapterNumByVideoId($video_id){
-        $time24 = strtotime("-1 day");
-        $num = VideoChapter::find()
-            ->andWhere(['video_id' => $video_id ])
-            ->andFilterWhere(['and',['>=' , 'created_at', $time24]])
-            ->count();
-        return $num;
-    }
-
-    /*
-     * 查询指定剧在24小时内更新数据
-     */
-    public function findVideoChapterByVideoId($video_id){
-        $time24 = strtotime("-1 day");
-        $num = VideoChapter::find()
-            ->select('id,video_id,title')
-            ->andWhere(['video_id' => $video_id ])
-            ->andFilterWhere(['and',['>=' , 'created_at', $time24]])
-            ->all();
-        return $num;
-    }
-
-    /*
-     * 获取指定连续剧最大集数-display_order
-     */
-    public function getMaxChapterNum($video_id){
-        $maxnum = VideoChapter::find()
-            ->select('id,video_id')
-            ->andWhere(['video_id' => $video_id ])
-            ->max('display_order');
-        return $maxnum;
-    }
-
-    /*
-     * 获取指定连续剧最大集数-display_order
-     */
-    public function getMaxChapter($video_id){
-        $maxnum = VideoChapter::find()
-            ->andWhere(['video_id' => $video_id ])
-            ->max('display_order');
-        $chapter = VideoChapter::find()
-            ->select('id,video_id,title,display_order')
-            ->andWhere(['video_id' => $video_id ])
-            ->andWhere(['display_order' => $maxnum ])
-            ->one();
-        return $chapter;
     }
 
     /*
@@ -994,482 +771,12 @@ class VideoDao extends BaseDao
                     ->one();
         return $country;
     }
-
-    /*
-     * 注册广告商
-     */
-    public function saveAdcenter($type,$realname,$telephone,$country,$address,$industry,$wechatNO,$email){
-        $adcenter = new VideoAduser();
-        $adcenter->type = $type;
-        $adcenter->realname = $realname;
-        $adcenter->telephone = $telephone;
-        $adcenter->country = $country;
-        $adcenter->address = $address;
-        $adcenter->industry = $industry;
-        $adcenter->wechatNO = $wechatNO;
-        $adcenter->email = $email;
-        $result = $adcenter->insert();
-        return $result;
-    }
-
-    /*
-     * 播放记录
-     */
-    public function finduserwatchLog($uid,$searchword,$page_num=1,$channel_id=0){
-        $u = UserWatchLog::tableName();
-        $v = Video::tableName();
-        $query = UserWatchLog::find()->leftJoin($v,$v.'.id='.$u.'.video_id')
-                ->andWhere([$u.'.uid'=>$uid])
-                ->andFilterWhere(['like',$v.'.title',$searchword]);
-
-        if($channel_id!=0){
-            $query = $query->andWhere([$v.'.channel_id'=>$channel_id]);
-        }
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query
-        ]);
-        $data = $dataProvider->setPagination(['page_num' => $page_num])->toArray(['log_id', 'video_id', 'chapter_id', 'play_time', 'time', 'play_date', 'created_at','watchplay_time','total_time','updated_at']);
-        if ($data['list']) {
-            $videoId = array_column($data['list'], 'video_id');
-            $videoInfo = $this->batchGetVideo($videoId, ['video_id', 'video_name', 'cover','category','flag','channel_id','year','type','is_finished'], true);
-            $list = [];
-            foreach ($data['list'] as $k => $info) {
-                if(!$videoInfo[$info['video_id']]){
-                    unset($info);
-                    continue;
-                }
-                $info['title']    = $videoInfo[$info['video_id']]['video_name'];
-                $info['cover']    = $videoInfo[$info['video_id']]['cover'];
-                $info['category'] = $videoInfo[$info['video_id']]['category'];
-                $info['flag']     = $videoInfo[$info['video_id']]['flag'];
-                $info['year']     = $videoInfo[$info['video_id']]['year'];
-                $info['type']     = $videoInfo[$info['video_id']]['type'];
-                $info['is_finished'] = $videoInfo[$info['video_id']]['is_finished'];
-                $info['watch_time'] = '观看至 ' . $info['play_time'];
-                //计算 时长占百分比
-                if($info['total_time']){
-                    $info['watch_percent'] = intval(intval($info['time']) / intval($info['total_time'])*100);
-                }else{
-                    $info['watch_percent'] = 0;
-                }
-                $info['chapter_title'] = '';
-                //判断是否为连续剧，加观看集数
-                if($videoInfo[$info['video_id']]['type']==2){
-                    $chapter_one = VideoChapter::find()->andWhere(['id'=>$info['chapter_id']])->asArray()->one();
-                    $info['chapter_title'] = isset($chapter_one)? $chapter_one['title'] : '';
-                }
-
-                $current_time = time();
-                $updated_at = intval($info['updated_at']);
-                $t = $current_time - $updated_at;
-                if($t<60){
-                    $info['time_diff'] = $t.'秒前';
-                }else if($t<3600){
-                    $m = floor($t / 60);
-                    $info['time_diff'] = $m.'分钟前';
-                }else if($t < (3600*24)){
-                    $h = floor($t / 3600);
-                    $info['time_diff'] = $h.'小时前';
-                }else if($t < (3600*24*7)){
-                    $d = floor($t / (3600*24));
-                    $info['time_diff'] = $d.'天前';
-                }else{
-                    $info['time_diff'] = $info['play_date'];
-                }
-
-                $time3 = new \DateTime($info['watchplay_time'], new \DateTimeZone('UTC')); //UTC表示世界标准时间
-                $time3->setTimezone(new \DateTimeZone('EAT'));
-                $date3 = new \DateTime($info['play_date'], new \DateTimeZone('UTC')); //UTC表示世界标准时间
-                $date3->setTimezone(new \DateTimeZone('EAT'));
-                if ($info['play_date'] == date('Y-m-d')) {
-                    $dateKey = '今天';
-                    $info['show_times'] = $time3->format('H:i');
-                } else if ($info['play_date'] == date('Y-m-d', strtotime('-1 day'))) {
-                    $dateKey = '昨天';
-                    $info['show_times'] = $time3->format('H:i');
-                } else if ($info['play_date'] >= date('Y-m-d', strtotime('-7 day'))) {
-                    $dateKey = '本周';
-                    $info['show_times'] = $date3->format('Y-m-d');
-                } else {
-                    $dateKey = '一周前';
-                    $info['show_times'] = $date3->format('Y-m-d');
-                }
-                $list[$info['play_date']]['date']   = $dateKey;
-                $list[$info['play_date']]['list'][] = $info;
-            }
-
-            $data['list'] = array_values($list);
-            $data['list'][0]['total_page'] = $data['total_page'];//总页数
-        }
-        return $data['list'];
-    }
-
-
-    /*
-     * PC添加播放记录
-     */
-    public function addWatchLogPC($uid,$videoId, $chapterId, $watchTime,$totalTime)
-    {
-        if(!$uid) {
-            return false;
-        }
-        // $videoLogic = new VideoLogic();
-        // $chapterId = $videoLogic->getFirstChapter($videoId, $chapterId);
-
-        //并发锁检测
-        $key = RedisKey::getApiLockKey('user/add-watch-log', ['chapter_id' => $chapterId, 'uid' => $uid]);
-        $redis = new RedisStore();
-        if ($redis->checkLock($key)) {
-            throw new ApiException(ErrorCode::EC_SYSTEM_OPERATING);
-        }
-
-        $videoChapter = $this->videoChapter($videoId, ['chapter_id'], true);
-
-        if (!isset($videoChapter[$chapterId])) {  //如果视频不存在直接返回
-            $redis->releaseLock($key);
-            throw new ApiException(ErrorCode::EC_VIDEO_NOT_EXIST);
-        }
-        //是否已有观看记录,每个系列视频只存一条记录
-        $videoLog = UserWatchLog::findOne(['video_id' => $videoId, 'uid' => $uid]);
-        if (!$videoLog) {
-            //没看过新增
-            $videoLog = new UserWatchLog();
-            $videoLog->uid       = $uid;
-            $videoLog->video_id  = $videoId;
-            $videoLog->time = $watchTime;
-            $videoLog->total_time = $totalTime;
-            $videoLog->chapter_id = $chapterId;
-            $videoLog->insert();
-        } else {
-            //看过修改
-            $videoLog->oldAttributes = $videoLog;
-            $param['time'] = ($watchTime>=0) ? $watchTime : $videoLog->time;
-            $param['total_time'] = $totalTime ? $totalTime : $videoLog->total_time;
-            $param['chapter_id'] = $chapterId;
-            $param['updated_at'] = time();
-            $videoLog->updateAttributes($param);
-        }
-
-        $redis->releaseLock($key);
-        return true;
-    }
-
-    /*
-     * PC删除观看记录
-     */
-    public function delWatchLogByuidPC($uid,$logId)
-    {
-        if ($logId === 'all') {
-            $where = ['uid' => $uid];
-        } else {
-            $logId = explode(',', $logId);
-            $where = ['id' => $logId, 'uid' => $uid];
-        }
-        return UserWatchLog::deleteAll($where);
-    }
-
-    /*
-     * 查询收藏(PC)
-     */
-    public function findVideoFavorite($uid){
-        $videofavorite = VideoFavorite::find()->where(['uid' => $uid, 'status' => VideoFavorite::STATUS_YES])->asArray()->all();
-        $videoIds = array_column($videofavorite, 'video_id');
-        $video = Video::find()->select('id')->andWhere(['in', 'id', $videoIds])
-            ->orderBy("created_at desc ,id desc");//->asArray()->all();
-        $dataProvider = new ActiveDataProvider([
-            'query' => $video
-        ]);
-        $data = $dataProvider->setPagination()->toArray();
-        if ($data['list']) {
-            $videoId = array_column($data['list'], 'video_id');
-            $videoInfo = $this->batchGetVideo($videoId, ['video_id', 'video_name', 'cover', 'horizontal_cover',
-                'flag', 'tag','category','is_finished','created_at','total_views','type','year'], true);
-            foreach ($data['list'] as $k => $info) {
-                if(!$videoInfo[$info['video_id']]){
-                    unset($info);
-                    continue;
-                }
-                //总评论数
-                $commentcount = VideoChapter::find()->andWhere(['video_id'=>$info['video_id']])
-                    ->sum('total_comment');
-                $info['commentcount'] = $commentcount;
-
-                $info['video_name']       = $videoInfo[$info['video_id']]['video_name'];
-                $info['cover']            = $videoInfo[$info['video_id']]['cover'];
-                $info['horizontal_cover'] = $videoInfo[$info['video_id']]['horizontal_cover'];
-                $info['flag']             = $videoInfo[$info['video_id']]['flag'];
-                $info['tag']              = $videoInfo[$info['video_id']]['tag'];
-                $info['type']             = $videoInfo[$info['video_id']]['type'];
-                $info['category']         = $videoInfo[$info['video_id']]['category'];
-                $info['is_finished']      = $videoInfo[$info['video_id']]['is_finished'];
-                $info['created_at']       = $videoInfo[$info['video_id']]['created_at'];
-                $info['total_views']      = $videoInfo[$info['video_id']]['total_views'];
-                $info['year']             = $videoInfo[$info['video_id']]['year'];
-                $data['list'][$k] = $info;
-            }
-            $data['list'][0]['total_page'] = $data['total_page'];//总页数
-        }
-        return $data['list'];
-    }
-
-    /*
-     * 一定条件查询收藏(PC)
-     */
-    public function findVideoFavoriteBycondition($uid,$searchword,$order,$channel,$is_finished,$page_num=1){
-        $videofavorite = VideoFavorite::find()->where(['uid' => $uid, 'status' => VideoFavorite::STATUS_YES])->asArray()->all();
-        $videoIds = array_column($videofavorite, 'video_id');
-        $video = Video::find()->select('id')->andWhere(['in', 'id', $videoIds]);
-        $video = $video->andWhere(['like', 'title' , $searchword]);
-        if($channel != 0){
-            $video = $video->andWhere(['channel_id' => $channel]);
-        }
-        if($is_finished != 0){
-            $video = $video->andWhere(['is_finished' => $is_finished]);
-        }
-        $sort = $order == 'favorite' ? 'total_favors' : ($order == 'view'?'total_views':'created_at');
-        $video = $video->orderBy("$sort desc ,id desc");//->asArray()->all();
-        $dataProvider = new ActiveDataProvider([
-            'query' => $video
-        ]);
-        $data = $dataProvider->setPagination(['page_num' => $page_num])->toArray();
-        if ($data['list']) {
-            $vlist = $data['list'];
-            $videoId = array_column($vlist, 'video_id');
-            $videoInfo = $this->batchGetVideo($videoId, ['video_id', 'video_name', 'cover', 'horizontal_cover',
-                'flag', 'tag','category','is_finished','created_at','total_views','year','type'], true);
-            foreach ($vlist as $k => $info) {
-                if(!$videoInfo[$info['video_id']]){
-                    unset($info);
-                    continue;
-                }
-                //总评论数
-                $commentcount = VideoChapter::find()->andWhere(['video_id'=>$info['video_id']])
-                    ->sum('total_comment');
-                $info['commentcount'] = $commentcount;
-
-                // $info['video_id']         = $info['video_id'];
-                $info['video_name']       = $videoInfo[$info['video_id']]['video_name'];
-                $info['cover']            = $videoInfo[$info['video_id']]['cover'];
-                $info['horizontal_cover'] = $videoInfo[$info['video_id']]['horizontal_cover'];
-                $info['flag']             = $videoInfo[$info['video_id']]['flag'];
-                $info['tag']              = $videoInfo[$info['video_id']]['tag'];
-                $info['category']         = $videoInfo[$info['video_id']]['category'];
-                $info['is_finished']      = $videoInfo[$info['video_id']]['is_finished'];
-                $info['created_at']       = $videoInfo[$info['video_id']]['created_at'];
-                $info['total_views']      = $videoInfo[$info['video_id']]['total_views'];
-                $info['year']             = $videoInfo[$info['video_id']]['year'];
-                $info['type']             = $videoInfo[$info['video_id']]['type'];
-                $info['created_data']     = date("Y年m月d日",$videoInfo[$info['video_id']]['created_at']);
-                $vlist[$k] = $info;
-            }
-        }
-        return $vlist;
-    }
-
-    /*
-     * 查询收藏(wap)
-     */
-    public function findVideoFavoriteWap($uid,$page_num=1){
-        $dataProvider = new ActiveDataProvider([
-            'query' => VideoFavorite::find()->andWhere(['uid' => $uid])
-                ->andWhere(['status' => VideoFavorite::STATUS_YES])
-                ->orderBy("created_at desc")
-        ]);
-        $data = $dataProvider->setPagination(['page_num' => $page_num])->toArray(['uid','video_id','status','created_at']);
-        if ($data['list']) {
-            $videoId = array_column($data['list'], 'video_id');
-            $videoInfo = $this->batchGetVideo($videoId, ['video_id', 'video_name', 'cover', 'horizontal_cover',
-                'flag', 'tag','category','is_finished','created_at','total_views','type','year'], true);
-            foreach ($data['list'] as $k => $info) {
-                if(!$videoInfo[$info['video_id']]){
-                    unset($info);
-                    continue;
-                }
-                //总评论数
-                $commentcount = VideoChapter::find()->andWhere(['video_id'=>$info['video_id']])
-                    ->sum('total_comment');
-                $info['commentcount'] = $commentcount;
-
-                $info['video_name']       = $videoInfo[$info['video_id']]['video_name'];
-                $info['cover']            = $videoInfo[$info['video_id']]['cover'];
-                $info['horizontal_cover'] = $videoInfo[$info['video_id']]['horizontal_cover'];
-                $info['flag']             = $videoInfo[$info['video_id']]['flag'];
-                $info['tag']              = $videoInfo[$info['video_id']]['tag'];
-                $info['type']             = $videoInfo[$info['video_id']]['type'];
-                $info['category']         = $videoInfo[$info['video_id']]['category'];
-                $info['is_finished']      = $videoInfo[$info['video_id']]['is_finished'];
-                $info['favorite_time']    = $info['created_at'];//收藏时间
-                $info['created_at']       = $videoInfo[$info['video_id']]['created_at'];//video添加时间
-                $info['total_views']      = $videoInfo[$info['video_id']]['total_views'];
-                $info['year']             = $videoInfo[$info['video_id']]['year'];
-
-                $date3 = new \DateTime(date('Y-m-d H:i:s', $info['favorite_time']), new \DateTimeZone('UTC')); //UTC表示世界标准时间
-                $date3->setTimezone(new \DateTimeZone('EAT'));
-                if (date('Y-m-d', $info['favorite_time']) == date('Y-m-d')) {
-                    $dateKey = '今天';
-                } else if (date('Y-m-d', $info['favorite_time']) == date('Y-m-d', strtotime('-1 day'))) {
-                    $dateKey = '昨天';
-                } else if (date('Y-m-d', $info['favorite_time']) >= date('Y-m-d', strtotime('-7 day'))) {
-                    $dateKey = '本周';
-                } else {
-                    $dateKey = '一周前';
-                }
-                $info['favorite_date'] = $dateKey;
-                $data['list'][$k] = $info;
-            }
-            $data['list'][0]['total_page'] = $data['total_page'];//总页数
-        }
-        return $data['list'];
-    }
-
-    /*
-     * 视频收藏 / 取消收藏
-     */
-    public function favVideoPC($uid,$videoId)
-    {
-        if ($videoId === 'all') {
-            $favList = VideoFavorite::find()->where(['uid' => $uid, 'status' => VideoFavorite::STATUS_YES])->asArray()->all();
-            $videoIdArr = array_column($favList, 'video_id');
-        } else {
-            $videoIdArr = explode(',', $videoId);
-        }
-        foreach ($videoIdArr as $id) {
-            $vid = intval($id);
-            //查询收藏状态，并保存
-            $objVideoFav = new VideoFavorite();
-            $videoFav = VideoFavorite::find()
-                ->andWhere(['uid' => $uid])
-                ->andWhere(['video_id' => $id])->asArray()->one();
-//            $objVideoFav = VideoFavorite::findOne(['uid' => $uid, 'video_id' => $id]);
-            if ($videoFav){
-                $objVideoFav->oldAttributes = $videoFav;
-//                if ($objVideoFav->status == VideoFavorite::STATUS_YES){
-                if ($videoFav['status'] == VideoFavorite::STATUS_YES){
-                    // $objVideoFav->status = VideoFavorite::STATUS_NO;
-                    $param['status'] = VideoFavorite::STATUS_NO;
-                    $v = Video::findOne(['id' => $vid]);
-                    if($v['total_favors']>0){
-                        Video::updateAllCounters(['total_favors' => -1],
-                            ['id' => $vid]);//$objVideoFav->video_id
-                    }
-                    $status = 0;
-                }else{
-                    // $objVideoFav->status = VideoFavorite::STATUS_YES;
-                    $param['status'] = VideoFavorite::STATUS_YES;
-                    $param['created_at'] = time();
-                    Video::updateAllCounters(['total_favors' => +1],
-                        ['id' => $vid]);//$objVideoFav->video_id
-                    $status = 1;
-                }
-                $row =  $objVideoFav->updateAttributes($param);
-//                $objVideoFav->insert();
-            } else {
-//                $objVideoFav = new VideoFavorite();
-                $objVideoFav->uid        = $uid;
-                $objVideoFav->video_id   = $id;
-                $objVideoFav->status     = VideoFavorite::STATUS_YES;
-                $objVideoFav->created_at = time();
-                $objVideoFav->insert();
-                Video::updateAllCounters(['total_favors' => +1],
-                    ['id' => $vid]);
-                $status = 1;
-            }
-        }
-        // return 'row'.$row;
-        return [
-            'status' => $status
-        ];
-    }
-
-
-    /*
-     * 右上角通知-收藏
-     */
-    public function findVideoFavoriteNew($uid){
-        $vf = VideoFavorite::find()->where(['uid' => $uid, 'status' => VideoFavorite::STATUS_YES])->asArray()->all();
-        if($vf){
-            foreach ($vf as $k=>$f){
-                //查看收藏的 剧/视频 更新情况，如果没有更新就不显示
-                $chapter_max = VideoChapter::find()->andWhere(['video_id'=>$f['video_id']])
-                    ->andWhere(['and',['>' , 'updated_at', $f['created_at']]])
-                    ->orderBy('display_order desc')
-                    ->limit(1)->asArray()->one();
-                if($chapter_max){
-                    $f['chapter_title'] = $chapter_max['title'];
-                    $current_time = time();
-                    $updated_at = intval($chapter_max['updated_at']);
-                    $t = $current_time - $updated_at;
-                    if($t<60){
-                        $f['time_diff'] = $t.'秒前';
-                    }else if($t<3600){
-                        $m = floor($t / 60);
-                        $f['time_diff'] = $m.'分钟前';
-                    }else if($t < (3600*24)){
-                        $h = floor($t / 3600);
-                        $f['time_diff'] = $h.'小时前';
-                    }else if($t < (3600*24*7)){
-                        $d = floor($t / (3600*24));
-                        $f['time_diff'] = $d.'天前';
-                    }else{
-                        $f['time_diff'] = date('Y-m-d',$chapter_max['updated_at']);
-                    }
-
-                    $video = Video::findOne(['id'=>$f['video_id']]);
-                    $f['video_name'] = $video['title'];
-                    $f['type'] = 'favorite';//收藏标志
-                    //新增收藏视频的观看时间
-                    $user_watch_log = UserWatchLog::findOne(['uid'=>$uid,'video_id'=>$f['video_id']]);
-                    //计算 时长占百分比
-                    if($user_watch_log['total_time']){
-                        $f['watch_percent'] = intval(intval($user_watch_log['time']) / intval($user_watch_log['total_time'])*100);
-                    }else{
-                        $f['watch_percent'] = 0;
-                    }
-
-                    $vf[$k] = $f;
-                }else{
-                    unset($vf[$k]);
-                }
-            }
-        }
-        return array_slice($vf, 0, 8);
-    }
-
-    /*
-     * 删除右上角通知-收藏
-     */
-    public function modifyFavoriteTime($uid){
-        $row = VideoFavorite::updateAll(['created_at'=>time(),'updated_at'=>time()], ['uid'=>$uid]);
-        return $row;
-    }
-    /*
-     * 根据uid和videoId查收藏
-     */
-    public function findFavoriteByVideoid($uid,$videoId){
-        $favorite = VideoFavorite::find()
-                    ->andWhere(['uid'=>$uid])
-                    ->andWhere(['video_id'=>$videoId])
-                    ->andWhere(['status' => VideoFavorite::STATUS_YES])
-                    ->asArray()->one();
-        if(!$favorite){
-            return [];
-        }
-        return $favorite;
-    }
-
     /*
      * 三字码查city
      */
     public function findcity($citycode){
         if(!$citycode){
             return [];
-        }
-
-        $key = 'city_bycode3'.$citycode;
-        $redis = new RedisStore();
-        if($data = $redis->get($key)){
-            $city = json_decode($data, true);
-            return $city;
         }
         $city = City::find()->andWhere(['city_code'=>$citycode])->asArray()->one();
         if($city){
@@ -1479,49 +786,6 @@ class VideoDao extends BaseDao
                 $city['country_name'] = $country['country_name'];
             }
         }
-        $redis->setEx($key, json_encode($city));
         return $city;
     }
-
-    /*
-     * 查新片预告
-     */
-    public function findTrailer($trailer_title_id){
-        if(!$trailer_title_id){
-            return [];
-        }
-        $data = Trailer::find()->andWhere(['trailer_title_id'=>$trailer_title_id])->limit(10)->asArray()->all();
-        return $data;
-    }
-
-    /*
-     * 查更新列表
-     */
-    public function findVideoUpdate($video_update_title_id,$week=''){
-        if(!$video_update_title_id){
-            return [];
-        }
-        $week_where = [];
-        if(!empty($week)){
-            $week_where = ['week' => $week];
-        }
-        $data = VideoUpdate::find()
-            ->andWhere(['video_update_title_id'=>$video_update_title_id])
-            ->andWhere($week_where)
-            ->asArray()->all();
-        return $data;
-    }
-
-    /*
-     * year==''或0（全部），默认显示最新年份
-     */
-    public function findMaxYear($year){
-        if($year=='' || $year==0){
-            $maxorder = VideoYear::find()->max('display_order');
-            $maxyear = VideoYear::findOne(['display_order'=>$maxorder])->toArray();
-            $year = $maxyear['year_id'];
-        }
-        return $year;
-    }
-
 }

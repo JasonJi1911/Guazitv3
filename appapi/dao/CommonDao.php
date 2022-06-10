@@ -1,15 +1,15 @@
 <?php
-namespace apinew\dao;
+namespace appapi\dao;
 
-use apinew\data\ActiveDataProvider;
-use apinew\models\apps\AppsMarketChannel;
-use apinew\models\apps\PushPassageway;
-use apinew\models\Domain;
-use apinew\models\video\VideoArea;
-use apinew\models\video\VideoCategory;
-use apinew\models\video\VideoChannel;
-use apinew\models\video\VideoSource;
-use apinew\models\video\VideoYear;
+use appapi\data\ActiveDataProvider;
+use appapi\models\apps\AppsMarketChannel;
+use appapi\models\apps\PushPassageway;
+use appapi\models\Domain;
+use appapi\models\video\VideoArea;
+use appapi\models\video\VideoCategory;
+use appapi\models\video\VideoChannel;
+use appapi\models\video\VideoSource;
+use appapi\models\video\VideoYear;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
 use yii\helpers\ArrayHelper;
@@ -19,7 +19,7 @@ use common\models\channel\ChannelVideo;
 /**
  * 公共dao
  * Class CommonDao
- * @package apinew\dao
+ * @package appapi\dao
  */
 class CommonDao extends BaseDao
 {
@@ -168,7 +168,7 @@ class CommonDao extends BaseDao
             $data = json_decode($str, true);
         } else {
                 $data = (new \yii\db\Query())
-                ->select('v.id as source_id,v.name,v.icon,v.player,v.play_limit')
+                ->select('v.id as source_id,v.name,v.icon,v.player')
                 ->from(ChannelVideo::tableName().'as c')
                 ->leftJoin(VideoSource::tableName().'as v','v.id=c.sid')
                 ->where(['c.os_type'=>$product])
@@ -184,8 +184,7 @@ class CommonDao extends BaseDao
             $redis->set($key, json_encode($data));
         }
         //$redis->del($key);
-//        return ArrayHelper::index($data, 'source_id');
-        return $data;
+        return ArrayHelper::index($data, 'source_id');
     }
 
     /**

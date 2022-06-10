@@ -2,7 +2,7 @@
 /**
  * 错误码类
  */
-namespace apinew\helpers;
+namespace appapi\helpers;
 
 use phpDocumentor\Reflection\Types\Self_;
 

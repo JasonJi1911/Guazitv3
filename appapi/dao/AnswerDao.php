@@ -1,9 +1,9 @@
 <?php
-namespace apinew\dao;
+namespace appapi\dao;
 
-use apinew\data\ActiveDataProvider;
-use apinew\models\Answer;
-use apinew\models\Feedback;
+use appapi\data\ActiveDataProvider;
+use appapi\models\Answer;
+use appapi\models\Feedback;
 use Yii;
 use yii\helpers\ArrayHelper;
 

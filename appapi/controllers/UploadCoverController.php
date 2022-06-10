@@ -1,5 +1,5 @@
 <?php
-namespace apinew\controllers;
+namespace appapi\controllers;
 
 use yii\web\Controller;
 use common\helpers\OssHelper;

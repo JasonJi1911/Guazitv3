@@ -1,13 +1,13 @@
 <?php
-namespace apinew\logic;
+namespace appapi\logic;
 
-use apinew\exceptions\ApiException;
-use apinew\helpers\ErrorCode;
-use apinew\models\Feedback;
+use appapi\exceptions\ApiException;
+use appapi\helpers\ErrorCode;
+use appapi\models\Feedback;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
 use common\helpers\Tool;
-use apinew\data\ActiveDataProvider;
+use appapi\data\ActiveDataProvider;
 use common\models\Answer;
 use yii;
 
@@ -23,7 +23,7 @@ class AnswerLogic
      * @param string $imgs
      * @param string $contact
      * @return bool
-     * @throws \apinew\exceptions\ApiException
+     * @throws \appapi\exceptions\ApiException
      */
     public function addFeedback($content, $contact, $imgs)
     {
