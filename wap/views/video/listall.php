@@ -48,8 +48,8 @@ $(function(){
     //下拉加载更多
     var progress = false; // 是否正在请求中
     var isFlag = true;
-    $(window).scroll(function () {
-        if (($(window).scrollTop()+188) >= $(document).height() - $(window).height()) {
+    $(window).scroll(function () {//188
+        if (($(window).scrollTop()+238) >= $(document).height() - $(window).height()) {
             if(isFlag) {
                     var arrScroll = arrIndex;
                     var pages = parseInt($('.video-list-box').attr('data-pages') || 1);

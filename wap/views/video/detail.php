@@ -373,7 +373,7 @@ $this->registerJs($js);
 </div>
 <p class="video-detail-eval"><em class="fontArial"><?= $info['info']['score']?></em>/<?= $info['info']['category']?>/<?= $info['info']['area']?>/<?= $info['info']['year']?></p>
 <div class="video-add-column video-top-ad">
-    <a href="">
+    <a href="" target="_blank">
         <img src="" alt="">
     </a>
 </div>
@@ -422,7 +422,7 @@ $this->registerJs($js);
     </dl>
 </div>
 <div class="video-add-column video-bottom-add">
-    <a href="">
+    <a href="" target="_blank">
         <img src="" alt="">
     </a>
 </div>

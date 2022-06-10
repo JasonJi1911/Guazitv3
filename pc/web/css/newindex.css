@@ -1791,7 +1791,7 @@ body {
 .RD-box {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-	grid-gap: 17px;
+	grid-gap: 10px;
 	margin: 0px 165px;
 }
 
@@ -2007,17 +2007,23 @@ body {
 	width: 100%;
 	overflow: hidden;
 	border-radius: 10px;
+	height: 100%;
 }
 
 .RD-img>img {
 	display: block;
 	width: 100%;
+	height: 100%;
 	overflow: hidden;
 	transition: all 0.1s;
 }
 
 .RD-boxA:hover .RD-img>img {
 	transform: scale(1.1);
+}
+
+.RD-boxA:hover div.RD-name {
+	color: #FF556E;
 }
 
 .RD-title {
@@ -2034,9 +2040,9 @@ body {
 	transition: height 0.2s;
 }
 
-.RD-title:hover {
-	height: 68px;
-}
+/*.RD-title:hover {*/
+/*	height: 68px;*/
+/*}*/
 
 .RD-name {
 	width: 100%;
@@ -2045,10 +2051,6 @@ body {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
-}
-
-.RD-name:hover {
-	color: #FF556E;
 }
 
 .RD-cs {

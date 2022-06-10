@@ -72,4 +72,4 @@ $this->registerJs($js);
     <?php endforeach;?>
     <div id="w_more"></div>
 <?php endif;?>
-<div id="no-more" class="h20 color91 fontW7 text-center" style="display: none;">没有更多内容了</div>
+<div id="no-more" class="h20 color91 font12 fontW7 text-center" style="display: none;">没有更多内容了</div>

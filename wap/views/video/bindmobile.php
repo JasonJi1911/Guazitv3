@@ -173,6 +173,10 @@ $(function (){
                 if(!(mobile.length==9 && mobile.indexOf("4")==0)){
                     mobile = "";
                 }
+            }else if(mobile_areacode == "+1"){
+                if(mobile.length!=10){
+                    mobile = "";
+                }
             }
         }
         return mobile;

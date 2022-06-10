@@ -184,7 +184,7 @@ $(function (){
             });
         }
     });
-    //手机判断+澳洲
+    //手机判断+澳洲+美国/加拿大
     function valimobile(mobile,mobile_areacode){
         var reg = /^[0-9]*$/;
         if (mobile =='' || !reg.test(mobile)) {
@@ -195,6 +195,10 @@ $(function (){
                     mobile = mobile.substring(1);
                 }
                 if(!(mobile.length==9 && mobile.indexOf("4")==0)){
+                    mobile = "";
+                }
+            }else if(mobile_areacode == "+1"){
+                if(mobile.length!=10){
                     mobile = "";
                 }
             }

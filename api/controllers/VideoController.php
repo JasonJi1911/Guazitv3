@@ -956,4 +956,14 @@ class VideoController extends BaseController
         }
         return $data;
     }
+
+    /*
+     * 局部刷新获取新闻接口
+     */
+    public function actionGetNews(){
+        $amount = $this->getParam('amount', 0);
+        $videologic = new VideoLogic();
+        $data = $videologic->getNewsList($amount);
+        return $data;
+    }
 }

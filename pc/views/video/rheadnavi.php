@@ -288,8 +288,8 @@ $(function(){
                         setloginTime(obj,send_source);//开始倒计时
                     }else{
                         var mes = "";
-                        if(res.data!=''){
-                            mes = res.data.message;
+                        if(res.data.msg != "" && res.data.msg!=0 && res.data.msg!="undefined"){
+                            mes = res.data.msg;
                         }else{
                             mes = '发送失败';
                         }

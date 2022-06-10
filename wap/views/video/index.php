@@ -239,7 +239,7 @@ header('X-Frame-Options:Deny');
 <!--今日热点-->
 <div class="video-index-column mt15 today-hot-div" style="display:none;">
     <h3 class="video-index-title">今日热点</h3>
-    <div id="today-hot" class="video-list-box clearfix more-change-10 swiper-container " style="margin:20px 7.5px 0;padding:0;">
+    <div id="today-hot" class="video-list-box clearfix swiper-container " style="margin:20px 7.5px 0;padding:0;"><!-- more-change-10 -->
         <div class="row-div swiper-wrapper cate-list-scroll">
             <a class="a-small swiper-slide swiper-slide-li" href="#" >
                 <img src="/images/video/hot-2.jpg" class="img-small">
@@ -412,7 +412,7 @@ header('X-Frame-Options:Deny');
 <div class="bgcover" style="display: none;">
     <div id="jBox1" class="jBox-wrapper jBox-Modal jBox-Default jBox-closeButton-box" style="width:100%;">
         <div style="width:auto;font-size:15px;text-align:center"></div>
-        <a href="">
+        <a href="" target="_blank">
             <img src="" style="border: 0px;max-width: 100%;max-height: 100%;margin: 0 auto;">
         </a>
         <div class="jBox-closeButton jBox-noDrag">
@@ -515,15 +515,9 @@ header('X-Frame-Options:Deny');
                         //首页
                         var dataar = res.data.advert;
                         if(dataar.length>0){
-                            var urltype = '';
                             for(var i=0;i<dataar.length;i++){
-                                if(dataar[i].ad_url_type==2){
-                                    urltype = ' target="_blank" ';
-                                }else{
-                                    urltype = '';
-                                }
                                 //今日热点和连续剧前不加广告
-                                $(".video-index-column").eq(i+2).before('<div class="video-add-column"><a href="'+dataar[i].ad_skip_url+'" '+urltype+'> <img src="'+dataar[i].ad_image+'" alt=""></a></div>');
+                                $(".video-index-column").eq(i+2).before('<div class="video-add-column"><a href="'+dataar[i].ad_skip_url+'"  target="_blank" > <img src="'+dataar[i].ad_image+'" alt=""></a></div>');
                             }
                         }
                         //首页弹窗
@@ -531,9 +525,6 @@ header('X-Frame-Options:Deny');
                         var flashtime = getCookie("wapgzflash");
                         if(flashtime!=1 && dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
                             $("#jBox1 a").attr("href",dataar.ad_skip_url);
-                            if(dataar.ad_url_type==2){
-                                $("#jBox1 a").attr("target", "_blank");
-                            }
                             $("#jBox1 a img").attr("src",dataar.ad_image);
                             $(".flashCount").text("关闭")
                             $(".bgcover").fadeIn();

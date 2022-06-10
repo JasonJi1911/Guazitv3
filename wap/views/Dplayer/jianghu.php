@@ -263,18 +263,12 @@ $type =initialUrl($url);
                     if(res.data.advert.videotop.ad_image){
                         ad = res.data.advert.playliketop;
                         $(".video-top-ad a").attr("href", ad.ad_skip_url);
-                        if(ad.ad_url_type==2){
-                            $(".video-top-ad a").attr("target", "_blank");
-                        }
                         $(".video-top-ad img").attr("src", ad.ad_image);
                     }
                     //猜你喜欢下方
                     if(res.data.advert.videobottom.ad_image){
                         ad = res.data.advert.playlikebottom;
                         $(".video-bottom-add a").attr("href", ad.ad_skip_url);
-                        if(ad.ad_url_type==2){
-                            $(".video-bottom-add a").attr("target", "_blank");
-                        }
                         $(".video-bottom-add img").attr("src", ad.ad_image);
                     }
                 }

@@ -274,176 +274,42 @@ $this->registerJs($js);
         </div>
     </div>
 </div>
-<?php if (!empty($data['label'])) :?>
-    <!--今日热点-->
-    <ul class="RD-box" name="zt" style="display: none">
-        <li class="Title-00">
-            <a class="Title-big" href="javascript:;">今日热点</a>
-        </li>
-        <li class="RD-banner">
-            <!--热点轮播-->
-            <div id="playBox02" class="play-box02">
-                <!--图片列表-->
-                <a class="RD-boxA current02" href="https://www.baidu.com" target="_blank">
-                    <div class="RD-img" class="current02">
-                        <img src="/images/Index/img_2.png" />
-                    </div>
-                    <div class="RD-title">
-                        <div class="RD-name">
-                            测试名称
-                        </div>
-                        <div class="RD-cs">
-                            <span>454545</span>次播放
-                        </div>
-                    </div>
-                    <!--                    <a class="RD-boxA" href="javascript:;" target="_blank">-->
-                    <!--                        <div class="RD-img">-->
-                    <!--                            <img src="/images/Index/img_2.png" />-->
-                    <!--                        </div>-->
-                    <!--                        <div class="RD-title">-->
-                    <!--                            <div class="RD-name">-->
-                    <!--                                测试名称-->
-                    <!--                            </div>-->
-                    <!--                            <div class="RD-cs">-->
-                    <!--                                <span>454545</span>次播放-->
-                    <!--                            </div>-->
-                    <!--                        </div>-->
-                    <!--                    </a>-->
-                </a>
-                <!--图标列表-->
-                <!--                <div class="iconList02">-->
-                <!--                    <ul>-->
-                <!--                        <li class="current02">&nbsp;</li>-->
-                <!--                        <li>&nbsp;</li>-->
-                <!--                        <li>&nbsp;</li>-->
-                <!--                        <li>&nbsp;</li>-->
-                <!--                        <li>&nbsp;</li>-->
-                <!--                    </ul>-->
-                <!--                </div>-->
-            </div>
-        </li>
 
-        <li>
-            <a class="RD-boxA" href="https://www.baidu.com" target="_blank">
-                <div class="RD-img">
-                    <img src="/images/Index/img_1.png" />
-                </div>
-                <div class="RD-title">
-                    <div class="RD-name">
-                        测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称
-                    </div>
-                    <div class="RD-cs">
-                        <span>454545</span>次播放
-                    </div>
-                </div>
-            </a>
-        </li>
-        <li>
-            <a class="RD-boxA" href="javascript:;">
-                <div class="RD-img">
-                    <img src="/images/Index/img_1.png" />
-                </div>
-                <div class="RD-title">
-                    <div class="RD-name">
-                        测试名称
-                    </div>
-                    <div class="RD-cs">
-                        <span>454545</span>次播放
-                    </div>
-                </div>
-            </a>
-        </li>
-        <li>
-            <a class="RD-boxA" href="javascript:;">
-                <div class="RD-img">
-                    <img src="/images/Index/img_1.png" />
-                </div>
-                <div class="RD-title">
-                    <div class="RD-name">
-                        测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称
-                    </div>
-                    <div class="RD-cs">
-                        <span>454545</span>次播放
-                    </div>
-                </div>
-            </a>
-        </li>
-        <li>
-            <a class="RD-boxA" href="javascript:;">
-                <div class="RD-img">
-                    <img src="/images/Index/img_1.png" />
-                </div>
-                <div class="RD-title">
-                    <div class="RD-name">
-                        测试名称
-                    </div>
-                    <div class="RD-cs">
-                        <span>454545</span>次播放
-                    </div>
-                </div>
-            </a>
-        </li>
-        <li>
-            <a class="RD-boxA" href="javascript:;">
-                <div class="RD-img">
-                    <img src="/images/Index/img_1.png" />
-                </div>
-                <div class="RD-title">
-                    <div class="RD-name">
-                        测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称
-                    </div>
-                    <div class="RD-cs">
-                        <span>454545</span>次播放
-                    </div>
-                </div>
-            </a>
-        </li>
-        <li>
-            <a class="RD-boxA" href="javascript:;">
-                <div class="RD-img">
-                    <img src="/images/Index/img_1.png" />
-                </div>
-                <div class="RD-title">
-                    <div class="RD-name">
-                        测试名称
-                    </div>
-                    <div class="RD-cs">
-                        <span>454545</span>次播放
-                    </div>
-                </div>
-            </a>
-        </li>
-        <li>
-            <a class="RD-boxA" href="javascript:;">
-                <div class="RD-img">
-                    <img src="/images/Index/img_1.png" />
-                </div>
-                <div class="RD-title">
-                    <div class="RD-name">
-                        测试名称测试名称测试名称测试名称测试名称测试名称测试名称测试名称
-                    </div>
-                    <div class="RD-cs">
-                        <span>454545</span>次播放
-                    </div>
-                </div>
-            </a>
-        </li>
-        <li>
-            <a class="RD-boxA" href="javascript:;">
-                <div class="RD-img">
-                    <img src="/images/Index/img_1.png" />
-                </div>
-                <div class="RD-title">
-                    <div class="RD-name">
-                        测试名称
-                    </div>
-                    <div class="RD-cs">
-                        <span>454545</span>次播放
-                    </div>
-                </div>
-            </a>
-        </li>
-    </ul>
+<!--今日热点-->
+<ul id="today-news" class="RD-box" name="zt" style="display: none;">
+    <li class="Title-00">
+        <a class="Title-big" href="javascript:;">今日热点</a>
+    </li>
+<!--    <li class="RD-banner">-->
+<!--        <div id="playBox02" class="play-box02">-->
+<!--            <a class="RD-boxA current02" href="" target="_blank" style="height: 400px;">-->
+<!--                <div class="RD-img" class="current02">-->
+<!--                    <img src="" />-->
+<!--                </div>-->
+<!--                <div class="RD-title">-->
+<!--                    <div class="RD-name"></div>-->
+<!--                    <div class="RD-cs">-->
+<!--                        <span>454545</span>次播放-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </a>-->
+<!--        </div>-->
+<!--    </li>-->
+<!--    <li>-->
+<!--        <a class="RD-boxA" href="" target="_blank" style="height: 200px;">-->
+<!--            <div class="RD-img">-->
+<!--                <img src="" />-->
+<!--            </div>-->
+<!--            <div class="RD-title">-->
+<!--                <div class="RD-name"></div>-->
+<!--                <div class="RD-cs">-->
+<!--                    <span>454545</span>次播放-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </a>-->
+<!--    </li>-->
+</ul>
+<?php if (!empty($data['label'])) :?>
     <?php foreach ($data['label'] as $labels): ?>
         <?php if (!isset($labels['advert_id'])) : ?>
             <?php
@@ -1147,6 +1013,7 @@ $this->registerJs($js);
             });
         }
 
+        //右下角导航
         $('#det-nav>ul>.list-item>a.list-link').click(function () {
             var target = $(this).attr('data-id');
             $('html, body').animate({
@@ -1154,5 +1021,61 @@ $this->registerJs($js);
             }, 500);
             return false;
         });
+        //获取新闻
+        $.ajax({
+            url: '/video/get-news',
+            data: {},
+            type: 'get',
+            cache: false,
+            dataType: 'json',
+            timeout: 5000,
+            success:function(res) {
+                if(res.errno==0 && res.data.newslist){
+                    var str = refreshNews(res.data.newslist);
+                    if(str!=''){
+                        $('#today-news').append(str);
+                        $('#today-news').show()
+                    }
+                }
+            },
+            error : function() {
+                console.log("新闻接口获取失败");
+            },
+            complete:function(XHR,TextStatus){
+                if(TextStatus=='timeout'){ //超时执行的程序
+                    console.log("请求超时！");
+                }
+            }
+        });
     });
+    function refreshNews(newslist){
+        var html = '';
+        if(newslist.length>0){
+            for(var i=0;i<newslist.length;i++){
+                if(i==0){
+                    html += '<li class="RD-banner">'+
+                                '<div id="playBox02" class="play-box02">'+
+                                    '<a class="RD-boxA current02" href="https://www.yeeyi.com/news/details/'+newslist[i].aid+'" target="_blank" style="height: 400px;">'+
+                                        '<div class="RD-img" class="current02"><img src="'+newslist[i].pic+'" onerror="hideImg()" /></div>'+
+                                        '<div class="RD-title"><div class="RD-name">'+newslist[i].title+'</div></div>'+
+                                    '</a>'+
+                                '</div>'+
+                            '</li>';
+                }else if(i<9){
+                    html += '<li>'+
+                                '<a class="RD-boxA" href="https://www.yeeyi.com/news/details/'+newslist[i].aid+'" target="_blank" style="height: 195px;">'+
+                                    '<div class="RD-img"><img src="'+newslist[i].pic+'" onerror="hideImg()"  /></div>'+
+                                    '<div class="RD-title"><div class="RD-name">'+newslist[i].title+'</div></div>'+
+                                '</a>'+
+                            '</li>';
+                }else{
+                    break;
+                }
+            }
+        }
+        return html;
+    }
+    function hideImg(){
+        $('#today-news').hide();
+    }
 </script>

@@ -89,6 +89,7 @@ $(function (){
                     $.get('/video/favorite-more', params, function(res) {
                         $("#w_more").append(res);
                         $("#w_parpage").val(page);
+                        imgdelayLoading();
                         progress = false;
                     });
                 } else if (page == total) {

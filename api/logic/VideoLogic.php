@@ -1916,4 +1916,23 @@ class VideoLogic
         }
         return $data;
     }
+
+
+    /*
+     * 获取新闻接口
+     */
+    public function getNewsList($amount){
+        $url = "http://soyizi.justweyi.com/pcInterface.php?app=article&act=getNewsList";//post
+        $param = [];
+        $param['amount'] = $amount;
+        $param['app_ver'] = '3_5_0_ios';
+        $param['cid'] = 4;
+
+        $result = Tool::httpPost($url,$param);
+        $data = [];
+        if($result['errno'] == 0){
+            $data = json_decode($result['data'],true);
+        }
+        return $data;
+    }
 }

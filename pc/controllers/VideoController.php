@@ -1648,4 +1648,18 @@ class VideoController extends BaseController
         $result['uid'] = Yii::$app->user->id;
         return Tool::responseJson(0,'操作成功',$result);
     }
+
+    /*
+     * 首页今日热点-局部刷新
+     */
+    public function actionGetNews(){
+        $data = Yii::$app->api->get('/video/get-news',['amount'=>9]);
+        if($data){
+            $errno = 0;
+        }else{
+            $errno = -1;
+        }
+
+        return Tool::responseJson($errno,'操作成功',$data);
+    }
 }
