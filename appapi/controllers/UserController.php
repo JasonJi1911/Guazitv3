@@ -9,6 +9,7 @@ use appapi\models\user\User;
 use appapi\models\user\UserAssets;
 use appapi\models\user\UserAuthApp;
 use appapi\models\user\UserVip;
+use common\helpers\RedisStore;
 use Yii;
 use appapi\exceptions\ApiException;
 use appapi\logic\UserLogic;
@@ -295,5 +296,60 @@ class UserController extends BaseController
         // 完成任务
         $taskLogic = new TaskLogic();
         return $taskLogic->finishTask(TaskInfo::TASK_ACTION_PLAY_VIDEO);
+    }
+    /*
+     * 20220615 尹 app发送验证码
+     */
+    public function actionSendCode(){
+        $mobile_areacode = '+'.$this->getParam('mobile_areacode', "");
+        $mobile = $this->getParam('mobile', "");//手机
+        $userlogic = new UserLogic();
+        $result = $userlogic->createSMScode($mobile_areacode.$mobile);
+        if($result['errno']==0){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    /*
+     * 20220615 尹 app短信登录
+     */
+    public function actionSmsLogin()
+    {
+        $mobile = $this->getParamOrFail('mobile');
+        $mobile_areacode = '+'.$this->getParamOrFail('mobile_areacode');
+        $code = $this->getParamOrFail('code');
+
+        $user = [];
+
+        $redis = new RedisStore();
+        $key = 'appSMScode'.$mobile_areacode.$mobile;
+        if($redis->get($key) && $redis->get($key)==$code){
+            $userLogic = new UserLogic();
+            $user = $userLogic->messageRegister(['mobile_areacode'=> $mobile_areacode,'mobile'=>$mobile]);
+        }
+
+        return $user;
+    }
+    /**
+     * 绑定手机号
+     */
+    public function actionBindNewMobile()
+    {
+        $mobile = $this->getParamOrFail('mobile');
+        $mobile_areacode = '+'.$this->getParamOrFail('mobile_areacode');
+        $code = $this->getParamOrFail('code');
+
+        $data = [];
+
+        $redis = new RedisStore();
+        $key = 'appSMScode'.$mobile_areacode.$mobile;
+        if($redis->get($key) && $redis->get($key)==$code){
+            $userLogic = new UserLogic();
+            $data = $userLogic->bindnewMobile($mobile, $mobile_areacode);
+        }
+
+
+        return $data;
     }
 }

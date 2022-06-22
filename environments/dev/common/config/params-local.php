@@ -6,13 +6,21 @@ define('MESSAGE_LIMIT_NUM', 10000); // 短信次数限制
 define('API_HOST_NAME', 'api.guazitv.tv');
 define('API_HOST_PATH', 'http://' . API_HOST_NAME);
 
+//appAPI
+define('APPAPI_HOST_NAME', 'api.guazitv6.com');
+define('APPAPI_HOST_PATH', 'https://' . APPAPI_HOST_NAME);
+
+//app-install
+define('APP_INSTALL_NAME', 'app.guazitv6.com');
+define('APP_INSTALL_PATH', 'https://' . APP_INSTALL_NAME);
+
 //PC
-define('PC_HOST_NAME', 'www.guazitv.tv');
-define('PC_HOST_PATH', 'http://' . PC_HOST_NAME);
+define('PC_HOST_NAME', 'guazitv9.com');
+define('PC_HOST_PATH', 'https://' . PC_HOST_NAME);
 
 //WAP
-define('WAP_HOST_NAME', 'm.guazitv.tv');
-define('WAP_HOST_PATH', 'http://' . WAP_HOST_NAME);
+define('WAP_HOST_NAME', 'm.guazitv9.com');
+define('WAP_HOST_PATH', 'https://' . WAP_HOST_NAME);
 
 // 付费相关开关,根据具体运营需求来确认
 define('VIP_SWITCH', true); // 会员开关

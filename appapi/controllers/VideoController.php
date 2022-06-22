@@ -489,4 +489,18 @@ class VideoController extends BaseController
         $data = $videologic->findSourceByChapterId($uid,$chapterId);
         return $data;
     }
+
+    /*
+     * 查国家信息
+     */
+    public function actionCountry(){
+        $data = [];
+        $VideoDao = new VideoDao();
+        $country = $VideoDao->findcountrynfo();
+        if($country){
+            $data = $country;
+        }
+
+        return $data;
+    }
 }

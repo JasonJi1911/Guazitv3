@@ -114,6 +114,7 @@ class RecommendDao extends BaseDao
     public function recommendVideo($recommendId, $fields = [])
     {
         $redisKey = RedisKey::recommendVideo($recommendId);
+        $redisKey = $redisKey.'_'.Yii::$app->common->product;
         $redis = new RedisStore();
 
         if ($str = $redis->get($redisKey)) {

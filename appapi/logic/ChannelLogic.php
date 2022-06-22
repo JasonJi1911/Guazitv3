@@ -297,13 +297,13 @@ class ChannelLogic
             array_push($kingKong,
                 [
                     'title'  => '明星',
-                    'icon'   => API_HOST_PATH . '/img/king_kong/actor.png',
+                    'icon'   => APPAPI_HOST_PATH . '/img/king_kong/actor.png',
                     'action' => 'actor',
                     'search' => [],
                 ],
                 [
                     'title'  => '排行榜',
-                    'icon'   => API_HOST_PATH . '/img/king_kong/rank.png',
+                    'icon'   => APPAPI_HOST_PATH . '/img/king_kong/rank.png',
                     'action' => 'rank',
                     'search' => [],
                 ]

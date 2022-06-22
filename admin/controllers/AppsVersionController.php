@@ -160,7 +160,8 @@ class AppsVersionController extends Controller
                             $fileUrl = $dirPath . $fileName;
                             move_uploaded_file($model->upload_file[$index]->tempName, $rootPath . $fileUrl);
 
-                            $filePath[$id] = "http://app.guazitv6.com" . '/' . $fileUrl;
+//                            $filePath[$id] = "http://app.guazitv6.com" . '/' . $fileUrl;
+                            $filePath[$id] = APP_INSTALL_PATH . '/' . $fileUrl;
 
                         }
                     }
@@ -244,7 +245,8 @@ class AppsVersionController extends Controller
                             $fileUrl = $dirPath.$fileName;
                             move_uploaded_file($model->upload_file[$index]->tempName, $rootPath.$fileUrl);
 
-                            $filePath[$id] = "http://app.guazitv6.com" . '/' . $fileUrl;
+//                            $filePath[$id] = "http://app.guazitv6.com" . '/' . $fileUrl;
+                            $filePath[$id] = APP_INSTALL_PATH . '/' . $fileUrl;
                         }
                     }
 

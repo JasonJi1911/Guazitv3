@@ -788,4 +788,30 @@ class VideoDao extends BaseDao
         }
         return $city;
     }
+
+
+    /*
+     * 在线反馈信息查询
+     * 国家、行业
+     */
+    public function findcountrynfo(){
+        $data = [];
+
+        $key = "app_country_info_all";
+        $redis = new RedisStore();
+
+        if ($country = $redis->get($key)) {
+            $data['list'] = json_decode($country, true);
+        }else{
+            $country = VideoFeedcountry::find()->select('country_name,mobile_areacode')
+                ->andWhere(['<>','country_code','MY'])->asArray()->all();
+            if($country){
+                $data['list'] = $country;
+
+                $redis->setEx($key, json_encode($country));
+            }
+        }
+
+        return $data;
+    }
 }

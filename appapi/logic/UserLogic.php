@@ -852,7 +852,7 @@ class UserLogic
             'currency_coupon'  => Yii::$app->setting->get('system.currency_coupon'),
             'vip_info'      => $vipInfo,
             'tab_bar'       => $tabBar,
-            'task_center'   => $taskCenter,
+            'task_center'   => (object)$taskCenter,
             'sign'          => $sign,
             'is_vip'        => $isVip,
             'advert'        => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_ORDER_LIST)
@@ -1263,5 +1263,109 @@ class UserLogic
         }
         $redis->setEx($lockKey, 1, 1296000); // 15天
         throw new ApiException(ErrorCode::EC_CANCEL_SUCCESS);
+    }
+
+    /*
+     * 20220615 尹 创建验证码
+     * $mobile:手机区号+手机号
+     */
+    public function createSMScode($mobile){
+        if(empty($mobile)){
+            $return['errno'] = -1;
+            $return['msg'] = '手机号不能为空';
+        }
+        $return = [];
+        $key = 'appSMScode'.$mobile;//记录验证码
+        $key_time = 'appSMScode_time'.$mobile;//记录创建时间
+        $redis = new RedisStore();
+        if($key_time_data = $redis->get($key_time)){
+            $return['errno'] = -1;
+            $return['msg'] = '短信验证码已发送，60s内不允许重复发送';
+        }else{
+            if($code = $redis->get($key)){
+                $return['errno'] = -2;
+                $return['msg'] = '短信验证码已发送，60s内不允许重复发送';
+            }else{
+                $redis->setEx($key_time, time(),60);
+                $length = SMSCODE_LENGTH;
+                $randStr = str_shuffle('1234567890');
+                $code = substr($randStr,0,$length);
+
+                if($mobile=='+6413674281436'){//测试用
+                    $code = 123;//测试用
+                    $returnId = 11122;//测试用
+                }else{//正式
+                    $returnId = $this->sendSMScode($mobile,$code);
+                }
+
+                if(!empty($returnId)){
+                    $redis->setEx($key, $code,60);
+                    $return['errno'] = 0;
+                    $return['msg'] = '短信发送成功';
+                }else{
+                    $return['errno'] = -1;
+                    $return['msg'] = '短信发送失败';
+                }
+            }
+        }
+        return $return;
+    }
+
+    /*
+     * 20220615 尹 发送短信
+     */
+    public function sendSMScode($mobile,$code){
+        $access_key = SMS_ACCESS_KEY;
+        $MessageBird = new \MessageBird\Client($access_key);
+        $Message = new \MessageBird\Objects\Message();
+        $Message->originator = 'guazitv';
+        $Message->recipients = array($mobile);
+
+//        $Message->recipients = array('+61401441376');//测试用号码
+
+        $Message->body = 'The SMS verification code is '.$code;
+        $result = $MessageBird->messages->create($Message);
+
+        return $result->getId();
+    }
+
+    /*
+     * 20220615 尹 app短信登录 / 注册
+     */
+    public function messageRegister($data){
+
+        // 是否已有用户
+        if ($user = $this->_findOne(['mobile' => $data['mobile'],'mobile_areacode' => $data['mobile_areacode']])) {
+            return $user;
+        }
+
+        // 新用户,走注册
+        $data['reg_type'] = User::REG_TYPE_MOBILE;
+        $uid = $this->register($data);
+
+        return User::findOne(['uid' => $uid]);
+    }
+
+    public function bindnewMobile($mobile, $mobile_areacode)
+    {
+        $userInfo = Yii::$app->user->model;
+        if ($userInfo->mobile) { //已有手机号
+            throw new ApiException(ErrorCode::EC_USER_BINDED_MOBILE);
+        }
+
+        // 检查手机号是否已经存在
+        if ($this->_findOne(['mobile' => $mobile,'mobile_areacode' => $mobile_areacode])) {
+            throw new ApiException(ErrorCode::EC_MOBILE_ALREADY_BINDED);
+        }
+
+        $userInfo->mobile = $mobile;
+        $userInfo->mobile_areacode = $mobile_areacode;
+        $userInfo->save();
+
+        $taskLogic = new TaskLogic();
+        $taskLogic->finishTask(TaskInfo::TASK_ACTION_BIND_MOBILE); // 完成任务
+
+
+        return $this->_findOne(['uid' => $userInfo->uid]);
     }
 }
