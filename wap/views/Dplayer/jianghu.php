@@ -135,9 +135,45 @@ $type =initialUrl($url);
     #player-load1-warn span{
         color:#FF556E
     }
+
+    #pause-img{
+        position:absolute;
+        width: 60%;
+        height: 60%;
+        left: 20%;
+        top: 20%;
+        box-sizing: border-box;
+        border: solid 1px #FFFFFF;
+        border: none;
+        z-index:6;
+        display: flex;
+        align-items: center;
+    }
+
+    #pause-img a{
+        display: block;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+    }
+    #pause-img img.aposition-img{
+        width: 100%;
+        /*height: 100%;*/
+        align-items: center;
+    }
+    #pause-img img.close-pause-img{
+        position: absolute;
+        display:block;
+        width: 50px;
+        height: auto;
+        right: 10px;
+        top: 10px;
+    }
 </style>
 
 <img id="load1-img" src="/images/video/Dplayer_before.gif" />
+
 <div class="Dplayer_box">
     <div class="player_av">
         <div class="box" id="player_ad">
@@ -187,6 +223,16 @@ $type =initialUrl($url);
 
         dp1.on('playing', function () {
             dp1.controller.hide();
+        });
+
+        dp1.on("pause", function(){
+            dp1.controller.show();
+            if(dp1.video.duration > 0){
+                $("#pause-img").show();
+            }
+        });
+        dp1.on("play", function(){
+            $("#pause-img").hide();
         });
 
         //添加播放记录
@@ -244,7 +290,6 @@ $type =initialUrl($url);
             dataType:'json',
             timeout: 4000,
             success:function(res) {
-                console.log(res);
                 if(res.errno == 0){
                     //播放前
                     if(res.data.advert.playbefore.ad_image){
@@ -258,21 +303,21 @@ $type =initialUrl($url);
                             advert['ad_type'] = 'img';
                         }
                     }
+                    advertinfo(advert);
+
                     var ad = {};
-                    //猜你喜欢上方
-                    if(res.data.advert.videotop.ad_image){
-                        ad = res.data.advert.playliketop;
-                        $(".video-top-ad a").attr("href", ad.ad_skip_url);
-                        $(".video-top-ad img").attr("src", ad.ad_image);
+                    if(res.data.advert.playstop.ad_image){
+                        ad = res.data.advert.playstop;
+                        var pausehtml = '<div id="pause-img" style="display:none;">'+
+                            '<a href="'+ad.ad_skip_url+'" target="_blank">'+
+                            '<img src="/images/video/ic_ad_prase.png" class="close-pause-img" onclick="closePauseAD();">'+
+                            '<img src="'+ad.ad_image+'" class="aposition-img" />'+
+                            '</a></div>';
+                        $("#player1").prepend(pausehtml);
                     }
-                    //猜你喜欢下方
-                    if(res.data.advert.videobottom.ad_image){
-                        ad = res.data.advert.playlikebottom;
-                        $(".video-bottom-add a").attr("href", ad.ad_skip_url);
-                        $(".video-bottom-add img").attr("src", ad.ad_image);
-                    }
+                }else{
+                    advertinfo(advert);
                 }
-                advertinfo(advert);
             },
             error : function() {
                 advertinfo(advert);
@@ -509,6 +554,23 @@ $type =initialUrl($url);
                 clearInterval(int);
             }
         },100);
+    }
+    //关闭暂停广告
+    function closePauseAD(){
+        $("#pause-img").hide();
+        eventStop();
+    }
+
+    function eventStop(){
+        var evt = evt || window.event; //获取event对象
+        if (evt.preventDefault) {
+            evt.preventDefault(); //非IE浏览器
+        } else {
+            evt.returnValue = false; //在早期的IE版本中
+        }
+        event.stopPropagation ? event.stopPropagation() : (event.cancelBubble = true); //阻止事件冒泡
+        window.event.cancelBubble = true;
+        return false;
     }
 </script>
 <script>

@@ -276,7 +276,7 @@ $this->registerJs($js);
 </div>
 
 <!--今日热点-->
-<ul id="today-news" class="RD-box" name="zt" style="display: none;">
+<ul id="today-news" class="RD-box J-ad-box" name="zt" style="display: none;">
     <li class="Title-00">
         <a class="Title-big" href="javascript:;">今日热点</a>
     </li>
@@ -1055,7 +1055,7 @@ $this->registerJs($js);
                 if(i==0){
                     html += '<li class="RD-banner">'+
                                 '<div id="playBox02" class="play-box02">'+
-                                    '<a class="RD-boxA current02" href="https://www.yeeyi.com/news/details/'+newslist[i].aid+'" target="_blank" style="height: 400px;">'+
+                                    '<a class="RD-boxA current02" href="https://www.yeeyi.com/news/details/'+newslist[i].aid+'" target="_blank" style="height: 300px;">'+
                                         '<div class="RD-img" class="current02"><img src="'+newslist[i].pic+'" onerror="hideImg()" /></div>'+
                                         '<div class="RD-title"><div class="RD-name">'+newslist[i].title+'</div></div>'+
                                     '</a>'+
@@ -1063,7 +1063,7 @@ $this->registerJs($js);
                             '</li>';
                 }else if(i<9){
                     html += '<li>'+
-                                '<a class="RD-boxA" href="https://www.yeeyi.com/news/details/'+newslist[i].aid+'" target="_blank" style="height: 195px;">'+
+                                '<a class="RD-boxA" href="https://www.yeeyi.com/news/details/'+newslist[i].aid+'" target="_blank" style="height: 145px;">'+
                                     '<div class="RD-img"><img src="'+newslist[i].pic+'" onerror="hideImg()"  /></div>'+
                                     '<div class="RD-title"><div class="RD-name">'+newslist[i].title+'</div></div>'+
                                 '</a>'+

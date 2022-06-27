@@ -1122,20 +1122,16 @@ class VideoLogic
                     'filter'          => $sourceFilter,
                     'source_id'       => $sourceId,
                 ]),
-            'watchlog' => $watchlog,
-            'percent' => $percent
+//            'watchlog' => $watchlog,
+//            'percent' => $percent
         ];
 
         //添加广告
         $advertLogic = new AdvertLogic();
-        $playbeforePos = Yii::$app->common->product == Common::PRODUCT_PC
-            ? AdvertPosition::POSITION_PLAY_BEFORE_PC : AdvertPosition::POSITION_PLAY_BEFORE;
-        $videoTopPos = Yii::$app->common->product == Common::PRODUCT_PC
-            ? AdvertPosition::POSITION_VIDEO_TOP_PC : AdvertPosition::POSITION_VIDEO_TOP_PC;
-
         $data['advert'] = [
-            (object)$advertLogic->advertByPosition($playbeforePos, $city),
-            (object)$advertLogic->advertByPosition($videoTopPos, $city),
+            (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_PLAY_BEFORE_PC, $city),
+            (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_TOP_PC, $city),
+            (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_PLAY_STOP_PC, $city),
         ];
 
         return $data;

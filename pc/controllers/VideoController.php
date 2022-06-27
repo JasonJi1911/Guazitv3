@@ -440,7 +440,7 @@ class VideoController extends BaseController
             return $this->redirect('/site/error');
         }
 
-        $advert_top_pc = [];
+        $advert_pc = [];
         $ad_url = '';
         $ad_link = '';
         $ad_type = '';
@@ -463,7 +463,11 @@ class VideoController extends BaseController
             }
             //2022-4-19尹 PC播放页-播放窗口上方广告局部刷新
             if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_VIDEO_TOP_PC) {
-                $advert_top_pc = $advert;
+                $advert_pc['advert_top_pc'] = $advert;
+            }
+            //20220624 尹 PC播放暂停广告局部刷新
+            if(!empty($advert) && $advert['position_id'] == AdvertPosition::POSITION_PLAY_STOP_PC) {
+                $advert_pc['advert_stop_pc'] = $advert;
             }
         }
 
@@ -483,8 +487,8 @@ class VideoController extends BaseController
             'percent'   => $data['percent'],
             'video_name'=> $data['info']['video_name'],
             'lastplayinfo'   => $data['watchlog'],
-            'advert_top_pc'  => $advert_top_pc,
-            'source_count'      => count($data['info']['filter'])
+            'advert_pc'  => $advert_pc,
+            'source_count'   => count($data['info']['filter'])
         ]);
     }
 
@@ -1132,21 +1136,7 @@ class VideoController extends BaseController
         //获取热搜
         $hotword = Yii::$app->api->get('/search/hot-word');
         //个人中心信息
-        $data['watchlog'] = Yii::$app->api->get('/video/watchlog-pc',['uid'=>$uid]);
-        $data['favorite'] = Yii::$app->api->get('/video/favorite-pc',['uid'=>$uid]);
-        $comment = Yii::$app->api->get('/user/comment-pc',['uid'=>$uid]);
-        if($comment){
-            $data = array_merge($data,$comment);
-        }
-        $relations = Yii::$app->api->get('/user/relations-pc',['uid'=>$uid]);
-        if($relations){
-            $data = array_merge($data,$relations);
-        }
-
-        $uservip = Yii::$app->api->get('/user/userinfo',['uid'=>$uid]);
-        if($uservip['user']){
-            $data['user'] = $uservip['user'];
-        }
+        $data = Yii::$app->api->get('/video/personal',['uid'=>$uid]);
         //任务
 //        $task = Yii::$app->api->get('/task/center');
 
@@ -1444,18 +1434,15 @@ class VideoController extends BaseController
     public function actionUserall(){
         $uid = Yii::$app->request->get('uid', 0);
         //用户信息
-        $user = Yii::$app->api->get('/user/userinfo',['uid'=>$uid]);
-        $data = [];
+        $data = Yii::$app->api->get('/video/userall',['uid'=>$uid]);
         $data['main_uid'] = $uid;
         if($uid){
-//            $errno = 0;
             $data['login_show'] = '';
             $data['notlogin_show'] = 'display:none';
-            $data['user'] = $user['user'];
-            $data['vip'] = $user['vip'];
-            $data['isvip'] = $user['isvip'];
+            $data['user'] = $data['user'];
+            $data['vip'] = $data['vip'];
+            $data['isvip'] = $data['isvip'];
         }else{
-//            $errno = -1;
             $data['login_show'] = 'display:none';
             $data['notlogin_show'] = '';
             $data['user'] = [];
@@ -1463,25 +1450,6 @@ class VideoController extends BaseController
             $data['isvip'] = 0;
         }
 
-        //播放记录
-        $watchlog = Yii::$app->api->get('/video/watchlog-pc',['uid'=>$uid]);
-        if($watchlog){
-            $data['watchlog'] = $watchlog;
-        }
-        //收藏
-//        $favorite = Yii::$app->api->get('/video/favorite-new',['uid'=>$uid]);
-        $favorite = Yii::$app->api->get('/video/favorite-pc',['uid'=>$uid]);
-        if($favorite){
-            $data['favorite'] = $favorite;
-        }
-
-        //消息
-        $message = Yii::$app->api->get('/user/message-pc',['uid'=>$uid]);
-        if($message){
-            $data['message'] = $message;
-        }
-
-//        return TOOL::responseJson(0,"操作成功",$result);
         return $this->renderPartial('rheadnavi', ['data' => $data]);
     }
     /*

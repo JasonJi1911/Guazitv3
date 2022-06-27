@@ -55,7 +55,8 @@ class AdvertLogic
          if ($position == AdvertPosition::POSITION_VIDEO_INDEX
             || $position == AdvertPosition::POSITION_VIDEO_INDEX_PC
             || $position == AdvertPosition::POSITION_VIDEO_TOPIC
-             || $position == AdvertPosition::POSITION_VIDEO_CHANNEL_PC1) {
+             || $position == AdvertPosition::POSITION_VIDEO_CHANNEL_PC1
+             || $position == AdvertPosition::POSITION_VIDEO_CHANNEL_WAP) {
             $advert = [];
             foreach ($advertId as $id) {
                 // 添加PV

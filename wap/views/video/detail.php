@@ -631,6 +631,7 @@ $this->registerJs($js);
     $(document).ready(function(){
         // refreshAds();
         // $('#btn-video-play').trigger("click");
+        getAD();
     });
     
     function countDown(maxtime,fn){
@@ -941,5 +942,64 @@ $this->registerJs($js);
         }
 
         // return html;
+    }
+    function getAD(){
+        var req = new XMLHttpRequest();
+        req.open('GET', '/images/video/icon-fh-1.png', false);
+        req.send(null);
+        var cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
+        var cf_cache_status = req.getResponseHeader('cf-cache-status');//指定cf-cache-status的值
+        var citycode = '';
+        if(cf_cache_status == 'HIT'){
+            citycode = cf_ray.substring(cf_ray.length-3);
+        }else{
+            req.open('GET', document.location, false);
+            req.send(null);
+            cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
+            if(cf_ray && cf_ray.length>3){
+                citycode = cf_ray.substring(cf_ray.length-3);
+            }
+        }
+        // citycode = 'MEL';
+        // console.log(citycode);
+        var advert = {};
+        advert['ad_type'] = '';
+        advert['ad_url'] = '';
+        advert['ad_link'] = '';
+        $.ajax( {
+            url:'/video/advert-info',
+            data:{
+                'citycode' : citycode,
+                'page' : 'detail',
+            },
+            type:'get',
+            cache:false,
+            dataType:'json',
+            success:function(res) {
+                if(res.errno == 0){
+                   var ad = {};
+                    //猜你喜欢上方
+                    if(res.data.advert.videotop.ad_image){
+                        ad = res.data.advert.playliketop;
+                        $(".video-top-ad a").attr("href", ad.ad_skip_url);
+                        $(".video-top-ad img").attr("src", ad.ad_image);
+                    }
+                    //猜你喜欢下方
+                    if(res.data.advert.videobottom.ad_image){
+                        ad = res.data.advert.playlikebottom;
+                        $(".video-bottom-add a").attr("href", ad.ad_skip_url);
+                        $(".video-bottom-add img").attr("src", ad.ad_image);
+                    }
+                }
+            },
+            error : function() {
+                console.log("加载广告失败");
+            },
+            complete:function(XHR,TextStatus){
+                if(TextStatus=='timeout'){ //超时执行的程序
+                    console.log("请求超时！");
+                }
+            }
+        });
     }
 </script>

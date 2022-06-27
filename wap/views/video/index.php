@@ -131,23 +131,38 @@ header('X-Frame-Options:Deny');
     }
     
     .jBox-closeButton-box .jBox-closeButton {
-        top: 0;
-        right: 20px;
-        /*width: 46px;*/
-        /*height: 24px;*/
+        width: 40px;
+        height: 40px;
+        bottom: -50px;
+        right: 50%;
+        margin-right: -15px;
         background: transparent;
         z-index: 10001;
         position: absolute;
         color: #fff;
         padding: 10px 0 0 10px;
         font-size: 16px;
+        background: url(/images/video/icon-gb-01.png) no-repeat center center;
+        background-size: 40px 40px;
     }
     .a-small{
         width: 50%;
+        height:150px;
         padding:0 7.5px;
+        float: left;
     }
     .img-small{
         width: 100%;
+        height: calc(100% - 34px );
+    }
+    #jBox1 a img{
+        border: 0px;
+        width: 100%;
+        max-height: 100%;
+        margin: 0 auto;
+    }
+    #today-hot .video-item-name{
+        margin: 5px 0;
     }
 </style>
 
@@ -237,34 +252,22 @@ header('X-Frame-Options:Deny');
     </ul>
 </div>
 <!--今日热点-->
-<div class="video-index-column mt15 today-hot-div" style="display:none;">
+<div class="video-index-column mt15 today-hot-div J_today_news" style="display: none;">
     <h3 class="video-index-title">今日热点</h3>
-    <div id="today-hot" class="video-list-box clearfix swiper-container " style="margin:20px 7.5px 0;padding:0;"><!-- more-change-10 -->
-        <div class="row-div swiper-wrapper cate-list-scroll">
-            <a class="a-small swiper-slide swiper-slide-li" href="#" >
-                <img src="/images/video/hot-2.jpg" class="img-small">
-                <h5 class="video-item-name text-left" >攀登：可复制的领导力</h5>
-            </a>
-            <a class="a-small swiper-slide swiper-slide-li" href="#" >
-                <img src="/images/video/hot-2.jpg" class="img-small">
-                <h5 class="video-item-name text-left" >攀登：可复制的领导力</h5>
-            </a>
-            <a class="a-small swiper-slide swiper-slide-li" href="#" >
-                <img src="/images/video/hot-2.jpg" class="img-small">
-                <h5 class="video-item-name text-left" >攀登：可复制的领导力</h5>
-            </a>
-            <a class="a-small swiper-slide swiper-slide-li" href="#" >
-                <img src="/images/video/hot-2.jpg" class="img-small">
-                <h5 class="video-item-name text-left" >攀登：可复制的领导力</h5>
-            </a>
+    <div id="today-hot" class="video-list-box clearfix" style="margin:20px 7.5px 0;padding:0;"><!-- more-change-10 display:none;-->
+        <div class="row-div ">
+<!--            <a class="a-small" href="#" >-->
+<!--                <img src="/images/video/hot-2.jpg" class="img-small">-->
+<!--                <h5 class="video-item-name text-left" >攀登：可复制的领导力</h5>-->
+<!--            </a>-->
         </div>
     </div>
 </div>
-<div class="video-other-more clearfix" style="display:none;">
-    <a href="#" class="fl more-item ">
+<div class="video-other-more clearfix J_today_news" style="display:none;">
+    <a href="https://www.yeeyi.com/news/australia/" class="fl more-item " target="_blank">
         <span>查看更多</span>
     </a>
-    <a href="#" class="fl more-item"><!-- more-change -->
+    <a class="fl more-item" onclick="getnews();"><!-- more-change -->
         <span class="change">换一换</span>
     </a>
 </div>
@@ -410,13 +413,12 @@ header('X-Frame-Options:Deny');
 
 <?php //if (!empty($data['flash'])) : ?>
 <div class="bgcover" style="display: none;">
-    <div id="jBox1" class="jBox-wrapper jBox-Modal jBox-Default jBox-closeButton-box" style="width:100%;">
+    <div id="jBox1" class="jBox-wrapper jBox-Modal jBox-Default jBox-closeButton-box"><!-- style="width:100%;"-->
         <div style="width:auto;font-size:15px;text-align:center"></div>
         <a href="" target="_blank">
-            <img src="" style="border: 0px;max-width: 100%;max-height: 100%;margin: 0 auto;">
+            <img src="" style="border: 0px;width: 100%;max-height: 100%;margin: 0 auto;">
         </a>
         <div class="jBox-closeButton jBox-noDrag">
-            <span class="flashCount"></span>
         </div>
     </div>
 </div>
@@ -463,25 +465,7 @@ header('X-Frame-Options:Deny');
         //     });
         // })
 
-        //新片预告trailer 滑动
-<!--        --><?php //if($data['trailer']):?>
-<!--            --><?php //foreach ($data['trailer'] as $i=>$trailer):?>
-//                var mytrailer<?//=$i?>// = new Swiper ('#trailer<?//=$i?>//', {
-//                    slidesPerView:'auto',
-//                });
-//                mytrailer<?//=$i?>//.on('tap', function (swiper, e) {
-//                    var videoid = $("#trailer<?//=$i?>// .swiper-slide").eq(this.clickedIndex).attr('data-video-id');
-//                    window.location.href = '/video/detail?video_id='+videoid;
-//                });
-//            <?php //endforeach; ?>
-<!--        --><?php //endif;?>
-
-        //今日热点滑动
-        var todayhot = new Swiper ('#today-hot', {
-            slidesPerView:'auto',
-        });
-
-        if(channel_id==0){
+        if(channel_id==0){//首页
             //按城市加载广告
             var req = new XMLHttpRequest();
             req.open('GET', '/images/video/icon-gx.png', false);
@@ -500,42 +484,10 @@ header('X-Frame-Options:Deny');
                 }
             }
             // console.log(citycode);
-            var arrIndex = {};
-            arrIndex['citycode'] = citycode;
-            arrIndex['page'] = 'home';
-            arrIndex['chapterId'] = 0;
-            $.ajax({
-                url: '/video/advert-info',
-                data: arrIndex,
-                type:'get',
-                cache:false,
-                dataType:'json',
-                success:function(res) {
-                    if(res.errno==0){
-                        //首页
-                        var dataar = res.data.advert;
-                        if(dataar.length>0){
-                            for(var i=0;i<dataar.length;i++){
-                                //今日热点和连续剧前不加广告
-                                $(".video-index-column").eq(i+2).before('<div class="video-add-column"><a href="'+dataar[i].ad_skip_url+'"  target="_blank" > <img src="'+dataar[i].ad_image+'" alt=""></a></div>');
-                            }
-                        }
-                        //首页弹窗
-                        dataar = res.data.flash;
-                        var flashtime = getCookie("wapgzflash");
-                        if(flashtime!=1 && dataar.advert_id && dataar.advert_id!="underfined" && typeof (dataar.advert_id) != "undefined"){
-                            $("#jBox1 a").attr("href",dataar.ad_skip_url);
-                            $("#jBox1 a img").attr("src",dataar.ad_image);
-                            $(".flashCount").text("关闭")
-                            $(".bgcover").fadeIn();
-                            setCookie("wapgzflash",1,(1/3));//有效时间8小时
-                        }
-                    }
-                },
-                error : function() {
-                    console.log("广告加载失败");
-                }
-            });
+            getnews();
+            getadverybycity('home');
+        }else{//频道页
+            getadverybycity('channel');
         }
 
         //检验用户信息
@@ -544,7 +496,6 @@ header('X-Frame-Options:Deny');
         arrIndex['uid'] = uid;
         var uid2 = '<?=Yii::$app->user->id?>';
         if(uid2=='' && (!isNaN(uid) && uid!="")){
-            // console.log(arrIndex);
             $.ajax({
                 url:'/video/login-uid',
                 data:arrIndex,
@@ -561,6 +512,137 @@ header('X-Frame-Options:Deny');
             });
         }
 	});
+
+    function getadverybycity(page){
+        //按城市加载广告
+        var req = new XMLHttpRequest();
+        req.open('GET', '/images/video/icon-gx.png', false);
+        req.send(null);
+        var cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
+        var cf_cache_status = req.getResponseHeader('cf-cache-status');//指定cf-cache-status的值
+        var citycode = '';
+        if(cf_cache_status == 'HIT'){
+            citycode = cf_ray.substring(cf_ray.length-3);
+        }else{
+            req.open('GET', document.location, false);
+            req.send(null);
+            cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
+            if(cf_ray && cf_ray.length>3){
+                citycode = cf_ray.substring(cf_ray.length-3);
+            }
+        }
+        // console.log(citycode);
+        var arrIndex = {};
+        arrIndex['citycode'] = citycode;
+        arrIndex['page'] = page;
+        arrIndex['chapterId'] = 0;
+        $.ajax({
+            url: '/video/advert-info',
+            data: arrIndex,
+            type:'get',
+            cache:false,
+            dataType:'json',
+            success:function(res) {
+                if(res.errno==0){
+                    //首页
+                    var dataar = res.data.advert;
+                    if(dataar.length>0){
+                        var j=0;
+                        for(var i=0;i<dataar.length;i++){
+                            if(page=='home'){
+                                j = i+1;
+                            }else if(page=='channel'){
+                                j = i+2;
+                            }
+                            //今日热点和连续剧前不加广告
+                            $(".video-index-column").eq(j).before('<div class="video-add-column"><a href="'+dataar[i].ad_skip_url+'"  target="_blank" > <img src="'+dataar[i].ad_image+'" alt=""></a></div>');
+                        }
+                    }
+                    if(page=='home') {
+                        //首页弹窗
+                        dataar = res.data.flash;
+                        var flashtime = getCookie("wapgzflash");
+                        if (flashtime != 1 && dataar.advert_id && dataar.advert_id != "underfined" && typeof (dataar.advert_id) != "undefined") {
+                            $("#jBox1 a").attr("href", dataar.ad_skip_url);
+                            $("#jBox1 a img").attr("src", dataar.ad_image);
+                            // $(".flashCount").text("关闭")
+                            $(".bgcover").fadeIn();
+                            setCookie("wapgzflash", 1, (1 / 3));//有效时间8小时
+                        }
+                    }
+                }
+            },
+            error : function() {
+                console.log("广告加载失败");
+            }
+        });
+    }
+
+    var circle = 0;
+    var isloadnews = true;
+    var news = [];
+    function getnews(){
+        if(isloadnews){
+            isloadnews = false;
+            if(circle == 0 && news.length<=0){
+                //获取新闻
+                $.ajax({
+                    url: '/video/get-news',
+                    data: {},
+                    type: 'get',
+                    cache: false,
+                    dataType: 'json',
+                    timeout: 5000,
+                    success:function(res) {
+                        if(res.errno==0 && res.data.newslist){
+                            news = res.data.newslist;
+                            refreshNews();
+                            circle++;
+                        }
+                    },
+                    error : function() {
+                        console.log("新闻接口获取失败");
+                    },
+                    complete:function(XHR,TextStatus){
+                        isloadnews = true;
+                        if(TextStatus=='timeout'){ //超时执行的程序
+                            console.log("请求超时！");
+                        }
+                    }
+                });
+            }else{
+                isloadnews = true;
+                refreshNews();
+                if(news.length > (circle*4+8) ){
+                    circle++;
+                }else{
+                    circle = 0;
+                }
+            }
+        }
+    }
+
+    function refreshNews(){
+        var html = '';
+        if(news.length>0){
+            for(var i=circle*4;i<(circle*4+4);i++){
+                html += '<a class="a-small" href="https://www.yeeyi.com/news/details/'+news[i].aid+'" >'+
+                            '<img src="'+news[i].pic+'" class="img-small" onerror="hideImg()">'+
+                            '<h5 class="video-item-name text-left" >'+news[i].title+'</h5>'+
+                        '</a>';
+            }
+        }
+        // return html;
+
+        $('#today-hot div.row-div').empty();
+        $('#today-hot div.row-div').append(html);
+        $('.J_today_news').show()
+    }
+
+    function hideImg(){
+        // $('.J_today_news').hide();
+        getnews();
+    }
 	
 	function refreshAdvert(addata)
 	{

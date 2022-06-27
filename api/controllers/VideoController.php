@@ -13,6 +13,7 @@ use api\logic\CommentLogic;
 use api\logic\PayLogic;
 use api\logic\VideoLogic;
 use api\logic\AdvertLogic;
+use api\models\user\UserRelations;
 use api\models\video\Recommend;
 use api\models\video\UserWatchLog;
 use api\models\advert\AdvertPosition;
@@ -174,6 +175,12 @@ class VideoController extends BaseController
         $videoBottomPos = Yii::$app->common->product == Common::PRODUCT_PC
             ? AdvertPosition::POSITION_VIDEO_BOTTOM_PC : AdvertPosition::POSITION_VIDEO_BOTTOM_PC;
 
+        $advertChannel = Yii::$app->common->product == Common::PRODUCT_PC
+            ? AdvertPosition::POSITION_VIDEO_CHANNEL_PC1 : AdvertPosition::POSITION_VIDEO_CHANNEL_WAP;
+
+        $advertPlayStop = Yii::$app->common->product == Common::PRODUCT_PC
+            ? AdvertPosition::POSITION_PLAY_STOP_PC : AdvertPosition::POSITION_PLAY_STOP_WAP;
+
         $data = [];
         $data['page'] = $page;
         $data['city'] = $city;
@@ -192,7 +199,8 @@ class VideoController extends BaseController
                 'playlikebottom' => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_LIKE_BOTTOM, $city),
                 'videotop' => (object)$advertLogic->advertByPosition($videoTopPos, $city),
                 'videobottom' => (object)$advertLogic->advertByPosition($videoBottomPos, $city),
-                'videoright' => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_RIGHT_PC, $city)
+                'videoright' => (object)$advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_RIGHT_PC, $city),
+                'playstop' => (object)$advertLogic->advertByPosition($advertPlayStop, $city)
             ];
             //2022-04-22尹 播放器广告，会员不加载
             $userdao = new UserDao();
@@ -209,7 +217,7 @@ class VideoController extends BaseController
             $advert = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_LIST_PC, $city);
             $data['advert'] = $advert;
         }else if($page == "channel"){
-            $data['advert'] = $advertLogic->advertByPosition(AdvertPosition::POSITION_VIDEO_CHANNEL_PC1, $city);
+            $data['advert'] = $advertLogic->advertByPosition($advertChannel, $city);
         }
         return $data;
     }
@@ -964,6 +972,65 @@ class VideoController extends BaseController
         $amount = $this->getParam('amount', 0);
         $videologic = new VideoLogic();
         $data = $videologic->getNewsList($amount);
+        return $data;
+    }
+
+    //加载个人中心信息
+    public function actionPersonal(){
+        $uid = $this->getParam('uid', "");
+        //个人中心信息
+        $videodao = new VideoDao();
+        $userdao = new UserDao();
+        //播放记录
+        $data['watchlog'] = $videodao->finduserwatchLog($uid,'');
+        //收藏
+        $data['favorite'] = $videodao->findVideoFavorite($uid);
+        //消息-我发表的（包括我回复的）
+        $data['comment'] = $userdao->commentListPC($uid);
+        //消息-回复我的（pid==uid）
+        $data['reply'] = $userdao->replyListPC($uid);
+        //消息-系统信息
+        $data['system_message'] = $userdao->messagePC($uid);
+        //关注
+        $data['follow'] = $userdao->findRelationsByCondition($uid,UserRelations::TYPE_FOLLOW,'time','');
+        //黑名单
+        $data['blacklist'] = $userdao->findRelationsByCondition($uid,UserRelations::TYPE_BLACKLIST,'time','');
+        //粉丝
+        $data['fans'] = $userdao->findFansByCondition($uid,'time','');
+        //用户信息
+        $data['user'] = $userdao->finduserByuid($uid);
+        //用户vip信息
+        $vip = $userdao->validuservipPC($uid);
+        if($vip){
+            $data['vip'] = $vip;
+            $data['isvip'] = 1;
+        }
+
+        return $data;
+    }
+
+    //右上角信息
+    public function actionUserall(){
+        $uid = $this->getParam('uid', "");
+        $videodao = new VideoDao();
+        $userdao = new UserDao();
+        //用户信息
+        $data = [];
+        $data['user'] = $userdao->finduserByuid($uid);
+        //用户vip信息
+        $vip = $userdao->validuservipPC($uid);
+        if($vip){
+            $data['vip'] = $vip;
+            $data['isvip'] = 1;
+        }
+
+        //播放记录
+        $data['watchlog'] = $videodao->finduserwatchLog($uid,'');
+        //收藏
+        $data['favorite'] = $videodao->findVideoFavorite($uid);
+        //消息
+        $data['message'] = $userdao->messagePC($uid);
+
         return $data;
     }
 }

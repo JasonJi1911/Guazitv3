@@ -67,7 +67,7 @@ svg { -webkit-transform-origin: 0; -moz-transform-origin: 0; -ms-transform-origi
 .video-list-box .video-item-top .mark{text-align: right;font-size: 11px;line-height:20px;color:#fff;}
 .video-list-box .video-item-name{margin:10px 0 0;line-height:24px;font-size: 16px;color: #27272A;overflow:hidden;text-overflow:ellipsis;white-space: nowrap;}
 .video-list-box .video-item-play{min-height:18px;line-height:18px;font-size: 13px;color: #8D8D95;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.video-other-more{padding-top:32px;height:66px;background-image: linear-gradient(180deg, #FFFFFF 0%, #FFF4F5 100%);}
+.video-other-more{padding-top:20px;height:50px;background-image: linear-gradient(180deg, #FFFFFF 0%, #FFF4F5 100%);}
 .video-other-more .more-item{width:50%;text-align: center;font-size: 14px;color: #FF556E;}
 .video-other-more .more-item span{display:inline-block;line-height:24px;padding-right:19px;background:url(/images/video/icon-jt1.png) no-repeat right center;background-size:16px 16px;}
 .video-other-more .more-item span.change{background:url(/images/video/icon-gx.png) no-repeat right center;background-size:16px 16px;}

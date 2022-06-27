@@ -527,7 +527,7 @@ else
                         </div>
                         <div class="qy-player-side-body v_scroll_plist_bc qy-advunder-show">
                             <div class="body-inner">
-                                <?php if($data['channel_id'] == '2'){?>
+                                <?php if($data['channel_id'] == '2' || $data['channel_id'] == '4'){?>
                                     <div class="side-content v_scroll_plist_content" style="transform: translateY(0px);">
                                         <div class="padding-box">
                                             <div class="qy-episode-tab">
@@ -682,7 +682,7 @@ else
                                             </div>
                                         </div>
                                     </div>
-                                <?php } elseif($data['channel_id'] >= '4'){?>
+                                <?php } elseif($data['channel_id'] > '4'){?>
                                     <div class="side-content v_scroll_plist_content" style="transform: translateY(0px);">
 <!--                                        <div class="qy-episode-update">-->
 <!--                                            <p class="update-tip">-->
@@ -1189,9 +1189,9 @@ else
         // $('#btn-video-play').trigger("click");
         // countPicAds();
         // refreshAds();
-
+        getAD();
         //文字链广告
-        var citycode = COUNTRYINFO['city_code'];
+        var citycode = getcity();
         var arrIndex = {};
         arrIndex['citycode'] = citycode;
         $.ajax({
@@ -1888,7 +1888,7 @@ else
             $("#pop-tip").show().delay(2000).fadeOut();
             return false;
         }
-        var citycode = COUNTRYINFO['city_code'];
+        var citycode = getcity();
         var arrIndex = {};
         arrIndex['citycode'] = citycode;
         arrIndex['video_id'] = videoId;
@@ -1991,4 +1991,83 @@ else
         }, 500);
         return false;
     });
+
+    function getAD(){
+        var citycode = getcity();
+        var arrIndex = {};
+        arrIndex['citycode'] = citycode;
+        arrIndex['page'] = 'detail';
+        arrIndex['chapterId'] = '<?=$play_chapter_id?>';
+
+        var advert = {};
+        advert['ad_type'] = '';
+        advert['ad_url'] = '';
+        advert['ad_link'] = '';
+        $.ajax({
+            url:'/video/advert-info',
+            data:arrIndex,
+            type:'get',
+            cache:false,
+            dataType:'json',
+            timeout: 4000,
+            success:function(res) {
+                if(res.errno == 0){
+                    var ad = {};
+                    if(res.data.advert.videotop.ad_image){
+                        ad = res.data.advert.videotop;
+                        $("#videotop").html('<div class="play-box video-add-column video-detail-ad"><a href="'+ad.ad_skip_url+'" target="_blank"><img src="'+ad.ad_image+'" /></a></div>')
+                    }
+                    if(res.data.advert.videoright.ad_image){
+                        ad = res.data.advert.videoright;
+                        $("#videoright").html('<div class="video-right-ad-img"><a href="'+ad.ad_skip_url+'" target="_blank"><img src="'+ad.ad_image+'"></a></div>');
+                    }
+                    if(res.data.advert.videobottom.ad_image){
+                        ad = res.data.advert.videobottom;
+                        $("#videobottom").html('<div class="play-box video-add-column video-detail-ad"><a href="'+ad.ad_skip_url+'" target="_blank" class="video-bottom-add"><img src="'+ad.ad_image+'"></a></div>');
+                    }
+                }
+            },
+            error : function() {
+                console.log("广告加载失败");
+            },
+            complete:function(XHR,TextStatus){
+                if(TextStatus=='timeout'){ //超时执行的程序
+                    console.log("请求超时！");
+                }
+            }
+        });
+    }
+
+    //关闭暂停广告
+    function closePauseAD(){
+        $("#pause-img").hide();
+        eventStop();
+    }
+
+    function getcity(){
+        var citycode = '';
+        if(COUNTRYINFO['city_code'] && COUNTRYINFO['city_code'] != "" && COUNTRYINFO['city_code']!="undefined"){
+            citycode = COUNTRYINFO['city_code'];
+        }else{
+            var req = new XMLHttpRequest();
+            req.open('GET', '../../images/NewVideo/logo.png', false);
+            req.send(null);
+            var cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
+            var cf_cache_status = req.getResponseHeader('cf-cache-status');//指定cf-cache-status的值
+            if(cf_cache_status == 'HIT'){
+                citycode = cf_ray.substring(cf_ray.length-3);
+            }else{
+                req.open('GET', '../../images/Index/fenlei.png', false);
+                req.send(null);
+                cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
+                cf_cache_status = req.getResponseHeader('cf-cache-status');//指定cf-cache-status的值
+                if(cf_cache_status == 'HIT'){
+                    citycode = cf_ray.substring(cf_ray.length-3);
+                }else{
+                    citycode = 'MEL'//墨尔本
+                }
+            }
+        }
+        return citycode;
+    }
 </script>

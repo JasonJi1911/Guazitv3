@@ -563,11 +563,54 @@ function initialUrl($url)
         height: auto;
         align-items: center;
     }
+    #pause-img{
+        position:absolute;
+        width: 60%;
+        height: calc((100% - 100px) * 0.7);
+        left: 20%;
+        top: 15%;
+        box-sizing: border-box;
+        border: solid 1px #FFFFFF;
+        border: none;
+        z-index:6;
+        display: flex;
+        align-items: center;
+    }
+    #pause-img a{
+        display: block;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+    }
+    #pause-img img.aposition-img{
+        width: 100%;
+        /*height: 100%;*/
+        align-items: center;
+    }
+    #pause-img img.close-pause-img{
+        position: absolute;
+        display:block;
+        width: 100px;
+        height: auto;
+        right: 10px;
+        top: 10px;
+    }
 
     @media screen and (max-width:1910px) {
         #load1-img {
-            width: 1025px;
-            height: 640px;
+          width: 1025px;
+          height: 640px;
+        }
+        /*#pause-img {*/
+        /*    width: 625px;*/
+        /*    height: 440px;*/
+        /*}*/
+        /*#pause-img{*/
+        /*    top:60px;*/
+        /*}*/
+        #pause-img img.close-pause-img{
+            width: 80px;
         }
     }
 
@@ -575,6 +618,16 @@ function initialUrl($url)
         #load1-img {
             width: 857px;
             height: 500px;
+        }
+        /*#pause-img {*/
+        /*    width: 457px;*/
+        /*    height: 300px;*/
+        /*}*/
+        /*#pause-img{*/
+        /*    top:60px;*/
+        /*}*/
+        #pause-img img.close-pause-img{
+            width: 60px;
         }
     }
     #player-load1-warn{
@@ -942,6 +995,12 @@ function initialUrl($url)
 
         dp1.on("pause", function(){
             dp1.controller.show();
+            if(dp1.video.duration > 0){
+                $("#pause-img").show();
+            }
+        });
+        dp1.on("play", function(){
+            $("#pause-img").hide();
         });
     }
     //继续观看
@@ -1090,7 +1149,7 @@ function initialUrl($url)
 <script>
     var dp;
     $(document).ready(function () {
-        var citycode = COUNTRYINFO['city_code'];
+        var citycode = getcity();
         var arrIndex = {};
         arrIndex['citycode'] = citycode;
         arrIndex['page'] = 'detail';
@@ -1133,6 +1192,16 @@ function initialUrl($url)
                     if(res.data.advert.videobottom.ad_image){
                         ad = res.data.advert.videobottom;
                         $("#videobottom").html('<div class="play-box video-add-column video-detail-ad"><a href="'+ad.ad_skip_url+'" target="_blank" class="video-bottom-add"><img src="'+ad.ad_image+'"></a></div>');
+                    }
+
+                    if(res.data.advert.playstop.ad_image){
+                        ad = res.data.advert.playstop;
+                        var pausehtml = '<div id="pause-img" style="display:none;">'+
+                                '<a href="'+ad.ad_skip_url+'" target="_blank">'+
+                                '<img src="/images/Index/ic_ad_prase.png" class="close-pause-img" onclick="closePauseAD();">'+
+                                '<img src="'+ad.ad_image+'" class="aposition-img" />'+
+                                '</a></div>';
+                        $("#player1").prepend(pausehtml);
                     }
                 }else{
                     defaultAdvertInfo(advert);
@@ -1239,6 +1308,11 @@ function initialUrl($url)
 
             $("#ADMask").click(function() {
                 document.getElementById('link').click();
+            });
+
+            dp.on("error", function() {
+                $("#player_ad .dplayer-notice").hide();
+                dp.controller.hide();
             });
 
             var span = document.getElementById("time_ad");

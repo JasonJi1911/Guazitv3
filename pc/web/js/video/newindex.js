@@ -1252,7 +1252,14 @@ $(document).ready(function() {
 					$(".J_email_line3").addClass('act');
 					$(".J_email_jindu3").addClass('act');
 					$(".J_email_auth_text3").addClass('act');
-					$(".J_is_bind_email").text(email);
+
+					var hide_email = '';
+					if(email.length>5){
+						hide_email = email.substring(0,3)+'******'+email.substring(email.length-2);
+					}else{
+						hide_email = email;
+					}
+						$(".J_is_bind_email").text(hide_email);
 					$('.J_email').val("");
 					//弹出提示框
 					$("#pop-tip").text("邮箱绑定成功");
