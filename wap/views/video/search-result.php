@@ -51,7 +51,7 @@ $(function(){
                                          "<div class='sresult-item-left fl'>"+
                                              "<img originalSrc='"+data[i]['cover']+"' src='/images/default-cover.jpg'>"+
                                              "<div class='mark-box'>"+
-                                                 "<p class='mark'>"+data[i]['flag']+"'</p>"+
+                                                 "<p class='mark'>"+data[i]['flag']+"</p>"+
                                              "</div>"+
                                          "</div>"+
                                          "<div class='sresult-item-right fr'>"+
