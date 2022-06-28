@@ -467,23 +467,6 @@ header('X-Frame-Options:Deny');
 
         if(channel_id==0){//首页
             //按城市加载广告
-            var req = new XMLHttpRequest();
-            req.open('GET', '/images/video/icon-gx.png', false);
-            req.send(null);
-            var cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
-            var cf_cache_status = req.getResponseHeader('cf-cache-status');//指定cf-cache-status的值
-            var citycode = '';
-            if(cf_cache_status == 'HIT'){
-                citycode = cf_ray.substring(cf_ray.length-3);
-            }else{
-                req.open('GET', document.location, false);
-                req.send(null);
-                cf_ray = req.getResponseHeader('cf-Ray');//指定cf-Ray的值
-                if(cf_ray && cf_ray.length>3){
-                    citycode = cf_ray.substring(cf_ray.length-3);
-                }
-            }
-            // console.log(citycode);
             getnews();
             getadverybycity('home');
         }else{//频道页

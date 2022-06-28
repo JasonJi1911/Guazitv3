@@ -320,7 +320,7 @@ $this->registerJs($js);
                     <a class="Title-more" href="<?= Url::to(['list', 'channel_id' => $channel, 'tag' => $tag, 'area' => $area])?>">更多></a>
                 </li>
                 <?php foreach ($labels['list'] as $key => $list): ?>
-                    <?php if($key < 8) :?>
+                    <?php if($key < 16) :?>
                     <li class="Movie-list">
                         <a class="Movie" href="<?= Url::to(['detail', 'video_id' => $list['video_id']])?>">
                             <img class="Movie-img i_background_errorimg" originalSrc="<?= $list['cover']?>" src="/images/newindex/default-cover.png" />

@@ -527,7 +527,7 @@ else
                         </div>
                         <div class="qy-player-side-body v_scroll_plist_bc qy-advunder-show">
                             <div class="body-inner">
-                                <?php if($data['channel_id'] == '2' || $data['channel_id'] == '4'){?>
+                                <?php if($data['channel_id'] == '2'){?>
                                     <div class="side-content v_scroll_plist_content" style="transform: translateY(0px);">
                                         <div class="padding-box">
                                             <div class="qy-episode-tab">
@@ -682,7 +682,7 @@ else
                                             </div>
                                         </div>
                                     </div>
-                                <?php } elseif($data['channel_id'] > '4'){?>
+                                <?php } elseif($data['channel_id'] >= '4'){?>
                                     <div class="side-content v_scroll_plist_content" style="transform: translateY(0px);">
 <!--                                        <div class="qy-episode-update">-->
 <!--                                            <p class="update-tip">-->

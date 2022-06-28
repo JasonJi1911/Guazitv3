@@ -13,7 +13,7 @@ class ChannelController extends BaseController
         $commonDao = new CommonDao();
         $data['list'] = $commonDao->videoChannel(['channel_id', 'channel_name', 'icon']);
         // 插入排行榜
-        array_push($data['list'], ['channel_id' => 0, 'channel_name' => '排行榜', 'icon' => API_HOST_PATH . '/img/king_kong/rank.png']);
+        array_push($data['list'], ['channel_id' => 0, 'channel_name' => '排行榜', 'icon' => APPAPI_HOST_PATH . '/img/king_kong/rank.png']);
 
         return $data;
     }

@@ -14647,6 +14647,9 @@ body.ZT-black,
 	.channel-new>.Sports-box>.Movie-list:last-of-type, .update-box .NewTrailer-box>.Movie-list:nth-of-type(8) {
 		display: none;
 	}
+	.channel-new>.Sports-box>.Movie-list:nth-last-of-type(2) {
+		display: none;
+	}
 	.box02-new .Movie, .update-box .Movie{
 		width: 213px;
 		height: 291px;
@@ -14674,6 +14677,9 @@ body.ZT-black,
 		display: none;
 	}
 	.channel-new>.Sports-box>.Movie-list:nth-last-of-type(2), .update-box .NewTrailer-box>.Movie-list:nth-of-type(8) {
+		display: none;
+	}
+	.channel-new>.Sports-box>.Movie-list:nth-last-of-type(3), .channel-new>.Sports-box>.Movie-list:nth-last-of-type(4) {
 		display: none;
 	}
 	.box02-new .Movie, .update-box .Movie{
