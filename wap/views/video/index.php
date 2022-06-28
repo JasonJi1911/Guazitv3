@@ -121,7 +121,8 @@ header('X-Frame-Options:Deny');
 
     .bgcover
     {
-        background-color: hsla(0,0%,100%,.54);
+        /*background-color: hsla(0,0%,100%,.54);*/
+        background-color: rgba(255, 255, 255, 0.6);
         position: fixed;
         top: 0;
         left: 0;
@@ -131,19 +132,34 @@ header('X-Frame-Options:Deny');
     }
     
     .jBox-closeButton-box .jBox-closeButton {
-        width: 40px;
-        height: 40px;
+        cursor: pointer;
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        background: #fff;
+        border-radius: 50%;
         bottom: -50px;
         right: 50%;
-        margin-right: -15px;
-        background: transparent;
-        z-index: 10001;
+        margin-right: -12px;
+        z-index: 1;
+    }
+    .jBox-closeButton-box .jBox-closeButton svg {
+        width: 10px;
+        height: 10px;
+        margin-top: -5px;
+        margin-right: -5px;
+    }
+    .jBox-closeButton svg {
         position: absolute;
-        color: #fff;
-        padding: 10px 0 0 10px;
-        font-size: 16px;
-        background: url(/images/video/icon-gb-01.png) no-repeat center center;
-        background-size: 40px 40px;
+        top: 50%;
+        right: 50%;
+    }
+    .jBox-closeButton path {
+        fill: #aaa;
+    }
+
+    .jBox-closeButton path {
+        transition: fill .2s;
     }
     .a-small{
         width: 50%;
@@ -419,6 +435,9 @@ header('X-Frame-Options:Deny');
             <img src="" style="border: 0px;width: 100%;max-height: 100%;margin: 0 auto;">
         </a>
         <div class="jBox-closeButton jBox-noDrag">
+            <svg viewBox="0 0 24 24">
+                <path d="M22.2,4c0,0,0.5,0.6,0,1.1l-6.8,6.8l6.9,6.9c0.5,0.5,0,1.1,0,1.1L20,22.3c0,0-0.6,0.5-1.1,0L12,15.4l-6.9,6.9c-0.5,0.5-1.1,0-1.1,0L1.7,20c0,0-0.5-0.6,0-1.1L8.6,12L1.7,5.1C1.2,4.6,1.7,4,1.7,4L4,1.7c0,0,0.6-0.5,1.1,0L12,8.5l6.8-6.8c0.5-0.5,1.1,0,1.1,0L22.2,4z"></path>
+            </svg>
         </div>
     </div>
 </div>

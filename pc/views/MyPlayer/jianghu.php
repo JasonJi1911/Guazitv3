@@ -588,29 +588,20 @@ function initialUrl($url)
         /*height: 100%;*/
         align-items: center;
     }
-    #pause-img img.close-pause-img{
+    #pause-img .close-pause-div{
         position: absolute;
-        display:block;
-        width: 100px;
-        height: auto;
-        right: 10px;
-        top: 10px;
+        color: #f4f4f4;
+        font-size: 14px;
+        background-color: hsla(0, 0%, 0%, 0.42);
+        padding: 2px 4px;
+        margin: 4px;
+        border-radius: 3px;
+        right: 0;
     }
-
     @media screen and (max-width:1910px) {
         #load1-img {
           width: 1025px;
           height: 640px;
-        }
-        /*#pause-img {*/
-        /*    width: 625px;*/
-        /*    height: 440px;*/
-        /*}*/
-        /*#pause-img{*/
-        /*    top:60px;*/
-        /*}*/
-        #pause-img img.close-pause-img{
-            width: 80px;
         }
     }
 
@@ -618,16 +609,6 @@ function initialUrl($url)
         #load1-img {
             width: 857px;
             height: 500px;
-        }
-        /*#pause-img {*/
-        /*    width: 457px;*/
-        /*    height: 300px;*/
-        /*}*/
-        /*#pause-img{*/
-        /*    top:60px;*/
-        /*}*/
-        #pause-img img.close-pause-img{
-            width: 60px;
         }
     }
     #player-load1-warn{
@@ -1181,24 +1162,11 @@ function initialUrl($url)
                     }
                     defaultAdvertInfo(advert);
                     var ad = {};
-                    if(res.data.advert.videotop.ad_image){
-                        ad = res.data.advert.videotop;
-                        $("#videotop").html('<div class="play-box video-add-column video-detail-ad"><a href="'+ad.ad_skip_url+'" target="_blank"><img src="'+ad.ad_image+'" /></a></div>')
-                    }
-                    if(res.data.advert.videoright.ad_image){
-                        ad = res.data.advert.videoright;
-                        $("#videoright").html('<div class="video-right-ad-img"><a href="'+ad.ad_skip_url+'" target="_blank"><img src="'+ad.ad_image+'"></a></div>');
-                    }
-                    if(res.data.advert.videobottom.ad_image){
-                        ad = res.data.advert.videobottom;
-                        $("#videobottom").html('<div class="play-box video-add-column video-detail-ad"><a href="'+ad.ad_skip_url+'" target="_blank" class="video-bottom-add"><img src="'+ad.ad_image+'"></a></div>');
-                    }
-
                     if(res.data.advert.playstop.ad_image){
                         ad = res.data.advert.playstop;
                         var pausehtml = '<div id="pause-img" style="display:none;">'+
                                 '<a href="'+ad.ad_skip_url+'" target="_blank">'+
-                                '<img src="/images/Index/ic_ad_prase.png" class="close-pause-img" onclick="closePauseAD();">'+
+                                '<div class="close-pause-div" onclick="closePauseAD();">关闭</div>'+
                                 '<img src="'+ad.ad_image+'" class="aposition-img" />'+
                                 '</a></div>';
                         $("#player1").prepend(pausehtml);

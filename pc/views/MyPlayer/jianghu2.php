@@ -588,13 +588,15 @@ function initialUrl($url)
         /*height: 100%;*/
         align-items: center;
     }
-    #pause-img img.close-pause-img{
+    #pause-img .close-pause-div{
         position: absolute;
-        display:block;
-        width: 100px;
-        height: auto;
-        right: 10px;
-        top: 10px;
+        color: #f4f4f4;
+        font-size: 14px;
+        background-color: hsla(0, 0%, 0%, 0.42);
+        padding: 2px 4px;
+        margin: 4px;
+        border-radius: 3px;
+        right: 0;
     }
 
     @media screen and (max-width:1910px) {
@@ -602,32 +604,12 @@ function initialUrl($url)
             width: 1025px;
             height: 640px;
         }
-        /*#pause-img {*/
-        /*    width: 625px;*/
-        /*    height: 440px;*/
-        /*}*/
-        /*#pause-img{*/
-        /*    top:60px;*/
-        /*}*/
-        #pause-img img.close-pause-img{
-            width: 80px;
-        }
     }
 
     @media screen and (max-width:1525px) {
         #load1-img {
             width: 857px;
             height: 500px;
-        }
-        /*#pause-img {*/
-        /*    width: 457px;*/
-        /*    height: 300px;*/
-        /*}*/
-        /*#pause-img{*/
-        /*    top:60px;*/
-        /*}*/
-        #pause-img img.close-pause-img{
-            width: 60px;
         }
     }
     #player-load1-warn{
@@ -1187,7 +1169,7 @@ function initialUrl($url)
         if(isset($advert_pc['advert_stop_pc'])){
             $advert_stop_html = '<div id="pause-img" style="display:none;">'.
                 '<a href="'.$advert_pc['advert_stop_pc']['ad_skip_url'].'" target="_blank">'.
-                '<img src="/images/Index/ic_ad_prase.png" class="close-pause-img" onclick="closePauseAD();">'.
+                '<div class="close-pause-div" onclick="closePauseAD();">关闭</div>'.
                 '<img src="'.$advert_pc['advert_stop_pc']['ad_image'].'" class="aposition-img" />'.
                 '</a></div>';
         }?>

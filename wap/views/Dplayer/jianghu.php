@@ -153,7 +153,7 @@ $type =initialUrl($url);
     #pause-img a{
         display: block;
         width: 100%;
-        height: 100%;
+        max-height: 100%;
         overflow: hidden;
         position: relative;
     }
@@ -162,13 +162,15 @@ $type =initialUrl($url);
         /*height: 100%;*/
         align-items: center;
     }
-    #pause-img img.close-pause-img{
+    #pause-img .close-pause-div{
         position: absolute;
-        display:block;
-        width: 50px;
-        height: auto;
-        right: 10px;
-        top: 10px;
+        color: #f4f4f4;
+        font-size: 14px;
+        background-color: hsla(0, 0%, 0%, 0.42);
+        padding: 2px 4px;
+        margin: 4px;
+        border-radius: 3px;
+        right: 0;
     }
 </style>
 
@@ -249,6 +251,12 @@ $type =initialUrl($url);
                 }, 10000 );
             }
         });
+
+        $("#player1").on('click', '.dplayer-video-current, .dplayer-controller-mask', function() {
+            if(dp1.paused){
+                dp1.play();
+            }
+        });
     }
 
 </script>
@@ -310,7 +318,7 @@ $type =initialUrl($url);
                         ad = res.data.advert.playstop;
                         var pausehtml = '<div id="pause-img" style="display:none;">'+
                             '<a href="'+ad.ad_skip_url+'" target="_blank">'+
-                            '<img src="/images/video/ic_ad_prase.png" class="close-pause-img" onclick="closePauseAD();">'+
+                            '<div class="close-pause-div" onclick="closePauseAD();">关闭</div>'+
                             '<img src="'+ad.ad_image+'" class="aposition-img" />'+
                             '</a></div>';
                         $("#player1").prepend(pausehtml);

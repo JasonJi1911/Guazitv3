@@ -60,7 +60,7 @@ mySwiper.on('tap', function (swiper, e) {
                     "<div class='sresult-item-left fl'>"+
                     "<img src='"+data[i]['cover']+"' alt=''>"+
                     "<div class='mark-box'>"+
-                    "<p class='mark'>"+data[i]['flag']+"'</p>"+
+                    "<p class='mark'>"+data[i]['flag']+"</p>"+
                     "</div>"+
                     "</div>"+
                     "<div class='sresult-item-right fr'>"+
