@@ -986,6 +986,7 @@ $this->registerJs($js);
     }?>
     var trailer_length = <?=$trailercount?>;
 
+    var isnewsShow = true;
     $(function () {
         //按城市加载广告
         advertByCity('home');
@@ -1034,7 +1035,7 @@ $this->registerJs($js);
                     var str = refreshNews(res.data.newslist);
                     if(str!=''){
                         $('#today-news').append(str);
-                        $('#today-news').show()
+                        $('#today-news').show();
                     }
                 }
             },
@@ -1076,6 +1077,10 @@ $this->registerJs($js);
         return html;
     }
     function hideImg(){
+        if(!isnewsShow){
+            return false;
+        }
         $('#today-news').hide();
+        isnewsShow = false;
     }
 </script>
