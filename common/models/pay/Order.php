@@ -72,6 +72,7 @@ class Order extends \xiang\db\ActiveRecord implements GoodsTypeInterface, PayCha
         return [
             self::PRODUCT_APP  => 'App',
             self::PRODUCT_MP   => '公众号',
+            self::PRODUCT_PC   => 'PC'
         ];
     }
 
@@ -83,6 +84,7 @@ class Order extends \xiang\db\ActiveRecord implements GoodsTypeInterface, PayCha
         self::FROM_CHANNEL_IOS      => self::PRODUCT_APP,
         self::FROM_CHANNEL_ANDROID  => self::PRODUCT_APP,
         self::FROM_CHANNEL_MP       => self::PRODUCT_MP,
+        self::FROM_CHANNEL_PC       => self::PRODUCT_PC,
     ];
 
     /**

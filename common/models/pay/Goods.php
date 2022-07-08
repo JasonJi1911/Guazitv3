@@ -21,6 +21,7 @@ use Yii;
  * @property string $apple_id 对应苹果商店商品id
  * @property int $tag 标记，1首充、2热销、3推荐
  * @property int $limit_num 限购（0-不限购，大于0为限购次数）
+ * @property int $product 渠道
  * @property int $created_at 创建时间
  * @property int $updated_at 更新时间
  * @property int $deleted_at 删除时间
@@ -51,7 +52,17 @@ class Goods extends \xiang\db\ActiveRecord implements GoodsTypeInterface
         'baoyue' => self::TYPE_OPEN_VIP,
 
     ];
-    
+
+    const SOURCE_APP     = 1;
+    const SOURCE_WAP     = 2;
+    const SOURCE_PC      = 3;
+
+    public static $sourceGoods=[
+        self::SOURCE_APP        => 'App端',
+        self::SOURCE_WAP         => 'Wap端',
+        self::SOURCE_PC        => 'Pc端',
+    ];
+
     /**
      * {@inheritdoc}
      */

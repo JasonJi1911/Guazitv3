@@ -10,7 +10,7 @@ class Goods extends \common\models\pay\Goods
     {
         return [
             [['title', 'price', 'limit_num', 'content', 'display_order', 'tag'], 'required'],
-            [['price', 'original_price', 'giving', 'content', 'type', 'tag', 'limit_num', 'created_at', 'updated_at', 'deleted_at'], 'integer'],
+            [['price', 'original_price', 'giving', 'content', 'type', 'tag', 'limit_num', 'created_at', 'updated_at', 'deleted_at','product'], 'integer'],
             [['title'], 'string', 'max' => 32],
             [['icon', 'apple_id'], 'string', 'max' => 64],
             [['desc'], 'string', 'max' => 512],
@@ -41,6 +41,7 @@ class Goods extends \common\models\pay\Goods
             'created_at' => '创建时间',
             'updated_at' => '更新时间',
             'deleted_at' => '删除时间',
+            'product'  => '展示渠道'
         ];
     }
 }

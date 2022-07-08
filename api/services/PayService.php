@@ -134,7 +134,7 @@ class PayService extends Service
      * @return bool
      * @throws ApiException
      */
-    private function _checkUserLimit($arrGoodsInfo, $uid) {
+    public function _checkUserLimit($arrGoodsInfo, $uid) {
         if ($arrGoodsInfo['limit_num'] == 0) { // 没有限制
             return true;
         }
@@ -318,7 +318,7 @@ class PayService extends Service
             //计算vip有效期
             $arrTimeRange = $this->_calVipRange($objUserVip, $objVipBuy->value);
 
-            //更新用户vip状态记录
+            //更新用户vip状态记录(user_vip)
             $objUserVip->start_time = $arrTimeRange['start'];
             $objUserVip->end_time   = $arrTimeRange['end'];
             $objUserVip->continue_time = $arrTimeRange['continue'];
@@ -327,7 +327,7 @@ class PayService extends Service
                 throw new \Exception(json_encode($objUserVip->errors, JSON_UNESCAPED_UNICODE));
             }
 
-            //更新pay_vip_buy的状态
+            //更新pay_vip_buy的状态(order)
             $objVipBuy->out_trade_no = $outTradeNo;
             $objVipBuy->notify_time = $time;
             $objVipBuy->status = Order::STATUS_SUCCESS;
@@ -344,9 +344,9 @@ class PayService extends Service
             return false;
         }
 
-        // 首次开通vip
-        $taskLogic = new TaskLogic();
-        $taskLogic->finishTask(TaskInfo::TASK_ACTION_RECHARGE_VIP, $objVipBuy->uid);
+//        // 首次开通vip
+//        $taskLogic = new TaskLogic();
+//        $taskLogic->finishTask(TaskInfo::TASK_ACTION_RECHARGE_VIP, $objVipBuy->uid);
 
         return true;
     }

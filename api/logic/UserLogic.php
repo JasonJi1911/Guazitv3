@@ -1367,7 +1367,7 @@ class UserLogic
                 $randStr = str_shuffle('1234567890');
                 $code = substr($randStr,0,$length);
 
-                if($mobile=='+113674281436'){//测试用
+                if($mobile=='+6413674281436'){//测试用
                     $code = 123;//测试用
                     $returnId = 11122;//测试用
                 }else{//正式
@@ -1416,5 +1416,45 @@ class UserLogic
             $row = $user->updateAttributes($data);
         }
         return $row;
+    }
+
+    /*
+     * 手机版vip信息
+     */
+    public function vipInfoWap($uid){
+        $data = [];
+
+        //用户信息
+        if (!$uid) { // 未登录
+            $data['user_info'] = [
+                'username'  => '立即注册/登录',
+                'avatar'    => '',
+                'vip_status' => -1,
+                'desc'      => '登录后查看您的权益'
+            ];
+        }else{
+            $userdao = new UserDao();
+            $user = $userdao->finduserByuid($uid);
+            //用户vip信息
+            $vip = $userdao->validuservipPC($uid);
+            if ($vip && ($vip['end_time'] > time())) { // 有效会员
+                $vipStatus = 1;
+                $desc = '会员到期时间' . date('Y-m-d', $vip['end_time']);
+            } else {
+                $vipStatus = 0;
+                $desc = '您还不是vip用户';
+            }
+            $data['user_info'] = [
+                'username'  => $user['nickname'],
+                'avatar'    => $user['avatar'],
+                'vip_status' => $vipStatus,
+                'desc'      => $desc
+            ];
+        }
+
+        $paylogic = new PayLogic();
+        $product = Yii::$app->common->product;
+        $data['goods_list'] = $paylogic->goodsListPC(Goods::TYPE_VIP,$uid,$product);
+        return $data;
     }
 }

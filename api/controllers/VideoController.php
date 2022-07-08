@@ -11,6 +11,7 @@ use api\helpers\Common;
 use api\logic\ChannelLogic;
 use api\logic\CommentLogic;
 use api\logic\PayLogic;
+use api\logic\UserLogic;
 use api\logic\VideoLogic;
 use api\logic\AdvertLogic;
 use api\models\user\UserRelations;
@@ -1030,6 +1031,74 @@ class VideoController extends BaseController
         $data['favorite'] = $videodao->findVideoFavorite($uid);
         //消息
         $data['message'] = $userdao->messagePC($uid);
+
+        return $data;
+    }
+
+    /*
+     * 彩虹易支付异步回调
+     * @return string
+     */
+    public function actionNewNotify()
+    {
+        $param = [];
+        $param['pid'] = $this->getParam('pid', "");
+        $param['trade_no'] = $this->getParam('trade_no', "");
+        $param['out_trade_no'] = $this->getParam('out_trade_no', "");
+        $param['type'] = $this->getParam('type', "");
+        $param['name'] = $this->getParam('name', "");
+        $param['money'] = $this->getParam('money', "");
+        $param['trade_status'] = $this->getParam('trade_status', "");
+        $param['pay_sign'] = $this->getParam('pay_sign', "");
+        $param['sign_type'] = $this->getParam('sign_type', "");
+
+        $payLogic = new PayLogic();
+        $result = $payLogic->newNotifyurl($param);
+
+        return $result;
+    }
+
+
+    /*
+     * 提交订单
+     */
+    public function actionCreateOrder(){
+        $param = [];
+        $param['WIDout_trade_no'] = $this->getParam('WIDout_trade_no', 0);
+        $param['uid'] = $this->getParam('uid', "");
+        $param['WIDsubject'] = $this->getParam('WIDsubject', "");
+//        $param['vipday'] = $this->getParam('vipday', "");
+        $param['WIDtotal_fee'] = $this->getParam('WIDtotal_fee', "");
+        $param['type'] = $this->getParam('type', "");
+        $param['goodsId'] = $this->getParam('goodsId', "");
+
+        $paylogic = new PayLogic();
+        $data = $paylogic->commitOrder($param);
+        return $data;
+    }
+
+    public function actionPaySign(){
+        $param = [];
+        $param['pid'] = $this->getParam('pid', "");
+        $param['type'] = $this->getParam('type', "");
+        $param['out_trade_no'] = $this->getParam('out_trade_no', "");
+        $param['notify_url'] = $this->getParam('notify_url', "");
+        $param['name'] = $this->getParam('name', "");
+        $param['money'] = $this->getParam('money', "");
+        $param['pay_sign'] = $this->getParam('pay_sign', "");
+        $param['sign_type'] = "MD5";
+
+        $paylogic = new PayLogic();
+        $data = $paylogic->getSign($param);
+        return $data;
+    }
+
+    public function actionVipWap(){
+        $uid = $this->getParam('uid', "");
+
+        $userlogic = new UserLogic();
+        $data = $userlogic->vipInfoWap($uid);
+        $data['uid'] = $uid;
 
         return $data;
     }

@@ -3,7 +3,9 @@ namespace api\controllers;
 
 use api\exceptions\Exception;
 use api\helpers\ErrorCode;
+use api\logic\PayLogic;
 use api\logic\TaskLogic;
+use api\models\pay\Goods;
 use api\models\user\TaskInfo;
 use api\models\user\User;
 use api\models\user\UserAssets;
@@ -608,9 +610,13 @@ class UserController extends BaseController
         $result = $userdao->finduserByuid($uid);
         $return['user'] = $result;
         $vip = $userdao->validuservipPC($uid);
-        if($vip){
+        if ($vip && ($vip['end_time'] > time())) { // 有效会员
             $return['vip'] = $vip;
             $return['isvip'] = 1;
+            $return['vip_desc'] = '会员到期时间' . date('Y-m-d', $vip['end_time']);
+        } else {
+            $return['isvip'] = 0;
+            $return['vip_desc'] = '尊享广告等8大权益';
         }
         return $return;
     }
@@ -674,5 +680,23 @@ class UserController extends BaseController
             $result['msg'] = '修改失败!';
         }
         return $result;
+    }
+
+    //购买会员信息
+    public function actionBuyVip(){
+        $uid = $this->getParam('uid', "");
+        $product = Yii::$app->common->product;
+        $userdao = new UserDao();
+        $data  = [];
+        $data['user'] = $userdao->finduserByuid($uid);
+
+        $vip = $userdao->validuservipPC($uid);
+        if($vip){
+            $data['vip'] = $vip;
+            $data['isvip'] = 1;
+        }
+        $payLogic = new PayLogic();
+        $data['goodlist'] = $payLogic->goodsListPC(Goods::TYPE_VIP,$uid,$product);
+        return $data;
     }
 }

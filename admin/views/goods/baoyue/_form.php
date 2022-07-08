@@ -52,6 +52,7 @@ $radioList = array_merge([0 => '无'], Goods::$tagMap);
     <?php endif ?>
 
 
+    <?= $form->field($model, 'product')->dropDownList($model::$sourceGoods)->wrapper(['width' => 2])?>
 
     <?= $form->field($model, 'display_order')->numberInput(['min' => 0, 'max' => 255])->hint('值越大显示越靠前，最大255') ?>
 

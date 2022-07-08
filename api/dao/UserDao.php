@@ -654,4 +654,20 @@ class UserDao extends BaseDao
         return $row;
     }
 
+    /*
+     * 新增系统消息
+     */
+    public function addMessagePC($uid,$name){
+        $usermessage = new UserMessage();
+        $usermessage->uid     = $uid;
+        $usermessage->type    = UserMessage::TYPE_MESSAGE;
+        $usermessage->content = $name."购买成功";
+        $usermessage->created_at = time();
+
+        if (!$usermessage->insert()) {
+            throw new \Exception(json_encode($usermessage->errors, JSON_UNESCAPED_UNICODE));
+            return false;
+        }
+        return true;
+    }
 }

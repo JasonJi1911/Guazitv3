@@ -580,54 +580,41 @@ header('X-Frame-Options:Deny');
         });
     }
 
-    var circle = 0;
     var isloadnews = true;
-    var news = [];
+    var isnewsShow = true;
     function getnews(){
         if(isloadnews){
             isloadnews = false;
-            if(circle == 0 && news.length<=0){
-                //获取新闻
-                $.ajax({
-                    url: '/video/get-news',
-                    data: {},
-                    type: 'get',
-                    cache: false,
-                    dataType: 'json',
-                    timeout: 5000,
-                    success:function(res) {
-                        if(res.errno==0 && res.data.newslist){
-                            news = res.data.newslist;
-                            refreshNews();
-                            circle++;
-                        }
-                    },
-                    error : function() {
-                        console.log("新闻接口获取失败");
-                    },
-                    complete:function(XHR,TextStatus){
-                        isloadnews = true;
-                        if(TextStatus=='timeout'){ //超时执行的程序
-                            console.log("请求超时！");
-                        }
+            //获取新闻
+            $.ajax({
+                url: '/video/get-news',
+                data: {},
+                type: 'get',
+                cache: false,
+                dataType: 'json',
+                timeout: 5000,
+                success:function(res) {
+                    if(res.errno==0 && res.data.newslist){
+                        refreshNews(res.data.newslist);
                     }
-                });
-            }else{
-                isloadnews = true;
-                refreshNews();
-                if(news.length > (circle*4+8) ){
-                    circle++;
-                }else{
-                    circle = 0;
+                },
+                error : function() {
+                    console.log("新闻接口获取失败");
+                },
+                complete:function(XHR,TextStatus){
+                    isloadnews = true;
+                    if(TextStatus=='timeout'){ //超时执行的程序
+                        console.log("请求超时！");
+                    }
                 }
-            }
+            });
         }
     }
 
-    function refreshNews(){
+    function refreshNews(news){
         var html = '';
-        if(news.length>0){
-            for(var i=circle*4;i<(circle*4+4);i++){
+        if(news.length>4){
+            for(var i=0;i<4;i++){
                 html += '<a class="a-small" href="https://www.yeeyi.com/news/details/'+news[i].aid+'" >'+
                             '<img src="'+news[i].pic+'" class="img-small" onerror="hideImg()">'+
                             '<h5 class="video-item-name text-left" >'+news[i].title+'</h5>'+
@@ -642,10 +629,13 @@ header('X-Frame-Options:Deny');
     }
 
     function hideImg(){
-        // $('.J_today_news').hide();
-        getnews();
+        if(!isnewsShow){
+            return false;
+        }
+        $('.J_today_news').hide();
+        isnewsShow = false;
     }
-	
+
 	function refreshAdvert(addata)
 	{
 	    var content = '';

@@ -8,7 +8,8 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子,tv,瓜子tv,�
 ?>
 <style>
     body{background-color:#F1F5F8;font-family: PingFangSC;}
-    .user-title{height:3rem;background-color: #FFFFFF;padding:0.75rem 15px;display: flex;align-items: center;flex-direction: row;}
+    div,a{font-family: PingFangSC;}
+    .user-title{height:2.5rem;background-color: #FFFFFF;padding:0.5rem 15px;display: flex;align-items: center;flex-direction: row;}
     .user-title img.user-avatar{width: 1.5rem;height:1.5rem;}
     .user-title div{width: calc(100% - 1.5rem - 36px);height:1.5rem;line-height: 1.5rem;margin-left: 15px;font-size: 21px;font-weight: bold;color: #1E1E1E;}
     .user-list{width: calc(100% - 30px);height: 4rem;font-size: 15px;background-color: #FFFFFF;font-weight: bold;color: #282828;margin: 15px;}
@@ -18,6 +19,8 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子,tv,瓜子tv,�
     .user-list .user-detail div{width: calc(100% - 84px);}
     .user-list .user-detail img:first-of-type{width: 17px;height:17px;}
     .user-list .user-detail img:last-of-type{width: 6px;height:10px;}
+    .user-list .user-detail div.vip-link-title{width: 80px;color: #7B5533;}
+    .user-list .user-detail div.vip-link-tip{text-align: right;font-size: 12px;color: #957C64;}
 </style>
 <!-- 未登录 -->
 <a href="<?= Url::to(['/video/login'])?>" class="user-title" style="<?=$data['notlogin_show']?>" >
@@ -30,7 +33,14 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子,tv,瓜子tv,�
     <div><?=$data['user']['nickname']?></div>
     <img class="user-arrow" src="/images/video/right_gray.png" />
 </a>
-
+<div class="user-list" style="height:1rem;background-image: url(/images/video/pay_vip_img.png);background-size: 100% 1rem;" >
+    <a class="user-detail" href="<?= Url::to(['/video/buy-vip'])?>" >
+        <img src="/images/video/ic_mine_vip.png" />
+        <div class="vip-link-title">我的会员</div>
+        <div class="vip-link-tip"><?=$data['vip_desc']?></div>
+        <img src="/images/video/right_gray.png" />
+    </a>
+</div>
 <div class="user-list" >
     <a class="user-detail" href="<?= Url::to(['/video/watch-log'])?>" >
         <img src="/images/video/watchlog.png" />

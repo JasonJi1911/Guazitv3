@@ -26,6 +26,7 @@ class PayErrorLog extends \yii\db\ActiveRecord
     const TYPE_ORDER_INCORRECT = 5; //订单信息不一样
     const TYPE_CONFIRM_TRADE_FAILED = 6; //处理订单支付失败
     const TYPE_GOODS_NOT_EXIST = 7; //订单购买的商品不存在
+    const TYPE_SYSTEM_MESSAGE_FAILED = 8; //系统消息通知失败
 
 
     static public $typeMap = [
@@ -36,6 +37,7 @@ class PayErrorLog extends \yii\db\ActiveRecord
         self::TYPE_ORDER_INCORRECT => '订单信息不一致',
         self::TYPE_CONFIRM_TRADE_FAILED => '处理订单失败',
         self::TYPE_GOODS_NOT_EXIST => '订单购买的商品不存在',
+        self::TYPE_SYSTEM_MESSAGE_FAILED => '系统消息通知失败'
     ];
     
     /**

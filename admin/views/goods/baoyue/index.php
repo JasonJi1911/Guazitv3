@@ -131,6 +131,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         return '无限制';
                     }
                 ],
+                [
+                    'label' => '展示渠道',
+                    'format' => 'raw',
+                    'value' => function($model){
+                        return Goods::$sourceGoods[$model->product];
+                    }
+                ],
                 'display_order',
                 [
                     'class' => 'metronic\grid\ActionColumn',

@@ -302,10 +302,9 @@ class VideoController extends BaseController
         $uid = Yii::$app->user->id;
         $citycode = Yii::$app->request->get('citycode', 0);//城市三字码
         $page = Yii::$app->request->get('page', '');
-        $chapterId = Yii::$app->request->get('chapterId', 0);
+//        $chapterId = Yii::$app->request->get('chapterId', 0);
 
-        $data = [];
-
+//        $data = [];
         //查广告
         $data = Yii::$app->api->get('/video/advert', ['page' => $page, 'city'=> '','citycode' => $citycode, 'uid' => $uid]);
 
@@ -366,6 +365,7 @@ class VideoController extends BaseController
             $data['user'] = $user['user'];
             $data['vip'] = $user['vip'];
             $data['isvip'] = $user['isvip'];
+            $data['vip_desc'] = $user['vip_desc'];
         }else{
 //            $errno = -1;
             $data['login_show'] = 'display:none';
@@ -373,6 +373,7 @@ class VideoController extends BaseController
             $data['user'] = [];
             $data['vip'] = [];
             $data['isvip'] = 0;
+            $data['vip_desc'] = '尊享广告等8大权益';
         }
         return $this->render('personal',[
             'pageTab'       => $pageTab,
@@ -745,5 +746,43 @@ class VideoController extends BaseController
         }
 
         return Tool::responseJson($errno,'操作成功',$data);
+    }
+    /*
+     * 开通会员页
+     */
+    public function actionBuyVip(){
+        $pageTab = "buyvip";
+        $uid = Yii::$app->user->id;
+
+        //开通会员
+        $data = Yii::$app->api->get('/video/vip-wap',['uid'=>$uid]);
+
+        return $this->render('buyvip',[
+            'pageTab'       => $pageTab,
+            'data'      => $data,
+        ]);
+    }
+
+    /*
+     * 提交订单
+     */
+    public function actionCreateOrder(){
+        $param = [];
+        $param['uid'] = Yii::$app->request->get('uid', "");//用户id
+        $param['WIDsubject'] = Yii::$app->request->get('WIDsubject', "");//商品名称
+        $param['WIDtotal_fee'] = Yii::$app->request->get('WIDtotal_fee', "");//金额
+        $param['type'] = Yii::$app->request->get('type', "");//支付方式
+        $param['goodsId'] = Yii::$app->request->get('goodsId', "");//商品id
+        $param['WIDout_trade_no'] = date("YmdHis").mt_rand(100,999);//订单号
+
+        $data = Yii::$app->api->get('/video/create-order',$param);
+
+        if($data){
+            return $this->redirect(PAY_HOST_PATH.'/epayapi.php?WIDout_trade_no='.$param['WIDout_trade_no']
+                .'&type='.$param['type'].'&WIDsubject='.$param['WIDsubject'].'&WIDtotal_fee='.$param['WIDtotal_fee']
+                .'&return_url='.WAP_HOST_PATH);
+        }else{
+            return $this->redirect('/video/index');
+        }
     }
 }
