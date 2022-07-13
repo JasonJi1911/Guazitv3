@@ -1005,6 +1005,10 @@ class VideoController extends BaseController
         if($vip){
             $data['vip'] = $vip;
             $data['isvip'] = 1;
+            $data['desc'] = '会员到期时间' . date('Y-m-d', $vip['end_time']);
+        }else{
+            $data['isvip'] = 0;
+            $data['desc'] = '您还不是vip用户';
         }
 
         return $data;
@@ -1032,6 +1036,10 @@ class VideoController extends BaseController
         //消息
         $data['message'] = $userdao->messagePC($uid);
 
+        $userlogic = new UserLogic();
+        $pay = $userlogic->vipInfoWap($uid);
+
+        $data = array_merge($data, $pay);
         return $data;
     }
 
@@ -1067,13 +1075,13 @@ class VideoController extends BaseController
         $param['WIDout_trade_no'] = $this->getParam('WIDout_trade_no', 0);
         $param['uid'] = $this->getParam('uid', "");
         $param['WIDsubject'] = $this->getParam('WIDsubject', "");
-//        $param['vipday'] = $this->getParam('vipday', "");
         $param['WIDtotal_fee'] = $this->getParam('WIDtotal_fee', "");
         $param['type'] = $this->getParam('type', "");
         $param['goodsId'] = $this->getParam('goodsId', "");
 
         $paylogic = new PayLogic();
         $data = $paylogic->commitOrder($param);
+
         return $data;
     }
 
@@ -1101,5 +1109,23 @@ class VideoController extends BaseController
         $data['uid'] = $uid;
 
         return $data;
+    }
+
+    /*
+     * 定时查询vip信息
+     */
+    public function actionVipInfo(){
+        $uid = $this->getParam('uid', "");
+        //用户vip信息
+        $userdao = new UserDao();
+        $vip = $userdao->validuservipPC($uid);
+        if($vip){//有效会员
+            $vip['isvip'] = 1;
+            $vip['desc'] = '会员到期时间' . date('Y-m-d', $vip['end_time']);
+        }else{
+            $vip['isvip'] = 0;
+            $vip['desc'] = '您还不是vip用户';
+        }
+        return $vip;
     }
 }

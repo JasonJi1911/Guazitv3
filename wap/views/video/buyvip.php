@@ -21,9 +21,8 @@ $(function (){
         $("input[name='WIDtotal_fee']").val($(this).find(".vip-goods-money").text().replaceAll("¥",""));
         $("input[name='goodsId']").val($(this).attr("data-id"));
     });
-    console.log($("input[type='radio']:checked").val());
+    // console.log($("input[type='radio']:checked").val());
 });
-
 JS;
 
 $this->registerJs($js);
@@ -67,7 +66,7 @@ $this->registerJs($js);
     <div class="text-center title-width">会员中心</div>
     <div class="div-box position-r"></div>
 </div>
-<form name="alipayment" action="/video/create-order" method="get" >
+<form name="alipayment" action="/video/create-order" method="get" onsubmit="return toVaild()" >
     <input name="uid" type="hidden" value="<?=$data['uid']?>"/>
     <input  type="hidden" name="WIDsubject" value="" />
     <input  type="hidden" name="WIDtotal_fee" value="" />
@@ -166,3 +165,16 @@ $this->registerJs($js);
     <button class="pay-btn" type="submit">立即支付</button>
 </div>
 </form>
+<script src="/js/video/jquery.min.1.11.1.js"></script>
+<script src="/js/video/searchHistory.js"></script>
+<script>
+    function toVaild(){
+        var uid = finduser();
+        if(!isNaN(uid) && uid!=""){
+            return true;
+        }else{
+            window.location.href = "/video/login";
+            return false;
+        }
+    }
+</script>

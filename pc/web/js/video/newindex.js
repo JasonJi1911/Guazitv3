@@ -15,28 +15,6 @@ $(window).scroll(function() {
 	}
 });
 
-//vip弹出层
-$(document).ready(function() {
-	//	弹出层显示
-	$("#vipbtn").click(function() {
-		$("#alt02").show();
-	});
-	//	付费金额切换
-	$(".alt02-xz>ul").click(function() {
-		$(this).addClass("alt02-bdr").siblings().removeClass("alt02-bdr");
-	});
-	//	付费模式切换
-	$(".alt02-tabA>li").click(function() {
-		var tabNum = $(this).index();
-		$(this).addClass("tabA").siblings().removeClass("tabA");
-		$(".paybox>div").eq(tabNum).addClass("act").siblings().removeClass("act");
-	});
-	//  聚合支付   支付方式选择，授权支付按钮可用
-	$(".paybox02-fs>div").click(function() {
-		$(".paybox02-btn>input").removeAttr("disabled");
-	});
-});
-
 //详情弹出曾
 $(document).ready(function() {
 	//	弹出层显示

@@ -1025,6 +1025,7 @@ else
                 <?php foreach ($hotword['tab'] as $key => $tab): ?>
                     <?php if($tab['title'] == $channelName) :?>
                         <?php foreach ($tab['list'] as $key => $list): ?>
+                            <?php if($key<10):?>
                             <!--排名-->
                             <div class="Ranking-box">
                                 <div class="Ranking-mun index-rank-<?=$key+1?>" style="position: relative;">
@@ -1050,6 +1051,7 @@ else
                                     <?= $list['score'] ?>
                                 </div>
                             </div>
+                            <?php endif;?>
                         <?php endforeach;?>
                     <?php endif;?>
                 <?php endforeach;?>

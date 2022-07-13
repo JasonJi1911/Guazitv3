@@ -45,15 +45,15 @@ AppAsset::register($this);
         gtag('config', 'G-6TXJP66KCH');
     </script>
 
-<!--    <script>-->
-<!--        var _hmt = _hmt || [];-->
-<!--        (function() {-->
-<!--        var hm = document.createElement("script");-->
-<!--        hm.src = "https://hm.baidu.com/hm.js?acb48993923bb825b8c964792dfee455";-->
-<!--        var s = document.getElementsByTagName("script")[0]; -->
-<!--        s.parentNode.insertBefore(hm, s);-->
-<!--        })();-->
-<!--    </script>-->
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?acb48993923bb825b8c964792dfee455";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
     <?php if ($this->params['isIndex'] == "1") : ?>
         <script type="application/ld+json">{
       "@context":"http://schema.org",

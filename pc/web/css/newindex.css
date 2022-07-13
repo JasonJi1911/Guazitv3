@@ -761,6 +761,10 @@ body {
 	cursor: pointer;
 }
 
+.navTopBtn:first-of-type{
+	margin-right: 0px;
+}
+
 .navTopBtn>div:first-of-type {
 	height: 62px;
 	background-position: center;
@@ -789,16 +793,22 @@ body {
 
 /*--------头部导航按钮背景---------*/
 .navTopBtnBox>.navTopBtn:nth-of-type(1)>div:first-of-type {
-	background-image: url(../images/Index/fenlei.png);
+	background-image: url(../images/newindex/VIP-1.png);
+	width: 33px;
+	margin-right: 15px;
 }
 .navTopBtnBox>.navTopBtn:nth-of-type(1):hover>div:first-of-type {
+	background-image: url(../images/newindex/VIP-1.png);
+	width: 33px;
+	margin-right: 15px;
+}
+.navTopBtnBox>.navTopBtn:nth-of-type(2)>div:first-of-type {
+	background-image: url(../images/Index/fenlei.png);
+}
+.navTopBtnBox>.navTopBtn:nth-of-type(2):hover>div:first-of-type {
 	background-image: url(../images/Index/fenlei_c.png);
 }
-/*.navTopBtnBox>.navTopBtn:nth-of-type(1)>div:first-of-type {
-	background-image: url(../images/newindex/VIP-1.png);
-}
-
-.navTopBtnBox>.navTopBtn:nth-of-type(2)>div:first-of-type {
+/*.navTopBtnBox>.navTopBtn:nth-of-type(2)>div:first-of-type {
 	background-image: url(../images/newindex/FL.png);
 }
 
@@ -3437,18 +3447,13 @@ Movie-Ranking-img-num {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	margin-left: -400px;
-	margin-top: -340px;
-	width: 800px;
-	height: 680px;
+	margin-top: -306px;
+	margin-left: -359px;
+	width: 718px;
+	height: 612px;
 	background-color: #FFFFFF;
 	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.5);
 	overflow: hidden;
-}
-
-.alt02-box .alt-GB {
-	margin-right: -400px;
-	margin-top: -340px;
 }
 
 .alt02-top {
@@ -3508,93 +3513,6 @@ Movie-Ranking-img-num {
 	background-color: #FF556E;
 	color: #FFFFFF;
 }
-
-.alt02-xz {
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr;
-	grid-gap: 33.33333px;
-	padding: 10px 10px 20px 10px;
-	background-color: #F9F9F9;
-	overflow: hidden;
-}
-
-.alt02-xz>ul {
-	width: 170px;
-	height: 200px;
-	text-align: center;
-	overflow: hidden;
-	background-image: url(../images/newindex/recharge-product-bg.9f5eabc3cb0580a21681.png);
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: 100% 100%;
-	cursor: pointer;
-}
-
-.alt02-xz>ul>li:first-of-type {
-	margin-top: 5px;
-	height: 50px;
-	line-height: 50px;
-	font-size: 30px;
-}
-
-.alt02-xz>ul>li:nth-of-type(2) {
-	height: 20px;
-	line-height: 20px;
-	font-size: 10px;
-	overflow: hidden;
-}
-
-.alt02-xz>ul>li:nth-of-type(3) {
-	height: 20px;
-	line-height: 20px;
-	font-size: 10px;
-	overflow: hidden;
-}
-
-.alt02-xz>ul>li:nth-of-type(4) {
-	color: #FF556E;
-	font-size: 30px;
-	overflow: hidden;
-}
-
-.alt02-xz>ul>li:last-of-type {
-	height: 44px;
-	line-height: 44px;
-	color: #f1f1f1;
-	font-size: 18px;
-	overflow: hidden;
-}
-
-.alt02-xz>ul>li:last-of-type>img {
-	display: inline-block;
-	width: 30px;
-	height: 30px;
-	margin-bottom: -8px;
-	margin-right: 10px;
-}
-
-.alt02-bdr {
-	box-sizing: border-box;
-	border: solid 1px #FF556E;
-}
-
-.alt02-tabA {
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
-	overflow: hidden;
-	border-bottom: solid 1px #F4F4F4;
-}
-
-.alt02-tabA>li {
-	height: 50px;
-	line-height: 50px;
-	text-align: center;
-	cursor: pointer;
-}
-
-/*.tabA {*/
-/*	border-bottom: solid 2px #FF556E;*/
-/*}*/
 
 .alt02-foot {
 	position: absolute;
@@ -3875,37 +3793,6 @@ Movie-Ranking-img-num {
 	height: 30px;
 }
 
-.paybox03 {
-	display: none;
-	position: relative;
-	height: 326px;
-	overflow: hidden;
-}
-
-.paybox03.act {
-	display: block;
-}
-
-.paybox03>div {
-	float: left;
-	margin-top: 40px;
-	width: 50%;
-	text-align: center;
-	overflow: hidden;
-}
-
-.paybox03-L {
-	font-size: 12px;
-}
-
-.paybox03-L>div {
-	margin-bottom: 10px;
-}
-
-.paybox03-L>div>img {
-	width: 150px;
-}
-
 .paybox03-L-btn {
 	margin-left: 10px;
 	font-size: 12px;
@@ -3918,11 +3805,6 @@ Movie-Ranking-img-num {
 	background-position: 5px center;
 	background-repeat: no-repeat;
 	background-size: 12px 12px;
-}
-
-.paybox03-R {
-	padding-top: 50px;
-	color: #999999;
 }
 
 .alt03-box {
@@ -4794,6 +4676,7 @@ Movie-Ranking-img-num {
 	text-align: center;
 	cursor: pointer;
 	transition: all .2s;
+	padding: 0 5px;
 }
 .qy-episode-num .select-item.selected {
 	background-color: #222328;
@@ -14551,7 +14434,7 @@ body.ZT-black,
 
 @media screen and (min-width: 1560px) {
 	.qy-episode-num .select-item {
-		width:70px
+		min-width:70px
 	}
 	/*.qy-flash-func .func-download,.qy-flash-func .func-give-piece,.qy-flash-func .func-share {*/
 	/*	display:block*/

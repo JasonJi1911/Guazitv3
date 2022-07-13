@@ -2,6 +2,7 @@
 namespace pc\controllers;
 
 use api\helpers\ErrorCode;
+use api\logic\PayLogic;
 use common\models\BookChapter;
 use common\models\advert\AdvertPosition;
 use common\models\UserAuth;
@@ -1628,6 +1629,63 @@ class VideoController extends BaseController
             $errno = -1;
         }
 
+        return Tool::responseJson($errno,'操作成功',$data);
+    }
+
+    public function actionNewNotify()
+    {
+        $param = [];
+        $param['pid'] = Yii::$app->request->get('pid', "");
+        $param['trade_no'] = Yii::$app->request->get('trade_no', "");
+        $param['out_trade_no'] = Yii::$app->request->get('out_trade_no', "");
+        $param['type'] = Yii::$app->request->get('type', "");
+        $param['name'] = Yii::$app->request->get('name', "");
+        $param['money'] = Yii::$app->request->get('money', "");
+        $param['trade_status'] = Yii::$app->request->get('trade_status', "");
+        $param['pay_sign'] = Yii::$app->request->get('sign', "");
+        $param['sign_type'] = Yii::$app->request->get('sign_type', "");
+
+        $data = Yii::$app->api->get('/video/new-notify',$param);
+
+        return Tool::responseJson(0,'操作成功',$data);
+    }
+
+    /*
+     * 提交订单
+     */
+    public function actionCreateOrder(){
+        $param = [];
+        $param['uid'] = Yii::$app->request->get('uid', "");//用户id
+//        $param['uid'] = Yii::$app->user->id;//用户id
+        $param['WIDsubject'] = Yii::$app->request->get('WIDsubject', "");//商品名称
+        $param['WIDtotal_fee'] = Yii::$app->request->get('WIDtotal_fee', 0.00);//金额
+        $param['type'] = Yii::$app->request->get('type', "");//支付方式
+        $param['goodsId'] = Yii::$app->request->get('goodsId', "");//商品id
+        $param['WIDout_trade_no'] = date("YmdHis").mt_rand(100,999);//订单号
+
+        $result = Yii::$app->api->get('/video/create-order',$param);
+
+        if($result){
+            return $this->redirect(PAY_HOST_PATH.'/epayapi.php?WIDout_trade_no='.$param['WIDout_trade_no']
+                .'&type='.$param['type'].'&WIDsubject='.$param['WIDsubject'].'&WIDtotal_fee='.$param['WIDtotal_fee']
+                .'&return_url='.PC_HOST_PATH);
+        }else{
+            return $this->redirect('/video/index');
+        }
+    }
+
+    /*
+     * 定时查询vip状态
+     */
+    public function actionVipInfo(){
+        $uid = Yii::$app->user->id;
+
+        $data = Yii::$app->api->get('/video/vip-info',['uid'=>$uid]);
+        if($data){
+            $errno = 0;
+        }else{
+            $errno = -1;
+        }
         return Tool::responseJson($errno,'操作成功',$data);
     }
 }

@@ -904,15 +904,20 @@ function initialUrl($url)
         // $('.dplayer-video-wrap').trigger('click');
         // dp1.play();
 
-        var strtext = "<div id='player-load1-warn'>如果卡顿，请在<span>播放窗口右侧</span>更换<span>1080P</span>线路</div>";
+        //1：当是1080时，提示720线路。2：当时720，提示1080线路，当只有一条线路，则提示：如果卡顿，请在播放窗口右侧联系客服；
+        var strtext = "<div id='player-load1-warn'>如果卡顿，请在播放窗口右侧联系客服</div>";
         var source_count = <?=$source_count?>;
-        //只有1080P的或者只有720P的，不显示“切换1080P”的提示
         if(source_count > 1){
-            $("#player1").prepend(strtext);
-            warnTimeout = setTimeout(function(){
-                $("#player-load1-warn").hide();
-            },20000);
+            <?php if($source_id=="17" || $source_id=="19") : ?>
+                strtext = "<div id='player-load1-warn'>如果卡顿，请在<span>播放窗口右侧</span>更换<span>720P</span>线路</div>";
+            <?php else : ?>
+                strtext = "<div id='player-load1-warn'>如果卡顿，请在<span>播放窗口右侧</span>更换<span>1080P</span>线路</div>";
+            <?php endif;?>
         }
+        $("#player1").prepend(strtext);
+        setTimeout(function(){
+            $("#player-load1-warn").hide();
+        },20000);
         dp1.on('loadedmetadata', function () {
             var totaltime = parseInt(dp1.video.duration);
             if(totaltime>0){

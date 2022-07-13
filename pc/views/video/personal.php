@@ -60,6 +60,11 @@ NewIndexStyleAsset::register($this);
     .edit-width{
         width: calc(100% - 320px);
     }
+    .isvip{
+        display: inline-block;
+        height: 10px;
+        margin-left: 8px;
+    }
 </style>
 <script>
 //首次加载
@@ -117,7 +122,13 @@ $(document).ready(function() {
         <div class="per-title">
             <div class="per-title-name">
                 <img src="/images/Index/user_c.png"/>
-                <p><?=$data['user']['nickname']?></p>
+                <p>
+                    <span><?=$data['user']['nickname']?></span>
+                    <?php if($data['isvip'] == 1):?>
+                    <img class="isvip" src="/images/Index/icon_isvip.png">
+                    <span class="J_desc" style="font-size: 12px;"><?=$data['desc']?></span>
+                    <?php endif;?>
+                </p>
                 <p><a href="<?= Url::to(['/video/personal'])?>">个人主页></a></p>
             </div>
         </div>

@@ -784,7 +784,6 @@ class PayLogic
         return $data;
     }
 
-
     // 计算签名
     public function getSign($param){
         ksort($param);
@@ -797,8 +796,9 @@ class PayLogic
             }
         }
         $signstr = substr($signstr,0,-1);
-        $signstr .= $this->key;
+        $signstr .= PAY_KEY;
         $sign = md5($signstr);
         return $sign;
     }
+
 }
