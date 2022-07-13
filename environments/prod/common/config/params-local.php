@@ -22,17 +22,24 @@ define('PC_HOST_PATH', 'https://' . PC_HOST_NAME);
 define('WAP_HOST_NAME', 'm.guazitv9.com');
 define('WAP_HOST_PATH', 'https://' . WAP_HOST_NAME);
 
+//支付接口
+define('PAY_HOST_NAME', '127.0.0.1:8030');
+define('PAY_HOST_PATH', 'http://' . PAY_HOST_NAME);
+//商户ID
+define('PAY_PID','10');
+//商户KEY
+define('PAY_KEY','NxVTvWgebLIuzkTJEmdorrS71CFqcxGK');
 
 // 付费相关开关,根据具体运营需求来确认
 define('VIP_SWITCH', true); // 会员开关
 define('COUPON_SWITCH', true); // 卡券开关
 
 //视频网站名称
-define('LOGONAME','吉祥');
+define('LOGONAME','瓜子');
 //广告图片链接前缀(当前域名)
 define('ADVERTURL','https://img.kantv9.com/');
 //邮箱
-define('EMAIL_NAME','jxsptv');
+define('EMAIL_NAME','guazitv@163.com');
 //客服二维码
 define('KFQRCODE','ryewm.png');
 //qq.com(视频url转换)
