@@ -134,7 +134,7 @@ class PayService extends Service
      * @return bool
      * @throws ApiException
      */
-    private function _checkUserLimit($arrGoodsInfo, $uid) {
+    public function _checkUserLimit($arrGoodsInfo, $uid) {
         if ($arrGoodsInfo['limit_num'] == 0) { // 没有限制
             return true;
         }

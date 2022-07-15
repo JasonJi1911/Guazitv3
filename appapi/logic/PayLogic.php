@@ -43,35 +43,35 @@ class PayLogic
             'icon'       => [
                 [
                     'title' => '广告特权',
-                    'img'  => API_HOST_PATH . '/img/08.png'
+                    'img'  => APPAPI_HOST_PATH . '/img/08.png'
                 ],
                 [
                     'title' => '院线新片',
-                    'img'  => API_HOST_PATH . '/img/01.png'
+                    'img'  => APPAPI_HOST_PATH . '/img/01.png'
                 ],
                 [
                     'title' => '热剧抢先看',
-                    'img'  => API_HOST_PATH . '/img/02.png'
+                    'img'  => APPAPI_HOST_PATH . '/img/02.png'
                 ],
                 [
                     'title' => '海量大片',
-                    'img'  => API_HOST_PATH . '/img/03.png'
+                    'img'  => APPAPI_HOST_PATH . '/img/03.png'
                 ],
                 [
                     'title' => '会员折扣',
-                    'img'  => API_HOST_PATH . '/img/06.png'
+                    'img'  => APPAPI_HOST_PATH . '/img/06.png'
                 ],
                 [
                     'title' => '尊贵标识',
-                    'img'  => API_HOST_PATH . '/img/04.png'
+                    'img'  => APPAPI_HOST_PATH . '/img/04.png'
                 ],
                 [
                     'title' => '边下边播',
-                    'img'  => API_HOST_PATH . '/img/07.png'
+                    'img'  => APPAPI_HOST_PATH . '/img/07.png'
                 ],
                 [
                     'title' => '会员福利',
-                    'img'  => API_HOST_PATH . '/img/05.png'
+                    'img'  => APPAPI_HOST_PATH . '/img/05.png'
                 ]
 
             ],
@@ -108,7 +108,7 @@ class PayLogic
         $uid = Yii::$app->user->id;
 
         $payDao = new PayDao();
-        $goodsList = $payDao->goodsList($type);
+        $goodsList = $payDao->goodsListBYproduct($type,Yii::$app->common->product);
 
         $appleProduct = false;
         if (Yii::$app->common->osType == Common::OS_IOS && Yii::$app->common->product == Common::PRODUCT_APP) {
@@ -534,4 +534,20 @@ class PayLogic
         }
     }
 
+    /*
+     * 下单
+     */
+    public function commitOrder($param)
+    {
+        // 查询商品信息
+        $payDao = new PayDao();
+        $goodsInfo = $payDao->goodsInfo($param['goodsId']);
+
+        //购买商品下单
+        $paydao = new PayDao();
+        $param['from_channel'] = Yii::$app->common->fromChannel;
+        $data = $paydao->createorder($goodsInfo,$param);
+
+        return $data;
+    }
 }

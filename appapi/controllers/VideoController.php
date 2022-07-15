@@ -2,6 +2,7 @@
 namespace appapi\controllers;
 
 use appapi\dao\CommonDao;
+use appapi\dao\PayDao;
 use appapi\dao\RecommendDao;
 use appapi\dao\VideoDao;
 use appapi\exceptions\ApiException;
@@ -502,5 +503,58 @@ class VideoController extends BaseController
         }
 
         return $data;
+    }
+    /*
+     * 提交订单
+     */
+    public function actionCreateOrder(){
+        $param = [];
+//        $param['uid'] = Yii::$app->request->get('uid', "");//用户id
+        $param['uid'] = Yii::$app->user->id;//用户id
+        $pay_channel_id = $this->getParam('pay_channel_id', "");//支付方式
+        $param['goodsId'] = $this->getParam('goods_id', "");//商品id
+        $param['WIDout_trade_no'] = date("YmdHis").mt_rand(100,999);//订单号
+
+        $tab = true;
+        if($pay_channel_id==1){
+            $param['type'] = "wxpay";
+        }else if($pay_channel_id==2){
+            $param['type'] = "alipay";
+        }else{
+            $tab = false;
+        }
+        $payDao = new PayDao();
+        $goodsInfo = $payDao->goodsInfo($param['goodsId']);
+        if($goodsInfo){
+            $param['WIDsubject'] = $goodsInfo['title'];//商品名称
+            $param['WIDtotal_fee'] = number_format($goodsInfo['current_price'] / 100, 2, '.', ',');//金额
+        }else{
+            $tab = false;
+        }
+
+        $paylogic = new PayLogic();
+        $result = $paylogic->commitOrder($param);
+
+        if($tab && true){
+            return (PAY_HOST_PATH.'/epayapi.php?WIDout_trade_no='.$param['WIDout_trade_no']
+                .'&type='.$param['type'].'&WIDsubject='.$param['WIDsubject'].'&WIDtotal_fee='.$param['WIDtotal_fee']
+                .'&return_url='.PC_HOST_PATH);
+        }else{
+            return "false";
+        }
+    }
+
+    /*
+     * app查询订单状态
+     */
+    public function actionSuccessOrder(){
+        $orderid = $this->getParam('order_id', "");//商品id
+        $paydao = new PayDao();
+        $data = $paydao->findorder($orderid);
+        if($data['status']==2){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
