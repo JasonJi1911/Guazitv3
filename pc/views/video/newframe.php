@@ -27,7 +27,7 @@ $(function(){
 SCRIPT;
 $this->registerJs($js);
 
-//header('X-Frame-Options:Deny');
+header('X-Frame-Options:Deny');
 //header("Access-Control-Allow-Origin:*");
 ?>
 <!DOCTYPE html>
