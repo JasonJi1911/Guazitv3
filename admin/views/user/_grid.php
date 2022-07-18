@@ -175,6 +175,19 @@ $this->registerJs($js);
                 return $html;
             },
         ],
+        [
+            'label' => '区号',
+            'format' => 'raw',
+            'value' => function($model) {
+                if (!$model->mobile_areacode) {
+                    return '--';
+                }else if($model->mobile_areacode == "+1"){
+                    return '北美';
+                }else{
+                    return $model->country->country_name;
+                }
+            }
+        ],
         'mobile',
         [
             'label' => '性别',

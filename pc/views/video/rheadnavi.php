@@ -167,13 +167,13 @@ use yii\helpers\Url;
         line-height: 50px;
         text-align: center;
         cursor: pointer;
-        background-color: #f0f0f0;
-        border: solid #e6e6e6;
+        background-color: #fff;
+        /*border: solid #e6e6e6;*/
         border-width: 0 1px 1px 0;
     }
 
     .alt02-tabA>li.tabA{
-        background-color: #fff;
+        background-color: #f0f0f0;
         border-right: none;
     }
 
@@ -222,6 +222,7 @@ use yii\helpers\Url;
 
     .paybox03-L {
         font-size: 12px;
+        position: relative;
     }
 
     .paybox03-L>div {
@@ -231,6 +232,25 @@ use yii\helpers\Url;
     /*.paybox03-L>div>img {*/
     /*    width: 150px;*/
     /*}*/
+
+    .paybox03-L div.J_qrcode_shadow{
+        position: absolute;
+        width: 150px;
+        height: 150px;
+        left: 80px;
+        background: #000;
+        opacity: .6;
+    }
+    .paybox03-L p.J_qrcode_shadow{
+        position: absolute;
+        width: 150px;
+        line-height:20px;
+        left: 80px;
+        font-size: 14px;
+        top:65px;
+        color: #fbfbfb;
+        font-weight: 700;
+    }
     .paybox03-R {
         padding-top: 15px;
         color: #999999;
@@ -478,6 +498,8 @@ use yii\helpers\Url;
                 <!--扫码支付-->
                 <div class="paybox03 act">
                     <div class="paybox03-L">
+                        <div class="J_qrcode_shadow"></div>
+                        <p class="J_qrcode_shadow">加载中</p>
                         <div id="J_qrcode">
                             <!--                                <img src="/images/newindex/ewm.jpg" />-->
                         </div>
@@ -912,19 +934,41 @@ use yii\helpers\Url;
     }
 
     function makeCode(){
-        var http = '<?=PC_HOST_PATH?>';
+        $("p.J_qrcode_shadow").text("加载中...");
+        $(".J_qrcode_shadow").show();
         var obj = $(".alt02-bdr.act").find("li");
         var flag = obj.eq(1).text().replace(/[0-9|\\.]/ig,"");
         var money = parseFloat(obj.eq(1).text().replace(flag,""));
         var type = $(".alt02-tabA .tabA .J_type").val();
         var goodsId = $(".alt02-bdr.act").attr("data-id");
-        var uid = finduser();
 
-        http="https://www96.guazitv.tv";
-        var str = http+"/video/create-order?uid="+uid+"&WIDsubject="+obj.eq(0).text()+"&WIDtotal_fee="+money+"&type="+type+"&goodsId="+goodsId;
-        qrcode.makeCode(str);
-
+        var ar = {};
+        ar['WIDsubject'] = obj.eq(0).text();
+        ar['WIDtotal_fee'] = money;
+        ar['type'] = type;
+        ar['goodsId'] = goodsId;
+        $.ajax({
+            url: '/video/create-order',
+            data: ar,
+            type:'get',
+            cache:false,
+            dataType:'json',
+            success:function(res) {
+                if(res.data.code==1){
+                    qrcode.makeCode(unescape(res.data.qrcode));
+                    $(".J_qrcode_shadow").hide();
+                }else{
+                    $("p.J_qrcode_shadow").text("下单失败");
+                }
+            },
+            error : function() {
+                console.log("二维码下单失败");
+                $("p.J_qrcode_shadow").text("下单失败,请刷新重试");
+            }
+        });
     }
+
+    //查询vip
     var vip_end = parseInt('<?=$data['vip']['end_time']?>');
     function vipinfo(){
         time1 = setInterval(function (){

@@ -1,6 +1,8 @@
 <?php
 namespace admin\models\user;
 
+use common\models\video\VideoFeedcountry;
+
 class User extends \common\models\user\User
 {
     /**
@@ -10,7 +12,7 @@ class User extends \common\models\user\User
     {
         return [
             [['from_channel', 'product', 'from_market', 'source', 'gender', 'reg_type', 'reg_time', 'last_login_time', 'status', 'user_type', 'created_at', 'updated_at', 'deleted_at'], 'integer'],
-            [['mobile'], 'string', 'max' => 11],
+            [['mobile','mobile_areacode'], 'string', 'max' => 11],
             [['nickname', 'device_id'], 'string', 'max' => 128],
             [['udid', 'intro'], 'string', 'max' => 64],
             [['user_token', 'password_hash'], 'string', 'max' => 32],
@@ -53,6 +55,7 @@ class User extends \common\models\user\User
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'deleted_at' => 'Deleted At',
+            'mobile_areacode'=>'区号'
         ];
     }
 
@@ -86,5 +89,16 @@ class User extends \common\models\user\User
         }
         // 删除绑定关系
         UserAuthApp::deleteAll(['uid' => $this->uid]);
+    }
+
+
+    /**
+     * 关联国家地区
+     */
+    public function getCountry()
+    {
+        $mobile_areacode = str_replace("+", "", $this->mobile_areacode);
+//        return $this->hasOne(VideoFeedcountry::className(), ['id' => 'channel_id']);
+        return VideoFeedcountry::findOne(['mobile_areacode' => $mobile_areacode]);
     }
 }

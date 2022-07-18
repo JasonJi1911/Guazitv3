@@ -22,6 +22,7 @@ use api\models\pay\PayErrorLog;
 use api\models\user\UserAssets;
 use api\models\user\UserCoupon;
 use api\services\PayService;
+use common\helpers\RedisStore;
 use common\helpers\Tool;
 use api\helpers\Wxpay;
 use common\models\setting\SettingSystem;
@@ -617,7 +618,6 @@ class PayLogic
                 //开始处理订单信息,会员延期
                 $payService = new PayService();
                 $result = $payService->confirmBuyVip($objTradeInfo, $outTradeNo);
-
                 if (!$result) {
                     $arrErrData['type'] = PayErrorLog::TYPE_CONFIRM_TRADE_FAILED;
                     $arrErrData['note'] = PayErrorLog::$typeMap[PayErrorLog::TYPE_CONFIRM_TRADE_FAILED];
@@ -625,12 +625,14 @@ class PayLogic
                     Yii::warning("trade_no:{$tradeNo} out_trade_no:{$outTradeNo} alipay - order confirm failed. req_json: " . json_encode($param),
                         'ALIPAY_NOTIFY_FAILED');
                     break;
+                }else{
+                    //支付成功，清空二维码链接的redis缓存
+                    $this->clearQrcodeRedis($objTradeInfo->uid);
                 }
 
                 //系统消息通知
                 $userdao = new UserDao();
                 $mResult = $userdao->addMessagePC($arrErrData['uid'],$param['name']);
-
                 if (!$mResult) {
                     $arrErrData['type'] = PayErrorLog::TYPE_SYSTEM_MESSAGE_FAILED;
                     $arrErrData['note'] = PayErrorLog::$typeMap[PayErrorLog::TYPE_SYSTEM_MESSAGE_FAILED];
@@ -801,4 +803,56 @@ class PayLogic
         return $sign;
     }
 
+    //二维码下单接口
+    public function getQrcode($param){
+        $key = 'qrcode_pay_order'.$param['uid'].'_'.$param['type'].'_'.$param['goodsId'];
+        $redis = new RedisStore();
+
+        $result = [];
+        if($payorder = $redis->get($key)){
+            $result = json_decode($payorder, true);
+        }else{
+            $r = $this->commitOrder($param);
+            if($r){
+                $url = "http://mzf.zixp.vip/pay/apisubmit";//post
+
+                $p = [];
+                $p['pid'] = PAY_PID;
+                $p['type'] = $param['type'];
+                $p['out_trade_no'] = $param['WIDout_trade_no'];
+                $p['notify_url'] = PC_HOST_PATH."/video/new-notify";
+                $p['return_url'] = PC_HOST_PATH;
+                $p['name'] = $param['WIDsubject'];
+                $p['money'] = $param['WIDtotal_fee'];
+                $p['sign_type'] = 'MD5';
+                $p['sign'] = $this->getSign($p);
+
+                $result = Tool::httpPost($url,$p);
+                $result['data'] = json_decode($result['data'],true);
+
+                //code=1;二维码接口下单成功，返回短链接，存入缓存
+                if($result['data']['code']==1){
+                    $redis->setEx($key, json_encode($result));
+                }
+            }
+        }
+        return $result;
+    }
+
+    //清支付二维码缓存
+    private function clearQrcodeRedis($uid){
+        $redis = new RedisStore();
+
+        $paychannel = PayChannel::find()->asArray()->all();
+        $goodsId = Goods::find()->andWhere(['product'=>Common::PRODUCT_PC])->asArray()->all();
+        foreach ($paychannel as $p){
+            foreach ($goodsId as $g){
+                $key = 'qrcode_pay_order'.$uid.'_'.$p['channel_id'].'_'.$g['id'];
+                if($redis->get($key)){
+                    $redis->del($key);
+                }
+            }
+        }
+        return true;
+    }
 }

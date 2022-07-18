@@ -1084,6 +1084,23 @@ class VideoController extends BaseController
 
         return $data;
     }
+    /*
+     * 提交订单(二维码下单)
+     */
+    public function actionCreateOrderQrcode(){
+        $param = [];
+        $param['WIDout_trade_no'] = $this->getParam('WIDout_trade_no', 0);
+        $param['uid'] = $this->getParam('uid', "");
+        $param['WIDsubject'] = $this->getParam('WIDsubject', "");
+        $param['WIDtotal_fee'] = $this->getParam('WIDtotal_fee', "");
+        $param['type'] = $this->getParam('type', "");
+        $param['goodsId'] = $this->getParam('goodsId', "");
+
+        $paylogic = new PayLogic();
+        $result = $paylogic->getQrcode($param);
+
+        return $result;
+    }
 
     public function actionPaySign(){
         $param = [];
