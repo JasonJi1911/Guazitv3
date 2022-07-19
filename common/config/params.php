@@ -18,8 +18,8 @@ define('ROOT_DIR', __DIR__.'/../../');
 define('ADMIN_HOST_NAME', 'xmind.guazitv8.com');
 define('ADMIN_HOST_PATH', 'http://' . ADMIN_HOST_NAME);
 
-//支付金额单位
-define('MONEY_UNIT', '¥');
+//支付金额单位¥
+define('MONEY_UNIT', '$');
 //客户端样式定界符
 define('STYLE_SIGN', '###');
 //任务奖励开关

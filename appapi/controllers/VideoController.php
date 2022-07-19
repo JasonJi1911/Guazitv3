@@ -17,6 +17,7 @@ use appapi\models\video\UserWatchLog;
 use appapi\models\advert\AdvertPosition;
 use common\helpers\RedisKey;
 use common\helpers\RedisStore;
+use common\helpers\Tool;
 use common\models\video\VideoFeed;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -528,6 +529,8 @@ class VideoController extends BaseController
         if($goodsInfo){
             $param['WIDsubject'] = $goodsInfo['title'];//商品名称
             $param['WIDtotal_fee'] = number_format($goodsInfo['current_price'] / 100, 2, '.', ',');//金额
+
+            $param['WIDtotal_fee'] = Tool::moneyAUDtoRMB($param['WIDtotal_fee']);
         }else{
             $tab = false;
         }

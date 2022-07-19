@@ -5,27 +5,6 @@ use yii\helpers\Url;
 $this->title = '瓜子TV|澳洲瓜子tv|澳新瓜子|澳新tv|澳新瓜子tv - guazitv.tv';
 $this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子,tv,瓜子tv,澳洲瓜子tv,澳洲,新西兰,澳新,电影,电视剧,榜单,综艺,动画,记录片']);
 
-$js = <<<JS
-$(function (){
-    //首次进入
-    $("#sum-money").text($(".vip-goods-div.act").find(".vip-goods-money").text());
-    $("input[name='WIDsubject']").val($(".vip-goods-div.act").find(".vip-goods-title").text());
-    $("input[name='WIDtotal_fee']").val($(".vip-goods-div.act").find(".vip-goods-money").text().replaceAll("¥",""));
-    $("input[name='goodsId']").val($(".vip-goods-div.act").attr("data-id"));
-    
-    
-    $(".vip-goods-div").click(function(){
-        $(this).addClass("act").siblings().removeClass("act");
-        $("#sum-money").text($(this).find(".vip-goods-money").text());
-        $("input[name='WIDsubject']").val($(this).find(".vip-goods-title").text());
-        $("input[name='WIDtotal_fee']").val($(this).find(".vip-goods-money").text().replaceAll("¥",""));
-        $("input[name='goodsId']").val($(this).attr("data-id"));
-    });
-    // console.log($("input[type='radio']:checked").val());
-});
-JS;
-
-$this->registerJs($js);
 ?>
 <style>
     body{background-color:#F1F5F8;font-family: PingFangSC;}
@@ -168,6 +147,24 @@ $this->registerJs($js);
 <script src="/js/video/jquery.min.1.11.1.js"></script>
 <script src="/js/video/searchHistory.js"></script>
 <script>
+    $(function (){
+        var money_unit = "<?=MONEY_UNIT?>"
+        //首次进入
+        $("#sum-money").text($(".vip-goods-div.act").find(".vip-goods-money").text());
+        $("input[name='WIDsubject']").val($(".vip-goods-div.act").find(".vip-goods-title").text());
+        $("input[name='WIDtotal_fee']").val($(".vip-goods-div.act").find(".vip-goods-money").text().replaceAll(money_unit,""));
+        $("input[name='goodsId']").val($(".vip-goods-div.act").attr("data-id"));
+
+
+        $(".vip-goods-div").click(function(){
+            $(this).addClass("act").siblings().removeClass("act");
+            $("#sum-money").text($(this).find(".vip-goods-money").text());
+            $("input[name='WIDsubject']").val($(this).find(".vip-goods-title").text());
+            $("input[name='WIDtotal_fee']").val($(this).find(".vip-goods-money").text().replaceAll(money_unit,""));
+            $("input[name='goodsId']").val($(this).attr("data-id"));
+        });
+        // console.log($("input[type='radio']:checked").val());
+    });
     function toVaild(){
         var uid = finduser();
         if(!isNaN(uid) && uid!=""){

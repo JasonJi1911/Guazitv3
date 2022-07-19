@@ -593,15 +593,15 @@ class PayLogic
                 }
                 $arrErrData['uid'] = $objTradeInfo->uid;
 
-                //验证订单信息
-                if (($objTradeInfo->total_fee != intval($param['money'] * 100) ) || (PAY_PID != $param['pid'])) {
-                    $arrErrData['type'] = PayErrorLog::TYPE_ORDER_INCORRECT;
-                    $arrErrData['note'] = PayErrorLog::$typeMap[PayErrorLog::TYPE_ORDER_INCORRECT];
-
-                    Yii::warning("trade_no:{$tradeNo} out_trade_no:{$outTradeNo} alipay - order info incorrect. req_json: " . json_encode($param),
-                        'ALIPAY_NOTIFY_FAILED');
-                    break;
-                }
+//                //验证订单信息
+//                if (($objTradeInfo->total_fee != intval($param['money'] * 100) ) || (PAY_PID != $param['pid'])) {
+//                    $arrErrData['type'] = PayErrorLog::TYPE_ORDER_INCORRECT;
+//                    $arrErrData['note'] = PayErrorLog::$typeMap[PayErrorLog::TYPE_ORDER_INCORRECT];
+//
+//                    Yii::warning("trade_no:{$tradeNo} out_trade_no:{$outTradeNo} alipay - order info incorrect. req_json: " . json_encode($param),
+//                        'ALIPAY_NOTIFY_FAILED');
+//                    break;
+//                }
 
                 // 查询订单是否已经处理
                 if ($objTradeInfo->status == Order::STATUS_SUCCESS) {
@@ -823,7 +823,8 @@ class PayLogic
                 $p['notify_url'] = PC_HOST_PATH."/video/new-notify";
                 $p['return_url'] = PC_HOST_PATH;
                 $p['name'] = $param['WIDsubject'];
-                $p['money'] = $param['WIDtotal_fee'];
+//                $p['money'] = $param['WIDtotal_fee'];
+                $p['money'] = Tool::moneyAUDtoRMB($param['WIDtotal_fee']);
                 $p['sign_type'] = 'MD5';
                 $p['sign'] = $this->getSign($p);
 

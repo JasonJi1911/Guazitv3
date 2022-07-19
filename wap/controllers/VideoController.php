@@ -770,16 +770,18 @@ class VideoController extends BaseController
         $param = [];
         $param['uid'] = Yii::$app->request->get('uid', "");//用户id
         $param['WIDsubject'] = Yii::$app->request->get('WIDsubject', "");//商品名称
-        $param['WIDtotal_fee'] = Yii::$app->request->get('WIDtotal_fee', "");//金额
+        $param['WIDtotal_fee'] = Yii::$app->request->get('WIDtotal_fee', 0.00);//金额
         $param['type'] = Yii::$app->request->get('type', "");//支付方式
         $param['goodsId'] = Yii::$app->request->get('goodsId', "");//商品id
         $param['WIDout_trade_no'] = date("YmdHis").mt_rand(100,999);//订单号
 
         $data = Yii::$app->api->get('/video/create-order',$param);
 
+        $money = Tool::moneyAUDtoRMB($param['WIDtotal_fee']);
+
         if($data){
             return $this->redirect(PAY_HOST_PATH.'/epayapi.php?WIDout_trade_no='.$param['WIDout_trade_no']
-                .'&type='.$param['type'].'&WIDsubject='.$param['WIDsubject'].'&WIDtotal_fee='.$param['WIDtotal_fee']
+                .'&type='.$param['type'].'&WIDsubject='.$param['WIDsubject'].'&WIDtotal_fee='.$money
                 .'&return_url='.WAP_HOST_PATH);
         }else{
             return $this->redirect('/video/index');

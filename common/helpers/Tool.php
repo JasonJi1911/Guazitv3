@@ -123,9 +123,19 @@ class Tool
      */
     public static function moneyFormatYuan($money)
     {
-        if(empty($money)) return '￥'.'0.00';
+        if(empty($money)) return MONEY_UNIT.'0.00';
 
-        return '￥'.number_format($money / 100, 2, '.', ',');
+        return MONEY_UNIT.number_format($money / 100, 2, '.', ',');
+    }
+
+    /**
+     * 澳元换算人民币（支付接口用）
+     */
+    public static function moneyAUDtoRMB($money){
+
+        if(empty($money)) return '0.00';
+
+        return number_format($money * 4.5, 2, '.', ',');
     }
 
     /**
