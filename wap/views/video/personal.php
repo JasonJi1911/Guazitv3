@@ -17,7 +17,7 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => '瓜子,tv,瓜子tv,�
     .user-list .user-detail{width: 100%;height: 1rem;line-height: 1rem;display: flex;align-items: center;flex-direction: row;}
     .user-list .user-detail img{margin:0 15px;}
     .user-list .user-detail div{width: calc(100% - 84px);}
-    .user-list .user-detail img:first-of-type{width: 17px;height:17px;}
+    .user-list .user-detail img:first-of-type{width: 20px;height:20px;}
     .user-list .user-detail img:last-of-type{width: 6px;height:10px;}
     .user-list .user-detail div.vip-link-title{width: 80px;color: #7B5533;}
     .user-list .user-detail div.vip-link-tip{text-align: right;font-size: 12px;color: #957C64;}

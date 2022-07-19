@@ -62,7 +62,7 @@ NewIndexStyleAsset::register($this);
     }
     .isvip{
         display: inline-block;
-        height: 10px;
+        height: 16px;
         margin-left: 8px;
     }
 </style>
@@ -126,7 +126,7 @@ $(document).ready(function() {
                     <span><?=$data['user']['nickname']?></span>
                     <?php if($data['isvip'] == 1):?>
                     <img class="isvip" src="/images/Index/icon_isvip.png">
-                    <span class="J_desc" style="font-size: 12px;"><?=$data['desc']?></span>
+                    <span class="J_desc" style="font-size: 16px;"><?=$data['desc']?></span>
                     <?php endif;?>
                 </p>
                 <p><a href="<?= Url::to(['/video/personal'])?>">个人主页></a></p>

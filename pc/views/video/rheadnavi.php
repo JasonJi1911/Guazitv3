@@ -958,7 +958,13 @@ use yii\helpers\Url;
                     qrcode.makeCode(unescape(res.data.qrcode));
                     $(".J_qrcode_shadow").hide();
                 }else{
-                    $("p.J_qrcode_shadow").text("下单失败");
+                    var mes = "";
+                    if(res.data.msg && res.data.msg!= ""  && res.data.msg!="undefined"){
+                        mes = res.data.msg;
+                    }else{
+                        mes = '下单失败';
+                    }
+                    $("p.J_qrcode_shadow").text(mes);
                 }
             },
             error : function() {
@@ -982,11 +988,14 @@ use yii\helpers\Url;
                     // console.log(res);
                     if(res.errno==0 && res.data.end_time > vip_end){
                         vip_end = res.data.end_time;
-                        $("#alt02").hide();
                         clearInterval(time1);
                         $(".J_desc").text(res.data.desc);
                         $("#pop-tip").text("支付成功");
-                        $("#pop-tip").show().delay(1500).fadeOut();
+                        $("#pop-tip").show();
+                        setTimeout(function (){
+                            $("#alt02").hide();
+                            $("#pop-tip").hide();
+                        },1500);
                     }
                 },
                 error : function() {

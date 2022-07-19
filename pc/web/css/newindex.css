@@ -10037,7 +10037,7 @@ Movie-Ranking-img-num {
 	top: 50%;
 	left: 45%;
 	overflow: hidden;
-	z-index: 8;
+	z-index: 15;
 	padding: 12px 70px;
 	height: 26px;
 	line-height: 26px;
